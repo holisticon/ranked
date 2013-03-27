@@ -32,6 +32,6 @@ public class PlayerResourceImplTest {
     @Ignore("not yet implemented")
     @Test
     public void test() {
-        resource.create(new Player("Name"));
+        resource.create(new Player("name", 1200, 1200));
     }
 }

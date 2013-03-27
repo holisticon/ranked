@@ -1,5 +1,11 @@
 package de.holisticon.ranked;
 
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
+
 import de.holisticon.ranked.api.PlayerResource;
 import de.holisticon.ranked.api.model.Player;
 
@@ -8,9 +14,17 @@ import de.holisticon.ranked.api.model.Player;
  */
 public class PlayerResourceImpl implements PlayerResource {
 
-    @Override
-    public void create(Player payload) {
-        throw new AssertionError("Not yet implemented.");
-    }
+	@Override
+	@PUT
+	public void create(Player payload) {
+		
+	}
+
+	@Override
+	@GET
+	public scala.collection.immutable.List<Player> get() {
+		return null;
+	}
+
 
 }
