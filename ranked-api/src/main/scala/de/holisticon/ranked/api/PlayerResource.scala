@@ -1,7 +1,7 @@
 package de.holisticon.ranked.api
 
-import javax.ws.rs.{PUT, Path}
-import model.Player
+import de.holisticon.ranked.api.model.Player
+import javax.ws.rs.{ PUT, Path }
 
 /**
  * @author Daniel Wegener (Holisticon AG)
@@ -10,7 +10,6 @@ import model.Player
 trait PlayerResource {
 
   @PUT
-  def create(payload:Player)
-
+  def create(payload: Player)
 
 }
