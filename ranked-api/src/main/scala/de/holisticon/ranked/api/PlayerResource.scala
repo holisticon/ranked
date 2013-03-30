@@ -4,6 +4,7 @@ import de.holisticon.ranked.api.model.Player
 import javax.ws.rs.{ GET, PUT, Path }
 
 /**
+ * Player resource.
  * @author Daniel Wegener (Holisticon AG)
  */
 @Path("player")
