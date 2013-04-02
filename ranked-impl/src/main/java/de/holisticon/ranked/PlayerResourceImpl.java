@@ -1,8 +1,5 @@
 package de.holisticon.ranked;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 
@@ -17,7 +14,6 @@ public class PlayerResourceImpl implements PlayerResource {
 	@Override
 	@PUT
 	public void create(Player payload) {
-		
 	}
 
 	@Override
@@ -25,6 +21,5 @@ public class PlayerResourceImpl implements PlayerResource {
 	public scala.collection.immutable.List<Player> get() {
 		return null;
 	}
-
 
 }

@@ -30,11 +30,9 @@ abstract class PersistentEntity(
 @Entity
 @Table(name = "PLAYER")
 case class Player(
-  @BeanProperty @(Column @field)(name = "NAME") name: String,
-  @BeanProperty @(Column @field)(name = "ELO") elo: Int,
-  @BeanProperty @(Column @field)(name = "INITIAL_ELO") initialElo: Int) extends PersistentEntity {
+  @BeanProperty @(Column @field)(name = "NAME") name: String) extends PersistentEntity {
 
-  def this() = this(null, 0, 0);
+  def this() = this(null);
 }
 
 /**
