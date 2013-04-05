@@ -18,6 +18,7 @@
     <module>ranked-api</module>
     <module>ranked-impl</module>
     <module>ranked-ear</module>
+    <module>ranked-webapp</module>
   </modules>
 
   <organization>
@@ -91,6 +92,11 @@
         <scope>test</scope>
       </dependency>
       <dependency>
+        <groupId>org.jboss.as</groupId>
+        <artifactId>jboss-as-arquillian-container-managed</artifactId>
+        <version>7.1.1.Final</version>
+      </dependency>
+      <dependency>
         <groupId>org.jboss.weld</groupId>
         <artifactId>weld-core</artifactId>
         <version>1.1.5.Final</version>
@@ -102,8 +108,12 @@
         <version>1.6.4</version>
         <scope>test</scope>
       </dependency>
-
-
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>log4j-over-slf4j</artifactId>
+        <version>1.7.2</version>
+        <scope>test</scope>
+      </dependency>
     </dependencies>
   </dependencyManagement>
   <build>
@@ -132,7 +142,12 @@
           <artifactId>maven-surefire-plugin</artifactId>
           <version>2.13</version>
         </plugin>
+        <plugin>
+          <artifactId>maven-failsafe-plugin</artifactId>
+          <version>2.13</version>
+        </plugin>
       </plugins>
+
     </pluginManagement>
   </build>
 </project>

@@ -13,14 +13,15 @@ import javax.persistence.Id
 import javax.persistence.MappedSuperclass
 import javax.persistence.Table
 import javax.persistence.Version
+import org.codehaus.jackson.annotate.JsonProperty
 
 /**
  * Superclass for all persistent entities.
  */
 @MappedSuperclass
 abstract class PersistentEntity(
-  @BeanProperty @(Column @field)(name = "ID")@(Id @field)@(GeneratedValue @field)(strategy = GenerationType.AUTO) id: Long,
-  @BeanProperty @(Column @field)(name = "VERSION")@(Version @field) version: Long) {
+                                 @BeanProperty @(Column@field)(name = "ID") @(Id@field) @(GeneratedValue@field)(strategy = GenerationType.AUTO) id: Long,
+                                 @BeanProperty @(Column@field)(name = "VERSION") @(Version@field) version: Long) {
   def this() = this(-1, -1);
 }
 
@@ -30,7 +31,10 @@ abstract class PersistentEntity(
 @Entity
 @Table(name = "PLAYER")
 case class Player(
-  @BeanProperty @(Column @field)(name = "NAME") name: String) extends PersistentEntity {
+                   @BeanProperty
+                   @(JsonProperty@field)("name")
+                   @(Column@field)(name = "NAME")
+                   name: String) extends PersistentEntity {
 
   def this() = this(null);
 }
@@ -41,7 +45,7 @@ case class Player(
 @Entity
 @Table(name = "TEAM")
 case class Team(
-  @BeanProperty @(Column @field)(name = "NAME") name: String) extends PersistentEntity {
+                 @BeanProperty @(Column@field)(name = "NAME") name: String) extends PersistentEntity {
 
   def this() = this(null);
 }
@@ -52,7 +56,7 @@ case class Team(
 @Entity
 @Table(name = "ROLE")
 case class Role(
-  @BeanProperty @(Column @field)(name = "NAME") name: String) extends PersistentEntity {
+                 @BeanProperty @(Column@field)(name = "NAME") name: String) extends PersistentEntity {
 
   def this() = this(null);
 }
@@ -64,9 +68,9 @@ case class Role(
 @Entity
 @Table(name = "DISCIPLINE")
 case class Discipline(
-  @BeanProperty @(Column @field)(name = "NAME") name: String,
-  @BeanProperty @(Column @field)(name = "TEAMS") numberOfTeams: Int,
-  @BeanProperty @(Column @field)(name = "ROUNDS") numberOfRounds: Int) extends PersistentEntity {
+                       @BeanProperty @(Column@field)(name = "NAME") name: String,
+                       @BeanProperty @(Column@field)(name = "TEAMS") numberOfTeams: Int,
+                       @BeanProperty @(Column@field)(name = "ROUNDS") numberOfRounds: Int) extends PersistentEntity {
 
   def this() = this(null, 2, 1);
 }
@@ -77,9 +81,9 @@ case class Discipline(
 @Entity
 @Table(name = "TOURNAMENT")
 case class Tournament(
-  @BeanProperty @(Column @field)(name = "NAME") name: String,
-  @BeanProperty @(Column @field)(name = "START") start: Date,
-  @BeanProperty @(Column @field)(name = "END") end: Date) extends PersistentEntity {
+                       @BeanProperty @(Column@field)(name = "NAME") name: String,
+                       @BeanProperty @(Column@field)(name = "START") start: Date,
+                       @BeanProperty @(Column@field)(name = "END") end: Date) extends PersistentEntity {
 
   def this() = this(null, null, null);
 }
@@ -90,8 +94,8 @@ case class Tournament(
 @Entity
 @Table(name = "MATCH")
 case class Match(
-  @BeanProperty @(Column @field)(name = "MATCH_DATE") matchDate: Date,
-  @BeanProperty @(Column @field)(name = "DESCRIPTION") description: String) extends PersistentEntity {
+                  @BeanProperty @(Column@field)(name = "MATCH_DATE") matchDate: Date,
+                  @BeanProperty @(Column@field)(name = "DESCRIPTION") description: String) extends PersistentEntity {
 
   def this() = this(null, null);
 }

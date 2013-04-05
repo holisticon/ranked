@@ -16,12 +16,13 @@ import javax.inject.Inject;
  * @author Daniel
  */
 @RunWith(Arquillian.class)
-public class PlayerResourceImplTest {
+public class PlayerResourceImplITest {
 
     @Deployment
     public static JavaArchive createDeployment() {
         return ShrinkWrap.create(JavaArchive.class)
                 .addClass(PlayerResourceImpl.class)
+                .addAsManifestResource("META-INF/persistence.xml")
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
     }
 
@@ -29,7 +30,6 @@ public class PlayerResourceImplTest {
     PlayerResourceImpl resource;
 
 
-    @Ignore("not yet implemented")
     @Test
     public void test() {
         resource.create(new Player("name"));
