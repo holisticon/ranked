@@ -14,7 +14,7 @@
 
 
   <properties>
-    <jbossHome>${project.build}/jboss</jbossHome>
+    <jbossHome>${env.JBOSS_HOME}</jbossHome>
   </properties>
   <dependencies>
     <dependency>
@@ -39,11 +39,6 @@
     </dependency>
 
 
-
-
-
-
-
     <!-- Test Depencencies -->
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -66,6 +61,12 @@
       <artifactId>jboss-as-arquillian-container-managed</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.jboss.arquillian.protocol</groupId>
+      <artifactId>arquillian-protocol-servlet</artifactId>
+      <scope>test</scope>
+    </dependency>
+
     <dependency>
       <groupId>org.jboss.weld</groupId>
       <artifactId>weld-core</artifactId>
@@ -116,11 +117,13 @@
         <configuration>
           <container>
             <containerId>jboss71x</containerId>
-           <!-- <artifactInstaller>
-              <groupId>org.jboss.as</groupId>
-              <artifactId>jboss-as-dist</artifactId>
-              <version>7.1.1.Final</version>
-            </artifactInstaller>-->
+            <type>installed</type>
+            <home>${jbossHome}</home>
+           <artifactInstaller>
+               <groupId>org.jboss.as</groupId>
+               <artifactId>jboss-as-dist</artifactId>
+               <version>7.1.1.Final</version>
+             </artifactInstaller>
           </container>
         </configuration>
         <executions>
@@ -129,21 +132,12 @@
             <phase>pre-integration-test</phase>
             <goals>
               <goal>install</goal>
-              <goal>configure</goal>
-              <goal>start</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>stop-container</id>
-            <phase>post-integration-test</phase>
-            <goals>
-              <goal>stop</goal>
             </goals>
           </execution>
         </executions>
       </plugin>
       <plugin>
-        <artifactId>maven-surefire-plugin</artifactId>
+        <artifactId>maven-failsafe-plugin</artifactId>
         <configuration>
           <systemProperties>
             <arquillian.launch>jbossas-managed-7-1</arquillian.launch>
@@ -154,13 +148,10 @@
         </configuration>
         <executions>
           <execution>
-            <id>run-integration-testss</id>
-            <phase>integration-test</phase>
-            <configuration>
-              <includes>
-                <include>**ITest.java</include>
-              </includes>
-            </configuration>
+            <goals>
+              <goal>integration-test</goal>
+              <goal>verify</goal>
+            </goals>
           </execution>
         </executions>
       </plugin>
