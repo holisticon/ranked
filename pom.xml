@@ -55,7 +55,6 @@
     <project.build.resourceEncoding>UTF-8</project.build.resourceEncoding>
     <encoding>UTF-8</encoding>
     <scala.version>2.10.1</scala.version>
-    <scalaVersion>2.10.1</scalaVersion>
   </properties>
 
   <dependencyManagement>
@@ -64,6 +63,7 @@
         <groupId>org.scala-lang</groupId>
         <artifactId>scala-library</artifactId>
         <version>${scala.version}</version>
+        <scope>provided</scope>
       </dependency>
       <dependency>
         <groupId>org.jboss.spec</groupId>
