@@ -20,8 +20,8 @@ import org.codehaus.jackson.annotate.JsonProperty
  */
 @MappedSuperclass
 abstract class PersistentEntity(
-                                 @BeanProperty @(Column@field)(name = "ID") @(Id@field) @(GeneratedValue@field)(strategy = GenerationType.AUTO) id: Long,
-                                 @BeanProperty @(Column@field)(name = "VERSION") @(Version@field) version: Long) {
+                                 @BeanProperty @(Column@field)(name = "ID") @(Id@field) @(GeneratedValue@field)(strategy = GenerationType.AUTO) val id: Long,
+                                 @BeanProperty @(Column@field)(name = "VERSION") @(Version@field) val version: Long) {
   def this() = this(-1, -1);
 }
 
@@ -34,7 +34,7 @@ case class Player(
                    @BeanProperty
                    @(JsonProperty@field)("name")
                    @(Column@field)(name = "NAME")
-                   name: String) extends PersistentEntity {
+                   val name: String) extends PersistentEntity {
 
   def this() = this(null);
 }

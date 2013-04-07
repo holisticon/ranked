@@ -4,11 +4,22 @@
              xsi:schemaLocation="
         http://java.sun.com/xml/ns/persistence
         http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
-  <persistence-unit name="test">
+  <persistence-unit name="ranked-ds">
     <jta-data-source>java:jboss/datasources/ExampleDS</jta-data-source>
     <properties>
       <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
       <property name="hibernate.show_sql" value="true"/>
     </properties>
+
+
+    <class>de.holisticon.ranked.api.model.PersistentEntity</class>
+    <class>de.holisticon.ranked.api.model.Player</class>
+    <class>de.holisticon.ranked.api.model.Team</class>
+    <class>de.holisticon.ranked.api.model.Role</class>
+    <class>de.holisticon.ranked.api.model.Discipline</class>
+    <class>de.holisticon.ranked.api.model.Tournament</class>
+    <class>de.holisticon.ranked.api.model.Match</class>
+
   </persistence-unit>
+
 </persistence>
