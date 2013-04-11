@@ -56,7 +56,6 @@
     <encoding>UTF-8</encoding>
     <scala.version>2.10.1</scala.version>
   </properties>
-
   <dependencyManagement>
     <dependencies>
       <dependency>
