@@ -41,6 +41,10 @@ case class Player(
  */
 @Entity
 @Table(name = "TEAM")
+@NamedQueries(Array(
+new NamedQuery(name = "Team.all", query = "select t from Team t"),
+new NamedQuery(name = "Team.byName", query = "select t from Team t where t.name = :name")
+))
 case class Team(
                  @BeanProperty @(Column@field)(name = "NAME") name: String) extends PersistentEntity {
 
@@ -52,6 +56,9 @@ case class Team(
  */
 @Entity
 @Table(name = "ROLE")
+@NamedQueries(Array(
+new NamedQuery(name = "Role.all", query = "select r from Role r")
+))
 case class Role(
                  @BeanProperty @(Column@field)(name = "NAME") name: String) extends PersistentEntity {
 
