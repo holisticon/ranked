@@ -4,6 +4,8 @@ import javax.ejb.{EJB, Local, Stateless}
 import de.holisticon.ranked.api.PlayerResource
 import de.holisticon.ranked.api.model.Player
 import de.holisticon.ranked.model.PlayerDao
+import scala.collection.JavaConverters._
+
 
 /**
  * @author Daniel
@@ -17,11 +19,13 @@ class PlayerResourceImpl extends PlayerResource {
   private var playerDao: PlayerDao = _
 
   def create(payload: Player) {
+    playerDao.create(payload)
   }
 
-  def get: List[Player] = {
-    List(Player("Horst Borst"))
+  def get(): List[Player] = {
+    playerDao.all
   }
+
 
 
 }

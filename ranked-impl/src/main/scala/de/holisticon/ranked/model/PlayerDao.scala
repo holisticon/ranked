@@ -1,17 +1,26 @@
 package de.holisticon.ranked.model
 
-import javax.inject.Inject
-import javax.persistence.{PersistenceContext, EntityManager}
-import javax.ejb.Stateless
+import de.holisticon.ranked.api.model.Player
+import javax.ejb.{LocalBean, Stateless}
 
 /**
- * @author Daniel
+ * Provides basic DAO functionality for accessing player resource.
+ * @author Daniel Wegener
+ * @author Simon Zambrovski
+ *
  */
 @Stateless
-class PlayerDao  {
+@LocalBean
+class PlayerDao extends GenericDao[Player] {
 
-  @PersistenceContext
-  private var em:EntityManager = _;
+  def byName(name: String) : List[Player] = {
+    em.createNamedQuery("Player.byName").getResultList.asInstanceOf[List[Player]]
+  }
 
-
+  /**
+   * Provides entity class name
+   * @return entity class
+   */
+  def getEntityClass: Class[Player] = classOf[Player]
 }
+
