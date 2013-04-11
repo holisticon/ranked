@@ -11,7 +11,7 @@ import javax.ejb.{LocalBean, Stateless}
  */
 @Stateless
 @LocalBean
-class PlayerDao extends GenericDao[Player] {
+class Dao extends GenericDao[Player] {
 
   def byName(name: String) : List[Player] = {
     em.createNamedQuery("Player.byName").getResultList.asInstanceOf[List[Player]]
