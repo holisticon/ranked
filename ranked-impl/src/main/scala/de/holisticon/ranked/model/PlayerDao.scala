@@ -1,6 +1,8 @@
 package de.holisticon.ranked.model
 
 import de.holisticon.ranked.api.model.Player
+import java.util.{List => JavaList}
+import scala.collection.JavaConverters._
 import javax.ejb.{LocalBean, Stateless}
 
 /**
@@ -14,7 +16,7 @@ import javax.ejb.{LocalBean, Stateless}
 class PlayerDao extends GenericDao[Player] {
 
   def byName(name: String) : List[Player] = {
-    em.createNamedQuery("Player.byName").getResultList.asInstanceOf[List[Player]]
+    em.createNamedQuery("Player.byName").setParameter("name",name).getResultList.asInstanceOf[JavaList[Player]].asScala.toList
   }
 
   /**
