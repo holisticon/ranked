@@ -164,7 +164,6 @@
           <version>2.13</version>
         </plugin>
       </plugins>
-
     </pluginManagement>
   </build>
 </project>
