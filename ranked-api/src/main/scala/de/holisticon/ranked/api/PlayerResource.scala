@@ -1,6 +1,5 @@
 package de.holisticon.ranked.api
 
-import de.holisticon.ranked.api.model.Player
 import javax.ws.rs._
 import javax.ws.rs.core.MediaType
 import de.holisticon.ranked.api.model.Player
