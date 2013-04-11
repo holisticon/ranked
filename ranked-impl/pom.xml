@@ -32,12 +32,10 @@
       <artifactId>jboss-javaee-6.0</artifactId>
       <type>pom</type>
     </dependency>
-    <dependency>
-      <groupId>org.codehaus.jackson</groupId>
-      <artifactId>jackson-jaxrs</artifactId>
-      <version>1.9.12</version>
+     <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
     </dependency>
-
 
     <!-- Test Depencencies -->
     <dependency>

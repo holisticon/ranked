@@ -6,7 +6,7 @@ import scala.annotation.meta.field
 import scala.beans.BeanProperty
 
 import javax.persistence._
-import org.codehaus.jackson.annotate.JsonProperty
+import com.fasterxml.jackson.annotation.JsonProperty
 
 /**
  * Superclass for all persistent entities.

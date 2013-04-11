@@ -9,12 +9,21 @@
     <param-name>resteasy.jndi.resources</param-name>
     <param-value>java:app/ranked-impl-1.0-SNAPSHOT/PlayerResourceImpl</param-value>
   </context-param>
-  <listener>
+  <context-param>
+    <param-name>resteasy.providers</param-name>
+    <param-value>de.holisticon.ranked.JacksonConfig,com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider</param-value>
+  </context-param>
+  <context-param>
+    <param-name>resteasy.use.builtin.providers</param-name>
+    <param-value>false</param-value>
+  </context-param>
+  <!--<listener>
     <listener-class>org.jboss.resteasy.plugins.server.servlet.ResteasyBootstrap</listener-class>
-  </listener>
+  </listener>-->
   <servlet>
     <servlet-name>Resteasy</servlet-name>
     <servlet-class>org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher</servlet-class>
+
   </servlet>
   <servlet-mapping>
     <servlet-name>Resteasy</servlet-name>
