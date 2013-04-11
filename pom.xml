@@ -55,6 +55,7 @@
     <project.build.resourceEncoding>UTF-8</project.build.resourceEncoding>
     <encoding>UTF-8</encoding>
     <scala.version>2.10.1</scala.version>
+    <jbossHome>${env.JBOSS_HOME}</jbossHome>
   </properties>
   <dependencyManagement>
     <dependencies>
