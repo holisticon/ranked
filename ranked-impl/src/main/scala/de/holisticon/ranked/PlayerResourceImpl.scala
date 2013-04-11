@@ -3,7 +3,7 @@ package de.holisticon.ranked
 import javax.ejb.{EJB, Local, Stateless}
 import de.holisticon.ranked.api.PlayerResource
 import de.holisticon.ranked.api.model.Player
-import de.holisticon.ranked.model.{Dao, PlayerDao}
+import de.holisticon.ranked.model.Dao
 import scala.collection.JavaConverters._
 
 
