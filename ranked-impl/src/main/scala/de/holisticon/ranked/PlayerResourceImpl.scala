@@ -1,17 +1,17 @@
 package de.holisticon.ranked
 
-import javax.ejb.{EJB, Local, Stateless}
+import javax.ejb.{LocalBean, EJB, Local, Stateless}
 import de.holisticon.ranked.api.PlayerResource
-import de.holisticon.ranked.api.model.Player
-import de.holisticon.ranked.model.PlayerDao
+import de.holisticon.ranked.api.DisciplineResource
+import de.holisticon.ranked.api.model.{Discipline, Player}
 import scala.collection.JavaConverters._
+import de.holisticon.ranked.model.{DisciplineDao, PlayerDao}
 
 
 /**
  * @author Daniel
  */
 @Stateless
-@Local
 class PlayerResourceImpl extends PlayerResource {
 
 
@@ -25,7 +25,15 @@ class PlayerResourceImpl extends PlayerResource {
   def get(): List[Player] = {
     playerDao.all
   }
+}
 
+@Stateless
+class DisciplineResourceImpl extends DisciplineResource {
 
+  @EJB
+  private var disciplineDao: DisciplineDao = _
 
+  def get(): List[Discipline] = {
+    disciplineDao.all
+  }
 }

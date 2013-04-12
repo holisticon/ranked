@@ -4,6 +4,7 @@ import de.holisticon.ranked.api.model.PersistentEntity;
 import de.holisticon.ranked.api.model.Player;
 import de.holisticon.ranked.api.model.Tournament;
 import de.holisticon.ranked.model.PlayerDao;
+
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -11,7 +12,6 @@ import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import scala.Product;
 
 import javax.ejb.EJB;
 
