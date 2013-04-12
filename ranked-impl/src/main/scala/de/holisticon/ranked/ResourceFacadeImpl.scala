@@ -1,22 +1,25 @@
 package de.holisticon.ranked
 
-import javax.ejb.{LocalBean, EJB, Stateless}
+import javax.ejb.{Local, EJB, Stateless}
 import de.holisticon.ranked.api.PlayerResource
 import de.holisticon.ranked.api.DisciplineResource
 import de.holisticon.ranked.api.model.{Discipline, Player}
 import de.holisticon.ranked.model.{DisciplineDao, PlayerDao}
-import javax.ws.rs.PathParam
+import javax.ws.rs.{Consumes, Produces, Path, PathParam}
+import scala.Array
+import javax.ws.rs.core.MediaType
 
-object ResourceFacadeImpl {
-  val FQN = "de.holisticon.ranked.ResourceFacade"
-}
+@Local
+@Path("/")
+@Produces( Array ( MediaType.APPLICATION_JSON ))
+@Consumes( Array ( MediaType.APPLICATION_JSON ))
+trait ResourceFacade extends PlayerResource with DisciplineResource
 
 /**
  * @author Daniel
  */
-@LocalBean
-@Stateless(name=ResourceFacadeImpl.FQN)
-class ResourceFacadeImpl extends PlayerResource with DisciplineResource {
+@Stateless(name="de.holisticon.ranked.ResourceFacade")
+class ResourceFacadeImpl extends ResourceFacade {
 
   @EJB
   private var playerDao: PlayerDao = _

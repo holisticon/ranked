@@ -7,7 +7,7 @@
   <!-- this tells RESTEasy to load resource classes -->
   <context-param>
     <param-name>resteasy.jndi.resources</param-name>
-    <param-value>java:module/de.holisticon.ranked.ResourceFacade</param-value>
+    <param-value>java:app/ranked-impl-1.0-SNAPSHOT/de.holisticon.ranked.ResourceFacade</param-value>
   </context-param>
   <context-param>
     <param-name>resteasy.providers</param-name>

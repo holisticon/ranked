@@ -10,8 +10,6 @@ import de.holisticon.ranked.api.model.Discipline
  * @author Daniel Wegener (Holisticon AG)
  */
 
-@Produces( Array ( MediaType.APPLICATION_JSON ))
-@Consumes( Array ( MediaType.APPLICATION_JSON ))
 trait PlayerResource {
 
   @PUT
@@ -28,8 +26,6 @@ trait PlayerResource {
 }
 
 
-@Produces( Array ( MediaType.APPLICATION_JSON ))
-@Consumes( Array ( MediaType.APPLICATION_JSON ))
 trait DisciplineResource {
 
   @Path("discipline")
