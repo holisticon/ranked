@@ -10,5 +10,15 @@
       <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
       <property name="hibernate.show_sql" value="true"/>
     </properties>
+
+    <class>de.holisticon.ranked.api.model.PersistentEntity</class>
+    <class>de.holisticon.ranked.api.model.Player</class>
+    <class>de.holisticon.ranked.api.model.Team</class>
+    <class>de.holisticon.ranked.api.model.Role</class>
+    <class>de.holisticon.ranked.api.model.Discipline</class>
+    <class>de.holisticon.ranked.api.model.Tournament</class>
+    <class>de.holisticon.ranked.api.model.Match</class>
+    <class>de.holisticon.ranked.api.model.Ranking</class>
+    <class>de.holisticon.ranked.api.model.RankingPk</class>
   </persistence-unit>
 </persistence>
