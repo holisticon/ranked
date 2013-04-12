@@ -7,13 +7,16 @@ import de.holisticon.ranked.api.model.{Discipline, Player}
 import de.holisticon.ranked.model.{DisciplineDao, PlayerDao}
 import javax.ws.rs.PathParam
 
+object ResourceFacadeImpl {
+  val FQN = "de.holisticon.ranked.ResourceFacade"
+}
 
 /**
  * @author Daniel
  */
 @LocalBean
-@Stateless
-class PlayerResourceImpl extends PlayerResource with DisciplineResource {
+@Stateless(name=ResourceFacadeImpl.FQN)
+class ResourceFacadeImpl extends PlayerResource with DisciplineResource {
 
   @EJB
   private var playerDao: PlayerDao = _
