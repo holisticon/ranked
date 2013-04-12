@@ -26,6 +26,16 @@ class DisciplineDao extends GenericDao[Discipline] {
 
 @Stateless
 @LocalBean
+class RankingDao extends GenericDaoForComposite[Ranking] {
+  /**
+   * Provides entity class name
+   * @return entity class
+   */
+  def getEntityClass: Class[Ranking] = classOf[Ranking]
+}
+
+@Stateless
+@LocalBean
 class MatchDao extends GenericDao[Match] {
   /**
    * Provides entity class name

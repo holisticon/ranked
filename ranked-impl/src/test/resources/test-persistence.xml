@@ -19,6 +19,6 @@
     <class>de.holisticon.ranked.api.model.Tournament</class>
     <class>de.holisticon.ranked.api.model.Match</class>
     <class>de.holisticon.ranked.api.model.Ranking</class>
-    <class>de.holisticon.ranked.api.model.RankingPk</class>
+    <class>de.holisticon.ranked.api.model.RankingId</class>
   </persistence-unit>
 </persistence>

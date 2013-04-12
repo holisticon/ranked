@@ -5,23 +5,9 @@ import scala.Predef._
 import scala.collection.JavaConverters._
 import de.holisticon.ranked.api.model.PersistentEntity
 
-/**
- * Generic DAO operations.
- * User: Simon Zambrivski
- * @tparam T type of entity.
- */
-trait GenericDao[T <: PersistentEntity] {
+trait GenericDaoForComposite[T] {
   @PersistenceContext
   var em:EntityManager = _
-
-  /**
-   * Finder for retrieving entities by id.
-   * @param id id of entity
-   * @return entity
-   */
-  def byId(id: Long) : T = {
-     em.find(getEntityClass, id)
-  }
 
   /**
    * Finder to get all entities of a type
@@ -38,8 +24,10 @@ trait GenericDao[T <: PersistentEntity] {
    */
   def create(payload: T) : T = {
     em.persist(payload)
-    payload
+    return payload
   }
+
+  def create(payload:Seq[T]):Seq[T] = payload.map(create)
 
   /**
    * Provides entity class name
@@ -53,5 +41,21 @@ trait GenericDao[T <: PersistentEntity] {
    */
   def getAllFinderName = {
     getEntityClass.getSimpleName + ".all"
+  }
+}
+
+/**
+ * Generic DAO operations.
+ * User: Simon Zambrivski
+ * @tparam T type of entity.
+ */
+trait GenericDao[T <: PersistentEntity] extends GenericDaoForComposite[T]{
+  /**
+   * Finder for retrieving entities by id.
+   * @param id id of entity
+   * @return entity
+   */
+  def byId(id: Long) : T = {
+    em.find(getEntityClass, id)
   }
 }
