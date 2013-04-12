@@ -1,5 +1,6 @@
 package de.holisticon.ranked;
 
+import de.holisticon.ranked.api.model.Match;
 import de.holisticon.ranked.api.model.PersistentEntity;
 import de.holisticon.ranked.api.model.Player;
 import de.holisticon.ranked.api.model.Tournament;
@@ -29,7 +30,8 @@ public class PlayerResourceIT {
     @Deployment
     public static JavaArchive createDeployment() {
         return ShrinkWrap.create(JavaArchive.class)
-                .addClasses(PlayerDao.class, GenericDao.class, PersistentEntity.class, Player.class, Tournament.class)
+                .addClasses(PlayerDao.class, GenericDao.class, PersistentEntity.class, Player.class, Tournament.class, Match.class)
+                .addPackage(Player.class.getPackage())
                 .addAsManifestResource("test-persistence.xml", "persistence.xml")
                 .addAsResource("jbossas-ds.xml")
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
