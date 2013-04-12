@@ -34,6 +34,7 @@
         <configuration>
           <defaultLibBundleDir>lib</defaultLibBundleDir>
           <skinnyWars>true</skinnyWars>
+          <applicationName>ranked</applicationName>
           <modules>
             <ejbModule>
               <groupId>de.holisticon.ranked</groupId>
@@ -46,6 +47,49 @@
             </webModule>
           </modules>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.cargo</groupId>
+        <artifactId>cargo-maven2-plugin</artifactId>
+        <version>1.3.2</version>
+        <configuration>
+          <container>
+            <containerId>jboss71x</containerId>
+            <type>remote</type>
+            <home>${jbossHome}</home>
+          </container>
+          <configuration>
+            <type>runtime</type>
+            <properties>
+              <cargo.remote.username>deployer</cargo.remote.username>
+            </properties>
+          </configuration>
+          <deployer>
+            <type>remote</type>
+          </deployer>
+          <deployables>
+            <deployable>
+              <groupId>de.holisticon.ranked</groupId>
+              <artifactId>ranked-ear</artifactId>
+              <type>ear</type>
+            </deployable>
+          </deployables>
+        </configuration>
+        <executions>
+          <execution>
+            <id>deploy</id>
+            <goals>
+              <goal>deployer-redeploy</goal>
+            </goals>
+          </execution>
+        </executions>
+        <dependencies>
+          <dependency>
+            <groupId>org.jboss.as</groupId>
+            <artifactId>jboss-as-controller-client</artifactId>
+            <version>7.2.0.Final</version>
+          </dependency>
+        </dependencies>
       </plugin>
     </plugins>
   </build>

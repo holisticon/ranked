@@ -12,10 +12,6 @@
   <name>ranked-impl</name>
   <packaging>ejb</packaging>
 
-
-  <properties>
-    <jbossHome>${env.JBOSS_HOME}</jbossHome>
-  </properties>
   <dependencies>
     <dependency>
       <groupId>de.holisticon.ranked</groupId>
@@ -115,13 +111,8 @@
         <configuration>
           <container>
             <containerId>jboss71x</containerId>
-            <type>installed</type>
+            <type>remote</type>
             <home>${jbossHome}</home>
-           <artifactInstaller>
-               <groupId>org.jboss.as</groupId>
-               <artifactId>jboss-as-dist</artifactId>
-               <version>7.1.1.Final</version>
-             </artifactInstaller>
           </container>
         </configuration>
         <executions>

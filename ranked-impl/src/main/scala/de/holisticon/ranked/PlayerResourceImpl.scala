@@ -14,16 +14,15 @@ import de.holisticon.ranked.model.{DisciplineDao, PlayerDao}
 @Stateless
 class PlayerResourceImpl extends PlayerResource {
 
-
   @EJB
-  private var playerDao: PlayerDao = _
+  private var dao: PlayerDao = _
 
   def create(payload: Player) {
-    playerDao.create(payload)
+    dao.create(payload)
   }
 
-  def get(): List[Player] = {
-    playerDao.all
+  def get: List[Player] = {
+    dao.all
   }
 }
 
@@ -31,9 +30,9 @@ class PlayerResourceImpl extends PlayerResource {
 class DisciplineResourceImpl extends DisciplineResource {
 
   @EJB
-  private var disciplineDao: DisciplineDao = _
+  private var dao: DisciplineDao = _
 
-  def get(): List[Discipline] = {
-    disciplineDao.all
+  def get: List[Discipline] = {
+    dao.all
   }
 }
