@@ -67,12 +67,6 @@ case class Ranking(
                    ) {
   def this() = this(null, 0, 0, null, null)
 
-/*  @Transient
-  def getDiscipline : Discipline = id.discipline
-
-  @Transient
-  def getPlayer : Player = id.player
-*/
 }
 
 @Embeddable
@@ -96,7 +90,7 @@ case class RankingPk(
 case class Player(
                    @BeanProperty @(JsonProperty@field)("name")@(Column@field)(name = "NAME")name: String,
                    @BeanProperty @(ManyToMany@field)@(JoinTable@field)(name = "PLAYER_IN_TEAM", joinColumns = Array(new JoinColumn(name = "PLAYER_ID")), inverseJoinColumns = Array(new JoinColumn(name = "TEAM_ID")))teams: java.util.Set[Team],
-                   @BeanProperty @(OneToMany@field)(cascade = Array(CascadeType.ALL), fetch = FetchType.LAZY, mappedBy = "player")rankings: java.util.Set[Ranking]) extends PersistentEntity {
+                   @BeanProperty @(OneToMany@field)(cascade = Array(CascadeType.REMOVE), fetch = FetchType.EAGER, mappedBy = "player")rankings: java.util.Set[Ranking]) extends PersistentEntity {
 
   def this() = this(null, null, null)
 }

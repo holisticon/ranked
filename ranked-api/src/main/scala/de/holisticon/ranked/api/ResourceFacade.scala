@@ -9,25 +9,31 @@ import de.holisticon.ranked.api.model.Discipline
  * Player resource.
  * @author Daniel Wegener (Holisticon AG)
  */
-@Path("player")
+
 @Produces( Array ( MediaType.APPLICATION_JSON ))
 @Consumes( Array ( MediaType.APPLICATION_JSON ))
 trait PlayerResource {
 
   @PUT
-  def create(payload: Player)
+  @Path("player")
+  def createPlayer(payload: Player)
 
   @GET
-  def get(): List[Player]
+  @Path("player")
+  def getPlayers: List[Player]
+
+  @Path("player/{id}")
+  def getPlayer(@PathParam("id") id:Long)
 
 }
 
-@Path("discipline")
+
 @Produces( Array ( MediaType.APPLICATION_JSON ))
 @Consumes( Array ( MediaType.APPLICATION_JSON ))
 trait DisciplineResource {
 
+  @Path("discipline")
   @GET
-  def get(): List[Discipline]
+  def getDisciplines(): List[Discipline]
 
 }
