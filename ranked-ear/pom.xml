@@ -68,6 +68,7 @@
               <configuration>
                 <type>runtime</type>
                 <properties>
+                  <cargo.hostname>127.0.0.1</cargo.hostname>
                   <cargo.remote.username>${jboss.username}</cargo.remote.username>
                   <cargo.remote.password>${jboss.password}</cargo.remote.password>
                 </properties>
