@@ -16,7 +16,7 @@
     <dependency>
       <groupId>de.holisticon.ranked</groupId>
       <artifactId>ranked-impl</artifactId>
-      <version>1.0-SNAPSHOT</version>
+      <version>${jboss.username}</version>
       <type>ejb</type>
     </dependency>
     <dependency>
@@ -68,7 +68,6 @@
               <configuration>
                 <type>runtime</type>
                 <properties>
-                  <cargo.hostname>127.0.0.1</cargo.hostname>
                   <cargo.remote.username>${jboss.username}</cargo.remote.username>
                   <cargo.remote.password>${jboss.password}</cargo.remote.password>
                 </properties>
@@ -97,7 +96,7 @@
               <dependency>
                 <groupId>org.jboss.as</groupId>
                 <artifactId>jboss-as-controller-client</artifactId>
-                <version>7.1.0.Final</version>
+                <version>7.1.3.Final</version>
               </dependency>
             </dependencies>
           </plugin>
