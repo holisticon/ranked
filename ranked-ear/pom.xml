@@ -61,7 +61,8 @@
           <configuration>
             <type>runtime</type>
             <properties>
-              <cargo.remote.username>deployer</cargo.remote.username>
+              <cargo.remote.username>${jboss.username}</cargo.remote.username>
+              <cargo.remote.password>${jboss.password}</cargo.remote.password>
             </properties>
           </configuration>
           <deployer>
