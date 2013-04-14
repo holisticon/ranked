@@ -56,7 +56,7 @@ case class Match(
                   @BeanProperty @(Column@field)(name = "MATCH_DATE", nullable = false)@(Temporal@field)(TemporalType.TIMESTAMP) matchDate: Date,
                   @BeanProperty @(Column@field)(name = "DESCRIPTION") description: String,
                   @BeanProperty @(ManyToOne@field) @(JoinColumn@field)(name = "DISCIPLINE_ID", nullable = false) discipline: Discipline,
-                  @BeanProperty @(ManyToOne@field) @(JoinColumn@field)(name = "TOURNAMENT_ID") tournament: Tournament) extends PersistentEntity {
+                  @BeanProperty @(ManyToOne@field) @(JoinColumn@field)(name = "TOURNAMENT_ID", nullable = false) tournament: Tournament) extends PersistentEntity {
 
   private def this() = this(null, null, null, null)
 }
@@ -151,7 +151,7 @@ case class Tournament(
                        @BeanProperty @(Column@field)(name = "NAME", nullable = false) name: String,
                        @BeanProperty @(Column@field)(name = "START", nullable = false) @(Temporal@field)(TemporalType.TIMESTAMP) start: Date,
                        @BeanProperty @(Column@field)(name = "END", nullable = false) @(Temporal@field)(TemporalType.TIMESTAMP) end: Date,
-                       @BeanProperty @(OneToMany@field)(cascade = Array(CascadeType.ALL), fetch = FetchType.LAZY, mappedBy = "tournament") matches: java.util.Set[Match] = Collections.emptySet()) extends PersistentEntity {
+                       @BeanProperty @(OneToMany@field)(cascade = Array(CascadeType.REMOVE), fetch = FetchType.LAZY, mappedBy = "tournament") matches: java.util.Set[Match] = Collections.emptySet()) extends PersistentEntity {
 
   private def this() = this(null, null, null, null)
 }

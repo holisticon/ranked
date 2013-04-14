@@ -27,7 +27,6 @@ trait ResourceFacade extends PlayerResource with DisciplineResource with Tournam
 /**
  * @author Daniel
  */
-@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 @Stateless(name = "de.holisticon.ranked.ResourceFacade")
 class ResourceFacadeImpl extends ResourceFacade {
 
