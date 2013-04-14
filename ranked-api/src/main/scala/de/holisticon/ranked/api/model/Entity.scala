@@ -78,7 +78,7 @@ case class Match(
   new AssociationOverride(name = "id.matchRef", joinColumns = Array(new JoinColumn(name = "MATCH_ID")))
 ))
 case class Participation (
-                    @BeanProperty @(EmbeddedId@field)id: RankingId,
+                    @BeanProperty @(EmbeddedId@field)id: ParticipationId,
                     @BeanProperty @(Column@field)(name = "ELO_CHANGE") eloChange: Int,
                     @BeanProperty @(ManyToOne@field) @(JoinColumn@field)(name = "PLAYER_ID", insertable = false, updatable = false) player: Player = null,
                     @BeanProperty @(ManyToOne@field) @(JoinColumn@field)(name = "MATCH_ID", insertable = false, updatable = false) matchRef: Match = null,
