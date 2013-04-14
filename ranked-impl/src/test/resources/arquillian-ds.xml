@@ -4,7 +4,8 @@
              xsi:schemaLocation="
         http://www.jboss.org/ironjacamar/schema
         http://docs.jboss.org/ironjacamar/schema/datasources_1_0.xsd">
-  <datasource jndi-name="java:jboss/datasources/Arquillian" pool-name="Arquillian" enabled="true" use-java-context="true">
+  <datasource jndi-name="java:jboss/datasources/ArquillianTemp" pool-name="ArquillianTemp" enabled="true"
+              use-java-context="true">
     <connection-url>jdbc:h2:mem:test;DB_CLOSE_DELAY=-1</connection-url>
     <driver>h2</driver>
     <security>
