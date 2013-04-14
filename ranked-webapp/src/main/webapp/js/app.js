@@ -1,4 +1,4 @@
-angular.module('ranked', []).
+angular.module('ranked', ['rankedServices','ngResource']).
     config(['$routeProvider', function ($routeProvider) {
         $routeProvider.
             when('/player', {templateUrl: 'partials/playerList.html', controller: PlayerController}).
