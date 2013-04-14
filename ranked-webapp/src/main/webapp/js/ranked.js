@@ -1,4 +1,4 @@
-var serverBasePath = 'http://localhost:8080/ranked'
+var serverBasePath = '/ranked'
 
 function PlayerController($scope,$http) {
     $http.get(serverBasePath+'/player').success(function(data) {
