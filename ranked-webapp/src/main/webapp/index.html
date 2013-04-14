@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app>
+<html ng-app="ranked">
 <head>
     <title>Ranked</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,7 +24,9 @@
 
             <div class="nav-collapse collapse">
                 <ul class="nav">
-                    <li class="active"><a href="#">Players</a></li>
+                    <li class="active"><a href="#/player">Players</a></li>
+                    <li><a href="#/tournament">Tournaments</a></li>
+                    <li><a href="#/discipline">Disciplines</a></li>
                 </ul>
             </div>
             <!--/.nav-collapse -->
@@ -32,25 +34,13 @@
     </div>
 </div>
 
-<div class="container" ng-controller="PlayerController">
-    <ul class="thumbnails">
-        <li class="span2" ng-repeat="player in players">
-            <a class="thumbnail"
-               href="#">
+<div class="view" ng-view></div>
 
-                <strong>{{player.name}}</strong></br>
-                ID:{{player.id}}
-
-                </br>
-            </a>
-        </li>
-    </ul>
-</div>
-<!-- /container -->
 
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.6/angular.js"></script>
 <script src="http://code.jquery.com/jquery.js"></script>
 <script src="js/bootstrap.min.js"></script>
-<script src="js/ranked.js"></script>
+<script src="js/app.js"></script>
+<script src="js/controllers.js"></script>
 </body>
 </html>
