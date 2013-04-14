@@ -17,6 +17,8 @@ import scala.Option;
 
 import javax.ejb.EJB;
 
+import java.util.Collections;
+
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
 
@@ -54,7 +56,7 @@ public class PlayerResourceIT {
 
     @Test
     public void testCreateAndFindPlayer() {
-        resource.create(new Player("name", null, null));
+        resource.create(new Player("name", Collections.<Team>emptySet(), Collections.<Participation>emptySet(), Collections.<Ranking>emptySet()));
         final Option<Player> foundPlayer = resource.byName("name");
         MatcherAssert.assertThat(foundPlayer, notNullValue());
         MatcherAssert.assertThat(foundPlayer.get().getName(), equalTo("name"));
