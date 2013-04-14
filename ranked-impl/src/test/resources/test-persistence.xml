@@ -5,12 +5,13 @@
         http://java.sun.com/xml/ns/persistence
         http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
   <persistence-unit name="test">
-    <jta-data-source>java:jboss/datasources/Arquillian</jta-data-source>
+    <jta-data-source>java:jboss/datasources/ArquillianTemp</jta-data-source>
     <properties>
       <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
       <property name="hibernate.show_sql" value="true"/>
     </properties>
 
+    <class>de.holisticon.ranked.api.model.Versioned</class>
     <class>de.holisticon.ranked.api.model.PersistentEntity</class>
     <class>de.holisticon.ranked.api.model.Player</class>
     <class>de.holisticon.ranked.api.model.Team</class>
@@ -20,5 +21,9 @@
     <class>de.holisticon.ranked.api.model.Match</class>
     <class>de.holisticon.ranked.api.model.Ranking</class>
     <class>de.holisticon.ranked.api.model.RankingId</class>
+    <class>de.holisticon.ranked.api.model.Participation</class>
+    <class>de.holisticon.ranked.api.model.ParticipationId</class>
+    <class>de.holisticon.ranked.api.model.PlayerResult</class>
+    <class>de.holisticon.ranked.api.model.PlayerResultId</class>
   </persistence-unit>
 </persistence>
