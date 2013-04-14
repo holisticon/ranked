@@ -40,7 +40,7 @@ public class PlayerResourceIT {
                         // classes from Api
                 .addPackages(true, PersistentEntity.class.getPackage())
                 .addAsManifestResource("test-persistence.xml", "persistence.xml")
-                .addAsManifestResource("arquillian-ds.xml")
+                .addAsResource("arquillian-ds.xml")
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
         System.out.println(archive.toString());
         System.out.println(archive.getContent());

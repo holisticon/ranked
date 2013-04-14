@@ -139,9 +139,10 @@
           <!--<systemProperties>
             <arquillian.launch>jbossas-remote-7-1</arquillian.launch>
           </systemProperties>-->
-          <!--<environmentVariables>
-            <JBOSS_HOME>${project.build.directory}/jboss-as-7.1.1</JBOSS_HOME>
-          </environmentVariables>-->
+          <environmentVariables>
+            <JBOSS_USERNAME>${jboss.username}</JBOSS_USERNAME>
+            <JBOSS_PASSWORD>${jboss.password}</JBOSS_PASSWORD>
+          </environmentVariables>
         </configuration>
         <executions>
           <execution>
