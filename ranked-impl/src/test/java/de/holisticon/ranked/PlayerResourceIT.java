@@ -5,6 +5,7 @@ import de.holisticon.ranked.api.model.PersistentEntity;
 import de.holisticon.ranked.api.model.Player;
 import de.holisticon.ranked.api.model.Tournament;
 import de.holisticon.ranked.model.GenericDao;
+import de.holisticon.ranked.model.GenericDaoForComposite;
 import de.holisticon.ranked.model.PlayerDao;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -31,10 +32,10 @@ public class PlayerResourceIT {
     @Deployment
     public static JavaArchive createDeployment() {
         return ShrinkWrap.create(JavaArchive.class)
-                .addClasses(PlayerDao.class, GenericDao.class, PersistentEntity.class, Player.class, Tournament.class, Match.class)
+                .addClasses(PlayerDao.class, GenericDao.class, GenericDaoForComposite.class, PersistentEntity.class, Player.class, Tournament.class, Match.class)
                 .addPackage(Player.class.getPackage())
                 .addAsManifestResource("test-persistence.xml", "persistence.xml")
-                .addAsResource("jbossas-ds.xml")
+                //.addAsManifestResource("jbossas-ds.xml")
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
     }
 
