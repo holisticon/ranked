@@ -1,9 +1,6 @@
 package de.holisticon.ranked;
 
-import de.holisticon.ranked.api.model.Match;
-import de.holisticon.ranked.api.model.PersistentEntity;
-import de.holisticon.ranked.api.model.Player;
-import de.holisticon.ranked.api.model.Tournament;
+import de.holisticon.ranked.api.model.*;
 import de.holisticon.ranked.model.GenericDao;
 import de.holisticon.ranked.model.PlayerDao;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -17,6 +14,8 @@ import scala.Option;
 import scala.collection.immutable.List;
 
 import javax.ejb.EJB;
+
+import java.util.Collections;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -44,7 +43,7 @@ public class PlayerResourceIT {
 
     @Test
     public void testCreateAndFindPlayer() {
-        resource.create(new Player("name", null, null));
+        resource.create(new Player("name", Collections.<Team>emptySet(), Collections.<Participation>emptySet(), Collections.<Ranking>emptySet()));
         final Option<Player> foundPlayer = resource.byName("name");
         assertThat(foundPlayer, notNullValue());
         assertThat(foundPlayer.get().getName(), equalTo("name"));
