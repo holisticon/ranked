@@ -17,17 +17,9 @@
     <param-name>resteasy.use.builtin.providers</param-name>
     <param-value>false</param-value>
   </context-param>
-  <!--<listener>
+  <listener>
     <listener-class>org.jboss.resteasy.plugins.server.servlet.ResteasyBootstrap</listener-class>
-  </listener>-->
-  <servlet>
-    <servlet-name>Resteasy</servlet-name>
-    <servlet-class>org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>Resteasy</servlet-name>
-    <url-pattern>/*</url-pattern>
-  </servlet-mapping>
+  </listener>
 
   <filter>
     <filter-name>CORS</filter-name>
@@ -39,6 +31,18 @@
   </filter>
   <filter-mapping>
     <filter-name>CORS</filter-name>
-    <servlet-name>Resteasy</servlet-name>
+    <url-pattern>/*</url-pattern>
   </filter-mapping>
+  <filter>
+    <filter-name>Resteasy</filter-name>
+    <filter-class>org.jboss.resteasy.plugins.server.servlet.FilterDispatcher</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>Resteasy</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+  </welcome-file-list>
 </web-app>

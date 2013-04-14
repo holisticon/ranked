@@ -1,0 +1,14 @@
+<div class="container">
+    <ul class="thumbnails">
+        <li class="span2" ng-repeat="tournament in tournaments">
+            <a class="thumbnail"
+               href="#/tournament/{{tournament.id}}">
+
+                <strong>{{tournament.name}}</strong><br/>
+                ID:{{tournament.id}}<br/>
+                Start:{{tournament.start}}<br />
+                End:{{tournament.end}}<br/>
+            </a>
+        </li>
+    </ul>
+</div>
