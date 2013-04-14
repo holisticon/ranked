@@ -34,22 +34,20 @@ class ResourceFacadeImpl extends ResourceFacade {
   @EJB
   private var rankingDao: RankingDao = _
 
-  override def getPlayer(id: Long) = ???
+  override def getPlayer(id: Long) = playerDao.byId(id)
+
+  override def getPlayerByName(name: String) = playerDao.byName(name)
+
+  override def getPlayers: List[Player] = playerDao.all
 
 
-  override def getPlayers: List[Player] = {
-    playerDao.all
-  }
-
-
-  override def getDisciplines: List[Discipline] = {
-    disciplineDao.all
-  }
+  override def getDisciplines: List[Discipline] =  disciplineDao.all
 
 
   override def createPlayer(name: String) {
 
     val player = Player(name)
+
     val playerRankings = disciplineDao.all
       .map(discipline => (discipline, initialEloProvider.provideInitialElo(discipline)))
       .map(disciplineElo => Ranking(RankingId(player, disciplineElo._1), disciplineElo._2, disciplineElo._2))
@@ -59,6 +57,7 @@ class ResourceFacadeImpl extends ResourceFacade {
 
   def createDiscipline(name: String, teamCount: Int, roundCount: Int) =
     disciplineDao.create(Discipline(name,teamCount,roundCount))
+
 
 }
 

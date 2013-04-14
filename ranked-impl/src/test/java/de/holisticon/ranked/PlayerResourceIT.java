@@ -13,6 +13,7 @@ import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import scala.Option;
 import scala.collection.immutable.List;
 
 import javax.ejb.EJB;
@@ -44,8 +45,8 @@ public class PlayerResourceIT {
     @Test
     public void testCreateAndFindPlayer() {
         resource.create(new Player("name", null, null));
-        final List<Player> foundPlayer = resource.byName("name");
+        final Option<Player> foundPlayer = resource.byName("name");
         assertThat(foundPlayer, notNullValue());
-        assertThat(foundPlayer.apply(0).getName(), equalTo("name"));
+        assertThat(foundPlayer.get().getName(), equalTo("name"));
     }
 }

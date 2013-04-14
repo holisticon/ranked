@@ -12,8 +12,6 @@ import javax.ws.rs.ext.ContextResolver;
 import javax.ws.rs.ext.Provider;
 
 @Provider
-@Produces(MediaType.WILDCARD)
-@Consumes(MediaType.WILDCARD)
 public class JacksonConfig implements ContextResolver<ObjectMapper> {
     private static final Logger LOG = LoggerFactory.getLogger(JacksonConfig.class);
 

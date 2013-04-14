@@ -5,9 +5,11 @@ import scala.Predef._
 import scala.collection.JavaConverters._
 import de.holisticon.ranked.api.model.PersistentEntity
 
-trait GenericDaoForComposite[T] {
+abstract class GenericDaoForComposite[T : Manifest] {
   @PersistenceContext
   var em:EntityManager = _
+
+  final val entityClass:Class[_ <: T] = manifest[T].runtimeClass.asInstanceOf[Class[_<:T]]
 
   /**
    * Finder to get all entities of a type
@@ -29,18 +31,13 @@ trait GenericDaoForComposite[T] {
 
   def create(payload:Seq[T]):Seq[T] = payload.map(create)
 
-  /**
-   * Provides entity class name
-   * @return entity class
-   */
-  // def getEntityClass(implicit manifest:Manifest[T]) : Class[T] = manifest.runtimeClass.asInstanceOf[Class[T]]
-  def getEntityClass : Class[T]
+
   /**
    * Default finder name.
    * @return name of the finder.
    */
   def getAllFinderName = {
-    getEntityClass.getSimpleName + ".all"
+    entityClass.getSimpleName + ".all"
   }
 }
 
@@ -55,7 +52,7 @@ trait GenericDao[T <: PersistentEntity] extends GenericDaoForComposite[T]{
    * @param id id of entity
    * @return entity
    */
-  def byId(id: Long) : T = {
-    em.find(getEntityClass, id)
+  def byId(id: Long) : Option[T] = {
+    Option(em.find(entityClass, id))
   }
 }

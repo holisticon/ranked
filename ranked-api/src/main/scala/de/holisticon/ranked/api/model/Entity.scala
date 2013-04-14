@@ -98,7 +98,7 @@ case class RankingId(
   new NamedQuery(name = "Player.byName", query = "select p from Player p where p.name = :name")
 ))
 case class Player(
-                   @BeanProperty @(JsonProperty@field)("name") @(Column@field)(name = "NAME") name: String,
+                   @BeanProperty @(JsonProperty@field)("name") @(Column@field)(name = "NAME",unique = true) name: String,
                    @BeanProperty @(ManyToMany@field) @(JoinTable@field)(name = "PLAYER_IN_TEAM", joinColumns = Array(new JoinColumn(name = "PLAYER_ID")), inverseJoinColumns = Array(new JoinColumn(name = "TEAM_ID"))) teams: java.util.Set[Team] = Collections.emptySet(),
                    @BeanProperty @(OneToMany@field)(cascade = Array(CascadeType.REMOVE), fetch = FetchType.EAGER, mappedBy = "player") rankings: java.util.Set[Ranking] = Collections.emptySet()) extends PersistentEntity {
 

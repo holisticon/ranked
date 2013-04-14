@@ -23,8 +23,12 @@ trait PlayerResource {
   def getPlayers: List[Player]
 
   @GET
-  @Path("player/{id}")
-  def getPlayer(@PathParam("id") id:Long)
+  @Path("player/{id : \\d+}")
+  def getPlayer(@PathParam("id") id:Long):Option[Player]
+
+  @GET
+  @Path("player/{name : \\D.+}")
+  def getPlayerByName(@PathParam("name") name:String):Option[Player]
 
 }
 

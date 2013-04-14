@@ -16,33 +16,15 @@ import javax.ejb.{LocalBean, Stateless}
  */
 @Stateless
 @LocalBean
-class DisciplineDao extends GenericDao[Discipline] {
-  /**
-   * Provides entity class name
-   * @return entity class
-   */
-  def getEntityClass: Class[Discipline] = classOf[Discipline]
-}
+class DisciplineDao extends GenericDao[Discipline]
 
 @Stateless
 @LocalBean
-class RankingDao extends GenericDaoForComposite[Ranking] {
-  /**
-   * Provides entity class name
-   * @return entity class
-   */
-  def getEntityClass: Class[Ranking] = classOf[Ranking]
-}
+class RankingDao extends GenericDaoForComposite[Ranking]
 
 @Stateless
 @LocalBean
-class MatchDao extends GenericDao[Match] {
-  /**
-   * Provides entity class name
-   * @return entity class
-   */
-  def getEntityClass: Class[Match] = classOf[Match]
-}
+class MatchDao extends GenericDao[Match]
 
 /**
  * Provides basic DAO functionality for accessing player.
@@ -51,15 +33,9 @@ class MatchDao extends GenericDao[Match] {
 @LocalBean
 class PlayerDao extends GenericDao[Player] {
 
-  def byName(name: String) : List[Player] = {
-    em.createNamedQuery("Player.byName").setParameter("name",name).getResultList.asInstanceOf[JavaList[Player]].asScala.toList
+  def byName(name: String) : Option[Player] = {
+    em.createNamedQuery("Player.byName").setParameter("name",name).getResultList.asInstanceOf[JavaList[Player]].asScala.headOption
   }
-
-  /**
-   * Provides entity class name
-   * @return entity class
-   */
-  def getEntityClass: Class[Player] = classOf[Player]
 }
 
 /**
@@ -67,13 +43,7 @@ class PlayerDao extends GenericDao[Player] {
  */
 @Stateless
 @LocalBean
-class RoleDao extends GenericDao[Role] {
-  /**
-   * Provides entity class name
-   * @return entity class
-   */
-  def getEntityClass: Class[Role] = classOf[Role]
-}
+class RoleDao extends GenericDao[Role]
 
 
 /**
@@ -87,11 +57,6 @@ class TeamDao extends GenericDao[Team] {
     em.createNamedQuery("Team.byName").getResultList.asInstanceOf[List[Team]]
   }
 
-  /**
-   * Provides entity class name
-   * @return entity class
-   */
-  def getEntityClass: Class[Team] = classOf[Team]
 }
 
 /**
@@ -99,10 +64,4 @@ class TeamDao extends GenericDao[Team] {
  */
 @Stateless
 @LocalBean
-class TournamentDao extends GenericDao[Tournament] {
-  /**
-   * Provides entity class name
-   * @return entity class
-   */
-  def getEntityClass: Class[Tournament] = classOf[Tournament]
-}
+class TournamentDao extends GenericDao[Tournament]
