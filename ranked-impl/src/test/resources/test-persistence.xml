@@ -11,6 +11,7 @@
       <property name="hibernate.show_sql" value="true"/>
     </properties>
 
+    <class>de.holisticon.ranked.api.model.Versioned</class>
     <class>de.holisticon.ranked.api.model.PersistentEntity</class>
     <class>de.holisticon.ranked.api.model.Player</class>
     <class>de.holisticon.ranked.api.model.Team</class>
@@ -20,5 +21,9 @@
     <class>de.holisticon.ranked.api.model.Match</class>
     <class>de.holisticon.ranked.api.model.Ranking</class>
     <class>de.holisticon.ranked.api.model.RankingId</class>
+    <class>de.holisticon.ranked.api.model.Participation</class>
+    <class>de.holisticon.ranked.api.model.ParticipationId</class>
+    <class>de.holisticon.ranked.api.model.PlayerResult</class>
+    <class>de.holisticon.ranked.api.model.PlayerResultId</class>
   </persistence-unit>
 </persistence>
