@@ -16,7 +16,11 @@ import javax.ejb.{LocalBean, Stateless}
  */
 @Stateless
 @LocalBean
-class DisciplineDao extends GenericDao[Discipline]
+class DisciplineDao extends GenericDao[Discipline] {
+  def byName(name: String) : Option[Discipline] = {
+    em.createNamedQuery("Discipline.byName").setParameter("name",name).getResultList.asInstanceOf[JavaList[Discipline]].asScala.headOption
+  }
+}
 
 @Stateless
 @LocalBean
@@ -54,7 +58,7 @@ class RoleDao extends GenericDao[Role]
 class TeamDao extends GenericDao[Team] {
 
   def byName(name: String) : List[Team] = {
-    em.createNamedQuery("Team.byName").getResultList.asInstanceOf[List[Team]]
+    em.createNamedQuery("Team.byName").setParameter("name",name).getResultList.asInstanceOf[JavaList[Team]].asScala.toList
   }
 
 }
@@ -64,4 +68,10 @@ class TeamDao extends GenericDao[Team] {
  */
 @Stateless
 @LocalBean
-class TournamentDao extends GenericDao[Tournament]
+class TournamentDao extends GenericDao[Tournament] {
+
+  def byName(name: String) : List[Tournament] = {
+    em.createNamedQuery("Tournament.byName").setParameter("name",name).getResultList.asInstanceOf[JavaList[Tournament]].asScala.toList
+  }
+
+}

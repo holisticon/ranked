@@ -11,7 +11,7 @@
       <property name="hibernate.show_sql" value="true"/>
     </properties>
 
-
+    <class>de.holisticon.ranked.api.model.Versioned</class>
     <class>de.holisticon.ranked.api.model.PersistentEntity</class>
     <class>de.holisticon.ranked.api.model.Player</class>
     <class>de.holisticon.ranked.api.model.Team</class>

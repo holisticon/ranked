@@ -29,6 +29,8 @@ abstract class GenericDaoForComposite[T : Manifest] {
     return payload
   }
 
+  def delete(payload:T) : Unit  = em.remove(payload)
+
   def create(payload:Seq[T]):Seq[T] = payload.map(create)
 
 
