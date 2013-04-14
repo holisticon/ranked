@@ -42,7 +42,8 @@ case class Discipline(
                        @BeanProperty @(Column@field)(name = "ROUNDS", nullable = false) numberOfRounds: Int,
                        @BeanProperty @(OneToMany@field)(cascade = Array(CascadeType.REMOVE), fetch = FetchType.LAZY, mappedBy = "discipline") shops: java.util.Set[Role] = Collections.emptySet(),
                        @BeanProperty @(OneToMany@field)(cascade = Array(CascadeType.REMOVE), fetch = FetchType.LAZY, mappedBy = "discipline") matches: java.util.Set[Match] = Collections.emptySet(),
-                       @BeanProperty @(OneToMany@field)(cascade = Array(CascadeType.REMOVE), fetch = FetchType.LAZY, mappedBy = "discipline") rankings: java.util.Set[Ranking] = Collections.emptySet()) extends PersistentEntity {
+                       @BeanProperty @(OneToMany@field)(cascade = Array(CascadeType.REMOVE), fetch = FetchType.LAZY, mappedBy = "discipline") rankings: java.util.Set[Ranking] = Collections.emptySet()
+                     ) extends PersistentEntity {
   private def this() = this(null, -1, -1)
 
 }
@@ -57,7 +58,7 @@ case class Match(
                   @BeanProperty @(Column@field)(name = "DESCRIPTION") description: String,
                   @BeanProperty @(ManyToOne@field) @(JoinColumn@field)(name = "DISCIPLINE_ID", nullable = false) discipline: Discipline,
                   @BeanProperty @(ManyToOne@field) @(JoinColumn@field)(name = "TOURNAMENT_ID", nullable = false) tournament: Tournament,
-                  @BeanProperty @(OneToMany@field)(cascade = Array(CascadeType.REMOVE), fetch = FetchType.LAZY, mappedBy = "matchRef") playerResults: java.util.Set[Participation] = Collections.emptySet()
+                  @BeanProperty @(OneToMany@field)(cascade = Array(CascadeType.REMOVE), fetch = FetchType.LAZY, mappedBy = "matchRef") participations: java.util.Set[Participation] = Collections.emptySet()
                   ) extends PersistentEntity {
 
   private def this() = this(null, null, null, null)
@@ -72,16 +73,16 @@ case class Match(
  */
 @Entity
 @Table(name = "PARTICIPATION")
-/*@AssociationOverrides(Array(
+@AssociationOverrides(Array(
   new AssociationOverride(name = "id.player", joinColumns = Array(new JoinColumn(name = "PLAYER_ID"))),
   new AssociationOverride(name = "id.matchRef", joinColumns = Array(new JoinColumn(name = "MATCH_ID")))
-))*/
+))
 case class Participation (
                     @BeanProperty @(EmbeddedId@field)id: RankingId,
                     @BeanProperty @(Column@field)(name = "ELO_CHANGE") eloChange: Int,
                     @BeanProperty @(ManyToOne@field) @(JoinColumn@field)(name = "PLAYER_ID", insertable = false, updatable = false) player: Player = null,
-                    @BeanProperty @(ManyToOne@field) @(JoinColumn@field)(name = "MATCH_ID", insertable = false, updatable = false) matchRef: Match = null
-  //                  @BeanProperty @(OneToMany@field)(cascade = Array(CascadeType.REMOVE), fetch = FetchType.LAZY, mappedBy = "participation") playerResults: java.util.Set[PlayerResult] = Collections.emptySet()
+                    @BeanProperty @(ManyToOne@field) @(JoinColumn@field)(name = "MATCH_ID", insertable = false, updatable = false) matchRef: Match = null,
+                    @BeanProperty @(OneToMany@field)(cascade = Array(CascadeType.REMOVE), fetch = FetchType.LAZY, mappedBy = "participation") playerResults: java.util.Set[PlayerResult] = Collections.emptySet()
                     ) extends Versioned {
   private def this() = this(null, 0)
 
@@ -131,10 +132,10 @@ case class Player(
 @Entity
 @Table(name = "PLAYER_RESULT")
 @AssociationOverrides(Array(
-/*  new AssociationOverride(name = "id.participation", joinColumns = Array(
-    new JoinColumn(name = "PLAYER_ID", insertable = false, updatable = false, referencedColumnName = "id.player", nullable = false),
-    new JoinColumn(name = "MATCH_ID", insertable = false, updatable = false, referencedColumnName = "id.matchRef", nullable = false)
-  )),*/
+  new AssociationOverride(name = "id.participation", joinColumns = Array(
+    new JoinColumn(name = "PLAYER_ID", insertable = false, updatable = false, referencedColumnName = "PLAYER_ID", nullable = false),
+    new JoinColumn(name = "MATCH_ID", insertable = false, updatable = false, referencedColumnName = "MATCH_ID", nullable = false)
+  )),
   new AssociationOverride(name = "id.team", joinColumns = Array(new JoinColumn(name = "TEAM_ID")))
 ))
 case class PlayerResult (
@@ -142,12 +143,10 @@ case class PlayerResult (
                     @BeanProperty @(Column@field)(name = "ROUND") round: Int,
                     @BeanProperty @(Column@field)(name = "SCORE") score: BigDecimal,
                     @BeanProperty @(ManyToOne@field) @(JoinColumn@field)(name = "ROLE_ID") role: Role,
-/*
                     @BeanProperty @(ManyToOne@field) @(JoinColumns@field)(Array(
-                      new JoinColumn(name = "PLAYER_ID", insertable = false, updatable = false, referencedColumnName = "player", nullable = false),
-                      new JoinColumn(name = "MATCH_ID", insertable = false, updatable = false, referencedColumnName = "matchRef", nullable = false)
+                      new JoinColumn(name = "PLAYER_ID", insertable = false, updatable = false, referencedColumnName = "PLAYER_ID", nullable = false),
+                      new JoinColumn(name = "MATCH_ID", insertable = false, updatable = false, referencedColumnName = "MATCH_ID", nullable = false)
                     )) participation: Participation = null,
-*/
                     @BeanProperty @(ManyToOne@field) @(JoinColumn@field)(name = "TEAM_ID", insertable = false, updatable = false) team: Team = null
                     ) extends Versioned {
   private def this() = this(null, 0, null, null)
@@ -214,7 +213,8 @@ case class RankingId(
 case class Role(
                  @BeanProperty @(Column@field)(name = "NAME") name: String,
                  @BeanProperty @(ManyToOne@field) @(JoinColumn@field)(name = "DISCIPLINE_ID", nullable = false) discipline: Discipline,
-                 @BeanProperty @(OneToMany@field)(cascade = Array(CascadeType.REMOVE), fetch = FetchType.LAZY, mappedBy = "role") matches: java.util.Set[PlayerResult] = Collections.emptySet()) extends PersistentEntity {
+                 @BeanProperty @(OneToMany@field)(cascade = Array(CascadeType.REMOVE), fetch = FetchType.LAZY, mappedBy = "role") matches: java.util.Set[PlayerResult] = Collections.emptySet()
+                 ) extends PersistentEntity {
   private def this() = this(null, null)
 }
 
