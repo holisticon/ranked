@@ -4,7 +4,7 @@
 
   <defaultProtocol type="Servlet 3.0"/>
 
-  <container qualifier="jbossas71" default="true">
+  <container qualifier="jbossas7" default="true">
     <configuration>
       <property name="username">${env.JBOSS_USERNAME}</property>
       <property name="password">${env.JBOSS_PASSWORD}</property>
