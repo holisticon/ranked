@@ -17,6 +17,8 @@ import de.holisticon.ranked.api.model.Ranking
 import de.holisticon.ranked.api.model.RankingId
 import de.holisticon.ranked.api.model.Discipline
 import de.holisticon.ranked.api.model.Tournament
+import javax.annotation.Resource
+import org.slf4j.LoggerFactory
 
 @Local
 @Path("/")
@@ -29,6 +31,11 @@ trait ResourceFacade extends PlayerResource with DisciplineResource with Tournam
  */
 @Stateless(name = "de.holisticon.ranked.ResourceFacade")
 class ResourceFacadeImpl extends ResourceFacade {
+
+  val LOG = LoggerFactory.getLogger(classOf[ResourceFacadeImpl])
+
+  @Resource
+  private var ejbContext:EJBContext = _
 
   @EJB
   private var initialEloProvider: InitialEloProvider = _
@@ -77,35 +84,28 @@ class ResourceFacadeImpl extends ResourceFacade {
   override def getTournaments: List[Tournament] = tournamentDao.all()
 
 
-  private def prefetchTournament(tournament:Tournament) {
-    tournament.matches.size
-  }
-
   override def getTournament(id: Long): Option[Tournament] = {
     val tournament = tournamentDao.byId(id)
-    tournament map prefetchTournament
     return tournament
   }
 
   override def getTournamentByName(name: String): List[Tournament] = {
     val tournament = tournamentDao.byName(name)
-    tournament map prefetchTournament
     return tournament
   }
 
 
   override def createTournament(disciplineId:Long, name: String, start: Long, end: Long) = {
+    LOG.info("Fetching discipline with id {}", disciplineId)
     val discipline = disciplineDao.byId(disciplineId)
+    LOG.info("Fetched discipline {}", discipline)
     val startDate = new Date(start)
     val endDate = new Date(end)
     tournamentDao.create(Tournament(discipline.get,name,startDate,endDate))
   }
 
   def getDisciplineById(id: Long): Option[Discipline] = disciplineDao.byId(id)
-
   def getDisciplineByName(name: String): Option[Discipline] = disciplineDao.byName(name)
-
-
   def deletePlayer(id: Long) = playerDao.byId(id).map(playerDao.delete(_))
 }
 
