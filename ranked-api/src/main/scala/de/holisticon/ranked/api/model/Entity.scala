@@ -44,7 +44,7 @@ case class Discipline(
                        @BeanProperty @(OneToMany@field)(cascade = Array(CascadeType.REMOVE), fetch = FetchType.LAZY, mappedBy = "discipline") matches: java.util.Set[Match] = Collections.emptySet(),
                        @BeanProperty @(OneToMany@field)(cascade = Array(CascadeType.REMOVE), fetch = FetchType.LAZY, mappedBy = "discipline") rankings: java.util.Set[Ranking] = Collections.emptySet()
                      ) extends PersistentEntity {
-  private def this() = this(null, -1, -1)
+  protected def this() = this(null, -1, -1)
 
 }
 
@@ -61,7 +61,7 @@ case class Match(
                   @BeanProperty @(OneToMany@field)(cascade = Array(CascadeType.REMOVE), fetch = FetchType.LAZY, mappedBy = "matchRef") participations: java.util.Set[Participation] = Collections.emptySet()
                   ) extends PersistentEntity {
 
-  private def this() = this(null, null, null, null)
+  protected def this() = this(null, null, null, null)
 }
 
 /**
@@ -84,7 +84,7 @@ case class Participation (
                     @BeanProperty @(ManyToOne@field) @(JoinColumn@field)(name = "MATCH_ID", insertable = false, updatable = false) matchRef: Match = null,
                     @BeanProperty @(OneToMany@field)(cascade = Array(CascadeType.REMOVE), fetch = FetchType.LAZY, mappedBy = "participation") playerResults: java.util.Set[PlayerResult] = Collections.emptySet()
                     ) extends Versioned {
-  private def this() = this(null, 0)
+  protected def this() = this(null, 0)
 
 }
 
@@ -97,7 +97,7 @@ case class Participation (
 case class ParticipationId(
                       @BeanProperty @(ManyToOne@field)(optional = false) player: Player,
                       @BeanProperty @(ManyToOne@field)(optional = false) matchRef: Match) extends Serializable {
-  private def this() = this(null, null)
+  protected def this() = this(null, null)
 }
 
 
@@ -118,7 +118,7 @@ case class Player(
                    @BeanProperty @(OneToMany@field)(cascade = Array(CascadeType.REMOVE), mappedBy = "player") rankings: java.util.Set[Ranking] = Collections.emptySet()
                    ) extends PersistentEntity {
 
-  private def this() = this(null, null, null)
+  protected def this() = this(null, null, null)
 }
 
 /**
@@ -149,7 +149,7 @@ case class PlayerResult (
                     )) participation: Participation = null,
                     @BeanProperty @(ManyToOne@field) @(JoinColumn@field)(name = "TEAM_ID", insertable = false, updatable = false) team: Team = null
                     ) extends Versioned {
-  private def this() = this(null, 0, null, null)
+  protected def this() = this(null, 0, null, null)
 
 }
 
@@ -162,7 +162,7 @@ case class PlayerResult (
 case class PlayerResultId(
                            @BeanProperty @(ManyToOne@field)(optional = false) participation: Participation,
                            @BeanProperty @(ManyToOne@field)(optional = false) team: Team) extends Serializable {
-  private def this() = this(null, null)
+  protected def this() = this(null, null)
 }
 
 /**
@@ -186,7 +186,7 @@ case class Ranking(
                     @BeanProperty @(ManyToOne@field) @(JoinColumn@field)(name = "DISCIPLINE_ID", insertable = false, updatable = false) discipline: Discipline = null,
                     @BeanProperty @(ManyToOne@field) @(JoinColumn@field)(name = "PLAYER_ID", insertable = false, updatable = false) player: Player = null
                     ) extends Versioned {
-  private def this() = this(null, 0, 0)
+  protected def this() = this(null, 0, 0)
 
 }
 
@@ -199,7 +199,7 @@ case class Ranking(
 case class RankingId(
                       @BeanProperty @(ManyToOne@field)(optional = false) player: Player,
                       @BeanProperty @(ManyToOne@field)(optional = false) discipline: Discipline) extends Serializable {
-  private def this() = this(null, null)
+  protected def this() = this(null, null)
 }
 
 /**
@@ -215,7 +215,7 @@ case class Role(
                  @BeanProperty @(ManyToOne@field) @(JoinColumn@field)(name = "DISCIPLINE_ID", nullable = false) discipline: Discipline,
                  @BeanProperty @(OneToMany@field)(cascade = Array(CascadeType.REMOVE), fetch = FetchType.LAZY, mappedBy = "role") matches: java.util.Set[PlayerResult] = Collections.emptySet()
                  ) extends PersistentEntity {
-  private def this() = this(null, null)
+  protected def this() = this(null, null)
 }
 
 
@@ -234,7 +234,7 @@ case class Team(
                  @BeanProperty @(OneToMany@field)(cascade = Array(CascadeType.REMOVE), fetch = FetchType.LAZY, mappedBy = "team") playerResults: java.util.Set[PlayerResult] = Collections.emptySet()
                  ) extends PersistentEntity {
 
-  private def this() = this(null, null)
+  protected def this() = this(null, null)
 }
 
 /**
@@ -252,5 +252,5 @@ case class Tournament(
                        @BeanProperty @(Column@field)(name = "END", nullable = false) @(Temporal@field)(TemporalType.TIMESTAMP) end: Date,
                        @BeanProperty @(OneToMany@field)(cascade = Array(CascadeType.REMOVE), fetch = FetchType.LAZY, mappedBy = "tournament") matches: java.util.Set[Match] = Collections.emptySet()) extends PersistentEntity {
 
-  private def this() = this(null, null, null, null)
+  protected def this() = this(null, null, null, null)
 }
