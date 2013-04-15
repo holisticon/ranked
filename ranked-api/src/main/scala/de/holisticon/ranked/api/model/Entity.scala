@@ -246,7 +246,7 @@ case class Team(
   new NamedQuery(name = "Tournament.all", query = "select t from Tournament t")
 ))
 case class Tournament(
-                       @BeanProperty @(Column@field)(name = "DISCIPLINE", nullable = false) discipline: Discipline,
+                       @BeanProperty @(ManyToOne@field)(optional=false, fetch=FetchType.LAZY) discipline: Discipline,
                        @BeanProperty @(Column@field)(name = "NAME", nullable = false) name: String,
                        @BeanProperty @(Column@field)(name = "START", nullable = false) @(Temporal@field)(TemporalType.TIMESTAMP) start: Date,
                        @BeanProperty @(Column@field)(name = "END", nullable = false) @(Temporal@field)(TemporalType.TIMESTAMP) end: Date,
