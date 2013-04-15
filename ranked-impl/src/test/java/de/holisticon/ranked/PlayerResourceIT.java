@@ -30,7 +30,7 @@ public class PlayerResourceIT {
 
     @Deployment
     public static JavaArchive createDeployment() {
-        final JavaArchive archive = ShrinkWrap.create(JavaArchive.class)
+        return ShrinkWrap.create(JavaArchive.class)
                 .addPackages(
                         true,
                         "junit",
@@ -44,10 +44,7 @@ public class PlayerResourceIT {
                 .addAsManifestResource("test-persistence.xml", "persistence.xml")
                 .addAsResource("arquillian-ds.xml")
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
-        System.out.println(archive.toString());
-        System.out.println(archive.getContent());
 
-        return archive;
     }
 
     @EJB
