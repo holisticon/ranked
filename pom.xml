@@ -66,6 +66,12 @@
         <scope>provided</scope>
       </dependency>
       <dependency>
+        <groupId>org.scala-lang</groupId>
+        <artifactId>scala-reflect</artifactId>
+        <version>${scala.version}</version>
+        <scope>provided</scope>
+      </dependency>
+      <dependency>
         <groupId>org.jboss.spec</groupId>
         <artifactId>jboss-javaee-6.0</artifactId>
         <version>1.0.0.Final</version>

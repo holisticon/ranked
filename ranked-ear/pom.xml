@@ -39,11 +39,13 @@
             <ejbModule>
               <groupId>de.holisticon.ranked</groupId>
               <artifactId>ranked-impl</artifactId>
+              <bundleFileName>ranked-impl.jar</bundleFileName>
             </ejbModule>
             <webModule>
               <groupId>de.holisticon.ranked</groupId>
               <artifactId>ranked-webapp</artifactId>
               <contextRoot>/ranked</contextRoot>
+              <bundleFileName>ranked-webapp.war</bundleFileName>
             </webModule>
           </modules>
         </configuration>
