@@ -96,9 +96,7 @@ class ResourceFacadeImpl extends ResourceFacade {
 
 
   override def createTournament(disciplineId:Long, name: String, start: Long, end: Long) = {
-    LOG.info("Fetching discipline with id {}", disciplineId)
     val discipline = disciplineDao.byId(disciplineId)
-    LOG.info("Fetched discipline {}", discipline)
     val startDate = new Date(start)
     val endDate = new Date(end)
     tournamentDao.create(Tournament(discipline.get,name,startDate,endDate))
