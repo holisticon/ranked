@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns="http://java.sun.com/xml/ns/j2ee"
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
          version="3.0">
@@ -7,7 +7,11 @@
   <!-- this tells RESTEasy to load resource classes -->
   <context-param>
     <param-name>resteasy.jndi.resources</param-name>
-    <param-value>java:app/ranked-impl/de.holisticon.ranked.ResourceFacade</param-value>
+    <param-value>
+      java:app/ranked-impl/de.holisticon.ranked.api.DisciplineResource,
+      java:app/ranked-impl/de.holisticon.ranked.api.PlayerResource,
+      java:app/ranked-impl/de.holisticon.ranked.api.TournamentResource
+    </param-value>
   </context-param>
   <context-param>
     <param-name>resteasy.providers</param-name>
@@ -17,9 +21,6 @@
     <param-name>resteasy.use.builtin.providers</param-name>
     <param-value>false</param-value>
   </context-param>
-  <listener>
-    <listener-class>org.jboss.resteasy.plugins.server.servlet.ResteasyBootstrap</listener-class>
-  </listener>
 
   <filter>
     <filter-name>CORS</filter-name>

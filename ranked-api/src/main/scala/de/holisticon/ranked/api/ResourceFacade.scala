@@ -11,74 +11,69 @@ import java.util.Date
  * Player resource.
  * @author Daniel Wegener (Holisticon AG)
  */
-
+@Produces(Array(MediaType.APPLICATION_JSON))
+@Path("/player")
 trait PlayerResource {
 
   @POST
-  @Path("player")
   def createPlayer(@QueryParam("name") name: String)
 
   @GET
-  @Path("player")
   def getPlayers: List[Player]
 
   @GET
-  @Path("player/{id : \\d+}")
+  @Path("/{id : \\d+}")
   def getPlayer(@PathParam("id") id:Long):Option[Player]
 
   @GET
-  @Path("player/{name : \\D.+}")
+  @Path("/{name : \\D.+}")
   def getPlayerByName(@PathParam("name") name:String):Option[Player]
 
   @DELETE
-  @Path("player/{id : \\d+}")
+  @Path("/{id : \\d+}")
   def deletePlayer(@PathParam("id") id:Long):Unit
 
 }
 
+@Produces(Array(MediaType.APPLICATION_JSON))
+@Path("/tournament")
 trait TournamentResource {
 
   @GET
-  @Path("tournament")
   def getTournaments: List[Tournament]
 
   @POST
-  @Path("tournament")
   def createTournament(@QueryParam("disciplineId") disciplineId: Long,
                        @QueryParam("name") name: String,
                        @QueryParam("start") start: Long,
                        @QueryParam("start") end: Long)
 
   @GET
-  @Path("tournament/{id : \\d+}")
+  @Path("/{id : \\d+}")
   def getTournament(@PathParam("id") id:Long):Option[Tournament]
 
   @GET
-  @Path("tournament/{name : \\D.+}")
+  @Path("/{name : \\D.+}")
   def getTournamentByName(@PathParam("name") name:String):List[Tournament]
-
-
-
 
 }
 
-
+@Produces(Array(MediaType.APPLICATION_JSON))
+@Path("/discipline")
 trait DisciplineResource {
 
   @GET
-  @Path("discipline")
   def getDisciplines(): List[Discipline]
 
   @POST
-  @Path("discipline")
   def createDiscipline(@QueryParam("name") name: String, @QueryParam("teamCount") teamCount:Int, @QueryParam("roundCount") roundCount:Int)
 
   @GET
-  @Path("discipline/{id : \\d+}")
+  @Path("/{id : \\d+}")
   def getDisciplineById(@PathParam("id") id:Long):Option[Discipline]
 
   @GET
-  @Path("discipline/{name : \\D.+}")
+  @Path("/{name : \\D.+}")
   def getDisciplineByName(@PathParam("name") name:String):Option[Discipline]
 
 }

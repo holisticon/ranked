@@ -24,9 +24,9 @@
 
             <div class="nav-collapse collapse">
                 <ul class="nav">
-                    <li class="active"><a href="#/player">Players</a></li>
-                    <li><a href="#/tournament">Tournaments</a></li>
-                    <li><a href="#/discipline">Disciplines</a></li>
+                    <li ng-class="{ active: activePath=='/player' }"><a href="#/player">Players</a></li>
+                    <li ng-class="{ active: activePath=='/tournament' }"><a href="#/tournament">Tournaments</a></li>
+                    <li ng-class="{ active: activePath=='/discipline' }"><a href="#/discipline">Disciplines</a></li>
                 </ul>
             </div>
             <!--/.nav-collapse -->

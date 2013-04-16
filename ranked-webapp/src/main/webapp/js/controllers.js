@@ -6,6 +6,12 @@ function PlayerController($scope, $http) {
     });
 }
 
+function PlayerDetailsController($scope, $http) {
+    $http.get(serverBasePath + '/player/').success(function (data) {
+        $scope.player = data;
+    });
+}
+
 function TournamentController($scope, $http) {
     $http.get(serverBasePath + '/tournament').success(function (data) {
         $scope.tournaments = data;

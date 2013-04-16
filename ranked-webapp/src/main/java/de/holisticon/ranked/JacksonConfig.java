@@ -28,7 +28,8 @@ public class JacksonConfig implements ContextResolver<ObjectMapper> {
         objectMapper.registerModule(new Hibernate4Module());
         objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         objectMapper.configure(SerializationFeature.WRAP_EXCEPTIONS, true);
-        objectMapper.writerWithDefaultPrettyPrinter();
+        objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
+
     }
 
     @Override
