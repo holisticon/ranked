@@ -1,17 +1,16 @@
 angular.module('rankedServices', ['ngResource']).
     factory('Player', function($resource){
-        return $resource('/ranked/player', {}, {
-            getAllPlayers: {method:'GET', isArray:true},
-            getPlayerById: {method:'GET', isArray:true}
+        return $resource('http://localhost\\:8080/ranked/player/:playerId', {}, {
+
         });
     }).
     factory('Tournament', function($resource){
-        return $resource('/ranked/tournament', {}, {
-            query: {method:'GET', params:{phoneId:'phones'}, isArray:true}
+        return $resource('http://localhost\\:8080/ranked/tournament', {}, {
+
         });
     }).
     factory('Discipline', function($resource){
-        return $resource('/ranked/discipline', {}, {
-            query: {method:'GET', params:{phoneId:'phones'}, isArray:true}
+        return $resource('http://localhost\\:8080/ranked/discipline', {}, {
+
         });
     });

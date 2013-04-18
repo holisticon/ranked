@@ -1,25 +1,21 @@
 var serverBasePath = '/ranked'
 
-function PlayerController($scope, $http) {
-    $http.get(serverBasePath + '/player').success(function (data) {
-        $scope.players = data;
-    });
+function PlayerController($scope, Player) {
+    $scope.players = Player.query();
 }
 
-function PlayerDetailsController($scope, $http) {
-    $http.get(serverBasePath + '/player/').success(function (data) {
-        $scope.player = data;
-    });
+function PlayerDetailsController($scope, Player) {
+
+    $scope.player = Player.get({playerId:1});
+
 }
 
-function TournamentController($scope, $http) {
-    $http.get(serverBasePath + '/tournament').success(function (data) {
-        $scope.tournaments = data;
-    });
+function TournamentController($scope, Tournament) {
+
+    $scope.tournaments = Tournament.query();
+
 }
 
-function DisciplineController($scope, $http) {
-    $http.get(serverBasePath + '/discipline').success(function (data) {
-        $scope.disciplines = data;
-    });
+function DisciplineController($scope, Discipline) {
+    $scope.disciplines = Discipline.query();
 }
