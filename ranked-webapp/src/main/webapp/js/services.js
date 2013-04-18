@@ -1,16 +1,16 @@
 angular.module('rankedServices', ['ngResource']).
     factory('Player', function($resource){
-        return $resource('http://localhost\\:8080/ranked/player/:playerId', {}, {
+        return $resource('/ranked/player/:playerId', {}, {
 
         });
     }).
     factory('Tournament', function($resource){
-        return $resource('http://localhost\\:8080/ranked/tournament', {}, {
+        return $resource('/ranked/tournament', {}, {
 
         });
     }).
     factory('Discipline', function($resource){
-        return $resource('http://localhost\\:8080/ranked/discipline', {}, {
+        return $resource('/ranked/discipline', {}, {
 
         });
     });
