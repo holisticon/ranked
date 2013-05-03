@@ -46,7 +46,7 @@ trait TournamentResource {
   def createTournament(@QueryParam("disciplineId") disciplineId: Long,
                        @QueryParam("name") name: String,
                        @QueryParam("start") start: Long,
-                       @QueryParam("start") end: Long)
+                       @QueryParam("end") end: Long)
 
   @GET
   @Path("/{id : \\d+}")
@@ -76,4 +76,12 @@ trait DisciplineResource {
   @Path("/{name : \\D.+}")
   def getDisciplineByName(@PathParam("name") name:String):Option[Discipline]
 
+}
+
+@Produces(Array(MediaType.APPLICATION_JSON))
+@Path("/match")
+trait MatchResource {
+
+  @POST
+  def createMatch(matchResult: MatchResult)
 }

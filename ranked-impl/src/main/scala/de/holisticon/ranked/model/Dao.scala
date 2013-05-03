@@ -24,11 +24,11 @@ class DisciplineDao extends GenericDao[Discipline] {
 
 @Stateless
 @LocalBean
-class RankingDao extends GenericDaoForComposite[Ranking]
+class MatchDao extends GenericDao[Match]
 
 @Stateless
 @LocalBean
-class MatchDao extends GenericDao[Match]
+class ParticipationDao extends GenericDaoForComposite[Participation]
 
 /**
  * Provides basic DAO functionality for accessing player.
@@ -42,12 +42,25 @@ class PlayerDao extends GenericDao[Player] {
   }
 }
 
+@Stateless
+@LocalBean
+class RankingDao extends GenericDaoForComposite[Ranking]
+
+@Stateless
+@LocalBean
+class PlayerResultDao extends GenericDaoForComposite[PlayerResult]
+
 /**
  * Provides basic DAO functionality for accessing role.
  */
 @Stateless
 @LocalBean
-class RoleDao extends GenericDao[Role]
+class RoleDao extends GenericDao[Role] {
+
+  def byDiscipline(discipline: Discipline) : Map[Long, Role] = {
+    em.createNamedQuery("Role.byDisciplineId").setParameter("disciplineId", discipline.getId).getResultList.asInstanceOf[JavaList[Role]].asScala.map(role => (role.getId(), role)).toMap
+  }
+}
 
 
 /**
@@ -61,6 +74,12 @@ class TeamDao extends GenericDao[Team] {
     em.createNamedQuery("Team.byName").setParameter("name",name).getResultList.asInstanceOf[JavaList[Team]].asScala.toList
   }
 
+  def byPlayerList(playerIds: List[Long]) : Team = {
+    /*
+     TODO: find an existing team by player ids or create a new one and return the reference.
+     */
+    em.createNamedQuery("Team.byPlayerIds").setParameter("playerIds", "").getSingleResult.asInstanceOf[Team]
+  }
 }
 
 /**

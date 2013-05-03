@@ -208,7 +208,8 @@ case class RankingId(
 @Entity
 @Table(name = "ROLE")
 @NamedQueries(Array(
-  new NamedQuery(name = "Role.all", query = "select r from Role r")
+  new NamedQuery(name = "Role.all", query = "select r from Role r"),
+  new NamedQuery(name = "Role.byDisciplineId", query = "select r from Role r where r.discipline.id = :id")
 ))
 case class Role(
                  @BeanProperty @(Column@field)(name = "NAME") name: String,
