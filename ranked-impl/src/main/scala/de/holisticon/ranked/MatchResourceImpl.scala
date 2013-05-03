@@ -80,7 +80,7 @@ class MatchResourceImpl extends MatchResource {
       round => round.teamResults.asScala.map(
         result => result.playerRoles.asScala.map(
           // create player results
-          role => PlayerResult(PlayerResultId(savedParticipations.get(role.playerId).get, teams.get(result.team).get), round = 1, result.score, roles.get(role.roleId).get)
+          role => PlayerResult(PlayerResultId(savedParticipations.get(role.playerId).get, teams.get(result.team).get), round.number, result.score, roles.get(role.roleId).get)
         ).map(
           // persist results
           result => playerResultDao.create(result)

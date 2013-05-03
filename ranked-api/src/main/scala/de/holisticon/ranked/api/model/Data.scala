@@ -26,9 +26,11 @@ case class MatchResult(@BeanProperty @(JsonProperty@field)disciplineId: Long,
 
 /**
  * Represents a round of the match.
+ * @param number round number
  * @param teamResults list of team results - one for every team.
  */
-case class Round(@BeanProperty @(JsonProperty@field)teamResults: java.util.List[TeamResult]) {
+case class Round(@BeanProperty @(JsonProperty@field)number: Int,
+                 @BeanProperty @(JsonProperty@field)teamResults: java.util.List[TeamResult]) {
 
 }
 

@@ -33,9 +33,9 @@ class SerializationTest() {
 
 
     val results: List[Round] = List(
-      new Round(List(team1Result1, team2Result1).asJava),
-      new Round(List(team1Result2, team2Result2).asJava),
-      new Round(List(team1Result3, team2Result3).asJava)
+      new Round(1, List(team1Result1, team2Result1).asJava),
+      new Round(2, List(team1Result2, team2Result2).asJava),
+      new Round(3, List(team1Result3, team2Result3).asJava)
     )
 
 
