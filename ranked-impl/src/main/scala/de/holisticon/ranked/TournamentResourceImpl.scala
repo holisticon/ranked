@@ -6,7 +6,7 @@ import de.holisticon.ranked.api.model._
 import de.holisticon.ranked.model.{TournamentDao, RankingDao, DisciplineDao, PlayerDao}
 import javax.ws.rs.{Consumes, Produces, Path, PathParam}
 import scala.Array
-import javax.ws.rs.core.MediaType
+import javax.ws.rs.core.{UriInfo, Context, MediaType}
 import de.holisticon.ranked.api.model.Player
 import de.holisticon.ranked.api.model.Ranking
 import de.holisticon.ranked.api.model.RankingId
@@ -36,21 +36,15 @@ class TournamentResourceImpl extends TournamentResource {
   @EJB
   private var tournamentDao:TournamentDao = _
 
-
+  @Context
+  private var uriInfo:UriInfo = _
 
 
   override def getTournaments: List[Tournament] = tournamentDao.all()
 
+  override def getTournament(id: Long): Option[Tournament] = tournamentDao.byId(id)
 
-  override def getTournament(id: Long): Option[Tournament] = {
-    val tournament = tournamentDao.byId(id)
-    return tournament
-  }
-
-  override def getTournamentByName(name: String): List[Tournament] = {
-    val tournament = tournamentDao.byName(name)
-    return tournament
-  }
+  override def getTournamentByName(name: String): Option[Tournament] = tournamentDao.byName(name)
 
 
   override def createTournament(disciplineId:Long, name: String, start: Long, end: Long) = {

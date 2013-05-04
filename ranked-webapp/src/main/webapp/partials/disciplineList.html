@@ -1,11 +1,13 @@
 <div class="container">
     <ul class="thumbnails">
-        <li class="span2" ng-repeat="discipline in disciplines">
+        <li class="span2" ng:repeat="discipline in disciplines">
             <a class="thumbnail"
                href="#/discipline/{{discipline.id}}">
 
                 <strong>{{discipline.name}}</strong><br/>
-                ID:{{discipline.id}}
+                ID:{{discipline.id}}<br />
+                teams:{{discipline.numberOfTeams}}<br />
+                rounds:{{discipline.numberOfRounds}}
 
                 <br/>
             </a>

@@ -4,6 +4,7 @@ import de.holisticon.ranked.api.DisciplineResource
 import javax.ejb.{Stateless, EJB}
 import de.holisticon.ranked.model.{RankingDao, PlayerDao, DisciplineDao}
 import de.holisticon.ranked.api.model.{RankingId, Ranking, Discipline}
+import javax.ws.rs.core.{UriInfo, Context}
 
 /**
  * @author Daniel
@@ -23,6 +24,9 @@ class DisciplineResourceImpl extends DisciplineResource {
   @EJB
   private var rankingDao: RankingDao = _
 
+  @Context
+  private var uriInfo:UriInfo = _
+
   override def createDiscipline(name: String, teamCount: Int, roundCount: Int) = {
     val discipline = disciplineDao.create(Discipline(name,teamCount,roundCount))
     val initialElo = initialEloProvider.provideInitialElo(discipline)
@@ -33,5 +37,5 @@ class DisciplineResourceImpl extends DisciplineResource {
   override def getDisciplineById(id: Long): Option[Discipline] = disciplineDao.byId(id)
   override def getDisciplineByName(name: String): Option[Discipline] = disciplineDao.byName(name)
 
-  override def getDisciplines: List[Discipline] =  disciplineDao.all
+  override def getDisciplines: List[Discipline] =  disciplineDao.all()
 }

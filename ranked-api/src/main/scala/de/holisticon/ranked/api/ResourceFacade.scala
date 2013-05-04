@@ -8,12 +8,27 @@ import de.holisticon.ranked.api.model.Discipline
 import java.util.Date
 
 /**
+ * Contract for REST-Resource interfaces
+ * <p>
+ * All @GET methods allow additional query parameters:
+ * </p>
+ * <dl>
+ *   <dt><code>expand</code></dt><dd>a comma-separated list of relations that should eagerly be fetched. May include nested relations separated with a dot (.)</dd>
+ *   <dt><code>start-index</code></dt><dd>a positive integer value for pagination. Defaults to <code>0</code>.</dd>
+ *   <dt><code>max-results</code></dt><dd>a positive integer value for pagination. Defaults to <code>Integer.MAX_VALUE</code>.</dd>
+ * </dl>
+ */
+trait RankedResource {
+
+}
+
+/**
  * Player resource.
  * @author Daniel Wegener (Holisticon AG)
  */
 @Produces(Array(MediaType.APPLICATION_JSON))
 @Path("/player")
-trait PlayerResource {
+trait PlayerResource extends RankedResource {
 
   @POST
   def createPlayer(@QueryParam("name") name: String)
@@ -37,7 +52,7 @@ trait PlayerResource {
 
 @Produces(Array(MediaType.APPLICATION_JSON))
 @Path("/tournament")
-trait TournamentResource {
+trait TournamentResource extends RankedResource {
 
   @GET
   def getTournaments: List[Tournament]
@@ -54,13 +69,13 @@ trait TournamentResource {
 
   @GET
   @Path("/{name : \\D.+}")
-  def getTournamentByName(@PathParam("name") name:String):List[Tournament]
+  def getTournamentByName(@PathParam("name") name:String):Option[Tournament]
 
 }
 
 @Produces(Array(MediaType.APPLICATION_JSON))
 @Path("/discipline")
-trait DisciplineResource {
+trait DisciplineResource extends RankedResource {
 
   @GET
   def getDisciplines(): List[Discipline]

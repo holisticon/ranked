@@ -16,11 +16,7 @@ import javax.ejb.{LocalBean, Stateless}
  */
 @Stateless
 @LocalBean
-class DisciplineDao extends GenericDao[Discipline] {
-  def byName(name: String) : Option[Discipline] = {
-    em.createNamedQuery("Discipline.byName").setParameter("name",name).getResultList.asInstanceOf[JavaList[Discipline]].asScala.headOption
-  }
-}
+class DisciplineDao extends GenericDao[Discipline] with GenericDaoForNamed[Discipline]
 
 @Stateless
 @LocalBean
@@ -35,12 +31,7 @@ class MatchDao extends GenericDao[Match]
  */
 @Stateless
 @LocalBean
-class PlayerDao extends GenericDao[Player] {
-
-  def byName(name: String) : Option[Player] = {
-    em.createNamedQuery("Player.byName").setParameter("name",name).getResultList.asInstanceOf[JavaList[Player]].asScala.headOption
-  }
-}
+class PlayerDao extends GenericDao[Player] with GenericDaoForNamed[Player]
 
 /**
  * Provides basic DAO functionality for accessing role.
@@ -55,23 +46,13 @@ class RoleDao extends GenericDao[Role]
  */
 @Stateless
 @LocalBean
-class TeamDao extends GenericDao[Team] {
+class TeamDao extends GenericDao[Team] with GenericDaoForNamed[Team]
 
-  def byName(name: String) : List[Team] = {
-    em.createNamedQuery("Team.byName").setParameter("name",name).getResultList.asInstanceOf[JavaList[Team]].asScala.toList
-  }
-
-}
 
 /**
  * Provides basic DAO functionality for accessing tournament resource.
  */
 @Stateless
 @LocalBean
-class TournamentDao extends GenericDao[Tournament] {
+class TournamentDao extends GenericDao[Tournament] with GenericDaoForNamed[Tournament]
 
-  def byName(name: String) : List[Tournament] = {
-    em.createNamedQuery("Tournament.byName").setParameter("name",name).getResultList.asInstanceOf[JavaList[Tournament]].asScala.toList
-  }
-
-}

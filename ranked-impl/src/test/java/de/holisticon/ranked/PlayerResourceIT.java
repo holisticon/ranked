@@ -2,9 +2,7 @@ package de.holisticon.ranked;
 
 import de.holisticon.ranked.api.model.*;
 import de.holisticon.ranked.model.GenericDao;
-import de.holisticon.ranked.model.GenericDaoForComposite;
 import de.holisticon.ranked.model.PlayerDao;
-import org.hamcrest.CoreMatchers;
 import org.hamcrest.MatcherAssert;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -14,6 +12,7 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import scala.Option;
+import scala.collection.immutable.Nil$;
 
 import javax.ejb.EJB;
 
@@ -54,7 +53,7 @@ public class PlayerResourceIT {
     @Test
     public void testCreateAndFindPlayer() {
         resource.create(new Player("name", Collections.<Team>emptySet(), Collections.<Participation>emptySet(), Collections.<Ranking>emptySet()));
-        final Option<Player> foundPlayer = resource.byName("name");
+        final Option<Player> foundPlayer = (Option<Player>)resource.byName("name", null);
         MatcherAssert.assertThat(foundPlayer, notNullValue());
         MatcherAssert.assertThat(foundPlayer.get().getName(), equalTo("name"));
     }

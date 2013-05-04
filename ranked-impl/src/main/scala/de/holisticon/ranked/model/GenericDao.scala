@@ -3,7 +3,10 @@ package de.holisticon.ranked.model
 import javax.persistence.{EntityManager, PersistenceContext}
 import scala.Predef._
 import scala.collection.JavaConverters._
-import de.holisticon.ranked.api.model.PersistentEntity
+import de.holisticon.ranked.api.model.{Player, NamedEntity, PersistentEntity}
+import javax.persistence.criteria.{Root, JoinType, FetchParent, CriteriaBuilder}
+import java.util.{List => JavaList}
+import scala.List
 
 abstract class GenericDaoForComposite[T : Manifest] {
   @PersistenceContext
@@ -15,8 +18,12 @@ abstract class GenericDaoForComposite[T : Manifest] {
    * Finder to get all entities of a type
    * @return list of entities
    */
-  def all() : List[T] = {
-    em.createNamedQuery(getAllFinderName).getResultList.asInstanceOf[java.util.List[T]].asScala.toList
+  def all(startIndex:Int = 0, maxResults:Int = Integer.MAX_VALUE, relations:Seq[String] =Nil) : List[T] = {
+    val criteriaBuilder:CriteriaBuilder = em.getCriteriaBuilder()
+    val query = criteriaBuilder.createQuery(entityClass)
+    val root = query.from(entityClass)
+    createFetchPlanForRelations(root,relations)
+    em.createQuery(query).setFirstResult(startIndex).setMaxResults(maxResults).getResultList.asScala.toList
   }
 
   /**
@@ -33,14 +40,16 @@ abstract class GenericDaoForComposite[T : Manifest] {
 
   def create(payload:Seq[T]):Seq[T] = payload.map(create)
 
-
   /**
-   * Default finder name.
-   * @return name of the finder.
+   *
+   * @param root a query root
+   * @param relations a sequence of attribute paths relative to the query root.
+   * @tparam N
    */
-  def getAllFinderName = {
-    entityClass.getSimpleName + ".all"
+  protected def createFetchPlanForRelations[N](root:Root[N], relations:Seq[String]): Unit = {
+    relations.foreach(r=>r.split(""".""").foldLeft(root.asInstanceOf[FetchParent[N,N]])((relativeRoot,segment) => relativeRoot.fetch(segment, JoinType.LEFT)))
   }
+
 }
 
 /**
@@ -48,7 +57,7 @@ abstract class GenericDaoForComposite[T : Manifest] {
  * User: Simon Zambrivski
  * @tparam T type of entity.
  */
-trait GenericDao[T <: PersistentEntity] extends GenericDaoForComposite[T]{
+trait GenericDao[T <: PersistentEntity] extends GenericDaoForComposite[T] {
   /**
    * Finder for retrieving entities by id.
    * @param id id of entity
@@ -56,5 +65,17 @@ trait GenericDao[T <: PersistentEntity] extends GenericDaoForComposite[T]{
    */
   def byId(id: Long) : Option[T] = {
     Option(em.find(entityClass, id))
+  }
+}
+
+trait GenericDaoForNamed[T <: NamedEntity] extends GenericDaoForComposite[T] {
+  def byName(name: String, relations:Seq[String] = Nil) : Option[T] = {
+
+    val criteriaBuilder:CriteriaBuilder = em.getCriteriaBuilder()
+    val query = criteriaBuilder.createQuery(entityClass)
+    val root = query.from(entityClass)
+    query.where(List(criteriaBuilder.equal(root.get("name"), name)):_*)
+    createFetchPlanForRelations(root,relations)
+    em.createQuery(query).getResultList.asInstanceOf[JavaList[T]].asScala.headOption
   }
 }

@@ -15,6 +15,9 @@ abstract class Versioned(@BeanProperty @(Column@field)(name = "VERSION") @(Versi
 
 }
 
+trait NamedEntity {
+  def name:String
+}
 
 /**
  * Superclass for all persistent entities.
@@ -32,10 +35,6 @@ abstract class PersistentEntity(
  */
 @Entity
 @Table(name = "DISCIPLINE")
-@NamedQueries(Array(
-  new NamedQuery(name = "Discipline.all", query = "select p from Discipline p"),
-  new NamedQuery(name = "Discipline.byName", query = "select p from Discipline p where p.name = :name")
-))
 case class Discipline(
                        @BeanProperty @(Column@field)(name = "NAME", nullable = false, unique = true) name: String,
                        @BeanProperty @(Column@field)(name = "TEAMS", nullable = false) numberOfTeams: Int,
@@ -43,7 +42,7 @@ case class Discipline(
                        @BeanProperty @(OneToMany@field)(cascade = Array(CascadeType.REMOVE), fetch = FetchType.LAZY, mappedBy = "discipline") shops: java.util.Set[Role] = Collections.emptySet(),
                        @BeanProperty @(OneToMany@field)(cascade = Array(CascadeType.REMOVE), fetch = FetchType.LAZY, mappedBy = "discipline") matches: java.util.Set[Match] = Collections.emptySet(),
                        @BeanProperty @(OneToMany@field)(cascade = Array(CascadeType.REMOVE), fetch = FetchType.LAZY, mappedBy = "discipline") rankings: java.util.Set[Ranking] = Collections.emptySet()
-                     ) extends PersistentEntity {
+                     ) extends PersistentEntity with NamedEntity {
   protected def this() = this(null, -1, -1)
 
 }
@@ -107,16 +106,12 @@ case class ParticipationId(
  */
 @Entity
 @Table(name = "PLAYER")
-@NamedQueries(Array(
-  new NamedQuery(name = "Player.all", query = "select p from Player p"),
-  new NamedQuery(name = "Player.byName", query = "select p from Player p where p.name = :name")
-))
 case class Player(
                    @BeanProperty @(JsonProperty@field)("name") @(Column@field)(name = "NAME",unique = true) name: String,
                    @BeanProperty @(ManyToMany@field) @(JoinTable@field)(name = "PLAYER_IN_TEAM", joinColumns = Array(new JoinColumn(name = "PLAYER_ID")), inverseJoinColumns = Array(new JoinColumn(name = "TEAM_ID"))) teams: java.util.Set[Team] = Collections.emptySet(),
                    @BeanProperty @(OneToMany@field)(cascade = Array(CascadeType.REMOVE), fetch = FetchType.LAZY, mappedBy = "player") participations: java.util.Set[Participation] = Collections.emptySet(),
                    @BeanProperty @(OneToMany@field)(cascade = Array(CascadeType.REMOVE), mappedBy = "player") rankings: java.util.Set[Ranking] = Collections.emptySet()
-                   ) extends PersistentEntity {
+                   ) extends PersistentEntity with NamedEntity {
 
   protected def this() = this(null, null, null)
 }
@@ -148,7 +143,7 @@ case class PlayerResult (
                       new JoinColumn(name = "MATCH_ID", insertable = false, updatable = false, referencedColumnName = "MATCH_ID", nullable = false)
                     )) participation: Participation = null,
                     @BeanProperty @(ManyToOne@field) @(JoinColumn@field)(name = "TEAM_ID", insertable = false, updatable = false) team: Team = null
-                    ) extends Versioned {
+                    ) extends Versioned  {
   protected def this() = this(null, 0, null, null)
 
 }
@@ -207,14 +202,11 @@ case class RankingId(
  */
 @Entity
 @Table(name = "ROLE")
-@NamedQueries(Array(
-  new NamedQuery(name = "Role.all", query = "select r from Role r")
-))
 case class Role(
                  @BeanProperty @(Column@field)(name = "NAME") name: String,
                  @BeanProperty @(ManyToOne@field) @(JoinColumn@field)(name = "DISCIPLINE_ID", nullable = false) discipline: Discipline,
                  @BeanProperty @(OneToMany@field)(cascade = Array(CascadeType.REMOVE), fetch = FetchType.LAZY, mappedBy = "role") matches: java.util.Set[PlayerResult] = Collections.emptySet()
-                 ) extends PersistentEntity {
+                 ) extends PersistentEntity with NamedEntity {
   protected def this() = this(null, null)
 }
 
@@ -224,15 +216,11 @@ case class Role(
  */
 @Entity
 @Table(name = "TEAM")
-@NamedQueries(Array(
-  new NamedQuery(name = "Team.all", query = "select t from Team t"),
-  new NamedQuery(name = "Team.byName", query = "select t from Team t where t.name = :name")
-))
 case class Team(
                  @BeanProperty @(Column@field)(name = "NAME") name: String,
                  @BeanProperty @(ManyToMany@field) @(JoinColumn@field)(name = "PLAYER_ID")@(JoinTable@field)(name = "PLAYER_IN_TEAM", joinColumns = Array(new JoinColumn(name = "TEAM_ID")), inverseJoinColumns = Array(new JoinColumn(name = "PLAYER_ID"))) players: java.util.Set[Player] = Collections.emptySet(),
                  @BeanProperty @(OneToMany@field)(cascade = Array(CascadeType.REMOVE), fetch = FetchType.LAZY, mappedBy = "team") playerResults: java.util.Set[PlayerResult] = Collections.emptySet()
-                 ) extends PersistentEntity {
+                 ) extends PersistentEntity with NamedEntity {
 
   protected def this() = this(null, null)
 }
@@ -242,15 +230,12 @@ case class Team(
  */
 @Entity
 @Table(name = "TOURNAMENT")
-@NamedQueries(Array(
-  new NamedQuery(name = "Tournament.all", query = "select t from Tournament t")
-))
 case class Tournament(
                        @BeanProperty @(ManyToOne@field)(optional=false, fetch=FetchType.LAZY) discipline: Discipline,
                        @BeanProperty @(Column@field)(name = "NAME", nullable = false) name: String,
                        @BeanProperty @(Column@field)(name = "START", nullable = false) @(Temporal@field)(TemporalType.TIMESTAMP) start: Date,
                        @BeanProperty @(Column@field)(name = "END", nullable = false) @(Temporal@field)(TemporalType.TIMESTAMP) end: Date,
-                       @BeanProperty @(OneToMany@field)(cascade = Array(CascadeType.REMOVE), fetch = FetchType.LAZY, mappedBy = "tournament") matches: java.util.Set[Match] = Collections.emptySet()) extends PersistentEntity {
+                       @BeanProperty @(OneToMany@field)(cascade = Array(CascadeType.REMOVE), fetch = FetchType.LAZY, mappedBy = "tournament") matches: java.util.Set[Match] = Collections.emptySet()) extends PersistentEntity with NamedEntity {
 
   protected def this() = this(null, null, null, null)
 }
