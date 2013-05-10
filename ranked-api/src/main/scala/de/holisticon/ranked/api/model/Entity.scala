@@ -143,7 +143,7 @@ case class PlayerResult (
                       new JoinColumn(name = "MATCH_ID", insertable = false, updatable = false, referencedColumnName = "MATCH_ID", nullable = false)
                     )) participation: Participation = null,
                     @BeanProperty @(ManyToOne@field) @(JoinColumn@field)(name = "TEAM_ID", insertable = false, updatable = false) team: Team = null
-                    ) extends Versioned  {
+                    ) extends Versioned {
   protected def this() = this(null, 0, null, null)
 
 }
@@ -202,6 +202,9 @@ case class RankingId(
  */
 @Entity
 @Table(name = "ROLE")
+@NamedQueries(Array(
+  new NamedQuery(name = "Role.byDisciplineId", query = "select r from Role r where r.discipline.id = :id")
+))
 case class Role(
                  @BeanProperty @(Column@field)(name = "NAME") name: String,
                  @BeanProperty @(ManyToOne@field) @(JoinColumn@field)(name = "DISCIPLINE_ID", nullable = false) discipline: Discipline,
@@ -220,7 +223,7 @@ case class Team(
                  @BeanProperty @(Column@field)(name = "NAME") name: String,
                  @BeanProperty @(ManyToMany@field) @(JoinColumn@field)(name = "PLAYER_ID")@(JoinTable@field)(name = "PLAYER_IN_TEAM", joinColumns = Array(new JoinColumn(name = "TEAM_ID")), inverseJoinColumns = Array(new JoinColumn(name = "PLAYER_ID"))) players: java.util.Set[Player] = Collections.emptySet(),
                  @BeanProperty @(OneToMany@field)(cascade = Array(CascadeType.REMOVE), fetch = FetchType.LAZY, mappedBy = "team") playerResults: java.util.Set[PlayerResult] = Collections.emptySet()
-                 ) extends PersistentEntity with NamedEntity {
+                 ) extends PersistentEntity {
 
   protected def this() = this(null, null)
 }
