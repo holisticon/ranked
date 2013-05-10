@@ -223,7 +223,7 @@ case class Team(
                  @BeanProperty @(Column@field)(name = "NAME") name: String,
                  @BeanProperty @(ManyToMany@field) @(JoinColumn@field)(name = "PLAYER_ID")@(JoinTable@field)(name = "PLAYER_IN_TEAM", joinColumns = Array(new JoinColumn(name = "TEAM_ID")), inverseJoinColumns = Array(new JoinColumn(name = "PLAYER_ID"))) players: java.util.Set[Player] = Collections.emptySet(),
                  @BeanProperty @(OneToMany@field)(cascade = Array(CascadeType.REMOVE), fetch = FetchType.LAZY, mappedBy = "team") playerResults: java.util.Set[PlayerResult] = Collections.emptySet()
-                 ) extends PersistentEntity {
+                 ) extends PersistentEntity with NamedEntity {
 
   protected def this() = this(null, null)
 }
