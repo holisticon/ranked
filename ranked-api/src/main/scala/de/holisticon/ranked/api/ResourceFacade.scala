@@ -27,18 +27,18 @@ trait RankedResource {
  * @author Daniel Wegener (Holisticon AG)
  */
 @Produces(Array(MediaType.APPLICATION_JSON))
-@Path("/player")
+@Path("/players")
 trait PlayerResource extends RankedResource {
 
   @POST
   def createPlayer(@QueryParam("name") name: String)
 
   @GET
-  def getPlayers: List[Player]
+  def getPlayers(@QueryParam("expand") expand:List[String]): List[Player]
 
   @GET
   @Path("/{id : \\d+}")
-  def getPlayer(@PathParam("id") id:Long):Option[Player]
+  def getPlayer(@PathParam("id") id:Long, ):Option[Player]
 
   @GET
   @Path("/{name : \\D.+}")
@@ -51,7 +51,7 @@ trait PlayerResource extends RankedResource {
 }
 
 @Produces(Array(MediaType.APPLICATION_JSON))
-@Path("/tournament")
+@Path("/tournaments")
 trait TournamentResource extends RankedResource {
 
   @GET
@@ -74,7 +74,7 @@ trait TournamentResource extends RankedResource {
 }
 
 @Produces(Array(MediaType.APPLICATION_JSON))
-@Path("/discipline")
+@Path("/disciplines")
 trait DisciplineResource extends RankedResource {
 
   @GET
@@ -94,7 +94,7 @@ trait DisciplineResource extends RankedResource {
 }
 
 @Produces(Array(MediaType.APPLICATION_JSON))
-@Path("/match")
+@Path("/matches")
 trait MatchResource {
 
   @POST
