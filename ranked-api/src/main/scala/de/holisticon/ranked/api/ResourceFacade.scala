@@ -38,7 +38,7 @@ trait PlayerResource extends RankedResource {
 
   @GET
   @Path("/{id : \\d+}")
-  def getPlayer(@PathParam("id") id:Long, ):Option[Player]
+  def getPlayer(@PathParam("id") id:Long):Option[Player]
 
   @GET
   @Path("/{name : \\D.+}")
