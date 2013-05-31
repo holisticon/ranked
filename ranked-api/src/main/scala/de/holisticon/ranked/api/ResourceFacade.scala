@@ -34,7 +34,7 @@ trait PlayerResource extends RankedResource {
   def createPlayer(@QueryParam("name") name: String)
 
   @GET
-  def getPlayers(@QueryParam("expand") expand:List[String]): List[Player]
+  def getPlayers: List[Player]
 
   @GET
   @Path("/{id : \\d+}")
