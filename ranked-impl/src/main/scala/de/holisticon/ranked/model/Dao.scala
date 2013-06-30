@@ -10,6 +10,8 @@ import de.holisticon.ranked.api.model.Player
 import java.util.{List => JavaList}
 import scala.collection.JavaConverters._
 import javax.ejb.{LocalBean, Stateless}
+import org.hibernate.criterion.{CriteriaSpecification, Junction, Restrictions, DetachedCriteria}
+import org.hibernate.Session
 
 /**
  * Provides basic DAO functionality for accessing discipline.
@@ -64,10 +66,20 @@ class TeamDao extends GenericDao[Team] with GenericDaoForNamed[Team] {
 
 
   def byPlayerList(playerIds: List[Long]) : Team = {
-    /*
-     TODO: find an existing team by player ids or create a new one and return the reference.
-     */
-    em.createNamedQuery("Team.byPlayerIds").setParameter("playerIds", "").getSingleResult.asInstanceOf[Team]
+
+    // create a disjunction of player ids
+    var disjunction : Junction = Restrictions.disjunction()
+    for (playerId <- playerIds) {
+      disjunction = disjunction.add(Restrictions.eq("player.id", playerId))
+    }
+    // retrieve all teams of size number of players,
+    // restricted by the player ids
+    DetachedCriteria.forClass(Class[Team])
+      .add(Restrictions.sizeEq("players", playerIds.length))
+      .add(disjunction)
+      .getExecutableCriteria(em.getDelegate().asInstanceOf[Session])
+      .setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY)
+      .uniqueResult().asInstanceOf[Team]
   }
 }
 
