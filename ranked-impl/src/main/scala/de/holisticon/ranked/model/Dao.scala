@@ -74,7 +74,7 @@ class TeamDao extends GenericDao[Team] with GenericDaoForNamed[Team] {
     }
     // retrieve all teams of size number of players,
     // restricted by the player ids
-    DetachedCriteria.forClass(Class[Team])
+    DetachedCriteria.forClass(classOf[Team])
       .add(Restrictions.sizeEq("players", playerIds.length))
       .add(disjunction)
       .getExecutableCriteria(em.getDelegate().asInstanceOf[Session])
