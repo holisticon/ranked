@@ -25,7 +25,7 @@ import static org.hamcrest.CoreMatchers.notNullValue;
  * @author Daniel
  */
 @RunWith(Arquillian.class)
-public class PlayerResourceIT {
+public class PlayerResourceITest {
 
     @Deployment
     public static JavaArchive createDeployment() {
