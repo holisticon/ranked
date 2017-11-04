@@ -35,3 +35,12 @@ in Scala using the JEE stack. This idea has remained idea after the prototype im
 some JEE Beans and controllers. After several years, we decided to try it again...
 
 If you are still interested, check out the [legacy-scala](https://github.com/holisticon/ranked/tree/legacy-scala) branch.
+
+
+
+## Decisions
+
+### Test framework
+
+Though using plain junit/assertj unit tests would be possible, we want to try the kotlin way.
+
