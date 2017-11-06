@@ -49,6 +49,13 @@
       <artifactId>kotlin-reflect</artifactId>
       <version>${kotlin.version}</version>
     </dependency>
+    <!--
+    <dependency>
+      <groupId>com.fasterxml.jackson.module</groupId>
+      <artifactId>jackson-module-kotlin</artifactId>
+      <version>1.1.2</version>
+    </dependency>
+    -->
     <dependency>
       <groupId>org.jetbrains.spek</groupId>
       <artifactId>spek-api</artifactId>
@@ -66,6 +73,11 @@
       <artifactId>spek-junit-platform-engine</artifactId>
       <version>1.1.5</version>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>cz.jirutka.validator</groupId>
+      <artifactId>validator-spring</artifactId>
+      <version>1.1.0</version>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>

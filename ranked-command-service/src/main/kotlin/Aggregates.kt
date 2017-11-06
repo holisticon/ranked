@@ -43,9 +43,6 @@ class Match() {
 
   @CommandHandler
   constructor(c: CreateMatch) : this() {
-
-
-
     apply(
       MatchCreated(
         matchId = c.matchId,

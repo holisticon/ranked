@@ -1,10 +1,8 @@
 package de.holisticon.ranked.model
 
-import java.lang.annotation.Documented
-import java.lang.annotation.ElementType
-import javax.validation.*
+import cz.jirutka.validator.spring.SpELAssert
+import javax.validation.Valid
 import javax.validation.constraints.Size
-import kotlin.reflect.KClass
 
 
 /**
@@ -23,7 +21,7 @@ data class UserName(
  * @property player1 the first player
  * @property player2 the second player
  */
-@DifferentPlayers
+@SpELAssert(value = "!player1.equals(player2)", message = "{ranked.team.two.players}")
 data class Team(
   @get: Valid
   val player1: UserName,
@@ -37,23 +35,4 @@ data class MatchSet(
   val goalsBlue: Int,
   val offenseRed: UserName,
   val offenseBlue: UserName
-)
-
-class DifferentPlayersValidator : ConstraintValidator<DifferentPlayers, Team> {
-  override fun isValid(team: Team, ctx: ConstraintValidatorContext): Boolean {
-    val isValid = team.player1 != team.player2
-
-    return isValid
-  }
-}
-
-@Target(AnnotationTarget.CLASS)
-@Retention(AnnotationRetention.RUNTIME)
-@Constraint(validatedBy = arrayOf(DifferentPlayersValidator::class))
-@Documented
-annotation class DifferentPlayers(
-  val constraints: Array<KClass<*>> = arrayOf(),
-  val groups: Array<KClass<*>> = arrayOf(),
-  val payload: Array<KClass<out Payload>> = arrayOf(),
-  val message: String = "totally wrong, dude!"
 )
