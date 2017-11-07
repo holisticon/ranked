@@ -14,18 +14,20 @@
   <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
 
+  <name>Ranked Root</name>
+
   <modules>
     <module>ranked-command-service</module>
+    <module>ranked-ai</module>
     <module>h2</module>
   </modules>
 
   <properties>
     <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
     <kotlin.version>1.1.51</kotlin.version>
-
     <projectConfigScan>false</projectConfigScan>
-
     <axon.version>3.0.5</axon.version>
+    <kotlin-logging.version>1.4.6</kotlin-logging.version>
   </properties>
 
   <dependencyManagement>
@@ -40,7 +42,13 @@
         <artifactId>validator-spring</artifactId>
         <version>1.1.0</version>
       </dependency>
+      <dependency>
+        <groupId>io.github.microutils</groupId>
+        <artifactId>kotlin-logging</artifactId>
+        <version>${kotlin-logging.version}</version>
+      </dependency>
     </dependencies>
+
   </dependencyManagement>
 
   <dependencies>
