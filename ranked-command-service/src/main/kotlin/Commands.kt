@@ -15,24 +15,28 @@ data class CreatePlayer(
   @TargetAggregateIdentifier
   @get: Valid
   val userName: UserName,
+
   @get: NotEmpty
   val displayName: String
 )
 
-@SpELAssert(value = "teamsDisjunct()", message = "{ranked.createMatch.disjunct}")
+@SpELAssert(value = "disjunct", message = "{ranked.createMatch.disjunct}")
 data class CreateMatch(
   @TargetAggregateIdentifier
   @get: NotEmpty
   val matchId: String = UUID.randomUUID().toString(),
+
   val date: LocalDateTime = LocalDateTime.now(),
+
   val teamRed: Team,
+
   val teamBlue: Team,
+
   val matchSets: Array<MatchSet>,
+
   val tournamentId: String? = null
 ) {
-  fun teamsDisjunct(): Boolean = !(teamRed.player1.equals(teamBlue.player1)
-    || teamRed.player1.equals(teamBlue.player2)
-    || teamRed.player2.equals(teamBlue.player1)
-    || teamRed.player2.equals(teamBlue.player2))
-
+  val disjunct by lazy {
+    teamRed.players.intersect(teamBlue.players).isEmpty()
+  }
 }

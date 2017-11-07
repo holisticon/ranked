@@ -14,6 +14,25 @@ class TeamSpec {
   val fozzy = UserName("fozzy")
 
   @Test
+  fun `a team can be represented as set of players`() {
+    val team = Team(piggy, kermit)
+
+    assertThat(team.players)
+      .hasSize(2)
+      .containsExactly(piggy, kermit)
+  }
+
+  @Test
+  fun `team(piggy,kermit) hasMember kermit`() {
+    assertThat(Team(piggy,kermit) hasMember kermit ).isTrue()
+  }
+
+  @Test
+  fun `team(piggy,kermit) not hasMember gonzo`() {
+    assertThat(Team(piggy,kermit).hasMember(gonzo)).isFalse()
+  }
+
+  @Test
   fun `two teams are identical if they have the same players`() {
     assertThat(Team(piggy, kermit)).isEqualTo(Team(piggy, kermit))
   }
