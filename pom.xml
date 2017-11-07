@@ -35,6 +35,11 @@
         <artifactId>axon-spring-boot-starter</artifactId>
         <version>${axon.version}</version>
       </dependency>
+      <dependency>
+        <groupId>cz.jirutka.validator</groupId>
+        <artifactId>validator-spring</artifactId>
+        <version>1.1.0</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
@@ -75,15 +80,9 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>cz.jirutka.validator</groupId>
-      <artifactId>validator-spring</artifactId>
-      <version>1.1.0</version>
-    </dependency>
-    <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
     </dependency>
-
   </dependencies>
 
   <build>
@@ -151,7 +150,19 @@
           </dependency>
         </dependencies>
       </plugin>
-
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.0.2</version>
+        <configuration>
+          <archive>
+            <manifest>
+              <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+              <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+            </manifest>
+          </archive>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 

@@ -11,7 +11,9 @@
 
   <groupId>de.holisticon.ranked</groupId>
   <artifactId>ranked-command-service</artifactId>
-
+  <properties>
+    <kotlin-logging.version>1.4.6</kotlin-logging.version>
+  </properties>
 
   <dependencies>
     <dependency>
@@ -31,6 +33,16 @@
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
     </dependency>
+    <dependency>
+      <groupId>io.github.microutils</groupId>
+      <artifactId>kotlin-logging</artifactId>
+      <version>${kotlin-logging.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>cz.jirutka.validator</groupId>
+      <artifactId>validator-spring</artifactId>
+    </dependency>
+
 
     <dependency>
       <groupId>org.axonframework</groupId>
