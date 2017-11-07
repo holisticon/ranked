@@ -1,6 +1,7 @@
 package de.holisticon.ranked.model
 
 import cz.jirutka.validator.spring.SpELAssert
+import org.hibernate.validator.constraints.Range
 import javax.validation.Valid
 import javax.validation.constraints.Size
 
@@ -35,9 +36,22 @@ data class Team(
   infix fun hasMember(userName: UserName) = players.contains(userName)
 }
 
+/**
+ * A MatchSet represents one Set of a Match (which will have two or three (best of three) of them).
+ *
+ * @property goalsRed number of goals scored by red (0 to 6)
+ * @property goalsBlue number of goals scored by blue (0 to 6)
+ * @property offenseRed the UserName of the player who played offense for red
+ * @property offenseBlue the UserName of the player who played offense for blue
+ */
 data class MatchSet(
+  @get: Range(min = 0, max = 6)
   val goalsRed: Int,
+
+  @get: Range(min = 0, max = 6)
   val goalsBlue: Int,
+
   val offenseRed: UserName,
+
   val offenseBlue: UserName
 )
