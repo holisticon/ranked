@@ -45,10 +45,10 @@ data class Team(
  * @property offenseBlue the UserName of the player who played offense for blue
  */
 data class MatchSet(
-  @get: Range(min = 0, max = 6)
+  @get: Range(min = 0, max = 6, message = "{ranked.matchSet.goals}")
   val goalsRed: Int,
 
-  @get: Range(min = 0, max = 6)
+  @get: Range(min = 0, max = 6, message = "{ranked.matchSet.goals}")
   val goalsBlue: Int,
 
   val offenseRed: UserName,
