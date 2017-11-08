@@ -14,9 +14,9 @@ import org.springframework.context.annotation.Configuration
 @SpringBootApplication
 class CommandServiceApplication
 
-  fun main(args: Array<String>) {
-    SpringApplication.run(CommandServiceApplication::class.java, *args)
-  }
+fun main(args: Array<String>) {
+  SpringApplication.run(CommandServiceApplication::class.java, *args)
+}
 
 @Configuration
 class CommandConfiguration {
