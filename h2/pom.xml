@@ -10,6 +10,7 @@
     </parent>
 
     <artifactId>ranked-h2</artifactId>
+    <name>Ranked H2</name>
 
     <dependencies>
         <dependency>
