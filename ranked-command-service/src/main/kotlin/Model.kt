@@ -1,9 +1,11 @@
 package de.holisticon.ranked.model
 
 import cz.jirutka.validator.spring.SpELAssert
+import net.minidev.json.annotate.JsonIgnore
 import org.hibernate.validator.constraints.Range
 import javax.validation.Valid
 import javax.validation.constraints.Size
+import javax.xml.bind.annotation.XmlTransient
 
 
 /**
@@ -22,7 +24,7 @@ data class UserName(
  * @property player1 the first player
  * @property player2 the second player
  */
-@SpELAssert(value = "players.size() == 2", message = "{ranked.team.two.players}")
+@SpELAssert(value = "player1 != null && player2 != null && player1 != player2", message = "{ranked.team.two.players}")
 data class Team(
   @get: Valid
   val player1: UserName,
@@ -30,9 +32,8 @@ data class Team(
   @get: Valid
   val player2: UserName
 ) {
-  val players by lazy { setOf(player1, player2) }
 
-  infix fun hasMember(userName: UserName) = players.contains(userName)
+  infix fun hasMember(userName: UserName) = setOf(player1, player2).contains(userName)
 }
 
 /**

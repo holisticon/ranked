@@ -52,7 +52,7 @@ class TeamSpec {
   fun `a team can be represented as set of players`() {
     val team = Team(piggy, kermit)
 
-    assertThat(team.players)
+    assertThat(setOf(team.player1, team.player2))
       .hasSize(2)
       .containsExactly(piggy, kermit)
   }

@@ -15,7 +15,7 @@ class PlayerSpec() {
   val fixture: AggregateTestFixture<Player> = AggregateTestFixture(Player::class.java)
 
   @Test
-  fun testShouldNotAllowAmendBelowCumQty() {
+  fun should_create_player() {
     fixture.`when`(CreatePlayer(UserName("1"), "kermit")).expectEvents(PlayerCreated(UserName("1"), "kermit"))
   }
 }
@@ -40,7 +40,7 @@ class MatchSpec() {
   val sets = arrayOf(set1, set2, set3)
 
   @Test
-  fun aggregate_create() {
+  fun `match create command results in a match created event`() {
 
     fixture
       .givenNoPriorActivity()
