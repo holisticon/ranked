@@ -54,8 +54,7 @@ class SwaggerConfiguration {
    * Swagger configuration
    */
   @Bean
-  fun commandApi() : Docket {
-    return Docket(DocumentationType.SWAGGER_2)
+  fun commandApi() = Docket(DocumentationType.SWAGGER_2)
       .select()
       .apis(RequestHandlerSelectors.any())
       .paths(PathSelectors.any()) // Predicates.not(PathSelectors.regex("/error"))
@@ -67,6 +66,5 @@ class SwaggerConfiguration {
         "None",
         Contact("Holisticon Craftsmen", "https://www.holisticon.de", "jobs@holisticon.de"),
         "Revised BSD License", "https://github.com/holisticon/ranked/blob/master/LICENSE.txt"))
-  }
 }
 
