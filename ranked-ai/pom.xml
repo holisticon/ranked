@@ -4,13 +4,18 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <artifactId>ranked-root</artifactId>
     <groupId>de.holisticon.ranked</groupId>
+    <artifactId>ranked-root</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
 
-  <artifactId>ranked-command-service</artifactId>
-  <name>Ranked Command Service</name>
+  <artifactId>ranked-ai</artifactId>
+  <name>Ranked AI</name>
+
+  <properties>
+    <kotlin-logging.version>1.4.6</kotlin-logging.version>
+    <libai.version>1.6.12</libai.version>
+  </properties>
 
   <dependencies>
     <dependency>
@@ -18,33 +23,13 @@
       <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.axonframework</groupId>
-      <artifactId>axon-spring-boot-starter</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-data-jpa</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.h2database</groupId>
-      <artifactId>h2</artifactId>
+      <groupId>ai.api</groupId>
+      <artifactId>libai</artifactId>
+      <version>${libai.version}</version>
     </dependency>
     <dependency>
       <groupId>io.github.microutils</groupId>
       <artifactId>kotlin-logging</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>cz.jirutka.validator</groupId>
-      <artifactId>validator-spring</artifactId>
-    </dependency>
-
-
-    <dependency>
-      <groupId>org.axonframework</groupId>
-      <artifactId>axon-test</artifactId>
-      <version>${axon.version}</version>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>junit</groupId>

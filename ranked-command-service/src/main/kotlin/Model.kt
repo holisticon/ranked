@@ -29,7 +29,6 @@ data class Team(
 
   @get: Valid
   val player2: UserName
-
 ) {
   val players by lazy { setOf(player1, player2) }
 

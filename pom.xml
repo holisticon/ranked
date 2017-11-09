@@ -14,16 +14,20 @@
   <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
 
+  <name>Ranked Root</name>
+
   <modules>
     <module>ranked-command-service</module>
+    <module>ranked-ai</module>
     <module>h2</module>
   </modules>
 
   <properties>
+    <projectConfigScan>false</projectConfigScan>
+
     <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
     <kotlin.version>1.1.51</kotlin.version>
-
-    <projectConfigScan>false</projectConfigScan>
+    <kotlin-logging.version>1.4.6</kotlin-logging.version>
 
     <axon.version>3.0.6</axon.version>
   </properties>
@@ -34,6 +38,16 @@
         <groupId>org.axonframework</groupId>
         <artifactId>axon-spring-boot-starter</artifactId>
         <version>${axon.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>cz.jirutka.validator</groupId>
+        <artifactId>validator-spring</artifactId>
+        <version>1.1.0</version>
+      </dependency>
+      <dependency>
+        <groupId>io.github.microutils</groupId>
+        <artifactId>kotlin-logging</artifactId>
+        <version>${kotlin-logging.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -75,15 +89,9 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>cz.jirutka.validator</groupId>
-      <artifactId>validator-spring</artifactId>
-      <version>1.1.0</version>
-    </dependency>
-    <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
     </dependency>
-
   </dependencies>
 
   <build>
@@ -151,7 +159,19 @@
           </dependency>
         </dependencies>
       </plugin>
-
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.0.2</version>
+        <configuration>
+          <archive>
+            <manifest>
+              <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+              <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+            </manifest>
+          </archive>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 
