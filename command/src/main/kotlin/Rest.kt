@@ -15,15 +15,12 @@ import javax.validation.Valid
 @RestController
 class CommandApi(val commandGateway: CommandGateway) {
 
-  @GetMapping("/hello")
-  fun hello() = "hello simon!"
-
   companion object: KLogging()
 
   @PostMapping(path = arrayOf("/command/createMatch"))
   fun createMatch(@RequestBody @Valid match: CreateMatch): ResponseEntity<String> {
     try {
-      val result: Any = commandGateway.sendAndWait(match) ?: return ResponseEntity.badRequest().body("Interrupted")
+      val result: Any = commandGateway.sendAndWait(match) ?: return ResponseEntity.badRequest().body("Sending thread interrupted")
       // TODO how to react to that?
       return ResponseEntity.noContent().build()
     } catch (e: CommandExecutionException) {

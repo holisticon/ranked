@@ -16,6 +16,7 @@ class CreateMatchSpec {
   val kermit = UserName("kermit")
   val gonzo = UserName("gonzo")
   val fozzy = UserName("fozzy")
+  val scooter = UserName("scooter")
 
   val set1 = MatchSet(goalsBlue = 6, goalsRed = 3, offenseBlue = piggy, offenseRed = gonzo)
   val set2 = MatchSet(goalsBlue = 2, goalsRed = 6, offenseBlue = kermit, offenseRed = fozzy)
@@ -25,19 +26,24 @@ class CreateMatchSpec {
 
   @Test
   fun `a match is valid when no player is in both teams`() {
-    val c = CreateMatch(teamRed = Team(piggy,kermit), teamBlue = Team(gonzo,fozzy), matchSets = sets)
-
-    val r = validator.validate(c)
+    val r = validator.validate(CreateMatch(teamBlue = Team(piggy, kermit), teamRed = Team(gonzo, fozzy), matchSets = ArrayList()))
     assertThat(r).isEmpty()
   }
 
   @Test
-  fun `a match is *not* valid when a player is in both teams`  () {
-    val c = CreateMatch(teamRed = Team(piggy, kermit), teamBlue = Team(gonzo, piggy), matchSets = sets)
+  fun `a match is *not* valid when a player is in both teams`() {
+    val r = validator.validate(CreateMatch(teamBlue = Team(piggy, kermit), teamRed = Team(gonzo, piggy), matchSets = ArrayList())).toList()
 
-    val r = validator.validate(c).toList()
-
-    assertThat(r[0].message).isEqualTo("A player must only be in one of the teams!")
-
+    assertThat(r.size).isEqualTo(1)
+    assertThat(r[0].message).isEqualTo("A player must only be a member of one team.")
   }
+
+  @Test
+  fun `a match is *not* valid when a player from either team plays offense`() {
+    val r = validator.validate(CreateMatch(teamBlue = Team(piggy, kermit), teamRed = Team(gonzo, scooter), matchSets = sets)).toList()
+
+    assertThat(r.size).isEqualTo(1)
+    assertThat(r[0].message).isEqualTo("A player must be in the team to play offense in a set.")
+  }
+
 }

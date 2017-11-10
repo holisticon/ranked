@@ -21,7 +21,10 @@ data class CreatePlayer(
 )
 
 @ApiModel
-@SpELAssert(value = "disjunct() && correctOffense()", message = "{ranked.createMatch.disjunct}")
+@SpELAssert.List(
+  SpELAssert(value = "disjunct()", message = "{ranked.createMatch.disjunct}"),
+  SpELAssert(value = "correctOffense()", message = "{ranked.createMatch.offense}")
+)
 data class CreateMatch(
   @TargetAggregateIdentifier
   @get: NotEmpty
