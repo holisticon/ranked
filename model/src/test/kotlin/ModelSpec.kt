@@ -1,6 +1,8 @@
 package de.holisticon.ranked.model
 
+
 import org.assertj.core.api.Assertions.assertThat
+import org.jetbrains.spek.api.dsl.it
 import org.junit.Test
 import javax.validation.Validation
 
@@ -8,6 +10,27 @@ val validator = Validation.buildDefaultValidatorFactory().validator
 val piggy = UserName("piggy")
 val kermit = UserName("kermit")
 val gonzo = UserName("gonzo")
+
+
+class UserNameSpec {
+  @Test
+  fun `userName is created with value`() {
+    assertThat(validator.validate(kermit)).isEmpty()
+    assertThat(kermit.value).isEqualTo("kermit")
+  }
+
+  @Test
+  fun `userName is not valid if value is ""`() {
+    assertThat(validator.validate(UserName("")).toList()[0].message)
+      .isEqualTo("The UserName must be at least 4 chars long!")
+  }
+
+  @Test
+  fun `userName is not valid if value is shorter than 4 chars`() {
+    assertThat(validator.validate(UserName("abc")).toList()[0].message)
+      .isEqualTo("The UserName must be at least 4 chars long!")
+  }
+}
 
 class MatchSetSpec {
 
@@ -40,8 +63,6 @@ class MatchSetSpec {
 }
 
 class TeamSpec {
-
-
 
   val piggy = UserName("piggy")
   val kermit = UserName("kermit")

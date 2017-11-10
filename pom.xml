@@ -18,8 +18,8 @@
 
   <modules>
     <module>ranked-command-service</module>
-    <module>ranked-ai</module>
     <module>h2</module>
+    <module>model</module>
   </modules>
 
   <properties>
@@ -34,6 +34,11 @@
 
   <dependencyManagement>
     <dependencies>
+      <dependency>
+        <artifactId>ranked-model</artifactId>
+        <groupId>${project.groupId}</groupId>
+        <version>${project.version}</version>
+      </dependency>
       <dependency>
         <groupId>org.axonframework</groupId>
         <artifactId>axon-spring-boot-starter</artifactId>
@@ -63,6 +68,12 @@
       <artifactId>kotlin-reflect</artifactId>
       <version>${kotlin.version}</version>
     </dependency>
+
+    <dependency>
+      <groupId>cz.jirutka.validator</groupId>
+      <artifactId>validator-spring</artifactId>
+    </dependency>
+
     <!--
     <dependency>
       <groupId>com.fasterxml.jackson.module</groupId>
@@ -77,18 +88,6 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-api</artifactId>
-      <version>5.0.1</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.jetbrains.spek</groupId>
-      <artifactId>spek-junit-platform-engine</artifactId>
-      <version>1.1.5</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
     </dependency>
@@ -99,10 +98,6 @@
     <sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
     <testSourceDirectory>${project.basedir}/src/test/kotlin</testSourceDirectory>
     <plugins>
-      <plugin>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
-      </plugin>
       <plugin>
         <artifactId>kotlin-maven-plugin</artifactId>
         <groupId>org.jetbrains.kotlin</groupId>
@@ -146,18 +141,6 @@
             <include>**/*Spec.*</include>
           </includes>
         </configuration>
-        <dependencies>
-          <dependency>
-            <groupId>org.junit.platform</groupId>
-            <artifactId>junit-platform-surefire-provider</artifactId>
-            <version>1.0.1</version>
-          </dependency>
-          <dependency>
-            <groupId>org.jetbrains.spek</groupId>
-            <artifactId>spek-junit-platform-engine</artifactId>
-            <version>1.1.5</version>
-          </dependency>
-        </dependencies>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

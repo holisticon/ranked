@@ -1,4 +1,4 @@
-package de.holisticon.ranked.command
+package de.holisticon.ranked.command.rest
 
 import de.holisticon.ranked.command.cmd.CreateMatch
 import org.axonframework.commandhandling.CommandExecutionException

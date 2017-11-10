@@ -1,4 +1,4 @@
-package de.holisticon.ranked.view.matches
+package de.holisticon.ranked.command.view.matches
 
 import de.holisticon.ranked.command.axon.TrackingProcessor
 import de.holisticon.ranked.command.event.MatchCreated
