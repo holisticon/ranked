@@ -5,6 +5,7 @@ import de.holisticon.ranked.model.MatchSet
 import de.holisticon.ranked.model.Team
 import de.holisticon.ranked.model.event.MatchCreated
 import de.holisticon.ranked.model.event.internal.ReplayTrackingProcessor
+import mu.KLogging
 import org.axonframework.config.ProcessingGroup
 import org.axonframework.eventhandling.EventHandler
 import org.springframework.context.ApplicationEventPublisher
@@ -20,7 +21,7 @@ import java.time.LocalDateTime
 @RestController
 class WallView(val eventPublisher: ApplicationEventPublisher) {
 
-  companion object {
+  companion object: KLogging() {
       const val NAME = "Wall"
   }
 
@@ -29,6 +30,7 @@ class WallView(val eventPublisher: ApplicationEventPublisher) {
   @EventHandler
   fun on(e: MatchCreated) {
     matches.add(Match(teamRed = e.teamRed, teamBlue = e.teamBlue, matchSets = e.matchSets, matchId = e.matchId, date = e.date))
+    logger.info{ "Match created for ${e}"}
   }
 
   @GetMapping("/wall/matches")

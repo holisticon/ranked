@@ -13,7 +13,7 @@ val piggy = UserName("piggy")
 val kermit = UserName("kermit")
 val gonzo = UserName("gonzo")
 
-fun Validator.singleMessage( target: Any) = this.validate(target).toList()[0].message!!
+fun Validator.singleMessage(target: Any) = this.validate(target).toList()[0].message!!
 
 class UserNameSpec {
   @Test
@@ -76,6 +76,7 @@ class MatchSetSpec {
 
     assertThat(s.winner()).isEqualTo(Team.BLUE)
   }
+
   @Test
   fun `winner is RED`() {
     val s = MatchSet(
@@ -110,22 +111,13 @@ class TeamSpec {
   val fozzy = UserName("fozzy")
 
   @Test
-  fun `a team can be represented as set of players`() {
-    val team = Team(piggy, kermit)
-
-    assertThat(setOf(team.player1, team.player2))
-      .hasSize(2)
-      .containsExactly(piggy, kermit)
-  }
-
-  @Test
   fun `team(piggy,kermit) hasMember kermit`() {
-    assertThat(Team(piggy,kermit) hasMember kermit ).isTrue()
+    assertThat(Team(piggy, kermit) hasMember kermit).isTrue()
   }
 
   @Test
   fun `team(piggy,kermit) not hasMember gonzo`() {
-    assertThat(Team(piggy,kermit).hasMember(gonzo)).isFalse()
+    assertThat(Team(piggy, kermit).hasMember(gonzo)).isFalse()
   }
 
   @Test
@@ -138,6 +130,6 @@ class TeamSpec {
   fun `a team must have two different players`() {
     val result = validator.validate(Team(piggy, piggy)).toList()
 
-    assertThat(result[0].message).isEqualTo("A team must have two different players!")
+    assertThat(result[0].message).isEqualTo("A team must have two different players.")
   }
 }

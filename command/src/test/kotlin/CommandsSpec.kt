@@ -46,4 +46,10 @@ class CreateMatchSpec {
     assertThat(r[0].message).isEqualTo("A player must be in the team to play offense in a set.")
   }
 
+  @Test
+  fun `a match must have a non-empty id`() {
+    val r = validator.validate(CreateMatch(matchId = "", teamRed = Team(fozzy, gonzo), teamBlue = Team(kermit, piggy), matchSets = ArrayList() )).toList()
+    assertThat(r.size).isEqualTo(1)
+    assertThat(r[0].messageTemplate).isEqualTo("{javax.validation.constraints.NotEmpty.message}")
+  }
 }
