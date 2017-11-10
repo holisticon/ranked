@@ -1,6 +1,6 @@
 package de.holisticon.ranked.command
 
-import de.holisticon.ranked.command.cmd.CreateMatch
+import de.holisticon.ranked.command.api.CreateMatch
 import de.holisticon.ranked.model.MatchSet
 import de.holisticon.ranked.model.Team
 import de.holisticon.ranked.model.UserName

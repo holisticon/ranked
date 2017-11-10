@@ -1,4 +1,4 @@
-package de.holisticon.ranked.command.cmd
+package de.holisticon.ranked.command.api
 
 import cz.jirutka.validator.spring.SpELAssert
 import de.holisticon.ranked.model.MatchSet

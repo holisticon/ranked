@@ -1,6 +1,7 @@
 package de.holisticon.ranked
 
 import de.holisticon.ranked.command.rest.CommandApi
+
 import org.axonframework.commandhandling.gateway.CommandGateway
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
@@ -12,19 +13,21 @@ import springfox.documentation.spi.DocumentationType
 import springfox.documentation.spring.web.plugins.Docket
 import springfox.documentation.swagger2.annotations.EnableSwagger2
 
+
+/**
+ * Main application -> run this!
+ */
+fun main(args: Array<String>) {
+  SpringApplication.run(RankedApplication::class.java, *args)
+}
+
 @SpringBootApplication
-class CommandServiceApplication {
+class RankedApplication {
 
   // TODO why do we need this?
   @Bean
   fun commandApi(commandGateway: CommandGateway) = CommandApi(commandGateway)
 
-//  @Bean
-//  fun wallApi() = WallView()
-}
-
-fun main(args: Array<String>) {
-  SpringApplication.run(CommandServiceApplication::class.java, *args)
 }
 
 @Configuration

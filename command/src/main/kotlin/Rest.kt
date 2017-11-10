@@ -1,6 +1,6 @@
 package de.holisticon.ranked.command.rest
 
-import de.holisticon.ranked.command.cmd.CreateMatch
+import de.holisticon.ranked.command.api.CreateMatch
 import org.axonframework.commandhandling.CommandExecutionException
 import org.axonframework.commandhandling.gateway.CommandGateway
 import org.springframework.http.ResponseEntity

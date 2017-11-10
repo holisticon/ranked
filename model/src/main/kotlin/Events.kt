@@ -7,7 +7,6 @@ import java.time.LocalDateTime
 
 data class PlayerCreated(val userName:UserName, val displayName:String)
 
-
 data class MatchCreated(
   val matchId: String,
   val date: LocalDateTime,
