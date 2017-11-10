@@ -1,6 +1,7 @@
 package de.holisticon.ranked
 
 import de.holisticon.ranked.command.rest.CommandApi
+import de.holisticon.ranked.view.wall.WallView
 import org.axonframework.commandhandling.gateway.CommandGateway
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
@@ -20,6 +21,9 @@ class CommandServiceApplication {
   // TODO why do we need this?
   @Bean
   fun commandApi(commandGateway: CommandGateway) = CommandApi(commandGateway)
+
+//  @Bean
+//  fun wallApi() = WallView()
 }
 
 fun main(args: Array<String>) {
@@ -45,4 +49,5 @@ class SwaggerConfiguration {
       "None",
       Contact("Holisticon Craftsmen", "https://www.holisticon.de", "jobs@holisticon.de"),
       "Revised BSD License", "https://github.com/holisticon/ranked/blob/master/LICENSE.txt"))
+
 }

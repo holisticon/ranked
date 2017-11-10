@@ -4,6 +4,7 @@ import cz.jirutka.validator.spring.SpELAssert
 import de.holisticon.ranked.model.MatchSet
 import de.holisticon.ranked.model.Team
 import de.holisticon.ranked.model.UserName
+import io.swagger.annotations.ApiModel
 import org.axonframework.commandhandling.TargetAggregateIdentifier
 import java.time.LocalDateTime
 import java.util.*
@@ -19,6 +20,7 @@ data class CreatePlayer(
   val displayName: String
 )
 
+@ApiModel
 @SpELAssert(value = "disjunct()", message = "{ranked.createMatch.disjunct}")
 data class CreateMatch(
   @TargetAggregateIdentifier
@@ -31,7 +33,7 @@ data class CreateMatch(
 
   val teamBlue: Team,
 
-  val matchSets: Array<MatchSet>,
+  val matchSets: List<MatchSet>,
 
   val tournamentId: String? = null
 ) {

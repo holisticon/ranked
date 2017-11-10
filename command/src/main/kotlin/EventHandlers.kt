@@ -1,7 +1,7 @@
 package de.holisticon.ranked.command.logging
 
 import de.holisticon.ranked.axon.TrackingProcessor
-import de.holisticon.ranked.command.event.MatchCreated
+import de.holisticon.ranked.model.event.MatchCreated
 import mu.KLogging
 import org.axonframework.config.ProcessingGroup
 import org.axonframework.eventhandling.EventHandler

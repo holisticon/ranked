@@ -2,11 +2,11 @@ package de.holisticon.ranked.command.aggregate
 
 import de.holisticon.ranked.command.cmd.CreateMatch
 import de.holisticon.ranked.command.cmd.CreatePlayer
-import de.holisticon.ranked.command.event.MatchCreated
-import de.holisticon.ranked.command.event.PlayerCreated
 import de.holisticon.ranked.model.MatchSet
 import de.holisticon.ranked.model.Team
 import de.holisticon.ranked.model.UserName
+import de.holisticon.ranked.model.event.MatchCreated
+import de.holisticon.ranked.model.event.PlayerCreated
 import org.axonframework.test.aggregate.AggregateTestFixture
 import org.junit.Test
 import java.time.LocalDateTime
@@ -37,7 +37,7 @@ class MatchSpec() {
   val set2 = MatchSet(goalsBlue = 2, goalsRed = 6, offenseBlue = kermit, offenseRed = fozzy)
   val set3 = MatchSet(goalsBlue = 6, goalsRed = 5, offenseBlue = piggy, offenseRed = fozzy)
 
-  val sets = arrayOf(set1, set2, set3)
+  val sets = listOf(set1, set2, set3)
 
   @Test
   fun `match create command results in a match created event`() {

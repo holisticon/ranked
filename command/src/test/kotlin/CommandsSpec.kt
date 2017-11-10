@@ -21,7 +21,7 @@ class CreateMatchSpec {
   val set2 = MatchSet(goalsBlue = 2, goalsRed = 6, offenseBlue = kermit, offenseRed = fozzy)
   val set3 = MatchSet(goalsBlue = 6, goalsRed = 5, offenseBlue = piggy, offenseRed = fozzy)
 
-  val sets = arrayOf(set1, set2, set3)
+  val sets = listOf(set1, set2, set3)
 
   @Test
   fun `a match is valid when no player is in both teams`() {
