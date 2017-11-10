@@ -25,13 +25,13 @@ class UserNameSpec {
   @Test
   fun `userName is not valid if value is ""`() {
     assertThat(validator.singleMessage(UserName("")))
-      .isEqualTo("The UserName must be at least 4 chars long!")
+      .isEqualTo("The username must be at least 4 chars long.")
   }
 
   @Test
   fun `userName is not valid if value is shorter than 4 chars`() {
     assertThat(validator.singleMessage(UserName("abc")))
-      .isEqualTo("The UserName must be at least 4 chars long!")
+      .isEqualTo("The username must be at least 4 chars long.")
   }
 }
 
@@ -45,7 +45,7 @@ class MatchSetSpec {
         goalsRed = -1,
         offenseBlue = piggy,
         offenseRed = kermit)))
-      .isEqualTo("Goals must be between 0 and 6!")
+      .isEqualTo("Goals must be between 0 and 6.")
 
     assertThat(validator.singleMessage(
       MatchSet(
@@ -53,7 +53,7 @@ class MatchSetSpec {
         goalsRed = 7,
         offenseBlue = piggy,
         offenseRed = kermit)))
-      .isEqualTo("Goals must be between 0 and 6!")
+      .isEqualTo("Goals must be between 0 and 6.")
 
     assertThat(validator.validate(
       MatchSet(
@@ -99,7 +99,7 @@ class MatchSetSpec {
       offenseBlue = piggy,
       offenseRed = kermit)
 
-    assertThat(validator.singleMessage(s)).isEqualTo("One team must have 6 goals to count the set!")
+    assertThat(validator.singleMessage(s)).isEqualTo("One team must have 6 goals to count the set.")
   }
 }
 
