@@ -5,23 +5,23 @@ import org.axonframework.commandhandling.CommandExecutionException
 import org.axonframework.commandhandling.gateway.CommandGateway
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Component
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 import javax.validation.Valid
 
-@Component
 @RestController
 class CommandApi(val commandGateway: CommandGateway) {
+
+  @GetMapping("/hello")
+  fun hello() = "hello simon!"
 
   @PostMapping(path = arrayOf("/command/createMatch"))
   fun createMatch(@RequestBody @Valid match: CreateMatch): ResponseEntity<String> {
     try {
-      val result: Any? = commandGateway.sendAndWait(match)
+      val result: Any = commandGateway.sendAndWait(match) ?: return ResponseEntity.badRequest().build()
       // TODO how to react to that?
-      if (result == null) {
-        return ResponseEntity.badRequest().build()
-      }
       return ResponseEntity.noContent().build()
     } catch (e: CommandExecutionException) {
       return ResponseEntity.badRequest().build()

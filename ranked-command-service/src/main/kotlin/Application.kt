@@ -1,7 +1,9 @@
 package de.holisticon.ranked.command
 
 import de.holisticon.ranked.command.axon.TrackingProcessorService
+import de.holisticon.ranked.command.rest.CommandApi
 import org.axonframework.commandhandling.SimpleCommandBus
+import org.axonframework.commandhandling.gateway.CommandGateway
 import org.axonframework.messaging.interceptors.BeanValidationInterceptor
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.SpringApplication
@@ -20,7 +22,11 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2
  * The spring boot main application.
  */
 @SpringBootApplication
-class CommandServiceApplication
+class CommandServiceApplication {
+
+  @Bean
+  fun commandApi(commandGateway:CommandGateway) = CommandApi(commandGateway)
+}
 
 fun main(args: Array<String>) {
   SpringApplication.run(CommandServiceApplication::class.java, *args)

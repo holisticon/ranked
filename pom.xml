@@ -69,11 +69,6 @@
       <version>${kotlin.version}</version>
     </dependency>
 
-    <dependency>
-      <groupId>cz.jirutka.validator</groupId>
-      <artifactId>validator-spring</artifactId>
-    </dependency>
-
     <!--
     <dependency>
       <groupId>com.fasterxml.jackson.module</groupId>

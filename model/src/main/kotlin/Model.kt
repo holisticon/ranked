@@ -22,7 +22,7 @@ data class UserName(
  * @property player1 the first player
  * @property player2 the second player
  */
-@SpELAssert(value = "player1 != null && player2 != null && player1 != player2", message = "{ranked.model.team.two.players}")
+@SpELAssert(value = "player1 != player2", message = "{ranked.model.team.two.players}")
 data class Team(
   @get: Valid
   val player1: UserName,
