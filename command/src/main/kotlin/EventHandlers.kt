@@ -1,6 +1,6 @@
-package de.holisticon.ranked.command.view.matches
+package de.holisticon.ranked.command.logging
 
-import de.holisticon.ranked.command.axon.TrackingProcessor
+import de.holisticon.ranked.axon.TrackingProcessor
 import de.holisticon.ranked.command.event.MatchCreated
 import mu.KLogging
 import org.axonframework.config.ProcessingGroup
@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component
 
 @TrackingProcessor
 @Component
-@ProcessingGroup("Matches")
-class LoggingEventHandler() {
+@ProcessingGroup("Logging")
+class LoggingEventHandler {
 
   companion object: KLogging()
 
