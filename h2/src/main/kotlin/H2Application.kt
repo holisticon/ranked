@@ -12,6 +12,8 @@ import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.context.annotation.Bean
 import org.springframework.data.repository.PagingAndSortingRepository
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RestController
 import springfox.documentation.builders.PathSelectors
 import springfox.documentation.builders.RequestHandlerSelectors
 import springfox.documentation.spi.DocumentationType
@@ -25,17 +27,24 @@ fun main(args: Array<String>) {
 
 @SpringBootApplication
 @EnableSwagger2
-//@Import({ springfox.documentation.spring.data.rest.configuration.SpringDataRestConfiguration.class})
+@RestController // should be data-rest, but see https://github.com/springfox/springfox/issues/1957
 class H2Application(
-  @Value("\${ranked.h2.port:9092}") val port: String
+  @Value("\${ranked.h2.port:9092}") val port: String,
+  val domainEventRepository: DomainEventRepository,
+  val tokenRepository: TokenRepository
 ) {
 
   @Bean(initMethod = "start", destroyMethod = "stop")
   fun h2Server(): Server = Server.createTcpServer("-tcp", "-tcpAllowOthers", "-tcpPort", port)
 
+  @GetMapping("/domain")
+  fun domainEvents() = domainEventRepository.findAll()
+
+  @GetMapping("/token")
+  fun tokens() = tokenRepository.findAll()
 
   @Bean
-  fun commandApi() = Docket(DocumentationType.SWAGGER_2)
+  fun swagger() = Docket(DocumentationType.SWAGGER_2)
     .select()
     .apis(RequestHandlerSelectors.any())
     .paths(PathSelectors.any())
