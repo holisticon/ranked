@@ -55,6 +55,7 @@ class Match() {
     )
   }
 
+
   @EventSourcingHandler
   fun on(e: MatchCreated) {
     this.matchId = e.matchId

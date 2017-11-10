@@ -14,13 +14,11 @@
   <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
 
-  <name>Ranked Root</name>
-
   <modules>
     <module>command</module>
     <module>h2</module>
     <module>model</module>
-    <module>view/wall</module>
+    <module>view</module>
     <module>lib/axon</module>
     <module>application</module>
   </modules>
@@ -32,7 +30,9 @@
     <kotlin.version>1.1.51</kotlin.version>
     <kotlin-logging.version>1.4.6</kotlin-logging.version>
 
-    <axon.version>3.0.6</axon.version>
+    <axon.version>3.0.7</axon.version>
+
+    <springfox.version>2.7.0</springfox.version>
   </properties>
 
   <dependencyManagement>

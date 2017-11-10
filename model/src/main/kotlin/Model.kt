@@ -5,7 +5,6 @@ import org.hibernate.validator.constraints.Range
 import javax.validation.Valid
 import javax.validation.constraints.Size
 
-
 /**
  * ValueBean representing a unique user name (login value)
  *
@@ -16,6 +15,7 @@ data class UserName(
   val value: String
 )
 
+
 /**
  * ValueBean representing a kicker team of two *different* players.
  *
@@ -24,6 +24,7 @@ data class UserName(
  */
 @SpELAssert(value = "player1 != player2", message = "{ranked.model.team.two.players}")
 data class Team(
+
   @get: Valid
   val player1: UserName,
 
@@ -31,7 +32,22 @@ data class Team(
   val player2: UserName
 ) {
 
-  infix fun hasMember(userName: UserName) = setOf(player1, player2).contains(userName)
+  companion object {
+    const val BLUE = "blue"
+    const val RED = "red"
+  }
+
+  private val players by lazy { setOf(player1, player2) }
+
+  infix fun hasMember(userName: UserName) = players.contains(userName)
+
+  override fun hashCode(): Int {
+    return 17 * (player1.hashCode() * player2.hashCode())
+  }
+
+  override fun equals(other: Any?): Boolean {
+    return other is Team && this.players == other.players
+  }
 }
 
 /**
@@ -52,4 +68,7 @@ data class MatchSet(
   val offenseRed: UserName,
 
   val offenseBlue: UserName
-)
+) {
+
+  fun winner() = if (goalsRed == 6)  Team.RED else Team.BLUE
+}

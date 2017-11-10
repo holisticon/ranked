@@ -16,3 +16,11 @@ data class MatchCreated(
   val matchSets: List<MatchSet>,
   val tournamentId: String?
 )
+
+data class TeamWon(
+  val team : Team
+)
+
+data class PlayerWon(
+  val player: UserName
+)

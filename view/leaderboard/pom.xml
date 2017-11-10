@@ -9,6 +9,7 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
 
-  <artifactId>ranked-view-wall</artifactId>
+  <artifactId>ranked-view-leaderboard</artifactId>
+
 
 </project>
