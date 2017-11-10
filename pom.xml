@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.0.0.M5</version>
+    <version>2.0.0.M6</version>
     <relativePath/>
   </parent>
 
@@ -23,11 +23,13 @@
   </modules>
 
   <properties>
+    <projectConfigScan>false</projectConfigScan>
+
     <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
     <kotlin.version>1.1.51</kotlin.version>
-    <projectConfigScan>false</projectConfigScan>
-    <axon.version>3.0.5</axon.version>
     <kotlin-logging.version>1.4.6</kotlin-logging.version>
+
+    <axon.version>3.0.6</axon.version>
   </properties>
 
   <dependencyManagement>
@@ -48,7 +50,6 @@
         <version>${kotlin-logging.version}</version>
       </dependency>
     </dependencies>
-
   </dependencyManagement>
 
   <dependencies>

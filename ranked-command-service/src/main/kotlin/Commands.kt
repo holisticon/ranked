@@ -10,7 +10,6 @@ import java.util.*
 import javax.validation.Valid
 import javax.validation.constraints.NotEmpty
 
-
 data class CreatePlayer(
   @TargetAggregateIdentifier
   @get: Valid
@@ -20,7 +19,7 @@ data class CreatePlayer(
   val displayName: String
 )
 
-@SpELAssert(value = "disjunct", message = "{ranked.createMatch.disjunct}")
+@SpELAssert(value = "disjunct()", message = "{ranked.createMatch.disjunct}")
 data class CreateMatch(
   @TargetAggregateIdentifier
   @get: NotEmpty
@@ -36,7 +35,7 @@ data class CreateMatch(
 
   val tournamentId: String? = null
 ) {
-  val disjunct by lazy {
-    teamRed.players.intersect(teamBlue.players).isEmpty()
-  }
+
+  fun disjunct() = setOf(teamRed.player1, teamRed.player2).intersect(setOf(teamBlue.player1, teamBlue.player2)).isEmpty()
+
 }

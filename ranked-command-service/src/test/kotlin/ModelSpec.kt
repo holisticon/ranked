@@ -4,9 +4,44 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import javax.validation.Validation
 
+val validator = Validation.buildDefaultValidatorFactory().validator
+val piggy = UserName("piggy")
+val kermit = UserName("kermit")
+val gonzo = UserName("gonzo")
+
+class MatchSetSpec {
+
+  @Test
+  fun `goalsRed must be in 0-6`() {
+    assertThat(validator.validate(
+      MatchSet(
+        goalsBlue = 4,
+        goalsRed = -1,
+        offenseBlue = piggy,
+        offenseRed = kermit)).toList()[0].message)
+      .isEqualTo("Goals must be between 0 and 6!")
+
+    assertThat(validator.validate(
+      MatchSet(
+        goalsBlue = 4,
+        goalsRed = 7,
+        offenseBlue = piggy,
+        offenseRed = kermit)).toList()[0].message)
+      .isEqualTo("Goals must be between 0 and 6!")
+
+    assertThat(validator.validate(
+      MatchSet(
+        goalsBlue = 4,
+        goalsRed = 6,
+        offenseBlue = piggy,
+        offenseRed = kermit)).toList())
+      .isEmpty()
+  }
+}
+
 class TeamSpec {
 
-  val validator = Validation.buildDefaultValidatorFactory().validator
+
 
   val piggy = UserName("piggy")
   val kermit = UserName("kermit")
@@ -17,7 +52,7 @@ class TeamSpec {
   fun `a team can be represented as set of players`() {
     val team = Team(piggy, kermit)
 
-    assertThat(team.players)
+    assertThat(setOf(team.player1, team.player2))
       .hasSize(2)
       .containsExactly(piggy, kermit)
   }
