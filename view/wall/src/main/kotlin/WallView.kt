@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RestController
 import java.time.LocalDateTime
 
-@Component
 @TrackingProcessor
 @ProcessingGroup(WallView.NAME)
 @RestController
