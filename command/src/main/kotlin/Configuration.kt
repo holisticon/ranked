@@ -11,6 +11,7 @@ import org.axonframework.eventhandling.tokenstore.jpa.TokenEntry
 import org.axonframework.messaging.interceptors.BeanValidationInterceptor
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.config.BeanDefinition
+import org.springframework.context.SmartLifecycle
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.event.EventListener
@@ -21,10 +22,8 @@ import java.util.*
 import java.util.stream.Collectors
 
 /**
- * The spring boot main application.
+ * Configure Axon components.
  */
-
-// TODO: why is this a configuration?
 @Configuration
 class CommandConfiguration {
 
@@ -36,14 +35,43 @@ class CommandConfiguration {
     bus.registerDispatchInterceptor(BeanValidationInterceptor())
   }
 
-  /**
-   * Configure tracking processors
-   */
+
   @Autowired
-  fun configure(trackingProcessorService: TrackingProcessorService) {
+  fun registerTrackingProcessors(trackingProcessorService: TrackingProcessorService) {
     trackingProcessorService.registerTrackingProcessors()
-    trackingProcessorService.replayAll()
   }
+}
+
+/**
+ * Startup axon tracking processor registration and replay.
+ */
+@Component
+class TrackingProcessorInitializer(val trackingProcessorService: TrackingProcessorService) : SmartLifecycle {
+
+  var running: Boolean = false
+
+  override fun start() {
+
+    this.trackingProcessorService.replayAll()
+    this.running = true
+  }
+
+  override fun isAutoStartup(): Boolean { return true }
+
+  override fun stop(callback: Runnable?) {
+    if (callback != null) {
+      callback.run()
+    }
+    this.running = false
+  }
+
+  override fun stop() { this.running = false }
+
+  override fun getPhase(): Int {
+    return Int.MAX_VALUE - 10
+  }
+
+  override fun isRunning(): Boolean { return running }
 }
 
 /**
@@ -51,7 +79,9 @@ class CommandConfiguration {
  */
 interface TokenJpaRepository : JpaRepository<TokenEntry, TokenEntry.PK>
 
-
+/**
+ * Tracking processor service.
+ */
 @Component
 class TrackingProcessorService(val eventHandlingConfiguration: EventHandlingConfiguration, val repository: TokenJpaRepository) {
 
@@ -66,13 +96,11 @@ class TrackingProcessorService(val eventHandlingConfiguration: EventHandlingConf
 
   @EventListener
   fun replay(event: ReplayTrackingProcessor) {
-    logger.info { "replay requested: $event" }
+    logger.info { "Replay requested: $event" }
     val name = event.name
     val id: TokenEntry.PK = TokenEntry.PK(name, 0)
-    val one: TokenEntry = repository.getOne(id)
-    if (one == null) {
-      logger.warn { "Token not found for $name processor." }
-    } else {
+    val one: Optional<TokenEntry> = repository.findById(id)
+    if (one.isPresent) {
       val processor: Optional<EventProcessor> = this.eventHandlingConfiguration.getProcessor(name)
       processor.ifPresent({ p ->
         logger.debug { "Stopping $name" }
@@ -82,6 +110,8 @@ class TrackingProcessorService(val eventHandlingConfiguration: EventHandlingConf
         logger.debug { "Starting $name" }
         p.start()
       })
+    } else {
+      logger.warn { "Token not found for $name processor. No replay initiated." }
     }
   }
 
