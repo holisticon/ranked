@@ -1,5 +1,13 @@
 # Ranked
-Application for tracking table-soccer results. 
+
+Application for tracking table-soccer results.
+
+## Running
+
+* start the h2Application
+* start the RankedApplication
+
+* create new Match using localhost:8080/  or the /swagger-ui.html 
 
 ## Side Goals
 
