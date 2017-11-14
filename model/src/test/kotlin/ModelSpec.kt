@@ -80,21 +80,27 @@ class MatchSetSpec {
 
   @Test
   fun `goalsRed must be in 0-6`() {
-    assertThat(validator.singleMessage(
+    assertThat(validator.validate(
       MatchSet(
         goalsBlue = 4,
         goalsRed = -1,
         offenseBlue = piggy,
-        offenseRed = kermit)))
-      .isEqualTo("Goals must be between 0 and 6.")
+        offenseRed = kermit)).stream().map { v -> v.message })
+      .containsExactlyInAnyOrder(
+        "One team must have 6 goals to count the set.",
+        "Goals must be between 0 and 6."
+      )
 
-    assertThat(validator.singleMessage(
+    assertThat(validator.validate(
       MatchSet(
         goalsBlue = 4,
         goalsRed = 7,
         offenseBlue = piggy,
-        offenseRed = kermit)))
-      .isEqualTo("Goals must be between 0 and 6.")
+        offenseRed = kermit)).stream().map { v -> v.message })
+      .containsExactlyInAnyOrder(
+        "One team must have 6 goals to count the set.",
+        "Goals must be between 0 and 6."
+      )
 
     assertThat(validator.validate(
       MatchSet(
