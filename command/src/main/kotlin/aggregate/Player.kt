@@ -22,7 +22,8 @@ class Player() {
     AggregateLifecycle.apply(
       PlayerCreated(
         userName = c.userName,
-        displayName = c.displayName
+        displayName = c.displayName,
+        date = c.date
       )
     )
   }

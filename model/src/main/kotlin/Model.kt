@@ -58,17 +58,22 @@ data class Team(
  * @property offenseRed the UserName of the player who played offense for red
  * @property offenseBlue the UserName of the player who played offense for blue
  */
+@SpELAssert(value = "goalsBlue != goalsRed && (goalsRed == SCORE_TO_WIN || goalsBlue == SCORE_TO_WIN)", message = "{ranked.model.matchSet.ended}")
 data class MatchSet(
-  @get: Range(min = 0, max = 6, message = "{ranked.model.matchSet.goals}")
+
+  @get: Range(min = 0, max = MatchSet.SCORE_TO_WIN, message = "{ranked.model.matchSet.goals}")
   val goalsRed: Int,
 
-  @get: Range(min = 0, max = 6, message = "{ranked.model.matchSet.goals}")
+  @get: Range(min = 0, max = MatchSet.SCORE_TO_WIN, message = "{ranked.model.matchSet.goals}")
   val goalsBlue: Int,
 
   val offenseRed: UserName,
 
   val offenseBlue: UserName
 ) {
+  companion object {
+    const val SCORE_TO_WIN: Long = 6
+  }
 
-  fun winner() = if (goalsRed == 6)  Team.RED else Team.BLUE
+  fun winner() = if (goalsRed == SCORE_TO_WIN.toInt()) Team.RED else Team.BLUE
 }

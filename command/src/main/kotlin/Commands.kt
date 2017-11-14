@@ -17,7 +17,9 @@ data class CreatePlayer(
   val userName: UserName,
 
   @get: NotEmpty
-  val displayName: String
+  val displayName: String,
+
+  val date: LocalDateTime = LocalDateTime.now()
 )
 
 @ApiModel
@@ -26,6 +28,7 @@ data class CreatePlayer(
   SpELAssert(value = "correctOffense()", message = "{ranked.createMatch.offense}")
 )
 data class CreateMatch(
+
   @TargetAggregateIdentifier
   @get: NotEmpty
   val matchId: String = UUID.randomUUID().toString(),

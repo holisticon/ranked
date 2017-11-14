@@ -15,6 +15,9 @@ val gonzo = UserName("gonzo")
 
 fun Validator.singleMessage(target: Any) = this.validate(target).toList()[0].message!!
 
+/**
+ * User
+ */
 class UserNameSpec {
   @Test
   fun `userName is created with value`() {
@@ -35,6 +38,44 @@ class UserNameSpec {
   }
 }
 
+/**
+ * Team
+ */
+class TeamSpec {
+
+  val piggy = UserName("piggy")
+  val kermit = UserName("kermit")
+  val gonzo = UserName("gonzo")
+  val fozzy = UserName("fozzy")
+
+  @Test
+  fun `team(piggy,kermit) hasMember kermit`() {
+    assertThat(Team(piggy, kermit) hasMember kermit).isTrue()
+  }
+
+  @Test
+  fun `team(piggy,kermit) not hasMember gonzo`() {
+    assertThat(Team(piggy, kermit).hasMember(gonzo)).isFalse()
+  }
+
+  @Test
+  fun `two teams are identical if they have the same players no matter in which order`() {
+    assertThat(Team(piggy, kermit)).isEqualTo(Team(piggy, kermit))
+    assertThat(Team(piggy, kermit)).isEqualTo(Team(kermit, piggy))
+  }
+
+  @Test
+  fun `a team must have two different players`() {
+    val result = validator.validate(Team(piggy, piggy)).toList()
+
+    assertThat(result[0].message).isEqualTo("A team must have two different players.")
+  }
+}
+
+
+/**
+ * Match set
+ */
 class MatchSetSpec {
 
   @Test
@@ -80,7 +121,7 @@ class MatchSetSpec {
   @Test
   fun `winner is RED`() {
     val s = MatchSet(
-      goalsBlue = 2,
+      goalsBlue = 0,
       goalsRed = 6,
       offenseBlue = piggy,
       offenseRed = kermit)
@@ -91,45 +132,24 @@ class MatchSetSpec {
   }
 
   @Test
-  @Ignore
   fun `not valid - no team won`() {
-    val s = MatchSet(
-      goalsBlue = 2,
-      goalsRed = 4,
-      offenseBlue = piggy,
-      offenseRed = kermit)
+    assertThat(validator.singleMessage(
+      MatchSet(
+        goalsBlue = 2,
+        goalsRed = 4,
+        offenseBlue = piggy,
+        offenseRed = kermit)
+    )).isEqualTo("One team must have 6 goals to count the set.")
 
-    assertThat(validator.singleMessage(s)).isEqualTo("One team must have 6 goals to count the set.")
+    assertThat(validator.singleMessage(
+      MatchSet(
+        goalsBlue = 6,
+        goalsRed = 6,
+        offenseBlue = piggy,
+        offenseRed = kermit)
+    )).isEqualTo("One team must have 6 goals to count the set.")
+
   }
+
 }
 
-class TeamSpec {
-
-  val piggy = UserName("piggy")
-  val kermit = UserName("kermit")
-  val gonzo = UserName("gonzo")
-  val fozzy = UserName("fozzy")
-
-  @Test
-  fun `team(piggy,kermit) hasMember kermit`() {
-    assertThat(Team(piggy, kermit) hasMember kermit).isTrue()
-  }
-
-  @Test
-  fun `team(piggy,kermit) not hasMember gonzo`() {
-    assertThat(Team(piggy, kermit).hasMember(gonzo)).isFalse()
-  }
-
-  @Test
-  fun `two teams are identical if they have the same players no matter in which order`() {
-    assertThat(Team(piggy, kermit)).isEqualTo(Team(piggy, kermit))
-    assertThat(Team(piggy, kermit)).isEqualTo(Team(kermit, piggy))
-  }
-
-  @Test
-  fun `a team must have two different players`() {
-    val result = validator.validate(Team(piggy, piggy)).toList()
-
-    assertThat(result[0].message).isEqualTo("A team must have two different players.")
-  }
-}
