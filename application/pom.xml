@@ -18,6 +18,12 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
+      <artifactId>ranked-view-leaderboard</artifactId>
+      <groupId>${project.groupId}</groupId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
       <artifactId>ranked-command</artifactId>
       <groupId>${project.groupId}</groupId>
       <version>${project.version}</version>
@@ -35,13 +41,11 @@
 
     <dependency>
       <groupId>io.springfox</groupId>
-      <artifactId>springfox-swagger2</artifactId>
-      <version>${springfox.version}</version>
+      <artifactId>springfox-swagger-ui</artifactId>
     </dependency>
     <dependency>
       <groupId>io.springfox</groupId>
-      <artifactId>springfox-swagger-ui</artifactId>
-      <version>${springfox.version}</version>
+      <artifactId>springfox-swagger2</artifactId>
     </dependency>
 
   </dependencies>

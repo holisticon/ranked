@@ -44,12 +44,12 @@ class H2Application(
   fun tokens() = tokenRepository.findAll()
 
   @Bean
-  fun swagger() = Docket(DocumentationType.SWAGGER_2)
+  fun swagger(): Docket = Docket(DocumentationType.SWAGGER_2)
+    .groupName("H2 Repositories")
     .select()
     .apis(RequestHandlerSelectors.any())
     .paths(PathSelectors.any())
     .build()
-
 }
 
 interface AssociationValueRepository : PagingAndSortingRepository<AssociationValueEntry, Long>

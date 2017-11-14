@@ -66,6 +66,18 @@
         <artifactId>kotlin-logging</artifactId>
         <version>${kotlin-logging.version}</version>
       </dependency>
+
+
+      <dependency>
+        <groupId>io.springfox</groupId>
+        <artifactId>springfox-swagger-ui</artifactId>
+        <version>${springfox.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.springfox</groupId>
+        <artifactId>springfox-swagger2</artifactId>
+        <version>${springfox.version}</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
@@ -206,6 +218,5 @@
       </snapshots>
     </pluginRepository>
   </pluginRepositories>
-
 
 </project>

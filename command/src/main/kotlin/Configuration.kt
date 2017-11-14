@@ -1,9 +1,11 @@
 package de.holisticon.ranked.command
 
 import de.holisticon.ranked.axon.TrackingProcessor
+import de.holisticon.ranked.command.rest.CommandApi
 import de.holisticon.ranked.model.event.internal.ReplayTrackingProcessor
 import mu.KLogging
 import org.axonframework.commandhandling.SimpleCommandBus
+import org.axonframework.commandhandling.gateway.CommandGateway
 import org.axonframework.config.EventHandlingConfiguration
 import org.axonframework.config.ProcessingGroup
 import org.axonframework.eventhandling.EventProcessor
@@ -11,13 +13,23 @@ import org.axonframework.eventhandling.tokenstore.jpa.TokenEntry
 import org.axonframework.messaging.interceptors.BeanValidationInterceptor
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.config.BeanDefinition
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration
 import org.springframework.context.SmartLifecycle
+import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider
+import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.event.EventListener
 import org.springframework.core.type.filter.AnnotationTypeFilter
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Component
+import springfox.documentation.builders.PathSelectors
+import springfox.documentation.builders.RequestHandlerSelectors
+import springfox.documentation.service.ApiInfo
+import springfox.documentation.service.Contact
+import springfox.documentation.spi.DocumentationType
+import springfox.documentation.spring.web.plugins.Docket
+import springfox.documentation.swagger2.annotations.EnableSwagger2
 import java.util.*
 import java.util.stream.Collectors
 
@@ -25,6 +37,9 @@ import java.util.stream.Collectors
  * Configure Axon components.
  */
 @Configuration
+@EnableSwagger2
+@EnableAutoConfiguration
+@ComponentScan
 class CommandConfiguration {
 
   /**
@@ -40,10 +55,35 @@ class CommandConfiguration {
   fun registerTrackingProcessors(trackingProcessorService: TrackingProcessorService) {
     trackingProcessorService.registerTrackingProcessors()
   }
+
+  // TODO why do we need this?
+  @Bean
+  fun command(commandGateway: CommandGateway) = CommandApi(commandGateway)
+
+  /**
+   * Swagger configuration
+   */
+  @Bean
+  fun commandApi(): Docket = Docket(DocumentationType.SWAGGER_2)
+    .groupName("Commands")
+    .select()
+    .apis(RequestHandlerSelectors.basePackage(CommandApi.javaClass.`package`.name))
+    .paths(PathSelectors.ant("/command/**"))
+    .build()
+    .apiInfo(ApiInfo(
+      "Ranked Command API",
+      "Command API to record new match results in ranked.",
+      "1.0.0",
+      "None",
+      Contact("Holisticon Craftsmen", "https://www.holisticon.de", "jobs@holisticon.de"),
+      "Revised BSD License",
+      "https://github.com/holisticon/ranked/blob/master/LICENSE.txt",
+      ArrayList()))
 }
 
+
 /**
- * Startup axon tracking processor registration and replay.
+ * Startup axon tracking processor replay.
  */
 @Component
 class TrackingProcessorInitializer(val trackingProcessorService: TrackingProcessorService) : SmartLifecycle {
@@ -59,9 +99,7 @@ class TrackingProcessorInitializer(val trackingProcessorService: TrackingProcess
   override fun isAutoStartup(): Boolean { return true }
 
   override fun stop(callback: Runnable?) {
-    if (callback != null) {
-      callback.run()
-    }
+    callback?.run()
     this.running = false
   }
 
