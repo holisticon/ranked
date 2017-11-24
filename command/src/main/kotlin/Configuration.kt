@@ -1,6 +1,6 @@
 package de.holisticon.ranked.command
 
-import de.holisticon.ranked.axon.TrackingProcessor
+import de.holisticon.ranked.axon.TrackingProcessors
 import de.holisticon.ranked.command.rest.CommandApi
 import de.holisticon.ranked.model.event.internal.ReplayTrackingProcessor
 import mu.KLogging
@@ -125,6 +125,9 @@ class TrackingProcessorService(val eventHandlingConfiguration: EventHandlingConf
 
   companion object : KLogging()
 
+  @Autowired
+  lateinit var trackingProcessors : TrackingProcessors
+
   fun registerTrackingProcessors() {
     trackingProcessors.forEach { name ->
       logger.info { "Registering tracking processor $name." }
@@ -154,19 +157,6 @@ class TrackingProcessorService(val eventHandlingConfiguration: EventHandlingConf
   }
 
   fun replayAll() = trackingProcessors.forEach { name -> replay(ReplayTrackingProcessor(name)) }
-
-  // TODO replace with bean post-processing
-  internal val trackingProcessors by lazy {
-    val scanner = ClassPathScanningCandidateComponentProvider(false)
-    scanner.addIncludeFilter(AnnotationTypeFilter(TrackingProcessor::class.java))
-    scanner.findCandidateComponents("de.holisticon.ranked").stream()
-      .map { bd ->
-        Optional.ofNullable(classForBeanDefinition(bd).getAnnotation(ProcessingGroup::class.java))
-          .map(ProcessingGroup::value)
-          .orElse(classForBeanDefinition(bd).`package`.name)
-      }
-      .collect(Collectors.toList())
-  }
 
   internal fun classForBeanDefinition(bd: BeanDefinition): Class<*> {
     return Class.forName(bd.beanClassName)
