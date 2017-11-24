@@ -21,6 +21,7 @@
     <module>view</module>
     <module>lib/axon</module>
     <module>application</module>
+    <module>frontend</module>
   </modules>
 
   <properties>
