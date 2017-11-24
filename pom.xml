@@ -25,13 +25,11 @@
 
   <properties>
     <projectConfigScan>false</projectConfigScan>
-
     <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
+
     <kotlin.version>1.1.51</kotlin.version>
     <kotlin-logging.version>1.4.6</kotlin-logging.version>
-
     <axon.version>3.0.7</axon.version>
-
     <springfox.version>2.7.0</springfox.version>
   </properties>
 
@@ -67,6 +65,18 @@
         <groupId>io.github.microutils</groupId>
         <artifactId>kotlin-logging</artifactId>
         <version>${kotlin-logging.version}</version>
+      </dependency>
+
+
+      <dependency>
+        <groupId>io.springfox</groupId>
+        <artifactId>springfox-swagger-ui</artifactId>
+        <version>${springfox.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.springfox</groupId>
+        <artifactId>springfox-swagger2</artifactId>
+        <version>${springfox.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -208,6 +218,5 @@
       </snapshots>
     </pluginRepository>
   </pluginRepositories>
-
 
 </project>

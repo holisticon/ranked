@@ -15,6 +15,9 @@ val gonzo = UserName("gonzo")
 
 fun Validator.singleMessage(target: Any) = this.validate(target).toList()[0].message!!
 
+/**
+ * User
+ */
 class UserNameSpec {
   @Test
   fun `userName is created with value`() {
@@ -35,74 +38,9 @@ class UserNameSpec {
   }
 }
 
-class MatchSetSpec {
-
-  @Test
-  fun `goalsRed must be in 0-6`() {
-    assertThat(validator.singleMessage(
-      MatchSet(
-        goalsBlue = 4,
-        goalsRed = -1,
-        offenseBlue = piggy,
-        offenseRed = kermit)))
-      .isEqualTo("Goals must be between 0 and 6.")
-
-    assertThat(validator.singleMessage(
-      MatchSet(
-        goalsBlue = 4,
-        goalsRed = 7,
-        offenseBlue = piggy,
-        offenseRed = kermit)))
-      .isEqualTo("Goals must be between 0 and 6.")
-
-    assertThat(validator.validate(
-      MatchSet(
-        goalsBlue = 4,
-        goalsRed = 6,
-        offenseBlue = piggy,
-        offenseRed = kermit)).toList())
-      .isEmpty()
-  }
-
-  @Test
-  fun `winner is BLUE`() {
-    val s = MatchSet(
-      goalsBlue = 6,
-      goalsRed = 3,
-      offenseBlue = piggy,
-      offenseRed = kermit)
-
-    assertThat(validator.validate(s)).isEmpty()
-
-    assertThat(s.winner()).isEqualTo(Team.BLUE)
-  }
-
-  @Test
-  fun `winner is RED`() {
-    val s = MatchSet(
-      goalsBlue = 2,
-      goalsRed = 6,
-      offenseBlue = piggy,
-      offenseRed = kermit)
-
-    assertThat(validator.validate(s)).isEmpty()
-
-    assertThat(s.winner()).isEqualTo(Team.RED)
-  }
-
-  @Test
-  @Ignore
-  fun `not valid - no team won`() {
-    val s = MatchSet(
-      goalsBlue = 2,
-      goalsRed = 4,
-      offenseBlue = piggy,
-      offenseRed = kermit)
-
-    assertThat(validator.singleMessage(s)).isEqualTo("One team must have 6 goals to count the set.")
-  }
-}
-
+/**
+ * Team
+ */
 class TeamSpec {
 
   val piggy = UserName("piggy")
@@ -133,3 +71,91 @@ class TeamSpec {
     assertThat(result[0].message).isEqualTo("A team must have two different players.")
   }
 }
+
+
+/**
+ * Match set
+ */
+class MatchSetSpec {
+
+  @Test
+  fun `goalsRed must be in 0-6`() {
+    assertThat(validator.validate(
+      MatchSet(
+        goalsBlue = 4,
+        goalsRed = -1,
+        offenseBlue = piggy,
+        offenseRed = kermit)).stream().map { v -> v.message })
+      .containsExactlyInAnyOrder(
+        "One team must have 6 goals to count the set.",
+        "Goals must be between 0 and 6."
+      )
+
+    assertThat(validator.validate(
+      MatchSet(
+        goalsBlue = 4,
+        goalsRed = 7,
+        offenseBlue = piggy,
+        offenseRed = kermit)).stream().map { v -> v.message })
+      .containsExactlyInAnyOrder(
+        "One team must have 6 goals to count the set.",
+        "Goals must be between 0 and 6."
+      )
+
+    assertThat(validator.validate(
+      MatchSet(
+        goalsBlue = 4,
+        goalsRed = 6,
+        offenseBlue = piggy,
+        offenseRed = kermit)).toList())
+      .isEmpty()
+  }
+
+  @Test
+  fun `winner is BLUE`() {
+    val s = MatchSet(
+      goalsBlue = 6,
+      goalsRed = 3,
+      offenseBlue = piggy,
+      offenseRed = kermit)
+
+    assertThat(validator.validate(s)).isEmpty()
+
+    assertThat(s.winner()).isEqualTo(Team.BLUE)
+  }
+
+  @Test
+  fun `winner is RED`() {
+    val s = MatchSet(
+      goalsBlue = 0,
+      goalsRed = 6,
+      offenseBlue = piggy,
+      offenseRed = kermit)
+
+    assertThat(validator.validate(s)).isEmpty()
+
+    assertThat(s.winner()).isEqualTo(Team.RED)
+  }
+
+  @Test
+  fun `not valid - no team won`() {
+    assertThat(validator.singleMessage(
+      MatchSet(
+        goalsBlue = 2,
+        goalsRed = 4,
+        offenseBlue = piggy,
+        offenseRed = kermit)
+    )).isEqualTo("One team must have 6 goals to count the set.")
+
+    assertThat(validator.singleMessage(
+      MatchSet(
+        goalsBlue = 6,
+        goalsRed = 6,
+        offenseBlue = piggy,
+        offenseRed = kermit)
+    )).isEqualTo("One team must have 6 goals to count the set.")
+
+  }
+
+}
+

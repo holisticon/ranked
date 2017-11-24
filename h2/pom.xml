@@ -11,6 +11,10 @@
 
   <artifactId>ranked-h2</artifactId>
 
+  <properties>
+    <h2.version>1.4.192</h2.version>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -23,6 +27,7 @@
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
+      <version>${h2.version}</version>
     </dependency>
 
     <dependency>
