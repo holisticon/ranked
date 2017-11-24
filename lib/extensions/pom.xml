@@ -13,4 +13,12 @@
   <groupId>de.holisticon.ranked.extension</groupId>
   <artifactId>ranked-kotlin-extensions</artifactId>
 
+  <dependencies>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-validation</artifactId>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+
 </project>

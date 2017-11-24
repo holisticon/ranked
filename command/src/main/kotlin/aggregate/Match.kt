@@ -15,6 +15,7 @@ class Match() {
 
   companion object {
     // Best of three.
+    const val BEST_OF = 3
     const val SCORE_TO_WIN_MATCH = 2
   }
 
