@@ -10,6 +10,7 @@ import org.axonframework.eventsourcing.EventSourcingHandler
 import org.axonframework.spring.stereotype.Aggregate
 
 @Aggregate
+@Suppress("UNUSED")
 class Match() {
 
   companion object {

@@ -11,6 +11,7 @@ import org.axonframework.spring.stereotype.Aggregate
 
 
 @Aggregate
+@Suppress("UNUSED")
 class Player() {
 
   @AggregateIdentifier
