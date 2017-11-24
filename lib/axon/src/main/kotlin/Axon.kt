@@ -37,12 +37,11 @@ class TrackingProcessorConfiguration {
   fun scanForTrackingProcessors() = object : BeanPostProcessor {
     override fun postProcessAfterInitialization(bean: Any, beanName: String): Any {
       val targetClass = AopUtils.getTargetClass(bean);
-      if (targetClass.`package`.name.startsWith("de.holistion"))
-
-      val name: String? = trackingProcessorName(targetClass.kotlin)
-      logger.info { "processing: $bean, $beanName - $name" }
-      if (name != null) trackingProcessorSet.add(name)
-
+      if (targetClass.`package`.name.startsWith("de.holistion")) {
+        val name: String? = trackingProcessorName(targetClass.kotlin)
+        logger.info { "processing: $bean, $beanName - $name" }
+        if (name != null) trackingProcessorSet.add(name)
+      }
       return bean
     }
   }
