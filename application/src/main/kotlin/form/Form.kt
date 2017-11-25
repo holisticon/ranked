@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller
 import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 import javax.validation.Valid
 
@@ -18,16 +19,15 @@ class WebController(val commandGateway: CommandGateway) : WebMvcConfigurer {
 
 
   @GetMapping("/")
-  fun showForm(createMatchForm: CreateMatchForm): String {
-    return "create-match"
-  }
+  fun showForm(createMatchForm: CreateMatchForm): String = "create-match"
+
 
   @PostMapping("/")
   fun checkPersonInfo(@Valid form: CreateMatchForm, bindingResult: BindingResult): String {
 
     val sets = mutableListOf<MatchSet>()
 
-    if (form.goalsBlue1 != 0 && form.goalsRed1 != 0) {
+    if (form.goalsBlue1 == 6 || form.goalsRed1 == 6) {
       sets.add(MatchSet(
         goalsRed = form.goalsRed1,
         goalsBlue = form.goalsBlue1,
@@ -35,7 +35,7 @@ class WebController(val commandGateway: CommandGateway) : WebMvcConfigurer {
         offenseBlue = UserName(form.offenseBlue1)
       ))
     }
-    if (form.goalsBlue2 != 0 && form.goalsRed2 != 0) {
+    if (form.goalsBlue2 == 6 || form.goalsRed2 == 6) {
       sets.add(MatchSet(
         goalsRed = form.goalsRed2,
         goalsBlue = form.goalsBlue2,
@@ -43,7 +43,7 @@ class WebController(val commandGateway: CommandGateway) : WebMvcConfigurer {
         offenseBlue = UserName(form.offenseBlue2)
       ))
     }
-    if (form.goalsBlue3 != 0 && form.goalsRed3 != 0) {
+    if (form.goalsBlue3 == 6 || form.goalsRed3 == 6) {
       sets.add(MatchSet(
         goalsRed = form.goalsRed3,
         goalsBlue = form.goalsBlue3,
