@@ -1,6 +1,9 @@
 package de.holisticon.ranked.command.api
 
 import cz.jirutka.validator.spring.SpELAssert
+import de.holisticon.ranked.command.aggregate.Match
+import de.holisticon.ranked.command.aggregate.Match.Companion.BEST_OF
+import de.holisticon.ranked.command.aggregate.Match.Companion.SCORE_TO_WIN_MATCH
 import de.holisticon.ranked.model.MatchSet
 import de.holisticon.ranked.model.Team
 import de.holisticon.ranked.model.UserName
@@ -9,7 +12,9 @@ import org.axonframework.commandhandling.TargetAggregateIdentifier
 import java.time.LocalDateTime
 import java.util.*
 import javax.validation.Valid
+import javax.validation.Validator
 import javax.validation.constraints.NotEmpty
+import javax.validation.constraints.Size
 
 data class CreatePlayer(
   @TargetAggregateIdentifier
@@ -39,6 +44,7 @@ data class CreateMatch(
 
   val teamBlue: Team,
 
+  @get: Size(min = SCORE_TO_WIN_MATCH, max = BEST_OF)
   val matchSets: List<MatchSet>,
 
   val tournamentId: String? = null
@@ -47,3 +53,5 @@ data class CreateMatch(
   fun disjunct() = setOf(teamRed.player1, teamRed.player2).intersect(setOf(teamBlue.player1, teamBlue.player2)).isEmpty()
   fun correctOffense() = matchSets.filter{ s -> !teamRed.hasMember(s.offenseRed) || !teamBlue.hasMember(s.offenseBlue) }.isEmpty()
 }
+
+

@@ -10,10 +10,12 @@ import org.axonframework.eventsourcing.EventSourcingHandler
 import org.axonframework.spring.stereotype.Aggregate
 
 @Aggregate
+@Suppress("UNUSED")
 class Match() {
 
   companion object {
     // Best of three.
+    const val BEST_OF = 3
     const val SCORE_TO_WIN_MATCH = 2
   }
 
