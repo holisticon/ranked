@@ -53,22 +53,23 @@ class MatchSpec {
           matchSets = sets,
           tournamentId = "0815"
         ),
-        TeamWonMatchSet(teamBlue, teamRed, piggy, now),
-        TeamWonMatchSet(teamRed, teamBlue, fozzy, now),
-        TeamWonMatchSet(teamBlue, teamRed, piggy, now),
-
+        TeamWonMatchSet(teamBlue, teamRed, piggy, now, "4711"),
         PlayerWonMatchSet(piggy, PlayerPosition.OFFENSE, kermit, now),
         PlayerWonMatchSet(kermit, PlayerPosition.DEFENSE, piggy, now),
 
+        TeamWonMatchSet(teamRed, teamBlue, fozzy, now, "4711"),
         PlayerWonMatchSet(gonzo, PlayerPosition.DEFENSE, fozzy, now),
         PlayerWonMatchSet(fozzy, PlayerPosition.OFFENSE, gonzo, now),
 
+        TeamWonMatchSet(teamBlue, teamRed, piggy, now, "4711"),
         PlayerWonMatchSet(piggy, PlayerPosition.OFFENSE, kermit, now),
-        PlayerWonMatchSet(kermit, PlayerPosition.DEFENSE, piggy, now),
+        PlayerWonMatchSet(kermit, PlayerPosition.DEFENSE, piggy, now)
 
-        TeamWonMatch(teamBlue, teamRed, now),
+        /*
+        TeamWonMatch("4711", teamBlue, teamRed, now),
         PlayerWonMatch(piggy, kermit, now),
         PlayerWonMatch(kermit, piggy, now)
+        */
       )
   }
 }
