@@ -47,7 +47,8 @@
         <artifactId>frontend-maven-plugin</artifactId>
         <version>1.2</version>
         <configuration>
-          <installDirectory>target</installDirectory>
+		  <!-- We don't want maven to clean up the node installation each time, so it is not inside the target directory -->
+          <installDirectory>node</installDirectory>
         </configuration>
         <executions>
           <execution>
@@ -57,7 +58,7 @@
             </goals>
             <configuration>
               <nodeVersion>v4.4.5</nodeVersion>
-              <npmVersion>3.9.2</npmVersion>
+              <npmVersion>3.9.2</npmVersion>			  
             </configuration>
           </execution>
 
@@ -74,12 +75,41 @@
           <execution>
             <id>webpack build</id>
             <goals>
+			  <!-- Webpack is building into the target/webpack directory -->
               <goal>webpack</goal>
             </goals>
           </execution>
 
         </executions>
       </plugin>
+      <plugin>
+		<!-- use webpack built results -->
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>2.6</version>
+        <executions>
+          <execution>
+            <id>copy-resources</id>
+            <phase>process-classes</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <!-- would be used for webjar
+              <outputDirectory>
+                ${project.build.directory}/classes/META-INF/resources/webjars/${project.artifactId}/${project.version}
+              </outputDirectory>
+              // -->
+              <outputDirectory>${project.build.directory}/classes/static</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>${project.build.directory}/webpack</directory>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+	  
     </plugins>
   </build>
 

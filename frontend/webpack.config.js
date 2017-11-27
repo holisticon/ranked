@@ -7,7 +7,7 @@ module.exports = {
   debug: true,
   output: {
     path: __dirname,
-    filename: './src/main/resources/static/built/bundle.js'
+    filename: './target/webpack/built/bundle.js'
   },
   module: {
     loaders: [
