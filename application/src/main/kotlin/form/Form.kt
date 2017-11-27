@@ -9,7 +9,6 @@ import org.springframework.stereotype.Controller
 import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 import javax.validation.Valid
 
@@ -17,10 +16,8 @@ import javax.validation.Valid
 @Controller
 class WebController(val commandGateway: CommandGateway) : WebMvcConfigurer {
 
-
   @GetMapping("/")
   fun showForm(createMatchForm: CreateMatchForm): String = "create-match"
-
 
   @PostMapping("/")
   fun checkPersonInfo(@Valid form: CreateMatchForm, bindingResult: BindingResult): String {
@@ -51,7 +48,6 @@ class WebController(val commandGateway: CommandGateway) : WebMvcConfigurer {
         offenseBlue = UserName(form.offenseBlue3)
       ))
     }
-
 
     val cmd = CreateMatch(
       teamRed = Team(UserName(form.red1), UserName(form.red2)),

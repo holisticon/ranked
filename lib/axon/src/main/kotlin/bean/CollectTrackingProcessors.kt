@@ -33,7 +33,7 @@ class CollectTrackingProcessors {
       val targetClass = bean.getTargetClass()
 
       if (targetClass.inPackage("de.holisticon.ranked")) {
-        bean.getTargetClass().trackingProcessor()?.let { trackingProcessorSet.add(it) }
+        targetClass.trackingProcessor()?.let { trackingProcessorSet.add(it) }
       }
 
       return bean

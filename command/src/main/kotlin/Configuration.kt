@@ -158,9 +158,4 @@ class TrackingProcessorService(val eventHandlingConfiguration: EventHandlingConf
 
   fun replayAll() = trackingProcessors.forEach { name -> replay(ReplayTrackingProcessor(name)) }
 
-  internal fun classForBeanDefinition(bd: BeanDefinition): Class<*> {
-    return Class.forName(bd.beanClassName)
-  }
-
-
 }

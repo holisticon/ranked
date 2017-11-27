@@ -8,8 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 class UIController {
 
   @RequestMapping(value = "/")
-  fun index(): String {
-    return "index"
-  }
+  fun index(): String = "index"
+
 
 }

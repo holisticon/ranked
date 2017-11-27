@@ -10,7 +10,6 @@ fun main(args: Array<String>) {
   runApplication<RankedApplication>(*args)
 }
 
+
 @SpringBootApplication
 class RankedApplication
-
-
