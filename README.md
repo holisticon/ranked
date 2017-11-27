@@ -13,7 +13,7 @@ Application for tracking table-soccer results.
 
 - Learning of SpringBoot with Kotlin
 - Learning of CQRS, Event Sourcing with AxonFramework
-- Learning "you name it" frontend technology
+- Learning React frontend technology
 
 ## Ideas and Requirements
 
@@ -67,7 +67,6 @@ The entire Command API is offered under `/command` resource. The entire View API
 Though using plain junit/assertj unit tests would be possible, we want to try the kotlin way.
 
 
-
 ## History
 
 Wait... Last time I was here you spoke about implementing it in Scala. Right, the initial idea was to implement the application 
@@ -77,10 +76,14 @@ some JEE Beans and controllers. After several years, we decided to try it again.
 If you are still interested, check out the [legacy-scala](https://github.com/holisticon/ranked/tree/legacy-scala) branch.
 
 
-## Team 
+## Team
 
 - Simon Zambrovski
 - Jan Galinski
+- Timo Gröger
 - Daniel Wegener
+
+
+
 
 

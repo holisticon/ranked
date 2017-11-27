@@ -1,7 +1,6 @@
 package de.holisticon.ranked.command.api
 
 import cz.jirutka.validator.spring.SpELAssert
-import de.holisticon.ranked.command.aggregate.Match
 import de.holisticon.ranked.command.aggregate.Match.Companion.BEST_OF
 import de.holisticon.ranked.command.aggregate.Match.Companion.SCORE_TO_WIN_MATCH
 import de.holisticon.ranked.model.MatchSet
@@ -12,7 +11,6 @@ import org.axonframework.commandhandling.TargetAggregateIdentifier
 import java.time.LocalDateTime
 import java.util.*
 import javax.validation.Valid
-import javax.validation.Validator
 import javax.validation.constraints.NotEmpty
 import javax.validation.constraints.Size
 
@@ -54,4 +52,10 @@ data class CreateMatch(
   fun correctOffense() = matchSets.filter{ s -> !teamRed.hasMember(s.offenseRed) || !teamBlue.hasMember(s.offenseBlue) }.isEmpty()
 }
 
-
+data class WinMatch(
+  @TargetAggregateIdentifier
+  @get: NotEmpty
+  val matchId: String,
+  val winner: Team,
+  val looser: Team
+)

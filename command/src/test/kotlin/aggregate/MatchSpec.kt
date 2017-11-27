@@ -1,12 +1,13 @@
 package de.holisticon.ranked.command.aggregate
 
 import de.holisticon.ranked.command.api.CreateMatch
-import de.holisticon.ranked.command.api.CreatePlayer
 import de.holisticon.ranked.model.MatchSet
 import de.holisticon.ranked.model.Team
 import de.holisticon.ranked.model.UserName
-import de.holisticon.ranked.model.event.*
-import org.assertj.core.api.Assertions.assertThat
+import de.holisticon.ranked.model.event.MatchCreated
+import de.holisticon.ranked.model.event.PlayerPosition
+import de.holisticon.ranked.model.event.PlayerWonMatchSet
+import de.holisticon.ranked.model.event.TeamWonMatchSet
 import org.axonframework.test.aggregate.AggregateTestFixture
 import org.junit.Test
 import java.time.LocalDateTime
@@ -55,22 +56,23 @@ class MatchSpec {
           matchSets = sets,
           tournamentId = "0815"
         ),
-        TeamWonMatchSet(teamBlue, teamRed, piggy, now),
-        TeamWonMatchSet(teamRed, teamBlue, fozzy, now),
-        TeamWonMatchSet(teamBlue, teamRed, piggy, now),
-
+        TeamWonMatchSet(teamBlue, teamRed, piggy, now, "4711"),
         PlayerWonMatchSet(piggy, PlayerPosition.OFFENSE, kermit, now),
         PlayerWonMatchSet(kermit, PlayerPosition.DEFENSE, piggy, now),
 
+        TeamWonMatchSet(teamRed, teamBlue, fozzy, now, "4711"),
         PlayerWonMatchSet(gonzo, PlayerPosition.DEFENSE, fozzy, now),
         PlayerWonMatchSet(fozzy, PlayerPosition.OFFENSE, gonzo, now),
 
+        TeamWonMatchSet(teamBlue, teamRed, piggy, now, "4711"),
         PlayerWonMatchSet(piggy, PlayerPosition.OFFENSE, kermit, now),
-        PlayerWonMatchSet(kermit, PlayerPosition.DEFENSE, piggy, now),
+        PlayerWonMatchSet(kermit, PlayerPosition.DEFENSE, piggy, now)
 
-        TeamWonMatch(teamBlue, teamRed, now),
+        /*
+        TeamWonMatch("4711", teamBlue, teamRed, now),
         PlayerWonMatch(piggy, kermit, now),
         PlayerWonMatch(kermit, piggy, now)
+        */
       )
   }
 }

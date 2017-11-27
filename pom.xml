@@ -20,9 +20,8 @@
     <module>model</module>
     <module>view</module>
     <module>lib/axon</module>
-    <module>application</module>
-    <module>frontend</module>
     <module>lib/extensions</module>
+	<module>application</module>
   </modules>
 
   <properties>
@@ -33,6 +32,7 @@
     <kotlin-logging.version>1.4.6</kotlin-logging.version>
     <axon.version>3.0.7</axon.version>
     <springfox.version>2.7.0</springfox.version>
+	<spring-validator.version>1.1.0</spring-validator.version>
   </properties>
 
   <dependencyManagement>
@@ -69,7 +69,7 @@
       <dependency>
         <groupId>cz.jirutka.validator</groupId>
         <artifactId>validator-spring</artifactId>
-        <version>1.1.0</version>
+        <version>${spring-validator.version}</version>
       </dependency>
       <dependency>
         <groupId>io.github.microutils</groupId>
@@ -128,6 +128,7 @@
 
   <build>
     <defaultGoal>clean install</defaultGoal>
+
     <sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
     <testSourceDirectory>${project.basedir}/src/test/kotlin</testSourceDirectory>
     <plugins>
@@ -190,6 +191,18 @@
       </plugin>
     </plugins>
   </build>
+  
+  <profiles>
+    <profile>
+      <id>frontend</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <modules>
+        <module>frontend</module>
+      </modules>
+    </profile>
+  </profiles>
 
   <repositories>
     <repository>

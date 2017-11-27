@@ -25,10 +25,12 @@ data class TeamWonMatchSet(
   val team: Team,
   val looser: Team,
   val offense: UserName,
-  val date: LocalDateTime = LocalDateTime.now()
+  val date: LocalDateTime = LocalDateTime.now(),
+  val matchId: String
 )
 
 data class TeamWonMatch(
+  val matchId: String,
   val team: Team,
   val looser: Team,
   val date: LocalDateTime = LocalDateTime.now()
