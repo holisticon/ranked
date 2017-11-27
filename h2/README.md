@@ -11,3 +11,7 @@ Access:
 * url: `jdbc:h2:tcp://localhost:9092/mem:ranked`
 * user: `sa`
 * password: `sa`
+
+External access to Spring Data REST via
+
+* url: http://localhost:8092/swagger-ui.html

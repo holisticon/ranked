@@ -2,28 +2,23 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
   <parent>
     <artifactId>ranked-root</artifactId>
     <groupId>de.holisticon.ranked</groupId>
     <version>0.0.1-SNAPSHOT</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
-  <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>ranked-axon</artifactId>
+  <groupId>de.holisticon.ranked.extension</groupId>
+  <artifactId>ranked-kotlin-extensions</artifactId>
 
   <dependencies>
     <dependency>
-      <groupId>org.axonframework</groupId>
-      <artifactId>axon-spring</artifactId>
-      <version>${axon.version}</version>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-validation</artifactId>
+      <scope>provided</scope>
     </dependency>
-
-    <dependency>
-      <groupId>de.holisticon.ranked.extension</groupId>
-      <artifactId>ranked-kotlin-extensions</artifactId>
-    </dependency>
-
   </dependencies>
 
 </project>

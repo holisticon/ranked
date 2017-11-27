@@ -1,5 +1,13 @@
 # Ranked
-Application for tracking table-soccer results. 
+
+Application for tracking table-soccer results.
+
+## Running
+
+* start the h2Application
+* start the RankedApplication
+
+* create new Match using localhost:8081/  or the /swagger-ui.html 
 
 ## Side Goals
 
@@ -48,7 +56,7 @@ of events stored in teh event store of the application.
 
 There are two APIs of the application. The Command API is responsible for accepting user inputs (like recording new matches played). The View API is
 offering different views on application data (just following the CQRS pattern). Both APIs are RESTful APIs. If you want explore them, you can use Swagger,
-shipped as a part of the application. Just navigate to [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html) and choose the 
+shipped as a part of the application. Just navigate to [http://localhost:8081/swagger-ui.html](http://localhost:8081/swagger-ui.html) and choose the 
 API you want to see in the drop-down menu at the top-right of the screen.
 
 The entire Command API is offered under `/command` resource. The entire View API is offered under `/view` resource. 

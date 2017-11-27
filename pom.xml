@@ -21,13 +21,14 @@
     <module>view</module>
     <module>lib/axon</module>
     <module>application</module>
+    <module>lib/extensions</module>
   </modules>
 
   <properties>
     <projectConfigScan>false</projectConfigScan>
     <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
 
-    <kotlin.version>1.1.51</kotlin.version>
+    <kotlin.version>1.1.60</kotlin.version>
     <kotlin-logging.version>1.4.6</kotlin-logging.version>
     <axon.version>3.0.7</axon.version>
     <springfox.version>2.7.0</springfox.version>
@@ -41,13 +42,21 @@
         <version>${project.version}</version>
       </dependency>
       <dependency>
+        <artifactId>ranked-command-service</artifactId>
+        <groupId>${project.groupId}</groupId>
+        <version>${project.version}</version>
+      </dependency>
+
+
+      <dependency>
         <artifactId>ranked-axon</artifactId>
         <groupId>${project.groupId}</groupId>
         <version>${project.version}</version>
       </dependency>
+
       <dependency>
-        <artifactId>ranked-command-service</artifactId>
-        <groupId>${project.groupId}</groupId>
+        <groupId>de.holisticon.ranked.extension</groupId>
+        <artifactId>ranked-kotlin-extensions</artifactId>
         <version>${project.version}</version>
       </dependency>
 
@@ -118,6 +127,7 @@
 
   <build>
     <defaultGoal>clean install</defaultGoal>
+
     <sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
     <testSourceDirectory>${project.basedir}/src/test/kotlin</testSourceDirectory>
     <plugins>
@@ -180,6 +190,17 @@
       </plugin>
     </plugins>
   </build>
+  <profiles>
+    <profile>
+      <id>frontend</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <modules>
+        <module>frontend</module>
+      </modules>
+    </profile>
+  </profiles>
 
   <repositories>
     <repository>

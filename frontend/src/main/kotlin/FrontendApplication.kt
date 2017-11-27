@@ -1,16 +1,15 @@
-package de.holisticon.ranked
+package de.holisticon.ranked.frontend
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
+
 
 /**
  * Main application -> run this!
  */
 fun main(args: Array<String>) {
-  runApplication<RankedApplication>(*args)
+  runApplication<FrontendApplication>(*args)
 }
 
 @SpringBootApplication
-class RankedApplication
-
-
+class FrontendApplication

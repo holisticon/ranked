@@ -1,6 +1,8 @@
 package de.holisticon.ranked.command.api
 
 import cz.jirutka.validator.spring.SpELAssert
+import de.holisticon.ranked.command.aggregate.Match.Companion.BEST_OF
+import de.holisticon.ranked.command.aggregate.Match.Companion.SCORE_TO_WIN_MATCH
 import de.holisticon.ranked.model.MatchSet
 import de.holisticon.ranked.model.Team
 import de.holisticon.ranked.model.UserName
@@ -10,6 +12,7 @@ import java.time.LocalDateTime
 import java.util.*
 import javax.validation.Valid
 import javax.validation.constraints.NotEmpty
+import javax.validation.constraints.Size
 
 data class CreatePlayer(
   @TargetAggregateIdentifier
@@ -39,6 +42,7 @@ data class CreateMatch(
 
   val teamBlue: Team,
 
+  @get: Size(min = SCORE_TO_WIN_MATCH, max = BEST_OF)
   val matchSets: List<MatchSet>,
 
   val tournamentId: String? = null

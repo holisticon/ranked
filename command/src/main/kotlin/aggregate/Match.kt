@@ -12,7 +12,14 @@ import org.axonframework.spring.stereotype.Aggregate
 import java.time.LocalDateTime
 
 @Aggregate
+@Suppress("UNUSED")
 class Match() {
+
+  companion object {
+    // Best of three.
+    const val BEST_OF = 3
+    const val SCORE_TO_WIN_MATCH = 2
+  }
 
   @AggregateIdentifier
   private lateinit var matchId: String

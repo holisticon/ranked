@@ -8,8 +8,8 @@ import org.axonframework.eventsourcing.eventstore.jpa.DomainEventEntry
 import org.axonframework.eventsourcing.eventstore.jpa.SnapshotEventEntry
 import org.h2.tools.Server
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Bean
 import org.springframework.data.repository.PagingAndSortingRepository
 import org.springframework.web.bind.annotation.GetMapping
@@ -20,9 +20,8 @@ import springfox.documentation.spi.DocumentationType
 import springfox.documentation.spring.web.plugins.Docket
 import springfox.documentation.swagger2.annotations.EnableSwagger2
 
-
 fun main(args: Array<String>) {
-  SpringApplication.run(H2Application::class.java, *args)
+  runApplication<H2Application>(*args)
 }
 
 @SpringBootApplication
