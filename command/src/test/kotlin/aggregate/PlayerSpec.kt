@@ -7,7 +7,7 @@ import org.axonframework.test.aggregate.AggregateTestFixture
 import org.junit.Test
 import java.time.LocalDateTime
 
-class PlayerSpec() {
+class PlayerSpec {
   private val fixture: AggregateTestFixture<Player> = AggregateTestFixture(Player::class.java)
   private val now = LocalDateTime.now()
 

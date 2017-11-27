@@ -13,7 +13,7 @@ Application for tracking table-soccer results.
 
 - Learning of SpringBoot with Kotlin
 - Learning of CQRS, Event Sourcing with AxonFramework
-- Learning React frontend technology
+- Learning ReactJS frontend technology
 
 ## Ideas and Requirements
 
@@ -51,6 +51,10 @@ components and works as a packaging module for SpringBoot.
 of events stored in teh event store of the application. 
   - The `wall-view` component is displaying the information about played matches. It is comparable with the facebook wall displaying news.
   - The `leaderboard-view` component is calculating the best players and displays those.
+- The `frontend` component contains the ReactJS single page application. Its build process is based on `npm` and `webpack` and is integrated into the 
+Apache Maven component build. If you want to skip the frontend build, please use the following command:
+
+        mvn clean install -P \!frontend
   
 ### API
 
@@ -64,7 +68,7 @@ The entire Command API is offered under `/command` resource. The entire View API
 
 ### Test framework
 
-Though using plain junit/assertj unit tests would be possible, we want to try the kotlin way.
+Though using plain `junit/assertj` unit tests would be possible, we want to try the kotlin way.
 
 
 ## History

@@ -15,3 +15,7 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.H2Dialect
     show-sql: false
+
+ranked:
+  score.match: 2 # best of three
+  score.set: 6   # play to 6

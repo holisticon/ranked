@@ -9,7 +9,7 @@ import org.axonframework.test.saga.SagaTestFixture
 import org.junit.Test
 import java.time.LocalDateTime
 
-class MatchSagaSpec() {
+class MatchSagaSpec {
 
   private val fixture: SagaTestFixture<EloMatchSaga> = SagaTestFixture(EloMatchSaga::class.java)
   private val now = LocalDateTime.now()

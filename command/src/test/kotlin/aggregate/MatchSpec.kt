@@ -1,6 +1,7 @@
 package de.holisticon.ranked.command.aggregate
 
 import de.holisticon.ranked.command.api.CreateMatch
+import de.holisticon.ranked.command.service.MatchService
 import de.holisticon.ranked.model.MatchSet
 import de.holisticon.ranked.model.Team
 import de.holisticon.ranked.model.UserName
@@ -9,9 +10,26 @@ import de.holisticon.ranked.model.event.PlayerPosition
 import de.holisticon.ranked.model.event.PlayerWonMatchSet
 import de.holisticon.ranked.model.event.TeamWonMatchSet
 import org.axonframework.test.aggregate.AggregateTestFixture
+import org.junit.Before
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.context.TestConfiguration
+import org.springframework.context.annotation.Bean
+import org.springframework.test.context.ContextConfiguration
+import org.springframework.test.context.TestPropertySource
+import org.springframework.test.context.junit4.SpringRunner
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean
 import java.time.LocalDateTime
 
+@RunWith(SpringRunner::class)
+@TestPropertySource(
+  properties = arrayOf(
+    "ranked.score.match=2",
+    "ranked.score.set=6"
+  )
+)
+@ContextConfiguration(classes = arrayOf(MatchSpec.MatchSpecTestConfiguration::class))
 class MatchSpec {
 
   private val fixture: AggregateTestFixture<Match> = AggregateTestFixture(Match::class.java)
@@ -30,6 +48,14 @@ class MatchSpec {
   private val set3 = MatchSet(goalsBlue = 6, goalsRed = 5, offenseBlue = piggy, offenseRed = fozzy)
 
   private val sets = listOf(set1, set2, set3)
+
+  @Autowired
+  private lateinit var matchService: MatchService
+
+  @Before
+  fun init() {
+    fixture.registerInjectableResource(matchService)
+  }
 
 
   @Test
@@ -75,4 +101,16 @@ class MatchSpec {
         */
       )
   }
+
+
+  @TestConfiguration
+  class MatchSpecTestConfiguration {
+
+    @Bean
+    fun validatorFactoryBean(): LocalValidatorFactoryBean = LocalValidatorFactoryBean()
+
+    @Bean
+    fun matchService(): MatchService = MatchService()
+  }
+
 }

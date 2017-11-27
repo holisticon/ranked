@@ -2,6 +2,7 @@ package de.holisticon.ranked.command
 
 import de.holisticon.ranked.axon.TrackingProcessors
 import de.holisticon.ranked.command.rest.CommandApi
+import de.holisticon.ranked.command.service.MatchService
 import de.holisticon.ranked.model.event.internal.ReplayTrackingProcessor
 import mu.KLogging
 import org.axonframework.commandhandling.SimpleCommandBus
@@ -23,6 +24,7 @@ import org.springframework.context.event.EventListener
 import org.springframework.core.type.filter.AnnotationTypeFilter
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Component
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean
 import springfox.documentation.builders.PathSelectors
 import springfox.documentation.builders.RequestHandlerSelectors
 import springfox.documentation.service.ApiInfo
@@ -32,6 +34,7 @@ import springfox.documentation.spring.web.plugins.Docket
 import springfox.documentation.swagger2.annotations.EnableSwagger2
 import java.util.*
 import java.util.stream.Collectors
+import javax.validation.ValidatorFactory
 
 /**
  * Configure Axon components.
@@ -46,8 +49,8 @@ class CommandConfiguration {
    * Configure Bean Validation for commands.
    */
   @Autowired
-  fun configure(bus: SimpleCommandBus) {
-    bus.registerDispatchInterceptor(BeanValidationInterceptor())
+  fun configure(bus: SimpleCommandBus, validationFactory: ValidatorFactory) {
+    bus.registerDispatchInterceptor(BeanValidationInterceptor(validationFactory))
   }
 
 
@@ -59,6 +62,12 @@ class CommandConfiguration {
   // TODO why do we need this?
   @Bean
   fun command(commandGateway: CommandGateway) = CommandApi(commandGateway)
+
+  @Bean
+  fun validatorFactoryBean(): ValidatorFactory = LocalValidatorFactoryBean()
+
+  @Bean
+  fun matchService() = MatchService()
 
   /**
    * Swagger configuration
@@ -80,7 +89,6 @@ class CommandConfiguration {
       "https://github.com/holisticon/ranked/blob/master/LICENSE.txt",
       ArrayList()))
 }
-
 
 /**
  * Startup axon tracking processor replay.
