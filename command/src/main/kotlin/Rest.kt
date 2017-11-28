@@ -9,8 +9,10 @@ import mu.KLogging
 import org.axonframework.commandhandling.CommandExecutionException
 import org.axonframework.commandhandling.gateway.CommandGateway
 import org.springframework.http.ResponseEntity
-import org.springframework.stereotype.Component
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 import javax.validation.Valid
 
 @RestController
@@ -22,8 +24,8 @@ class CommandApi(val commandGateway: CommandGateway) {
 
   @ApiOperation(value = "Creates a new match.")
   @ApiResponses(
-    ApiResponse(code=204, message = "If the create match request has been successfully received."),
-    ApiResponse(code=400, message = "If the create match request was not correct.")
+    ApiResponse(code = 204, message = "If the create match request has been successfully received."),
+    ApiResponse(code = 400, message = "If the create match request was not correct.")
   )
   @PostMapping(path = arrayOf("/createMatch"))
   fun createMatch(@RequestBody @Valid match: CreateMatch): ResponseEntity<String> {

@@ -2,6 +2,7 @@ package de.holisticon.ranked.command.aggregate
 
 import de.holisticon.ranked.command.api.CreateMatch
 import de.holisticon.ranked.command.api.WinMatch
+import de.holisticon.ranked.command.service.MatchService
 import de.holisticon.ranked.model.Team
 import de.holisticon.ranked.model.event.*
 import org.axonframework.commandhandling.CommandHandler
@@ -9,24 +10,19 @@ import org.axonframework.commandhandling.model.AggregateIdentifier
 import org.axonframework.commandhandling.model.AggregateLifecycle.apply
 import org.axonframework.eventsourcing.EventSourcingHandler
 import org.axonframework.spring.stereotype.Aggregate
+import org.springframework.beans.factory.annotation.Autowired
 import java.time.LocalDateTime
 
 @Aggregate
 @Suppress("UNUSED")
 class Match() {
 
-  companion object {
-    // Best of three.
-    const val BEST_OF = 3
-    const val SCORE_TO_WIN_MATCH = 2
-  }
-
   @AggregateIdentifier
   private lateinit var matchId: String
   private lateinit var date: LocalDateTime
 
   @CommandHandler
-  constructor(c: CreateMatch) : this() {
+  constructor(c: CreateMatch, @Autowired matchService: MatchService) : this() {
     apply(MatchCreated(
       matchId = c.matchId,
       teamBlue = c.teamBlue,
@@ -37,7 +33,7 @@ class Match() {
     ))
 
     c.matchSets.forEach { m ->
-      when (m.winner()) {
+      when (matchService.winsMatchSet(m)) {
         Team.BLUE -> {
           this.applyEvent(TeamWonMatchSet(
             team = c.teamBlue,
