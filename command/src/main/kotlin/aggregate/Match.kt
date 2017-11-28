@@ -25,8 +25,6 @@ class Match() {
   private lateinit var matchId: String
   private lateinit var date: LocalDateTime
 
-
-
   @CommandHandler
   constructor(c: CreateMatch) : this() {
     apply(MatchCreated(
