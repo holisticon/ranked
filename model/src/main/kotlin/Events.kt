@@ -9,7 +9,7 @@ import java.time.LocalDateTime
 data class PlayerCreated(
   val userName: UserName,
   val displayName: String,
-  val date: LocalDateTime = LocalDateTime.now()
+  val initialElo: Int
 )
 
 data class MatchCreated(

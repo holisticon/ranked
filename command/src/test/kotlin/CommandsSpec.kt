@@ -104,7 +104,7 @@ class CreateMatchSpec {
     fun validatorFactoryBean(): LocalValidatorFactoryBean = LocalValidatorFactoryBean()
 
     @Bean
-    fun matchService(): MatchService = MatchService()
+    fun matchService(): MatchService = MatchService(scoreToWinSet = 6, scoreToWinMatch = 2)
   }
 
 }

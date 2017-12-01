@@ -14,12 +14,7 @@ import javax.validation.constraints.NotEmpty
 data class CreatePlayer(
   @TargetAggregateIdentifier
   @get: Valid
-  val userName: UserName,
-
-  @get: NotEmpty
-  val displayName: String,
-
-  val date: LocalDateTime = LocalDateTime.now()
+  val userName: UserName
 )
 
 @ApiModel

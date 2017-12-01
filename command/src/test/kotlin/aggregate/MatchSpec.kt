@@ -93,12 +93,6 @@ class MatchSpec {
         TeamWonMatchSet(teamBlue, teamRed, piggy, now, "4711"),
         PlayerWonMatchSet(piggy, PlayerPosition.OFFENSE, kermit, now),
         PlayerWonMatchSet(kermit, PlayerPosition.DEFENSE, piggy, now)
-
-        /*
-        TeamWonMatch("4711", teamBlue, teamRed, now),
-        PlayerWonMatch(piggy, kermit, now),
-        PlayerWonMatch(kermit, piggy, now)
-        */
       )
   }
 
@@ -110,7 +104,7 @@ class MatchSpec {
     fun validatorFactoryBean(): LocalValidatorFactoryBean = LocalValidatorFactoryBean()
 
     @Bean
-    fun matchService(): MatchService = MatchService()
+    fun matchService(): MatchService = MatchService(2,6)
   }
 
 }

@@ -17,5 +17,8 @@ spring:
     show-sql: false
 
 ranked:
-  score.match: 2 # best of three
-  score.set: 6   # play to 6
+  score:
+    match: 2   # best of three
+    set:   6   # play to 6
+  elo:
+    default: 1000

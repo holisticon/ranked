@@ -3,25 +3,23 @@ package de.holisticon.ranked.command
 import de.holisticon.ranked.axon.TrackingProcessors
 import de.holisticon.ranked.command.rest.CommandApi
 import de.holisticon.ranked.command.service.MatchService
+import de.holisticon.ranked.command.service.UserService
 import de.holisticon.ranked.model.event.internal.ReplayTrackingProcessor
 import mu.KLogging
 import org.axonframework.commandhandling.SimpleCommandBus
 import org.axonframework.commandhandling.gateway.CommandGateway
 import org.axonframework.config.EventHandlingConfiguration
-import org.axonframework.config.ProcessingGroup
 import org.axonframework.eventhandling.EventProcessor
 import org.axonframework.eventhandling.tokenstore.jpa.TokenEntry
 import org.axonframework.messaging.interceptors.BeanValidationInterceptor
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.config.BeanDefinition
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration
 import org.springframework.context.SmartLifecycle
 import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.event.EventListener
-import org.springframework.core.type.filter.AnnotationTypeFilter
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Component
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean
@@ -33,11 +31,10 @@ import springfox.documentation.spi.DocumentationType
 import springfox.documentation.spring.web.plugins.Docket
 import springfox.documentation.swagger2.annotations.EnableSwagger2
 import java.util.*
-import java.util.stream.Collectors
 import javax.validation.ValidatorFactory
 
 /**
- * Configure Axon components.
+ * Configure components.
  */
 @Configuration
 @EnableSwagger2
@@ -45,14 +42,20 @@ import javax.validation.ValidatorFactory
 @ComponentScan
 class CommandConfiguration {
 
-  /**
-   * Configure Bean Validation for commands.
-   */
+  // TODO implement configuration properties object.
+  @Value("\${ranked.score.set}")
+  private lateinit var scoreToWinSet: Integer
+
+  @Value("\${ranked.score.match}")
+  private lateinit var scoreToWinMatch: Integer
+
+  @Value("\${ranked.elo.default}")
+  private lateinit var defaultElo: Integer
+
   @Autowired
   fun configure(bus: SimpleCommandBus, validationFactory: ValidatorFactory) {
     bus.registerDispatchInterceptor(BeanValidationInterceptor(validationFactory))
   }
-
 
   @Autowired
   fun registerTrackingProcessors(trackingProcessorService: TrackingProcessorService) {
@@ -67,8 +70,10 @@ class CommandConfiguration {
   fun validatorFactoryBean(): ValidatorFactory = LocalValidatorFactoryBean()
 
   @Bean
-  fun matchService() = MatchService()
+  fun matchService() = MatchService(scoreToWinMatch = scoreToWinMatch.toInt(), scoreToWinSet = scoreToWinSet.toInt())
 
+  @Bean
+  fun userService() = UserService(defaultElo = defaultElo.toInt())
   /**
    * Swagger configuration
    */
@@ -76,7 +81,7 @@ class CommandConfiguration {
   fun commandApi(): Docket = Docket(DocumentationType.SWAGGER_2)
     .groupName("Commands")
     .select()
-    .apis(RequestHandlerSelectors.basePackage(CommandApi.javaClass.`package`.name))
+    .apis(RequestHandlerSelectors.basePackage(CommandApi::class.java.`package`.name))
     .paths(PathSelectors.ant("/command/**"))
     .build()
     .apiInfo(ApiInfo(
