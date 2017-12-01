@@ -26,9 +26,10 @@
 
   <properties>
     <projectConfigScan>false</projectConfigScan>
-    <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
 
-    <kotlin.version>1.1.61</kotlin.version>
+    <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
+    <kotlin.version>1.2.0</kotlin.version>
+
     <kotlin-logging.version>1.4.6</kotlin-logging.version>
     <axon.version>3.0.7</axon.version>
     <springfox.version>2.7.0</springfox.version>
