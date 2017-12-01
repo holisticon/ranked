@@ -20,9 +20,8 @@ import springfox.documentation.spi.DocumentationType
 import springfox.documentation.spring.web.plugins.Docket
 import springfox.documentation.swagger2.annotations.EnableSwagger2
 
-fun main(args: Array<String>) {
-  runApplication<H2Application>(*args)
-}
+// this throws a ClassCastException, see https://github.com/spring-projects/spring-boot/issues/11236
+fun main(args: Array<String>) = runApplication<H2Application>(*args) as Unit
 
 @SpringBootApplication
 @EnableSwagger2

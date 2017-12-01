@@ -7,6 +7,7 @@ import de.holisticon.ranked.model.event.PlayerCreated
 import org.axonframework.commandhandling.CommandHandler
 import org.axonframework.commandhandling.model.AggregateIdentifier
 import org.axonframework.commandhandling.model.AggregateLifecycle
+import org.axonframework.commandhandling.model.AggregateLifecycle.apply
 import org.axonframework.eventsourcing.EventSourcingHandler
 import org.axonframework.spring.stereotype.Aggregate
 import org.springframework.beans.factory.annotation.Autowired
@@ -21,15 +22,20 @@ class Player() {
   private lateinit var displayName: String
   private lateinit var eloRanking: Integer
 
+  // create player aggregate when matchWinnerSaga receives matchCreated event
+  // only called once for each player
   @CommandHandler
   constructor(c: CreatePlayer, @Autowired userService: UserService) : this() {
+    // get user data from ....
     val user = userService.findUser(c.userName.value)
+    // TODO: what happens if iuser is not found (unlikely!)
     if (user != null) {
-      AggregateLifecycle.apply(
+      // -> #on(e: PlayerCreated)
+      apply(
         PlayerCreated(
           userName = UserName(user.userName),
           displayName = user.displayName,
-          initialElo = userService.getInitialElo()
+          initialElo = userService.getInitialElo() // TODO: not in userService
         )
       )
     }

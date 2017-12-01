@@ -10,9 +10,8 @@ class MatchService(val scoreToWinMatch: Int, val scoreToWinSet: Int) {
   /**
    * Checks that the list of match sets consist of at least of scoreToWinMatch and at most of 2 * scoreToWinMatch - 1
    */
-  fun validateMatch(matchSets: List<MatchSet>): Boolean {
-    return matchSets.size >= scoreToWinMatch && matchSets.size <= scoreToWinMatch.times(2).minus(1)
-  }
+  fun validateMatch(matchSets: List<MatchSet>): Boolean =
+    matchSets.size >= scoreToWinMatch && matchSets.size <= scoreToWinMatch.times(2).minus(1)
 
   fun winsMatch(numberOfWins: Int) = numberOfWins == scoreToWinMatch
   fun winsMatchSet(matchSet: MatchSet) = if (matchSet.goalsRed == scoreToWinSet) Team.RED else Team.BLUE

@@ -21,8 +21,14 @@ class Match() {
   private lateinit var matchId: String
   private lateinit var date: LocalDateTime
 
+  /**
+   * (1) A Match aggregate is created, when a CreateMatch is received (via RestController).
+   */
   @CommandHandler
   constructor(c: CreateMatch, @Autowired matchService: MatchService) : this() {
+    // (2) a MatchCreated event is put to the bus
+    // this is handled by all EventSourcingHandlers (first) and all external EventHandlers (second)
+    // this just indicates that a Match happened and contains no logic for win/loose
     apply(MatchCreated(
       matchId = c.matchId,
       teamBlue = c.teamBlue,
@@ -32,6 +38,8 @@ class Match() {
       tournamentId = c.tournamentId
     ))
 
+    // (3) calculate which team won a set and fire TeamWonMatchSet event
+    // **not** apply() but applyEvent() for further decomposition, each player won as well
     c.matchSets.forEach { m ->
       when (matchService.winsMatchSet(m)) {
         Team.BLUE -> {
@@ -58,6 +66,7 @@ class Match() {
 
   @CommandHandler
   fun on(c: WinMatch) {
+    // fire TeamWonMatch
     applyEvent(TeamWonMatch(
       matchId = this.matchId,
       team = c.winner,
@@ -70,7 +79,10 @@ class Match() {
    * Apply the event and all subsequent events.
    */
   fun applyEvent(e: TeamWonMatchSet) {
+    // (3) event: TeamWonMatchSet
+    // -> MatchWinnerSaga#handle(e: TeamWonMatchSet)
     apply(e)
+    // (3) each player won a set
     apply(PlayerWonMatchSet(
       player = e.team.player1,
       teammate = e.team.player2,
@@ -89,6 +101,9 @@ class Match() {
    * Apply the event and all subsequent events.
    */
   fun applyEvent(e: TeamWonMatch) {
+    // the team won -> view, ranking calculation (ELO)
+    apply(e)
+    // each player won -> view
     apply(PlayerWonMatch(
       player = e.team.player1,
       teammate = e.team.player2,
@@ -106,6 +121,7 @@ class Match() {
    */
   @EventSourcingHandler
   fun on(e: MatchCreated) {
+    // (2) modify state of aggregate (must not be in command handler for aggregate restore)
     this.matchId = e.matchId
     this.date = e.date
   }
