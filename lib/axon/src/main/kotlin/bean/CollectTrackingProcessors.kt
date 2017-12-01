@@ -23,7 +23,7 @@ class CollectTrackingProcessors {
   /**
    * Lazy constructor for immutable data object.
    */
-  private val trackingProcessors: TrackingProcessors by lazy {
+  private val trackingProcessors by lazy {
     TrackingProcessors(trackingProcessorSet)
   }
 
@@ -42,6 +42,6 @@ class CollectTrackingProcessors {
 
   @Bean
   @Lazy
-  fun trackingProcessor(): TrackingProcessors = trackingProcessors
+  fun trackingProcessor() = trackingProcessors
 
 }
