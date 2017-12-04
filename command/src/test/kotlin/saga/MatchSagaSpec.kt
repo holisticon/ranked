@@ -1,5 +1,6 @@
 package de.holisticon.ranked.command.saga
 
+import de.holisticon.ranked.command.RankedProperties
 import de.holisticon.ranked.command.api.WinMatch
 import de.holisticon.ranked.command.service.MatchService
 import de.holisticon.ranked.model.MatchSet
@@ -33,7 +34,7 @@ class MatchSagaSpec {
 
   @Before
   fun init() {
-    matchSaga.registerResource(MatchService(2,6))
+    matchSaga.registerResource(MatchService(RankedProperties(scoreToWinMatch = 2, scoreToWinSet = 6, defaultElo = 100)))
   }
 
   @Test

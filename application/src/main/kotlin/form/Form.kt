@@ -4,6 +4,7 @@ import de.holisticon.ranked.command.api.CreateMatch
 import de.holisticon.ranked.model.MatchSet
 import de.holisticon.ranked.model.Team
 import de.holisticon.ranked.model.UserName
+import de.holisticon.ranked.view.player.PlayerViewService
 import org.axonframework.commandhandling.gateway.CommandGateway
 import org.springframework.stereotype.Controller
 import org.springframework.validation.BindingResult
@@ -11,10 +12,18 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 import javax.validation.Valid
+import org.springframework.web.bind.annotation.ModelAttribute
+
+
 
 
 @Controller
-class WebController(val commandGateway: CommandGateway) : WebMvcConfigurer {
+class WebController(val commandGateway: CommandGateway, val playerViewService: PlayerViewService) : WebMvcConfigurer {
+
+  @ModelAttribute("players")
+  fun allPlayers(): Set<PlayerViewService.Player> {
+    return playerViewService.getAllPlayers()
+  }
 
   @GetMapping("/")
   fun showForm(createMatchForm: CreateMatchForm): String = "create-match"

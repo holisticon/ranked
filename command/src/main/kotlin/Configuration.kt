@@ -42,7 +42,6 @@ import javax.validation.ValidatorFactory
 @ComponentScan
 class CommandConfiguration {
 
-  // TODO implement configuration properties object.
   @Value("\${ranked.score.set}")
   private lateinit var scoreToWinSet: Integer
 
@@ -51,6 +50,15 @@ class CommandConfiguration {
 
   @Value("\${ranked.elo.default}")
   private lateinit var defaultElo: Integer
+
+  // TODO implement configuration properties object.
+  @Bean
+  fun rankedProperties(): RankedProperties = RankedProperties(
+    scoreToWinSet =  scoreToWinSet.toInt(),
+    scoreToWinMatch = scoreToWinMatch.toInt(),
+    defaultElo = defaultElo.toInt()
+  )
+
 
   @Autowired
   fun configure(bus: SimpleCommandBus, validationFactory: ValidatorFactory) {
@@ -70,10 +78,10 @@ class CommandConfiguration {
   fun validatorFactoryBean(): ValidatorFactory = LocalValidatorFactoryBean()
 
   @Bean
-  fun matchService() = MatchService(scoreToWinMatch = scoreToWinMatch.toInt(), scoreToWinSet = scoreToWinSet.toInt())
+  fun matchService(properties: RankedProperties) = MatchService(properties)
 
   @Bean
-  fun userService() = UserService(defaultElo = defaultElo.toInt())
+  fun userService(commandGateway: CommandGateway) = UserService()
   /**
    * Swagger configuration
    */
@@ -172,3 +180,9 @@ class TrackingProcessorService(val eventHandlingConfiguration: EventHandlingConf
   fun replayAll() = trackingProcessors.forEach { name -> replay(ReplayTrackingProcessor(name)) }
 
 }
+
+data class RankedProperties (
+  val scoreToWinSet: Int,
+  val scoreToWinMatch: Int,
+  val defaultElo: Int
+)

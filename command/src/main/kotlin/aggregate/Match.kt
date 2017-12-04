@@ -5,6 +5,7 @@ import de.holisticon.ranked.command.api.WinMatch
 import de.holisticon.ranked.command.service.MatchService
 import de.holisticon.ranked.model.Team
 import de.holisticon.ranked.model.event.*
+import mu.KLogging
 import org.axonframework.commandhandling.CommandHandler
 import org.axonframework.commandhandling.model.AggregateIdentifier
 import org.axonframework.commandhandling.model.AggregateLifecycle.apply
@@ -16,6 +17,9 @@ import java.time.LocalDateTime
 @Aggregate
 @Suppress("UNUSED")
 class Match() {
+
+  companion object: KLogging()
+
 
   @AggregateIdentifier
   private lateinit var matchId: String
@@ -79,6 +83,7 @@ class Match() {
    * Apply the event and all subsequent events.
    */
   fun applyEvent(e: TeamWonMatchSet) {
+    logger.info{"${e}"}
     // (3) event: TeamWonMatchSet
     // -> MatchWinnerSaga#handle(e: TeamWonMatchSet)
     apply(e)
