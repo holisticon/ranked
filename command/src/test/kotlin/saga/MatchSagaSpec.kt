@@ -7,11 +7,9 @@ import de.holisticon.ranked.model.Team
 import de.holisticon.ranked.model.UserName
 import de.holisticon.ranked.model.event.MatchCreated
 import de.holisticon.ranked.model.event.TeamWonMatchSet
-import org.axonframework.test.saga.FixtureConfiguration
 import org.axonframework.test.saga.SagaTestFixture
 import org.junit.Before
 import org.junit.Test
-import saga.MatchWinnerSaga
 import java.time.LocalDateTime
 
 class MatchSagaSpec {
