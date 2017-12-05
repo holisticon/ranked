@@ -5,7 +5,6 @@ import de.holisticon.ranked.command.api.CreatePlayer
 import de.holisticon.ranked.model.MatchSet
 import de.holisticon.ranked.model.Team
 import de.holisticon.ranked.model.UserName
-import mu.KLogging
 import org.axonframework.commandhandling.gateway.CommandGateway
 import org.springframework.context.SmartLifecycle
 import org.springframework.stereotype.Component

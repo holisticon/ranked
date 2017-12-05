@@ -5,7 +5,6 @@ import de.holisticon.ranked.model.MatchSet
 import de.holisticon.ranked.model.Team
 import de.holisticon.ranked.model.UserName
 import io.swagger.annotations.ApiModel
-import oracle.jrockit.jfr.StringConstantPool
 import org.axonframework.commandhandling.TargetAggregateIdentifier
 import java.time.LocalDateTime
 import java.util.*

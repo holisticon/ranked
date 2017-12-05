@@ -1,6 +1,5 @@
 package de.holisticon.ranked.command.saga
 
-import de.holisticon.ranked.command.api.CreatePlayer
 import de.holisticon.ranked.command.api.WinMatch
 import de.holisticon.ranked.command.service.MatchService
 import de.holisticon.ranked.model.Team

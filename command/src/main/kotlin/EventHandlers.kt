@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component
 @ProcessingGroup("Logging")
 class LoggingEventHandler {
 
-  companion object: KLogging()
+  companion object : KLogging()
 
   @EventHandler
   fun on(event: MatchCreated) {
