@@ -11,6 +11,10 @@
 
   <artifactId>ranked-frontend</artifactId>
   <dependencies>
+    <dependency>
+      <groupId>de.holisticon.ranked.extension</groupId>
+      <artifactId>ranked-kotlin-extensions</artifactId>
+    </dependency>
 
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -58,7 +62,7 @@
             </goals>
             <configuration>
               <nodeVersion>v4.4.5</nodeVersion>
-              <npmVersion>3.9.2</npmVersion>			  
+              <npmVersion>3.9.2</npmVersion>
             </configuration>
           </execution>
 
@@ -109,7 +113,7 @@
           </execution>
         </executions>
       </plugin>
-	  
+
     </plugins>
   </build>
 

@@ -1,5 +1,6 @@
 package de.holisticon.ranked.h2
 
+import de.holisticon.ranked.extension.runApplicationExpr
 import org.axonframework.eventhandling.saga.repository.jpa.AssociationValueEntry
 import org.axonframework.eventhandling.saga.repository.jpa.SagaEntry
 import org.axonframework.eventhandling.tokenstore.jpa.TokenEntry
@@ -20,8 +21,7 @@ import springfox.documentation.spi.DocumentationType
 import springfox.documentation.spring.web.plugins.Docket
 import springfox.documentation.swagger2.annotations.EnableSwagger2
 
-// this throws a ClassCastException, see https://github.com/spring-projects/spring-boot/issues/11236
-fun main(args: Array<String>) = runApplication<H2Application>(*args) as Unit
+fun main(args: Array<String>) = runApplicationExpr<H2Application>(*args)
 
 @SpringBootApplication
 @EnableSwagger2

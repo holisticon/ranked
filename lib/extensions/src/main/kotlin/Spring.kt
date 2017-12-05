@@ -1,6 +1,7 @@
 package de.holisticon.ranked.extension
 
 import org.springframework.aop.support.AopUtils
+import org.springframework.boot.runApplication
 import kotlin.reflect.KClass
 
 /**
@@ -8,4 +9,8 @@ import kotlin.reflect.KClass
  */
 fun Any.getTargetClass(): KClass<out Any> {
   return AopUtils.getTargetClass(this).kotlin
+}
+
+inline fun <reified T : kotlin.Any> runApplicationExpr(vararg args: kotlin.String): Unit {
+  runApplication<T>(*args)
 }
