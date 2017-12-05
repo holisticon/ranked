@@ -1,5 +1,6 @@
 package de.holisticon.ranked.command.aggregate
 
+import de.holisticon.ranked.command.RankedProperties
 import de.holisticon.ranked.command.api.CreateMatch
 import de.holisticon.ranked.command.service.MatchService
 import de.holisticon.ranked.model.MatchSet
@@ -14,6 +15,7 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
 import org.springframework.test.context.ContextConfiguration
@@ -23,12 +25,15 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean
 import java.time.LocalDateTime
 
 @RunWith(SpringRunner::class)
+// TODO replace with real props
+/*
 @TestPropertySource(
   properties = arrayOf(
     "ranked.score.match=2",
-    "ranked.score.set=6"
+    "ranked.score.set=6",
+    "ranked.elo.default=1000"
   )
-)
+)*/
 @ContextConfiguration(classes = arrayOf(MatchSpec.MatchSpecTestConfiguration::class))
 class MatchSpec {
 
@@ -52,9 +57,13 @@ class MatchSpec {
   @Autowired
   private lateinit var matchService: MatchService
 
+  @Autowired
+  private lateinit var properties: RankedProperties
+
   @Before
   fun init() {
     fixture.registerInjectableResource(matchService)
+    fixture.registerInjectableResource(properties)
   }
 
 
@@ -82,15 +91,15 @@ class MatchSpec {
           matchSets = sets,
           tournamentId = "0815"
         ),
-        TeamWonMatchSet(teamBlue, teamRed, piggy, now, "4711"),
+        TeamWonMatchSet(team = teamBlue, looser = teamRed, offense = piggy, date = now, matchId = "4711"),
         PlayerWonMatchSet(piggy, PlayerPosition.OFFENSE, kermit, now),
         PlayerWonMatchSet(kermit, PlayerPosition.DEFENSE, piggy, now),
 
-        TeamWonMatchSet(teamRed, teamBlue, fozzy, now, "4711"),
+        TeamWonMatchSet(team = teamRed, looser = teamBlue, offense = fozzy, date = now, matchId = "4711"),
         PlayerWonMatchSet(gonzo, PlayerPosition.DEFENSE, fozzy, now),
         PlayerWonMatchSet(fozzy, PlayerPosition.OFFENSE, gonzo, now),
 
-        TeamWonMatchSet(teamBlue, teamRed, piggy, now, "4711"),
+        TeamWonMatchSet(team = teamBlue, looser = teamRed, offense= piggy, date = now, matchId = "4711"),
         PlayerWonMatchSet(piggy, PlayerPosition.OFFENSE, kermit, now),
         PlayerWonMatchSet(kermit, PlayerPosition.DEFENSE, piggy, now)
       )
@@ -104,7 +113,10 @@ class MatchSpec {
     fun validatorFactoryBean(): LocalValidatorFactoryBean = LocalValidatorFactoryBean()
 
     @Bean
-    fun matchService(): MatchService = MatchService(2,6)
+    fun matchService(props: RankedProperties): MatchService = MatchService(props)
+
+    @Bean
+    fun props(): RankedProperties = RankedProperties(6,2,1000)
   }
 
 }

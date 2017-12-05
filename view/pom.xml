@@ -15,6 +15,7 @@
   <modules>
     <module>wall</module>
     <module>leaderboard</module>
+	  <module>player</module>
   </modules>
 
   <dependencies>

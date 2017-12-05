@@ -18,12 +18,13 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean
 import javax.validation.Validator
 
 @RunWith(SpringRunner::class)
-@TestPropertySource(
+// TODO replace with propery load
+/*@TestPropertySource(
   properties = arrayOf(
     "ranked.score.match=2",
     "ranked.score.set=6"
   )
-)
+)*/
 @ContextConfiguration(classes = arrayOf(CreateMatchSpec.MatchSpecTestConfiguration::class))
 class CreateMatchSpec {
 
@@ -104,7 +105,7 @@ class CreateMatchSpec {
     fun validatorFactoryBean(): LocalValidatorFactoryBean = LocalValidatorFactoryBean()
 
     @Bean
-    fun matchService(): MatchService = MatchService(scoreToWinSet = 6, scoreToWinMatch = 2)
+    fun matchService(): MatchService = MatchService(RankedProperties(scoreToWinMatch = 2, scoreToWinSet = 6, defaultElo = 100))
   }
 
 }
