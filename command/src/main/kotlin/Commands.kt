@@ -30,8 +30,9 @@ data class CreateMatch(
 
   val date: LocalDateTime = LocalDateTime.now(),
 
+  @get: Valid
   val teamRed: Team,
-
+  @get: Valid
   val teamBlue: Team,
 
   @SpELAssert("@matchService.validateMatch(#this)", message = "{ranked.createMatch.finished}")
@@ -48,6 +49,26 @@ data class WinMatch(
   @TargetAggregateIdentifier
   @get: NotEmpty
   val matchId: String,
+  @get: Valid
   val winner: Team,
+  @get: Valid
   val looser: Team
+)
+
+
+data class ParticipateInMatch(
+  @TargetAggregateIdentifier
+  @get: Valid
+  val player: UserName,
+  @get: NotEmpty
+  val matchId: String
+)
+
+data class UpdatePlayerRanking(
+  @TargetAggregateIdentifier
+  @get: Valid
+  val player: UserName,
+  @get: NotEmpty
+  val matchId: String,
+  val eloRanking: Int
 )

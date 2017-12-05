@@ -2,9 +2,14 @@ package de.holisticon.ranked.command.aggregate
 
 import de.holisticon.ranked.command.RankedProperties
 import de.holisticon.ranked.command.api.CreatePlayer
+import de.holisticon.ranked.command.api.ParticipateInMatch
+import de.holisticon.ranked.command.api.UpdatePlayerRanking
 import de.holisticon.ranked.command.service.UserService
 import de.holisticon.ranked.model.UserName
 import de.holisticon.ranked.model.event.PlayerCreated
+import de.holisticon.ranked.model.event.PlayerParticipatedInMatch
+import de.holisticon.ranked.model.event.PlayerRankingChanged
+import mu.KLogging
 import org.axonframework.commandhandling.CommandHandler
 import org.axonframework.commandhandling.model.AggregateIdentifier
 import org.axonframework.commandhandling.model.AggregateLifecycle.apply
@@ -16,6 +21,8 @@ import org.springframework.beans.factory.annotation.Autowired
 @Aggregate
 @Suppress("UNUSED")
 class Player() {
+
+  companion object : KLogging()
 
   @AggregateIdentifier
   private lateinit var userName: UserName
@@ -43,6 +50,27 @@ class Player() {
     }
   }
 
+  @CommandHandler
+  fun handle(c: ParticipateInMatch) {
+    // TODO: validate if were are already in match
+
+    // inform the world about current elo
+    apply(PlayerParticipatedInMatch(
+      player = c.player,
+      matchId = c.matchId,
+      eloRanking = eloRanking.toInt()
+    ))
+  }
+
+  @CommandHandler
+  fun handle(c: UpdatePlayerRanking) {
+    apply(PlayerRankingChanged(
+      player = c.player,
+      eloRanking = c.eloRanking
+    ))
+  }
+
+
   @EventSourcingHandler
   fun on(e: PlayerCreated) {
     userName = e.userName
@@ -50,5 +78,11 @@ class Player() {
     eloRanking = Integer(e.initialElo)
   }
 
+  @EventSourcingHandler
+  fun on(e: PlayerRankingChanged) {
+    logger.info { "elo ranking changed for ${displayName} from ${eloRanking} to ${e.eloRanking}" }
+    eloRanking = Integer(e.eloRanking)
+  }
 
 }
+

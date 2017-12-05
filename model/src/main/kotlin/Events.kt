@@ -11,6 +11,30 @@ data class PlayerCreated(
   val initialElo: Int
 )
 
+data class PlayerWonMatchSet(
+  val player: UserName,
+  val position: PlayerPosition,
+  val teammate: UserName,
+  val date: LocalDateTime = LocalDateTime.now()
+)
+
+data class PlayerWonMatch(
+  val player: UserName,
+  val teammate: UserName,
+  val date: LocalDateTime = LocalDateTime.now()
+)
+
+data class PlayerParticipatedInMatch(
+  val player: UserName,
+  val matchId: String,
+  val eloRanking: Int
+)
+
+data class PlayerRankingChanged(
+  val player: UserName,
+  val eloRanking: Int
+)
+
 data class MatchCreated(
   val matchId: String,
   val date: LocalDateTime = LocalDateTime.now(),
@@ -32,19 +56,6 @@ data class TeamWonMatch(
   val matchId: String,
   val team: Team,
   val looser: Team,
-  val date: LocalDateTime = LocalDateTime.now()
-)
-
-data class PlayerWonMatchSet(
-  val player: UserName,
-  val position: PlayerPosition,
-  val teammate: UserName,
-  val date: LocalDateTime = LocalDateTime.now()
-)
-
-data class PlayerWonMatch(
-  val player: UserName,
-  val teammate: UserName,
   val date: LocalDateTime = LocalDateTime.now()
 )
 

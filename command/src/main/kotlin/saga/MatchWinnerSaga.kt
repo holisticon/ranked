@@ -32,30 +32,15 @@ class MatchWinnerSaga {
 
   @StartSaga
   @SagaEventHandler(associationProperty = "matchId")
-  fun handle(e: MatchCreated) {
+  fun on(e: MatchCreated) {
     // (2) a played match starts a match saga
     // TODO: why saga not via constructor?
 
-    logger.info("Saga started for match ${e.matchId}")
-
-
-    // key/value map inside saga context, just keep the player ids
-    associateWith("bluePlayer1", e.teamBlue.player1.value)
-    associateWith("bluePlayer2", e.teamBlue.player2.value)
-    associateWith("redPlayer1", e.teamRed.player1.value)
-    associateWith("redPlayer2", e.teamRed.player2.value)
-
-    associateWith("blue", e.teamBlue.toString())
-    associateWith("red", e.teamBlue.toString())
-
-    // FIXME: don't create any players from here. not deleted to discuss.
-    // create players (-> Player), so players exists when win/loose is calculated
-    // val users = arrayOf(e.teamBlue.player1, e.teamBlue.player2, e.teamRed.player1, e.teamRed.player2)
-    // users.iterator().forEach{user -> commandGateway.send<Any>(CreatePlayer(userName = user))}
+    logger.info("Match Winner Saga started for match ${e.matchId}")
   }
 
   @SagaEventHandler(associationProperty = "matchId")
-  fun handle(e: TeamWonMatchSet) {
+  fun on(e: TeamWonMatchSet) {
     // increase matchSet count for winner team
     val wins = teamWins.getOrDefault(e.team, 0).inc()
     teamWins.put(e.team, wins)

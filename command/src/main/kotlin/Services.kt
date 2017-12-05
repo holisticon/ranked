@@ -88,6 +88,28 @@ class UserInitializer(val userService: UserService, val commandGateway: CommandG
 class EloCalculationService(val properties: RankedProperties) {
 
   /**
+   * Calculates team elo rating.
+   * @param winner a pair of elo rankings of the winner team before the match
+   * @param looser a pair of elo rankings of the looser team before the match
+   * @result a pair of new rankings for winner (first) and looser (second)
+   */
+  fun calculateTeamElo(winner: Pair<Int, Int>, looser: Pair<Int, Int>): Pair<Pair<Int, Int>, Pair<Int, Int>> {
+
+    val winnerElo = (winner.first + winner.second)/2
+    val looserElo = (looser.first + looser.second)/2
+
+    val matchResult = calculateElo(Pair(winnerElo, looserElo))
+
+    val winnerDelta = matchResult.first - winnerElo
+    val looserDelta = looserElo - matchResult.second
+
+    return Pair(
+      Pair(winner.first + (winnerDelta / 2), winner.second + (winnerDelta / 2)),
+      Pair(looser.first - (looserDelta / 2), looser.second - (looserDelta / 2))
+    )
+  }
+
+  /**
    * Calculate new elo for a winner, looser elo pair.
    * @param current a pair with winner at first position and looser on second
    * @return new elo with winner on the first position and looser on the second.
