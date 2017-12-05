@@ -17,9 +17,8 @@ import javax.validation.Valid
 
 @RestController
 @RequestMapping("/command")
-@Api(tags = arrayOf("Command"))
+@Api(tags = ["Command"])
 class CommandApi(val commandGateway: CommandGateway) {
-
   companion object : KLogging()
 
   @ApiOperation(value = "Creates a new match.")
@@ -27,7 +26,7 @@ class CommandApi(val commandGateway: CommandGateway) {
     ApiResponse(code = 204, message = "If the create match request has been successfully received."),
     ApiResponse(code = 400, message = "If the create match request was not correct.")
   )
-  @PostMapping(path = arrayOf("/createMatch"))
+  @PostMapping(path = ["/createMatch"])
   fun createMatch(@RequestBody @Valid match: CreateMatch): ResponseEntity<String> {
     try {
       val result: Any = commandGateway.sendAndWait(match) ?: return ResponseEntity.badRequest().body("Sending thread interrupted")

@@ -18,7 +18,7 @@ import java.time.LocalDateTime
 @Suppress("UNUSED")
 class Match() {
 
-  companion object: KLogging()
+  companion object : KLogging()
 
 
   @AggregateIdentifier
@@ -83,7 +83,7 @@ class Match() {
    * Apply the event and all subsequent events.
    */
   fun applyEvent(e: TeamWonMatchSet) {
-    logger.info{"${e}"}
+    logger.info { "${e}" }
     // (3) event: TeamWonMatchSet
     // -> MatchWinnerSaga#handle(e: TeamWonMatchSet)
     apply(e)

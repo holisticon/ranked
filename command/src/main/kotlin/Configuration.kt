@@ -54,7 +54,7 @@ class CommandConfiguration {
   // TODO implement configuration properties object.
   @Bean
   fun rankedProperties(): RankedProperties = RankedProperties(
-    scoreToWinSet =  scoreToWinSet.toInt(),
+    scoreToWinSet = scoreToWinSet.toInt(),
     scoreToWinMatch = scoreToWinMatch.toInt(),
     defaultElo = defaultElo.toInt()
   )
@@ -82,6 +82,7 @@ class CommandConfiguration {
 
   @Bean
   fun userService(commandGateway: CommandGateway) = UserService()
+
   /**
    * Swagger configuration
    */
@@ -117,20 +118,26 @@ class TrackingProcessorInitializer(val trackingProcessorService: TrackingProcess
     this.running = true
   }
 
-  override fun isAutoStartup(): Boolean { return true }
+  override fun isAutoStartup(): Boolean {
+    return true
+  }
 
   override fun stop(callback: Runnable?) {
     callback?.run()
     this.running = false
   }
 
-  override fun stop() { this.running = false }
+  override fun stop() {
+    this.running = false
+  }
 
   override fun getPhase(): Int {
     return Int.MAX_VALUE - 10
   }
 
-  override fun isRunning(): Boolean { return running }
+  override fun isRunning(): Boolean {
+    return running
+  }
 }
 
 /**
@@ -147,7 +154,7 @@ class TrackingProcessorService(val eventHandlingConfiguration: EventHandlingConf
   companion object : KLogging()
 
   @Autowired
-  lateinit var trackingProcessors : TrackingProcessors
+  lateinit var trackingProcessors: TrackingProcessors
 
   fun registerTrackingProcessors() {
     trackingProcessors.forEach { name ->
@@ -181,8 +188,10 @@ class TrackingProcessorService(val eventHandlingConfiguration: EventHandlingConf
 
 }
 
-data class RankedProperties (
+data class RankedProperties(
   val scoreToWinSet: Int,
   val scoreToWinMatch: Int,
-  val defaultElo: Int
+  val defaultElo: Int,
+  val maxDifference: Int = 400,
+  val eloFactor: Int = 20
 )

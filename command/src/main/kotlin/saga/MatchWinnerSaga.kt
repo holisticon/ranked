@@ -1,6 +1,5 @@
 package de.holisticon.ranked.command.saga
 
-import de.holisticon.ranked.command.api.CreatePlayer
 import de.holisticon.ranked.command.api.WinMatch
 import de.holisticon.ranked.command.service.MatchService
 import de.holisticon.ranked.model.Team
@@ -45,6 +44,9 @@ class MatchWinnerSaga {
     associateWith("bluePlayer2", e.teamBlue.player2.value)
     associateWith("redPlayer1", e.teamRed.player1.value)
     associateWith("redPlayer2", e.teamRed.player2.value)
+
+    associateWith("blue", e.teamBlue.toString())
+    associateWith("red", e.teamBlue.toString())
 
     // FIXME: don't create any players from here. not deleted to discuss.
     // create players (-> Player), so players exists when win/loose is calculated
