@@ -46,6 +46,9 @@ class MatchWinnerSaga {
     associateWith("redPlayer1", e.teamRed.player1.value)
     associateWith("redPlayer2", e.teamRed.player2.value)
 
+    associateWith("blue", e.teamBlue.toString())
+    associateWith("red", e.teamBlue.toString())
+
     // FIXME: don't create any players from here. not deleted to discuss.
     // create players (-> Player), so players exists when win/loose is calculated
     // val users = arrayOf(e.teamBlue.player1, e.teamBlue.player2, e.teamRed.player1, e.teamRed.player2)

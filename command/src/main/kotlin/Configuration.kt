@@ -184,5 +184,7 @@ class TrackingProcessorService(val eventHandlingConfiguration: EventHandlingConf
 data class RankedProperties (
   val scoreToWinSet: Int,
   val scoreToWinMatch: Int,
-  val defaultElo: Int
+  val defaultElo: Int,
+  val maxDifference: Int = 400,
+  val eloFactor: Int = 20
 )
