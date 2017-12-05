@@ -22,6 +22,7 @@
     <module>lib/axon</module>
     <module>lib/extensions</module>
     <module>application</module>
+    <module>backend/ranked-properties</module>
   </modules>
 
   <properties>
