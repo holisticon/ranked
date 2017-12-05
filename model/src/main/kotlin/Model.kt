@@ -13,7 +13,16 @@ import javax.validation.constraints.Size
 data class UserName(
   @get: Size(min = 4, message = "{ranked.model.userName.too.short}") // this is the kotlin way of using jsr-303
   val value: String
-)
+) {
+  override fun hashCode(): Int {
+    return 17 * value.hashCode()
+  }
+
+  override fun equals(other: Any?): Boolean {
+    return other is UserName && this.value == other.value
+  }
+
+}
 
 
 /**

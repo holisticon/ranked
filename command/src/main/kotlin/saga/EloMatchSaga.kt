@@ -41,19 +41,18 @@ class EloMatchSaga {
     // send commands to players
     // key/value map inside saga context, just keep the player ids
     SagaLifecycle.associateWith("bluePlayer1", e.teamBlue.player1.value)
-    SagaLifecycle.associateWith("bluePlayer2", e.teamBlue.player2.value)
-    SagaLifecycle.associateWith("redPlayer1", e.teamRed.player1.value)
-    SagaLifecycle.associateWith("redPlayer2", e.teamRed.player2.value)
+    // SagaLifecycle.associateWith("bluePlayer2", e.teamBlue.player2.value)
+    // SagaLifecycle.associateWith("redPlayer1", e.teamRed.player1.value)
+    // SagaLifecycle.associateWith("redPlayer2", e.teamRed.player2.value)
 
     // SagaLifecycle.associateWith("blue", e.teamBlue.toString())
     // SagaLifecycle.associateWith("red", e.teamBlue.toString())
-
 
     // FIXME: don't create any players from here. not deleted to discuss.
     // create players (-> Player), so players exists when win/loose is calculated
     val players = arrayOf(e.teamBlue.player1, e.teamBlue.player2, e.teamRed.player1, e.teamRed.player2)
     players.iterator().forEach { player ->
-        commandGateway?.send<Any>(ParticipateInMatch(player = player, matchId = e.matchId))
+        commandGateway?.send<Any>(ParticipateInMatch(userName = player, matchId = e.matchId))
         rankings.put(player, 0)
     }
 
@@ -62,7 +61,7 @@ class EloMatchSaga {
   @SagaEventHandler(associationProperty = "matchId")
   fun on(e: PlayerParticipatedInMatch) {
     if (rankings.contains(e.player)) {
-      logger.info("Player update ${e.player} has nee elo ${e.eloRanking}")
+      logger.info("Player ${e.player} has elo ranking ${e.eloRanking}")
       rankings.put(e.player, e.eloRanking)
     } else {
       logger.info("Something bad happened ${e}")
@@ -80,10 +79,10 @@ class EloMatchSaga {
         Pair(rankings[e.looser.player1]!!, rankings[e.looser.player2]!!) // looser
       )
 
-      commandGateway?.send<Any>(UpdatePlayerRanking(player = e.team.player1, matchId = e.matchId, eloRanking = teamResultElo.first.first))
-      commandGateway?.send<Any>(UpdatePlayerRanking(player = e.team.player2, matchId = e.matchId, eloRanking = teamResultElo.first.second))
-      commandGateway?.send<Any>(UpdatePlayerRanking(player = e.looser.player1, matchId = e.matchId, eloRanking = teamResultElo.second.first))
-      commandGateway?.send<Any>(UpdatePlayerRanking(player = e.looser.player1, matchId = e.matchId, eloRanking = teamResultElo.second.second))
+      commandGateway?.send<Any>(UpdatePlayerRanking(userName = e.team.player1, matchId = e.matchId, eloRanking = teamResultElo.first.first))
+      commandGateway?.send<Any>(UpdatePlayerRanking(userName = e.team.player2, matchId = e.matchId, eloRanking = teamResultElo.first.second))
+      commandGateway?.send<Any>(UpdatePlayerRanking(userName = e.looser.player1, matchId = e.matchId, eloRanking = teamResultElo.second.first))
+      commandGateway?.send<Any>(UpdatePlayerRanking(userName = e.looser.player2, matchId = e.matchId, eloRanking = teamResultElo.second.second))
 
     } else {
       // TODO exception

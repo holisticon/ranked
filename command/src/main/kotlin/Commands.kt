@@ -12,8 +12,8 @@ import javax.validation.Valid
 import javax.validation.constraints.NotEmpty
 
 data class CreatePlayer(
-  @TargetAggregateIdentifier
   @get: Valid
+  @TargetAggregateIdentifier
   val userName: UserName
 )
 
@@ -59,7 +59,7 @@ data class WinMatch(
 data class ParticipateInMatch(
   @TargetAggregateIdentifier
   @get: Valid
-  val player: UserName,
+  val userName: UserName,
   @get: NotEmpty
   val matchId: String
 )
@@ -67,7 +67,7 @@ data class ParticipateInMatch(
 data class UpdatePlayerRanking(
   @TargetAggregateIdentifier
   @get: Valid
-  val player: UserName,
+  val userName: UserName,
   @get: NotEmpty
   val matchId: String,
   val eloRanking: Int

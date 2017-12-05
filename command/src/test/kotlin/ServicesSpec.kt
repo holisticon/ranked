@@ -112,4 +112,26 @@ class EloServiceSpec {
     assertThat(newElo.second).isEqualTo(0)
   }
 
+
+  @Test
+  fun `calculate team elo`() {
+
+    // winner has team elo of (300 + 700) / 2 = 1000 / 2 = 500
+    val winner = Pair(300, 700)
+    // looser has team elo of (400 + 600) / 2 = 1000 / 2 = 500
+    val looser = Pair(400, 600)
+
+    // equal team elo => 10 point per team (got, lost)
+    val result = testee.calculateTeamElo(winner, looser)
+    // every winner won 5 points
+    assertThat(result.first.first).isEqualTo(winner.first + 5)
+    assertThat(result.first.second).isEqualTo(winner.second + 5)
+    // every looser lost 5 points
+    assertThat(result.second.first).isEqualTo(looser.first - 5)
+    assertThat(result.second.second).isEqualTo(looser.second - 5)
+
+    // elo is pure distribution, no elo points get into the system or from the system
+    assertThat(winner.first + winner.second + looser.first + looser.second)
+      .isEqualTo(result.first.first + result.first.second + result.second.first + result.second.second)
+  }
 }

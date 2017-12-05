@@ -56,7 +56,7 @@ class Player() {
 
     // inform the world about current elo
     apply(PlayerParticipatedInMatch(
-      player = c.player,
+      player = c.userName,
       matchId = c.matchId,
       eloRanking = eloRanking.toInt()
     ))
@@ -65,7 +65,7 @@ class Player() {
   @CommandHandler
   fun handle(c: UpdatePlayerRanking) {
     apply(PlayerRankingChanged(
-      player = c.player,
+      player = c.userName,
       eloRanking = c.eloRanking
     ))
   }

@@ -24,7 +24,6 @@ class PlayerViewService {
 
   @EventHandler
   fun on(e: PlayerCreated) {
-    logger.info { "Player reached the view service: ${e.userName}" }
     players.add(Player(userName = e.userName, displayName = e.displayName))
   }
 
