@@ -1,40 +1,55 @@
 title Match Creation
+actor Client
+participant Match("4711")
+participant EventBus
+
+participant EloRankingSaga
+participant Player("kermit")
+participant Player("piggy")
+participant Player("gonzo")
+participant Player("fozzy")
+
+
+participant MatchWinningSaga
+participant MatchService
+
 
 note over Client: Client is an abstraction. It sends commands \n via UI and sees the events on the WallView.
 
-Client -> Match("4711"): CreateMatchCommand(\nmatchId, \nteamBlue, \nteamRed,\nmatchSet[])
+Client -#blue> Match("4711"): CreateMatchCommand(\nmatchId, \nteamBlue, \nteamRed,\nmatchSet[])
 
 activate Match("4711")
 activate EventBus
 
 Match("4711")->EventBus: MatchCreatedEvent(\nmatchId, \nteamBlue, \nteamRed,\nmatchSet[])
 
-EventBus->MatchWinningSaga: MatchCreatedEvent(\nmatchId, \nteamBlue, \nteamRed,\nmatchSet[])
-activate MatchWinningSaga
-
 EventBus->EloRankingSaga: TeamWonMatchSet( \nwinner, \nlooser, \noffense)
 activate EloRankingSaga
 
-EloRankingSaga->Player("kermit"): ParticipateInMatch(\nusername, \nmatchId)
+EventBus->MatchWinningSaga: MatchCreatedEvent(\nmatchId, \nteamBlue, \nteamRed,\nmatchSet[])
+activate MatchWinningSaga
+
+
+EloRankingSaga-#blue>Player("kermit"): ParticipateInMatch(\nusername, \nmatchId)
 activate Player("kermit")
 Player("kermit")->EventBus: PlayerParticipatedInMatch(\nusername, \neloRanking)
 deactivate Player("kermit")
 EventBus->EloRankingSaga: PlayerParticipatedInMatch(\nusername, \neloRanking)
 
 
-EloRankingSaga->Player("piggy"): ParticipateInMatch(\nusername, \nmatchId)
+EloRankingSaga-#blue>Player("piggy"): ParticipateInMatch(\nusername, \nmatchId)
 activate Player("piggy")
 Player("piggy")->EventBus: PlayerParticipatedInMatch(\nusername, \neloRanking)
 deactivate Player("piggy")
 EventBus->EloRankingSaga: PlayerParticipatedInMatch(\nusername, \neloRanking)
 
-EloRankingSaga->Player("gonzo"): ParticipateInMatch(\nusername, \nmatchId)
+EloRankingSaga-#blue>Player("gonzo"): ParticipateInMatch(\nusername, \nmatchId)
 activate Player("gonzo")
-Player("kermit")->EventBus: PlayerParticipatedInMatch(\nusername, \neloRanking)
+Player("gonzo")->EventBus: PlayerParticipatedInMatch(\nusername, \neloRanking)
 deactivate Player("gonzo")
 EventBus->EloRankingSaga: PlayerParticipatedInMatch(\nusername, \neloRanking)
 
-EloRankingSaga->Player("fozzy"): ParticipateInMatch(\nusername, \nmatchId)
+EloRankingSaga-#blue>Player("fozzy"): ParticipateInMatch(\nusername, \nmatchId)
 activate Player("fozzy")
 Player("fozzy")->EventBus: PlayerParticipatedInMatch(\nusername, \neloRanking)
 deactivate Player("fozzy")
@@ -64,7 +79,7 @@ MatchService-->MatchWinningSaga: true
 deactivate MatchService
 
 
-MatchWinningSaga->Match("4711"): WinMatch(\nwinner, \nlooser, \nmatchId)
+MatchWinningSaga-#blue>Match("4711"): WinMatch(\nwinner, \nlooser, \nmatchId)
 deactivate MatchWinningSaga
 activate Match("4711")
 
@@ -78,24 +93,24 @@ activate EloCalculationService
 EloCalculationService-->EloRankingSaga: newWinnerElo, newLooserElo
 deactivate EloCalculationService
 
-EloRankingSaga->Player("kermit"): UpdatePlayerRanking(\nusername, \nmatchId)
+EloRankingSaga-#blue>Player("kermit"): UpdatePlayerRanking(\nusername, \nmatchId)
 activate Player("kermit")
-Player("fozzy")->EventBus: PlayerRankingChanged(\nusername, \neloRanking)
+Player("kermit")->EventBus: PlayerRankingChanged(\nusername, \neloRanking)
 deactivate Player("kermit")
 
-EloRankingSaga->Player("piggy"): UpdatePlayerRanking(\nusername, \nmatchId)
+EloRankingSaga-#blue>Player("piggy"): UpdatePlayerRanking(\nusername, \nmatchId)
 activate Player("piggy")
 Player("piggy")->EventBus: PlayerRankingChanged(\nusername, \neloRanking)
 deactivate Player("piggy")
 
-EloRankingSaga->Player("gonzo"): UpdatePlayerRanking(\nusername, \nmatchId)
+EloRankingSaga-#blue>Player("gonzo"): UpdatePlayerRanking(\nusername, \nmatchId)
 activate Player("gonzo")
 Player("gonzo")->EventBus: PlayerRankingChanged(\nusername, \neloRanking)
 deactivate Player("gonzo")
 
-EloRankingSaga->Player("fozzy"): UpdatePlayerRanking(\nusername, \nmatchId)
+EloRankingSaga-#blue>Player("fozzy"): UpdatePlayerRanking(\nusername, \nmatchId)
 activate Player("fozzy")
-Player("fozzy")->EventBus: PlayerPartPlayerRankingChangedicipatedInMatch(\nusername, \neloRanking)
+Player("fozzy")->EventBus: PlayerRankingChanged(\nusername, \neloRanking)
 deactivate Player("fozzy")
 
 EventBus->Client: PlayerRankingChanged(\nusername, \neloRanking)
