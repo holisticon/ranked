@@ -51,10 +51,22 @@ components and works as a packaging module for SpringBoot.
 of events stored in teh event store of the application. 
   - The `wall-view` component is displaying the information about played matches. It is comparable with the facebook wall displaying news.
   - The `leaderboard-view` component is calculating the best players and displays those.
+  - The `player-view` component encapsulates information about players available in the system.
 - The `frontend` component contains the ReactJS single page application. Its build process is based on `npm` and `webpack` and is integrated into the 
 Apache Maven component build. If you want to skip the frontend build, please use the following command:
 
         mvn clean install -P \!frontend
+
+### CQRS runtime view
+
+CQRS software design is different from classic OO/CRUD design with shared state. In order to depict this, the following diagramm
+has been created:
+ 
+![Sequence diagram](./docs/sequencediagramm.org.png) 
+
+The diagram has been created using the [https://sequencediagram.org/](https://sequencediagram.org/)
+and the diagram script is located in `docs/sequencediagramm.org.txt`.
+
   
 ### API
 
