@@ -1,0 +1,107 @@
+title Match Creation
+
+note over Client: Client is an abstraction. It sends commands \n via UI and sees the events on the WallView.
+
+Client -> Match("4711"): CreateMatchCommand(\nmatchId, \nteamBlue, \nteamRed,\nmatchSet[])
+
+activate Match("4711")
+activate EventBus
+
+Match("4711")->EventBus: MatchCreatedEvent(\nmatchId, \nteamBlue, \nteamRed,\nmatchSet[])
+
+EventBus->MatchWinningSaga: MatchCreatedEvent(\nmatchId, \nteamBlue, \nteamRed,\nmatchSet[])
+activate MatchWinningSaga
+
+EventBus->EloRankingSaga: TeamWonMatchSet( \nwinner, \nlooser, \noffense)
+activate EloRankingSaga
+
+EloRankingSaga->Player("kermit"): ParticipateInMatch(\nusername, \nmatchId)
+activate Player("kermit")
+Player("kermit")->EventBus: PlayerParticipatedInMatch(\nusername, \neloRanking)
+deactivate Player("kermit")
+EventBus->EloRankingSaga: PlayerParticipatedInMatch(\nusername, \neloRanking)
+
+
+EloRankingSaga->Player("piggy"): ParticipateInMatch(\nusername, \nmatchId)
+activate Player("piggy")
+Player("piggy")->EventBus: PlayerParticipatedInMatch(\nusername, \neloRanking)
+deactivate Player("piggy")
+EventBus->EloRankingSaga: PlayerParticipatedInMatch(\nusername, \neloRanking)
+
+EloRankingSaga->Player("gonzo"): ParticipateInMatch(\nusername, \nmatchId)
+activate Player("gonzo")
+Player("kermit")->EventBus: PlayerParticipatedInMatch(\nusername, \neloRanking)
+deactivate Player("gonzo")
+EventBus->EloRankingSaga: PlayerParticipatedInMatch(\nusername, \neloRanking)
+
+EloRankingSaga->Player("fozzy"): ParticipateInMatch(\nusername, \nmatchId)
+activate Player("fozzy")
+Player("fozzy")->EventBus: PlayerParticipatedInMatch(\nusername, \neloRanking)
+deactivate Player("fozzy")
+EventBus->EloRankingSaga: PlayerParticipatedInMatch(\nusername, \neloRanking)
+
+Match("4711")->EventBus: TeamWonMatchSet(\nmatchId, \nwinner, \nlooser, \noffense)
+EventBus->MatchWinningSaga: TeamWonMatchSet(\nmatchId, \nwinner, \nlooser, \noffense)
+MatchWinningSaga->MatchService: winsMatch(wins)
+activate MatchService
+MatchService-->MatchWinningSaga: false
+deactivate MatchService
+
+Match("4711")->EventBus: TeamWonMatchSet(\nmatchId, \nwinner, \nlooser, \noffense)
+EventBus->MatchWinningSaga: TeamWonMatchSet(\nmatchId, \nwinner, \nlooser, \noffense)
+MatchWinningSaga->MatchService: winsMatch(wins)
+activate MatchService
+MatchService-->MatchWinningSaga: false
+deactivate MatchService
+
+Match("4711")->EventBus: TeamWonMatchSet(\nmatchId, \nwinner, \nlooser, \noffense)
+deactivate Match("4711")
+
+EventBus->MatchWinningSaga: TeamWonMatchSet(\nmatchId, \nwinner, \nlooser, \noffense)
+MatchWinningSaga->MatchService: winsMatch(wins)
+activate MatchService
+MatchService-->MatchWinningSaga: true
+deactivate MatchService
+
+
+MatchWinningSaga->Match("4711"): WinMatch(\nwinner, \nlooser, \nmatchId)
+deactivate MatchWinningSaga
+activate Match("4711")
+
+Match("4711")->EventBus: TeamWonMatch(\nmatchId, \nteam, \nlooser)
+deactivate Match("4711")
+
+EventBus->EloRankingSaga: TeamWonMatch(\nmatchId, \nteam, \nlooser)
+
+EloRankingSaga->EloCalculationService: calculateTeamElo(winnerElo, looserElo)
+activate EloCalculationService
+EloCalculationService-->EloRankingSaga: newWinnerElo, newLooserElo
+deactivate EloCalculationService
+
+EloRankingSaga->Player("kermit"): UpdatePlayerRanking(\nusername, \nmatchId)
+activate Player("kermit")
+Player("fozzy")->EventBus: PlayerRankingChanged(\nusername, \neloRanking)
+deactivate Player("kermit")
+
+EloRankingSaga->Player("piggy"): UpdatePlayerRanking(\nusername, \nmatchId)
+activate Player("piggy")
+Player("piggy")->EventBus: PlayerRankingChanged(\nusername, \neloRanking)
+deactivate Player("piggy")
+
+EloRankingSaga->Player("gonzo"): UpdatePlayerRanking(\nusername, \nmatchId)
+activate Player("gonzo")
+Player("gonzo")->EventBus: PlayerRankingChanged(\nusername, \neloRanking)
+deactivate Player("gonzo")
+
+EloRankingSaga->Player("fozzy"): UpdatePlayerRanking(\nusername, \nmatchId)
+activate Player("fozzy")
+Player("fozzy")->EventBus: PlayerPartPlayerRankingChangedicipatedInMatch(\nusername, \neloRanking)
+deactivate Player("fozzy")
+
+EventBus->Client: PlayerRankingChanged(\nusername, \neloRanking)
+
+EventBus->Client: PlayerRankingChanged(\nusername, \neloRanking)
+
+EventBus->Client: PlayerRankingChanged(\nusername, \neloRanking)
+
+EventBus->Client: PlayerRankingChanged(\nusername, \neloRanking)
