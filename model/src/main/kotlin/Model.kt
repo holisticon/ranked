@@ -2,6 +2,7 @@ package de.holisticon.ranked.model
 
 import cz.jirutka.validator.spring.SpELAssert
 import org.hibernate.validator.constraints.Range
+import java.io.Serializable
 import javax.validation.Valid
 import javax.validation.constraints.Size
 
@@ -13,14 +14,11 @@ import javax.validation.constraints.Size
 data class UserName(
   @get: Size(min = 4, message = "{ranked.model.userName.too.short}") // this is the kotlin way of using jsr-303
   val value: String
-) {
-  override fun hashCode(): Int {
-    return 17 * value.hashCode()
-  }
+) : Serializable {
 
-  override fun equals(other: Any?): Boolean {
-    return other is UserName && this.value == other.value
-  }
+  override fun hashCode(): Int = 17 * value.hashCode()
+  override fun equals(other: Any?): Boolean = other is UserName && this.value == other.value
+  override fun toString(): String = value
 
 }
 
@@ -80,6 +78,10 @@ data class MatchSet(
 
   val offenseBlue: UserName
 ) {
+
+  // TODO fix this and replace by the property!
+  // this implies to move validation logic to somewhere else (e.G. a service) -> problem with dependencies....
+  // could be executed by SpELAssert, but the properties needs to be available here...
   companion object {
     const val SCORE_TO_WIN: Long = 6
   }

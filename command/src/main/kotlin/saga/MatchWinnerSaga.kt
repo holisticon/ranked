@@ -36,7 +36,7 @@ class MatchWinnerSaga {
     // (2) a played match starts a match saga
     // TODO: why saga not via constructor?
 
-    logger.info("Match Winner Saga started for match ${e.matchId}")
+    logger.trace("Match Winner Saga started for match ${e.matchId}")
   }
 
   @SagaEventHandler(associationProperty = "matchId")
@@ -48,6 +48,7 @@ class MatchWinnerSaga {
     // if this was the last set (one team won), fire event
     if (matchService.winsMatch(wins)) {
       // -> Match#on(c: WinMatch)
+      // TODO: exception handling on fail.
       commandGateway.send<Any>(WinMatch(
         winner = e.team,
         looser = e.looser,

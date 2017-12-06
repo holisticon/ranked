@@ -80,7 +80,7 @@ class Player() {
 
   @EventSourcingHandler
   fun on(e: PlayerRankingChanged) {
-    logger.info { "elo ranking changed for ${displayName} from ${eloRanking} to ${e.eloRanking}" }
+    logger.trace { "Elo ranking changed for ${displayName} from ${eloRanking} to ${e.eloRanking}" }
     eloRanking = Integer(e.eloRanking)
   }
 

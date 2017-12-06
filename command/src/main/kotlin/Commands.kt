@@ -11,13 +11,49 @@ import java.util.*
 import javax.validation.Valid
 import javax.validation.constraints.NotEmpty
 
+/*************************************************************
+ *  Player Commands
+ ************************************************************* */
+
+/**
+ * Create command for Player aggregate.
+ */
 data class CreatePlayer(
   @get: Valid
   @TargetAggregateIdentifier
   val userName: UserName
 )
 
-@ApiModel
+/**
+ * Command towards player aggregate to take part in the match.
+ */
+data class ParticipateInMatch(
+  @TargetAggregateIdentifier
+  @get: Valid
+  val userName: UserName,
+  @get: NotEmpty
+  val matchId: String
+)
+
+/**
+ * Command towards player aggregate to update the ranking.
+ */
+data class UpdatePlayerRanking(
+  @TargetAggregateIdentifier
+  @get: Valid
+  val userName: UserName,
+  @get: NotEmpty
+  val matchId: String,
+  val eloRanking: Int
+)
+
+/*************************************************************
+ *  Match Commands
+ ************************************************************* */
+
+/**
+ * Create command towards Match aggregate to create the match.
+ */
 @SpELAssert.List(
   SpELAssert(value = "disjunct()", message = "{ranked.createMatch.disjunct}"),
   SpELAssert(value = "correctOffense()", message = "{ranked.createMatch.offense}")
@@ -27,17 +63,13 @@ data class CreateMatch(
   @TargetAggregateIdentifier
   @get: NotEmpty
   val matchId: String = UUID.randomUUID().toString(),
-
   val date: LocalDateTime = LocalDateTime.now(),
-
   @get: Valid
   val teamRed: Team,
   @get: Valid
   val teamBlue: Team,
-
   @SpELAssert("@matchService.validateMatch(#this)", message = "{ranked.createMatch.finished}")
   val matchSets: List<MatchSet>,
-
   val tournamentId: String? = null
 ) {
 
@@ -45,6 +77,9 @@ data class CreateMatch(
   fun correctOffense() = matchSets.filter{ s -> !teamRed.hasMember(s.offenseRed) || !teamBlue.hasMember(s.offenseBlue) }.isEmpty()
 }
 
+/**
+ * Command towards Match aggregate to mark the match as won.
+ */
 data class WinMatch(
   @TargetAggregateIdentifier
   @get: NotEmpty
@@ -53,22 +88,4 @@ data class WinMatch(
   val winner: Team,
   @get: Valid
   val looser: Team
-)
-
-
-data class ParticipateInMatch(
-  @TargetAggregateIdentifier
-  @get: Valid
-  val userName: UserName,
-  @get: NotEmpty
-  val matchId: String
-)
-
-data class UpdatePlayerRanking(
-  @TargetAggregateIdentifier
-  @get: Valid
-  val userName: UserName,
-  @get: NotEmpty
-  val matchId: String,
-  val eloRanking: Int
 )

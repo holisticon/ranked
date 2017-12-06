@@ -79,6 +79,15 @@ class WallView(val eventPublisher: ApplicationEventPublisher) {
     logger.info { "Player ${e.displayName} (${e.userName}) created with rating ${e.initialElo}" }
   }
 
+  @EventHandler
+  fun on(e: PlayerRankingChanged) {
+    logger.info { "Player ${e.player} new rating is ${e.eloRanking}" }
+  }
+
+  @EventHandler
+  fun on(e: PlayerParticipatedInMatch) {
+    logger.info { "Player ${e.player} with ranking ${e.eloRanking} played in match ${e.matchId}" }
+  }
 
 //  @GetMapping("/management/replay")
 //  fun replay() = eventPublisher.publishEvent(ReplayTrackingProcessor(NAME))

@@ -4,6 +4,7 @@ import de.holisticon.ranked.axon.TrackingProcessors
 import de.holisticon.ranked.command.rest.CommandApi
 import de.holisticon.ranked.command.service.MatchService
 import de.holisticon.ranked.command.service.UserService
+import de.holisticon.ranked.extension.DefaultSmartLifecycle
 import de.holisticon.ranked.model.event.internal.ReplayTrackingProcessor
 import mu.KLogging
 import org.axonframework.commandhandling.SimpleCommandBus
@@ -51,15 +52,6 @@ class CommandConfiguration {
   @Value("\${ranked.elo.default}")
   private lateinit var defaultElo: Integer
 
-  // TODO implement configuration properties object.
-  @Bean
-  fun rankedProperties(): RankedProperties = RankedProperties(
-    scoreToWinSet = scoreToWinSet.toInt(),
-    scoreToWinMatch = scoreToWinMatch.toInt(),
-    defaultElo = defaultElo.toInt()
-  )
-
-
   @Autowired
   fun configure(bus: SimpleCommandBus, validationFactory: ValidatorFactory) {
     bus.registerDispatchInterceptor(BeanValidationInterceptor(validationFactory))
@@ -70,18 +62,27 @@ class CommandConfiguration {
     trackingProcessorService.registerTrackingProcessors()
   }
 
+  // TODO implement configuration properties object.
+  @Bean
+  fun rankedProperties(): RankedProperties = RankedProperties(
+    scoreToWinSet = scoreToWinSet.toInt(),
+    scoreToWinMatch = scoreToWinMatch.toInt(),
+    defaultElo = defaultElo.toInt()
+  )
+
   // TODO why do we need this?
+
   @Bean
   fun command(commandGateway: CommandGateway) = CommandApi(commandGateway)
 
   @Bean
   fun validatorFactoryBean(): ValidatorFactory = LocalValidatorFactoryBean()
 
-  @Bean
-  fun matchService(properties: RankedProperties) = MatchService(properties)
+//  @Bean
+//  fun matchService(properties: RankedProperties) = MatchService(properties)
 
-  @Bean
-  fun userService(commandGateway: CommandGateway) = UserService()
+//   @Bean
+//  fun userService() = UserService()
 
   /**
    * Swagger configuration
@@ -108,35 +109,15 @@ class CommandConfiguration {
  * Startup axon tracking processor replay.
  */
 @Component
-class TrackingProcessorInitializer(val trackingProcessorService: TrackingProcessorService) : SmartLifecycle {
-
-  var running: Boolean = false
+class TrackingProcessorInitializer(val trackingProcessorService: TrackingProcessorService) : DefaultSmartLifecycle() {
 
   override fun start() {
-
     this.trackingProcessorService.replayAll()
-    this.running = true
-  }
-
-  override fun isAutoStartup(): Boolean {
-    return true
-  }
-
-  override fun stop(callback: Runnable?) {
-    callback?.run()
-    this.running = false
-  }
-
-  override fun stop() {
-    this.running = false
+    super.start()
   }
 
   override fun getPhase(): Int {
     return Int.MAX_VALUE - 10
-  }
-
-  override fun isRunning(): Boolean {
-    return running
   }
 }
 
@@ -188,6 +169,9 @@ class TrackingProcessorService(val eventHandlingConfiguration: EventHandlingConf
 
 }
 
+/**
+ * Properties.
+ */
 data class RankedProperties(
   val scoreToWinSet: Int,
   val scoreToWinMatch: Int,

@@ -2,11 +2,11 @@ package de.holisticon.ranked.command.service
 
 import de.holisticon.ranked.command.RankedProperties
 import de.holisticon.ranked.command.api.CreatePlayer
+import de.holisticon.ranked.extension.DefaultSmartLifecycle
 import de.holisticon.ranked.model.MatchSet
 import de.holisticon.ranked.model.Team
 import de.holisticon.ranked.model.UserName
 import org.axonframework.commandhandling.gateway.CommandGateway
-import org.springframework.context.SmartLifecycle
 import org.springframework.stereotype.Component
 import kotlin.math.absoluteValue
 import kotlin.math.pow
@@ -45,42 +45,19 @@ data class User(
  * Startup user creation.
  */
 @Component
-class UserInitializer(val userService: UserService, val commandGateway: CommandGateway) : SmartLifecycle {
-
-  companion object {
-    val USERS = arrayOf("kermit", "piggy", "gonzo", "fozzy")
-  }
+class UserInitializer(val commandGateway: CommandGateway) : DefaultSmartLifecycle() {
 
   fun initializeUsers() {
-    USERS.forEach { user -> commandGateway.send<Any>(CreatePlayer(userName = UserName(user))) }
+    arrayOf("kermit", "piggy", "gonzo", "fozzy").forEach { user -> commandGateway.send<Any>(CreatePlayer(userName = UserName(user))) }
   }
-
-  var running: Boolean = false
 
   override fun start() {
     initializeUsers()
-    this.running = true
-  }
-
-  override fun isAutoStartup(): Boolean {
-    return true
-  }
-
-  override fun stop(callback: Runnable?) {
-    callback?.run()
-    this.running = false
-  }
-
-  override fun stop() {
-    this.running = false
+    super.start()
   }
 
   override fun getPhase(): Int {
     return Int.MAX_VALUE - 20
-  }
-
-  override fun isRunning(): Boolean {
-    return running
   }
 }
 

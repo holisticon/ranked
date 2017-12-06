@@ -16,7 +16,7 @@ class LoggingEventHandler {
 
   @EventHandler
   fun on(event: MatchCreated) {
-    logger.info { "Match created ${event.matchId}" }
+    // logger.trace { "Match created ${event.matchId}" }
   }
 
 }

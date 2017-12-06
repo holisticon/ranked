@@ -36,35 +36,23 @@ class EloMatchSaga {
   @SagaEventHandler(associationProperty = "matchId")
   fun on(e: MatchCreated) {
 
-    logger.info("Elo Saga started for match ${e.matchId}")
+    logger.trace("Elo saga started for match ${e.matchId}.")
 
     // send commands to players
-    // key/value map inside saga context, just keep the player ids
-    SagaLifecycle.associateWith("bluePlayer1", e.teamBlue.player1.value)
-    // SagaLifecycle.associateWith("bluePlayer2", e.teamBlue.player2.value)
-    // SagaLifecycle.associateWith("redPlayer1", e.teamRed.player1.value)
-    // SagaLifecycle.associateWith("redPlayer2", e.teamRed.player2.value)
-
-    // SagaLifecycle.associateWith("blue", e.teamBlue.toString())
-    // SagaLifecycle.associateWith("red", e.teamBlue.toString())
-
-    // FIXME: don't create any players from here. not deleted to discuss.
-    // create players (-> Player), so players exists when win/loose is calculated
     val players = arrayOf(e.teamBlue.player1, e.teamBlue.player2, e.teamRed.player1, e.teamRed.player2)
     players.iterator().forEach { player ->
         commandGateway?.send<Any>(ParticipateInMatch(userName = player, matchId = e.matchId))
         rankings.put(player, 0)
     }
-
   }
 
   @SagaEventHandler(associationProperty = "matchId")
   fun on(e: PlayerParticipatedInMatch) {
     if (rankings.contains(e.player)) {
-      logger.info("Player ${e.player} has elo ranking ${e.eloRanking}")
+      logger.trace("Player ${e.player} participated in a match ${e.matchId} and had elo ranking ${e.eloRanking}.")
       rankings.put(e.player, e.eloRanking)
     } else {
-      logger.info("Something bad happened ${e}")
+      logger.error("Something bad happened ${e}")
     }
   }
 
@@ -74,6 +62,7 @@ class EloMatchSaga {
     // make sure elo is provided
     if (validateElo(arrayOf(e.team.player1, e.team.player2, e.looser.player1, e.looser.player2))) {
 
+      logger.trace("Elo saga calculated new rankings for the match ${e.matchId}.")
       val teamResultElo = eloCalculationService!!.calculateTeamElo(
         Pair(rankings[e.team.player1]!!, rankings[e.team.player2]!!), // winner
         Pair(rankings[e.looser.player1]!!, rankings[e.looser.player2]!!) // looser
@@ -86,7 +75,7 @@ class EloMatchSaga {
 
     } else {
       // TODO exception
-      logger.info("Something bad happened ${e}")
+      logger.error("Something bad happened ${e}")
     }
   }
 
