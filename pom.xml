@@ -44,7 +44,6 @@
         <version>${project.version}</version>
       </dependency>
 
-
       <dependency>
         <artifactId>ranked-axon</artifactId>
         <groupId>${project.groupId}</groupId>
@@ -72,7 +71,6 @@
         <artifactId>kotlin-logging</artifactId>
         <version>${kotlin-logging.version}</version>
       </dependency>
-
 
       <dependency>
         <groupId>io.springfox</groupId>

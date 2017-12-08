@@ -25,6 +25,15 @@ data class CreatePlayer(
 )
 
 /**
+ * Check if player aggregate already exists.
+ */
+data class CheckPlayer(
+  @get: Valid
+  @TargetAggregateIdentifier
+  val userName: UserName
+)
+
+/**
  * Command towards player aggregate to take part in the match.
  */
 data class ParticipateInMatch(
@@ -89,3 +98,5 @@ data class WinMatch(
   @get: Valid
   val looser: Team
 )
+
+

@@ -146,7 +146,7 @@ class TrackingProcessorService(
         p.start()
       })
     } else {
-      logger.warn { "Token not found for $name processor. No replay initiated." }
+      logger.info { "Token not found for $name processor. No replay initiated." }
     }
   }
 

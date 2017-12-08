@@ -1,11 +1,14 @@
 package de.holisticon.ranked.command.service
 
+import de.holisticon.ranked.command.api.CheckPlayer
 import de.holisticon.ranked.command.api.CreatePlayer
 import de.holisticon.ranked.extension.DefaultSmartLifecycle
 import de.holisticon.ranked.model.MatchSet
 import de.holisticon.ranked.model.Team
 import de.holisticon.ranked.model.UserName
 import de.holisticon.ranked.properties.RankedProperties
+import org.axonframework.commandhandling.CommandCallback
+import org.axonframework.commandhandling.CommandMessage
 import org.axonframework.commandhandling.gateway.CommandGateway
 import org.springframework.stereotype.Component
 import kotlin.math.absoluteValue
@@ -48,7 +51,21 @@ data class User(
 class UserInitializer(val commandGateway: CommandGateway) : DefaultSmartLifecycle() {
 
   fun initializeUsers() {
-    arrayOf("kermit", "piggy", "gonzo", "fozzy").forEach { user -> commandGateway.send<Any>(CreatePlayer(userName = UserName(user))) }
+
+    arrayOf("kermit", "piggy", "gonzo", "fozzy", "beeker").forEach {
+      val completableFuture = commandGateway.send(
+        CheckPlayer(userName = UserName(it)),
+        object : CommandCallback<CheckPlayer, Any> {
+          override fun onSuccess(commandMessage: CommandMessage<out CheckPlayer>?, result: Any?) {
+            // player exists
+          }
+
+          override fun onFailure(commandMessage: CommandMessage<out CheckPlayer>?, cause: Throwable?) {
+            commandGateway.send<Any>(CreatePlayer(userName = UserName(it)))
+          }
+        }
+      )
+    }
   }
 
   override fun start() {

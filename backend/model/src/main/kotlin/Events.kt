@@ -11,6 +11,10 @@ data class PlayerCreated(
   val initialElo: Int
 )
 
+data class PlayerExists(
+  val userName: UserName
+)
+
 data class PlayerWonMatchSet(
   val player: UserName,
   val position: PlayerPosition,
