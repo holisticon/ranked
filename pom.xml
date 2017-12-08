@@ -15,14 +15,8 @@
   <packaging>pom</packaging>
 
   <modules>
-    <module>command</module>
-    <module>h2</module>
-    <module>model</module>
-    <module>view</module>
-    <module>lib/axon</module>
-    <module>lib/extensions</module>
-    <module>application</module>
-    <module>backend/ranked-properties</module>
+    <module>backend</module>
+    <module>test</module>
   </modules>
 
   <properties>

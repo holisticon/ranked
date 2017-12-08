@@ -1,0 +1,7 @@
+ranked:
+  elo:
+    default: 1000
+    maxDifference: 400
+    factor: 20
+  scoreToWinSet: 6
+  setsToWinMatch: 2
