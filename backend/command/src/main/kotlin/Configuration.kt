@@ -132,24 +132,23 @@ class TrackingProcessorService(
   @EventListener
   fun replay(event: ReplayTrackingProcessor) {
     logger.info { "Replay requested: $event" }
-    val name = event.name
-    val id: TokenEntry.PK = TokenEntry.PK(name, 0)
+    val id: TokenEntry.PK = TokenEntry.PK(event, 0)
     val one: Optional<TokenEntry> = repository.findById(id)
     if (one.isPresent) {
-      val processor: Optional<EventProcessor> = this.eventHandlingConfiguration.getProcessor(name)
+      val processor: Optional<EventProcessor> = this.eventHandlingConfiguration.getProcessor(event)
       processor.ifPresent({ p ->
-        logger.debug { "Stopping $name" }
+        logger.debug { "Stopping $event" }
         p.shutDown()
-        logger.debug { "Deleting token for $name" }
+        logger.debug { "Deleting token for $event" }
         this.repository.deleteById(id)
-        logger.debug { "Starting $name" }
+        logger.debug { "Starting $event" }
         p.start()
       })
     } else {
-      logger.info { "Token not found for $name processor. No replay initiated." }
+      logger.info { "Token not found for $event processor. No replay initiated." }
     }
   }
 
-  fun replayAll() = trackingProcessors.forEach { name -> replay(ReplayTrackingProcessor(name)) }
+  fun replayAll() = trackingProcessors.forEach { replay(it) }
 
 }
