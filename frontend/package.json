@@ -20,10 +20,10 @@
   },
   "homepage": "https://github.com/holisticon/ranked",
   "dependencies": {
-    "react": "^15.3.2",
-    "react-dom": "^15.3.2",
-    "rest": "^1.3.1",
-    "webpack": "^1.12.2"
+    "react": "15.3.2",
+    "react-dom": "15.3.2",
+    "rest": "1.3.1",
+    "webpack": "1.12.2"
   },
   "scripts": {
     "watch": "webpack --watch -d"
