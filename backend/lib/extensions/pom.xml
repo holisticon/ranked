@@ -7,7 +7,7 @@
     <artifactId>ranked-root</artifactId>
     <groupId>de.holisticon.ranked</groupId>
     <version>0.0.1-SNAPSHOT</version>
-    <relativePath>../../pom.xml</relativePath>
+    <relativePath>../../../pom.xml</relativePath>
   </parent>
 
   <groupId>de.holisticon.ranked.extension</groupId>
