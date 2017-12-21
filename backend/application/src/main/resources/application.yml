@@ -25,6 +25,7 @@ ranked:
     factor: 20
 
 swagger:
+  redirect: true
   dockets:
     Views:
       basePackage: "de.holisticon.ranked.view"
