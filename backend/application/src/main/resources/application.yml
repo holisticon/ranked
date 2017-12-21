@@ -23,3 +23,36 @@ ranked:
     default: 1000
     maxDifference: 400
     factor: 20
+
+swagger:
+  redirect: true
+  dockets:
+    Views:
+      basePackage: "de.holisticon.ranked.view"
+      path: "/view/**"
+      apiInfo:
+        title: Ranked View API
+        description: View API to access different views in ranked.
+        version: 1.0.0
+        termsOfService: None
+        lisense: Revised BSD License
+        licenseUrl: https://github.com/holisticon/ranked/blob/master/LICENSE.txt
+        contact:
+          name: Holisticon Craftsmen
+          email: jobs@holisticon.de
+          url: https://www.holisticon.de
+    Commands:
+      basePackage: "de.holisticon.ranked.command"
+      path: "/command/**"
+      apiInfo:
+        title: Ranked Command API
+        description: Command API to access different views in ranked.
+        version: 1.0.0
+        termsOfService: None
+        lisense: Revised BSD License
+        licenseUrl: https://github.com/holisticon/ranked/blob/master/LICENSE.txt
+        contact:
+          name: Holisticon Craftsmen
+          email: jobs@holisticon.de
+          url: https://www.holisticon.de
+

@@ -29,7 +29,7 @@ class CommandApi(val commandGateway: CommandGateway) {
   @PostMapping(path = ["/createMatch"])
   fun createMatch(@RequestBody @Valid match: CreateMatch): ResponseEntity<String> {
     try {
-      val result: Any = commandGateway.sendAndWait(match) ?: return ResponseEntity.badRequest().body("Sending thread interrupted")
+      commandGateway.sendAndWait(match) ?: return ResponseEntity.badRequest().body("Sending thread interrupted")
       // TODO how to react to that?
       return ResponseEntity.noContent().build()
     } catch (e: CommandExecutionException) {

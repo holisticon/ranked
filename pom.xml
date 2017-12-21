@@ -57,6 +57,12 @@
       </dependency>
 
       <dependency>
+        <groupId>io.toolisticon.springboot</groupId>
+        <artifactId>springboot-swagger-starter</artifactId>
+        <version>0.0.2</version>
+      </dependency>
+
+      <dependency>
         <groupId>org.axonframework</groupId>
         <artifactId>axon-spring-boot-starter</artifactId>
         <version>${axon.version}</version>
@@ -73,14 +79,9 @@
       </dependency>
 
       <dependency>
-        <groupId>io.springfox</groupId>
-        <artifactId>springfox-swagger-ui</artifactId>
-        <version>${springfox.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>io.springfox</groupId>
-        <artifactId>springfox-swagger2</artifactId>
-        <version>${springfox.version}</version>
+        <groupId>io.swagger</groupId>
+        <artifactId>swagger-annotations</artifactId>
+        <version>1.5.13</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
