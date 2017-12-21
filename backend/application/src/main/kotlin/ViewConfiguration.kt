@@ -32,23 +32,4 @@ class ViewConfiguration {
   @Bean
   fun playerService() = PlayerViewService
 
-  /**
-   * Swagger configuration
-   */
-  @Bean
-  fun viewApi(): Docket = Docket(DocumentationType.SWAGGER_2)
-    .groupName("Views")
-    .select()
-    .apis(RequestHandlerSelectors.basePackage("de.holisticon.ranked.view"))
-    .paths(PathSelectors.ant("/view/**"))
-    .build()
-    .apiInfo(ApiInfo(
-      "Ranked View API",
-      "View API to access different views in ranked.",
-      "1.0.0",
-      "None",
-      Contact("Holisticon Craftsmen", "https://www.holisticon.de", "jobs@holisticon.de"),
-      "Revised BSD License",
-      "https://github.com/holisticon/ranked/blob/master/LICENSE.txt",
-      ArrayList()))
 }

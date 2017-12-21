@@ -13,7 +13,6 @@ import org.axonframework.eventhandling.EventProcessor
 import org.axonframework.eventhandling.tokenstore.jpa.TokenEntry
 import org.axonframework.messaging.interceptors.BeanValidationInterceptor
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.ComponentScan
@@ -28,7 +27,6 @@ import springfox.documentation.service.ApiInfo
 import springfox.documentation.service.Contact
 import springfox.documentation.spi.DocumentationType
 import springfox.documentation.spring.web.plugins.Docket
-import springfox.documentation.swagger2.annotations.EnableSwagger2
 import java.util.*
 import javax.validation.ValidatorFactory
 
@@ -36,7 +34,6 @@ import javax.validation.ValidatorFactory
  * Configure components.
  */
 @Configuration
-@EnableSwagger2
 @EnableAutoConfiguration
 @ComponentScan
 class CommandConfiguration {
@@ -68,6 +65,7 @@ class CommandConfiguration {
   /**
    * Swagger configuration
    */
+
   @Bean
   fun commandApi(): Docket = Docket(DocumentationType.SWAGGER_2)
     .groupName("Commands")
@@ -84,6 +82,7 @@ class CommandConfiguration {
       "Revised BSD License",
       "https://github.com/holisticon/ranked/blob/master/LICENSE.txt",
       ArrayList()))
+
 }
 
 /**
@@ -114,7 +113,7 @@ interface TokenJpaRepository : JpaRepository<TokenEntry, TokenEntry.PK>
 class TrackingProcessorService(
   val eventHandlingConfiguration: EventHandlingConfiguration,
   val repository: TokenJpaRepository,
-  val properties : RankedProperties
+  val properties: RankedProperties
 ) {
 
   companion object : KLogging()
