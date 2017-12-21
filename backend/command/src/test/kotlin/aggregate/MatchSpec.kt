@@ -1,14 +1,12 @@
 package de.holisticon.ranked.command.aggregate
 
 import de.holisticon.ranked.command.api.CreateMatch
+import de.holisticon.ranked.command.api.WinMatch
 import de.holisticon.ranked.command.service.MatchService
 import de.holisticon.ranked.model.MatchSet
 import de.holisticon.ranked.model.Team
 import de.holisticon.ranked.model.UserName
-import de.holisticon.ranked.model.event.MatchCreated
-import de.holisticon.ranked.model.event.PlayerPosition
-import de.holisticon.ranked.model.event.PlayerWonMatchSet
-import de.holisticon.ranked.model.event.TeamWonMatchSet
+import de.holisticon.ranked.model.event.*
 import de.holisticon.ranked.properties.RankedProperties
 import de.holisticon.ranked.properties.createProperties
 import org.axonframework.test.aggregate.AggregateTestFixture
@@ -104,6 +102,44 @@ class MatchSpec {
         PlayerWonMatchSet(piggy, PlayerPosition.OFFENSE, kermit, now),
         PlayerWonMatchSet(kermit, PlayerPosition.DEFENSE, piggy, now)
       )
+  }
+
+  @Test
+  fun `when match is won, the winner team gets announced`() {
+    fixture
+      .given(
+        MatchCreated(
+          matchId = "4711",
+          date = now,
+          teamRed = teamRed,
+          teamBlue = teamBlue,
+          matchSets = sets,
+          tournamentId = "0815"
+        )
+      )
+      .`when`(WinMatch(
+        matchId = "4711",
+        winner = teamRed,
+        looser = teamBlue))
+      .expectEvents(
+        TeamWonMatch(
+          matchId = "4711",
+          date = now,
+          team = teamRed,
+          looser = teamBlue
+        ),
+        PlayerWonMatch(
+          date = now,
+          player = teamRed.player1,
+          teammate = teamRed.player2
+        ),
+        PlayerWonMatch(
+          date = now,
+          player = teamRed.player2,
+          teammate = teamRed.player1
+        )
+    )
+
   }
 
 

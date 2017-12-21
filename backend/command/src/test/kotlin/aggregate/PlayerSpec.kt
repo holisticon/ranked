@@ -1,11 +1,13 @@
 package de.holisticon.ranked.command.aggregate
 
+import de.holisticon.ranked.command.api.CheckPlayer
 import de.holisticon.ranked.command.api.CreatePlayer
 import de.holisticon.ranked.command.api.ParticipateInMatch
 import de.holisticon.ranked.command.api.UpdatePlayerRanking
 import de.holisticon.ranked.command.service.UserService
 import de.holisticon.ranked.model.UserName
 import de.holisticon.ranked.model.event.PlayerCreated
+import de.holisticon.ranked.model.event.PlayerExists
 import de.holisticon.ranked.model.event.PlayerParticipatedInMatch
 import de.holisticon.ranked.model.event.PlayerRankingChanged
 import de.holisticon.ranked.properties.createProperties
@@ -52,6 +54,15 @@ class PlayerSpec {
         PlayerParticipatedInMatch(UserName("kermit"), "4711", elo))
       .`when`(UpdatePlayerRanking(UserName("kermit"), "4711", elo + 67))
       .expectEvents(PlayerRankingChanged(UserName("kermit"), elo + 67))
+  }
+
+  @Test
+  fun `when a player exists, it can be checked`() {
+    fixture
+      .given(
+        PlayerCreated(userName = UserName("kermit"), displayName = "KERMIT", initialElo = elo))
+      .`when`(CheckPlayer(UserName("kermit")))
+      .expectEvents(PlayerExists(UserName("kermit")))
   }
 
 }
