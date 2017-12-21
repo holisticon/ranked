@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>de.holisticon.ranked</groupId>
-    <artifactId>ranked-root</artifactId>
+    <artifactId>ranked-backend-root</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
 
