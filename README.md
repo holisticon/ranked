@@ -1,4 +1,6 @@
 # Ranked
+[![travis](https://travis-ci.org/holisticon/ranked.svg?branch=master)](https://travis-ci.org/holisticon/ranked.svg?branch=master)
+[![codecov](https://codecov.io/gh/holisticon/ranked/branch/master/graph/badge.svg)](https://codecov.io/gh/holisticon/ranked)
 
 Application for tracking table-soccer results.
 
