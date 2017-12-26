@@ -19,7 +19,7 @@ import java.time.LocalDateTime
 
 @TrackingProcessor
 @ProcessingGroup(WallView.NAME)
-@Api(tags = arrayOf("News wall"))
+@Api(tags = ["News wall"])
 @RestController
 @RequestMapping(value = "/view")
 class WallView(val eventPublisher: ApplicationEventPublisher) {

@@ -1,11 +1,16 @@
 package de.holisticon.ranked.command
 
 import de.holisticon.ranked.axon.TrackingProcessors
+import de.holisticon.ranked.command.api.CheckConfiguration
+import de.holisticon.ranked.command.api.CreateConfiguration
 import de.holisticon.ranked.extension.DefaultSmartLifecycle
 import de.holisticon.ranked.model.event.internal.ReplayTrackingProcessor
 import de.holisticon.ranked.properties.RankedProperties
 import mu.KLogging
+import org.axonframework.commandhandling.CommandCallback
+import org.axonframework.commandhandling.CommandMessage
 import org.axonframework.commandhandling.SimpleCommandBus
+import org.axonframework.commandhandling.gateway.CommandGateway
 import org.axonframework.config.EventHandlingConfiguration
 import org.axonframework.eventhandling.EventProcessor
 import org.axonframework.eventhandling.tokenstore.jpa.TokenEntry
@@ -20,6 +25,7 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Component
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean
 import java.util.*
+import javax.annotation.PostConstruct
 import javax.validation.ValidatorFactory
 
 /**
@@ -44,6 +50,7 @@ class CommandConfiguration {
   @Bean
   fun validatorFactoryBean(): ValidatorFactory = LocalValidatorFactoryBean()
 }
+
 
 /**
  * Startup axon tracking processor replay.

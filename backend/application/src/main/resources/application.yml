@@ -20,7 +20,7 @@ ranked:
   scoreToWinSet: 6
   setsToWinMatch: 2
   elo:
-    default: 1000
+    default: 1200
     maxDifference: 400
     factor: 20
 

@@ -4,6 +4,7 @@ import cz.jirutka.validator.spring.SpELAssert
 import de.holisticon.ranked.model.MatchSet
 import de.holisticon.ranked.model.Team
 import de.holisticon.ranked.model.UserName
+import de.holisticon.ranked.properties.RankedProperties
 import io.swagger.annotations.ApiModel
 import org.axonframework.commandhandling.TargetAggregateIdentifier
 import java.time.LocalDateTime
@@ -100,3 +101,24 @@ data class WinMatch(
 )
 
 
+data class CreateConfiguration(
+  @TargetAggregateIdentifier
+  val id: String = ID,
+  val properties : RankedProperties
+) {
+  companion object {
+    const val ID = "1"
+  }
+}
+
+
+data class UpdateConfiguration(
+  @TargetAggregateIdentifier
+  val id: String = CreateConfiguration.ID,
+  val properties : RankedProperties
+)
+
+data class CheckConfiguration(
+  @TargetAggregateIdentifier
+  val id: String = CreateConfiguration.ID
+)

@@ -3,6 +3,7 @@ package de.holisticon.ranked.model.event
 import de.holisticon.ranked.model.MatchSet
 import de.holisticon.ranked.model.Team
 import de.holisticon.ranked.model.UserName
+import org.springframework.boot.env.RandomValuePropertySource
 import java.time.LocalDateTime
 
 data class PlayerCreated(
