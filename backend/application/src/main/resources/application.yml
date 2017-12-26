@@ -47,4 +47,4 @@ swagger:
       path: "/command/**"
       apiInfo:
         title: Ranked Command API
-        description: Command API to access different views in ranked.
+        description: Command API to write to ranked.
