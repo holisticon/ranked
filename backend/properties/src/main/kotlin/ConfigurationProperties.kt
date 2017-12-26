@@ -3,12 +3,17 @@ package de.holisticon.ranked.properties
 import de.holisticon.ranked.extension.validate
 import mu.KLogging
 import org.hibernate.validator.constraints.Range
-import org.springframework.beans.factory.annotation.Value
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.boot.context.properties.EnableConfigurationProperties
+import org.springframework.boot.context.properties.NestedConfigurationProperty
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean
-import javax.validation.*
+import javax.validation.Valid
+import javax.validation.Validation
+import javax.validation.ValidationException
+import javax.validation.Validator
 
 // this is actually a whole lot of work to do for getting the yaml values as immutable bean.
 // but at least, it does the job
@@ -18,25 +23,26 @@ import javax.validation.*
 data class EloProperty(
 
   @get: Range(min = 100, max = 2000)
-  val default: Int = 1000,
+  var default: Int = 1000,
 
   @get: Range(min = 1, max = 500)
-  val maxDifference: Int = 400,
+  var maxDifference: Int = 400,
 
   @get: Range(min = 1, max = 100)
-  val factor: Int = 20
+  var factor: Int = 20
 )
 
-
+@ConfigurationProperties(prefix = "ranked")
 data class RankedProperties(
   @get: Range(min = 1, max = 10)
-  val scoreToWinSet: Int = 6,
+  var scoreToWinSet: Int = 6,
 
   @get: Range(min = 1, max = 5)
-  val setsToWinMatch: Int = 2,
+  var setsToWinMatch: Int = 2,
 
+  @NestedConfigurationProperty
   @get: Valid
-  val elo: EloProperty = EloProperty()
+  var elo: EloProperty = EloProperty()
 )
 
 /**
@@ -44,27 +50,17 @@ data class RankedProperties(
  * auto configured as soon as the ranked-properties module is on the classpath.
  */
 @Configuration
+@EnableConfigurationProperties(RankedProperties::class)
 class RankedPropertiesAutoConfiguration {
 
   companion object : KLogging()
 
+  @Autowired
+  fun init(properties: RankedProperties) = logger.info { "starting with: $properties" }
+
   @Bean
   fun validatorFactoryBean(): LocalValidatorFactoryBean = LocalValidatorFactoryBean()
 
-  @Bean
-  fun properties(
-    @Value("\${ranked.scoreToWinSet}") scoreToWinSet : Int,
-    @Value("\${ranked.setsToWinMatch}") setsToWinMatch : Int,
-    @Value("\${ranked.elo.default}") eloDefault : Int,
-    @Value("\${ranked.elo.maxDifference}") eloMaxDifference : Int,
-    @Value("\${ranked.elo.factor}") eloFactor: Int
-  ) : RankedProperties {
-    val properties = createProperties(scoreToWinSet = scoreToWinSet, setsToWinMatch = setsToWinMatch, eloDefault = eloDefault, eloMaxDifference = eloMaxDifference, eloFactor = eloFactor)
-
-    logger.info{ "staring with properties: ${properties}" }
-
-    return properties
-  }
 }
 
 fun createProperties(
