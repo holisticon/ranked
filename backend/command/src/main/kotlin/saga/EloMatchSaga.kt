@@ -2,7 +2,7 @@ package de.holisticon.ranked.command.saga
 
 import de.holisticon.ranked.command.api.ParticipateInMatch
 import de.holisticon.ranked.command.api.UpdatePlayerRanking
-import de.holisticon.ranked.command.elo.EloCalculationService
+import de.holisticon.ranked.elo.EloCalculationService
 import de.holisticon.ranked.model.UserName
 import de.holisticon.ranked.model.event.MatchCreated
 import de.holisticon.ranked.model.event.PlayerParticipatedInMatch

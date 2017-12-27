@@ -9,10 +9,10 @@ import org.axonframework.commandhandling.gateway.CommandGateway
 import org.springframework.stereotype.Controller
 import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 import javax.validation.Valid
-import org.springframework.web.bind.annotation.ModelAttribute
 
 @Controller
 class WebController(val commandGateway: CommandGateway, val playerViewService: PlayerViewService) : WebMvcConfigurer {

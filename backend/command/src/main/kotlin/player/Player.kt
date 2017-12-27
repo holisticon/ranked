@@ -54,7 +54,7 @@ class Player() {
 
   @CommandHandler
   fun handle(c: ParticipateInMatch) {
-    // TODO: validate if were are already in match
+    // TODO: validate if we are already in match
 
     // inform the world about current elo
     apply(PlayerParticipatedInMatch(

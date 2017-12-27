@@ -2,8 +2,6 @@ package de.holisticon.ranked.model
 
 
 import org.assertj.core.api.Assertions.assertThat
-import org.jetbrains.spek.api.dsl.it
-import org.junit.Ignore
 import org.junit.Test
 import javax.validation.Validation
 import javax.validation.Validator

@@ -1,7 +1,9 @@
 package de.holisticon.ranked.command
 
+import de.holisticon.ranked.command.replay.ReplayTrackingProcessorEventListener
 import de.holisticon.ranked.extension.DefaultSmartLifecycle
 import mu.KLogging
+import org.axonframework.boot.EventProcessorProperties
 import org.axonframework.commandhandling.SimpleCommandBus
 import org.axonframework.config.EventHandlingConfiguration
 import org.axonframework.messaging.interceptors.BeanValidationInterceptor
@@ -16,19 +18,23 @@ import javax.validation.ValidatorFactory
  * This is the main spring configuration class for everything axon/command related.
  */
 @Configuration
-class CommandConfiguration(val eventHandlingConfiguration: EventHandlingConfiguration) {
+class CommandConfiguration(
+  val eventHandlingConfiguration: EventHandlingConfiguration,
+  val eventProcessorProperties: EventProcessorProperties
+) {
 
   companion object : KLogging() {
     const val PHASE_REPLAY = Int.MAX_VALUE - 10
   }
 
+  private val trackingProcessors : MutableSet<String> = mutableSetOf()
+
   @PostConstruct
   fun init() {
-    eventHandlingConfiguration.processors.map {
-      logger.info { "Processor: ${it.name} " }
-    }
-
-    logger.info { "processors: ${eventHandlingConfiguration.processors} " }
+    eventProcessorProperties.processors
+      .map{Pair(it.key, it.value.mode)}
+      .filter { it.second== EventProcessorProperties.Mode.TRACKING }
+      .forEach{trackingProcessors.add(it.first) }
   }
 
   /**
@@ -49,9 +55,13 @@ class CommandConfiguration(val eventHandlingConfiguration: EventHandlingConfigur
    * Register Lifecycle handler for event replay.
    */
   @Bean
-  fun replayTrackingProcessors() = object : DefaultSmartLifecycle(PHASE_REPLAY) {
+  fun replayTrackingProcessors(replayTrackingProcessorEventListener: ReplayTrackingProcessorEventListener) = object : DefaultSmartLifecycle(PHASE_REPLAY) {
     override fun onStart() {
-      logger.info { "requesting replay" }
+      eventHandlingConfiguration.processors
+        .filter { trackingProcessors.contains(it.name) }
+        .forEach {
+          replayTrackingProcessorEventListener.accept(it.name)
+        }
     }
   }
 }

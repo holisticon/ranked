@@ -2,7 +2,6 @@ package de.holisticon.ranked.frontend
 
 import de.holisticon.ranked.extension.runApplicationExpr
 import org.springframework.boot.autoconfigure.SpringBootApplication
-import org.springframework.boot.runApplication
 
 
 /**

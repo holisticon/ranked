@@ -22,6 +22,11 @@
       <artifactId>ranked-model</artifactId>
     </dependency>
     <dependency>
+      <groupId>de.holisticon.ranked.elo</groupId>
+      <artifactId>ranked-elo</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>ranked-properties</artifactId>
     </dependency>

@@ -3,6 +3,6 @@
 The Ranked application integrates 
 
 * ranked-command
-* ranked view
+* ranked-view
 
 into one standalone spring boot application.

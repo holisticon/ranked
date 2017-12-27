@@ -38,3 +38,4 @@ class CommandApi(val commandGateway: CommandGateway) {
     }
   }
 }
+

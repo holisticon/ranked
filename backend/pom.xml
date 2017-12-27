@@ -21,6 +21,7 @@
 
     <module>command</module>
     <module>view</module>
+    <module>elo</module>
   </modules>
 
   <dependencyManagement>
@@ -32,6 +33,12 @@
       </dependency>
       <dependency>
         <artifactId>ranked-command</artifactId>
+        <groupId>${project.groupId}</groupId>
+        <version>${project.version}</version>
+
+      </dependency>
+      <dependency>
+        <artifactId>ranked-model</artifactId>
         <groupId>${project.groupId}</groupId>
         <version>${project.version}</version>
       </dependency>

@@ -1,9 +1,14 @@
-package de.holisticon.ranked.command.elo
+package de.holisticon.ranked.elo
+
 import de.holisticon.ranked.properties.RankedProperties
 import org.springframework.stereotype.Component
 import kotlin.math.absoluteValue
 import kotlin.math.pow
 import kotlin.math.sign
+
+typealias Winner = Pair<Int,Int>
+typealias Looser = Pair<Int, Int>
+typealias Elo = Pair<Winner , Looser>
 
 @Component
 class EloCalculationService(val properties: RankedProperties) {
@@ -14,7 +19,7 @@ class EloCalculationService(val properties: RankedProperties) {
    * @param looser a pair of elo rankings of the looser team before the match
    * @result a pair of new rankings for winner (first) and looser (second)
    */
-  fun calculateTeamElo(winner: Pair<Int, Int>, looser: Pair<Int, Int>): Pair<Pair<Int, Int>, Pair<Int, Int>> {
+  fun calculateTeamElo(winner: Winner, looser: Looser): Pair<Winner, Looser> {
 
     val winnerElo = (winner.first + winner.second)/2
     val looserElo = (looser.first + looser.second)/2
@@ -24,9 +29,9 @@ class EloCalculationService(val properties: RankedProperties) {
     val winnerDelta = matchResult.first - winnerElo
     val looserDelta = looserElo - matchResult.second
 
-    return Pair(
-      Pair(winner.first + (winnerDelta / 2), winner.second + (winnerDelta / 2)),
-      Pair(looser.first - (looserDelta / 2), looser.second - (looserDelta / 2))
+    return Elo(
+      Winner(winner.first + (winnerDelta / 2), winner.second + (winnerDelta / 2)),
+      Looser(looser.first - (looserDelta / 2), looser.second - (looserDelta / 2))
     )
   }
 

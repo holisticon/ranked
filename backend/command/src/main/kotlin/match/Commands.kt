@@ -3,8 +3,6 @@ package de.holisticon.ranked.command.api
 import cz.jirutka.validator.spring.SpELAssert
 import de.holisticon.ranked.model.MatchSet
 import de.holisticon.ranked.model.Team
-import de.holisticon.ranked.model.UserName
-import io.swagger.annotations.ApiModel
 import org.axonframework.commandhandling.TargetAggregateIdentifier
 import java.time.LocalDateTime
 import java.util.*

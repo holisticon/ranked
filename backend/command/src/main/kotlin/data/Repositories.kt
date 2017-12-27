@@ -14,3 +14,5 @@ interface TokenJpaRepository : JpaRepository<TokenEntry, TokenEntry.PK> {
   //fun findByPk(pk: TokenEntry.PK) : TokenEntry? = findById(pk).orElse(null)
 
 }
+
+

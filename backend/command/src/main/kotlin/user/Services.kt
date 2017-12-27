@@ -4,6 +4,7 @@ import de.holisticon.ranked.command.api.CheckPlayer
 import de.holisticon.ranked.command.api.CreatePlayer
 import de.holisticon.ranked.extension.DefaultSmartLifecycle
 import de.holisticon.ranked.model.UserName
+import de.holisticon.ranked.model.user.User
 import org.axonframework.commandhandling.CommandCallback
 import org.axonframework.commandhandling.CommandMessage
 import org.axonframework.commandhandling.gateway.CommandGateway
@@ -15,13 +16,10 @@ class UserService {
   fun findUser(username: String): User = User(username, username.toUpperCase())
 }
 
-data class User(
-  val userName: String,
-  val displayName: String
-)
 
 /**
- * Startup user creation.
+ * Startup user creation. Use fixed array to create all required users.
+ * TODO: this can be skipped on we assure that all ad-users are initialized.
  */
 @Component
 class UserInitializer(val commandGateway: CommandGateway) : DefaultSmartLifecycle(Int.MAX_VALUE - 20) {

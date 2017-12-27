@@ -1,4 +1,4 @@
-package de.holisticon.ranked.command.fn
+package de.holisticon.ranked.command.replay
 
 import de.holisticon.ranked.command.data.TokenJpaRepository
 import de.holisticon.ranked.model.event.internal.ReplayTrackingProcessor

@@ -8,7 +8,6 @@ import de.holisticon.ranked.model.event.TeamWonMatchSet
 import mu.KLogging
 import org.axonframework.commandhandling.gateway.CommandGateway
 import org.axonframework.eventhandling.saga.SagaEventHandler
-import org.axonframework.eventhandling.saga.SagaLifecycle.associateWith
 import org.axonframework.eventhandling.saga.SagaLifecycle.end
 import org.axonframework.eventhandling.saga.StartSaga
 import org.axonframework.spring.stereotype.Saga
