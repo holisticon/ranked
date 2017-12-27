@@ -1,82 +1,9 @@
-package de.holisticon.ranked.command.service
-
-import de.holisticon.ranked.command.api.CheckPlayer
-import de.holisticon.ranked.command.api.CreatePlayer
-import de.holisticon.ranked.extension.DefaultSmartLifecycle
-import de.holisticon.ranked.model.MatchSet
-import de.holisticon.ranked.model.Team
-import de.holisticon.ranked.model.UserName
+package de.holisticon.ranked.command.elo
 import de.holisticon.ranked.properties.RankedProperties
-import org.axonframework.commandhandling.CommandCallback
-import org.axonframework.commandhandling.CommandMessage
-import org.axonframework.commandhandling.gateway.CommandGateway
 import org.springframework.stereotype.Component
 import kotlin.math.absoluteValue
 import kotlin.math.pow
 import kotlin.math.sign
-
-@Component
-class MatchService(val properties: RankedProperties) {
-
-  /**
-   * Checks that the list of match sets consist of at least of scoreToWinMatch and at most of 2 * scoreToWinMatch - 1
-   */
-  fun validateMatch(matchSets: List<MatchSet>): Boolean =
-    matchSets.size >= properties.setsToWinMatch && matchSets.size <= properties.setsToWinMatch.times(2).minus(1)
-
-  fun winsMatch(numberOfWins: Int) = numberOfWins == properties.setsToWinMatch
-  fun winsMatchSet(matchSet: MatchSet): String = if (matchSet.goalsRed == properties.scoreToWinSet) Team.RED else Team.BLUE
-}
-
-
-@Component
-class UserService {
-
-  fun findUser(username: String): User? {
-
-    // TODO replace with real User / Identity service
-    return User(username, username.toUpperCase())
-  }
-}
-
-data class User(
-  val userName: String,
-  val displayName: String
-)
-
-/**
- * Startup user creation.
- */
-@Component
-class UserInitializer(val commandGateway: CommandGateway) : DefaultSmartLifecycle() {
-
-  fun initializeUsers() {
-
-    arrayOf("kermit", "piggy", "gonzo", "fozzy", "beeker").forEach {
-      val completableFuture = commandGateway.send(
-        CheckPlayer(userName = UserName(it)),
-        object : CommandCallback<CheckPlayer, Any> {
-          override fun onSuccess(commandMessage: CommandMessage<out CheckPlayer>?, result: Any?) {
-            // player exists
-          }
-
-          override fun onFailure(commandMessage: CommandMessage<out CheckPlayer>?, cause: Throwable?) {
-            commandGateway.send<Any>(CreatePlayer(userName = UserName(it)))
-          }
-        }
-      )
-    }
-  }
-
-  override fun start() {
-    initializeUsers()
-    super.start()
-  }
-
-  override fun getPhase(): Int {
-    return Int.MAX_VALUE - 20
-  }
-}
 
 @Component
 class EloCalculationService(val properties: RankedProperties) {
@@ -132,4 +59,3 @@ class EloCalculationService(val properties: RankedProperties) {
   }
 
 }
-

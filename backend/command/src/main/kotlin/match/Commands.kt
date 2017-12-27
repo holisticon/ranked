@@ -11,55 +11,6 @@ import java.util.*
 import javax.validation.Valid
 import javax.validation.constraints.NotEmpty
 
-/*************************************************************
- *  Player Commands
- ************************************************************* */
-
-/**
- * Create command for Player aggregate.
- */
-data class CreatePlayer(
-  @get: Valid
-  @TargetAggregateIdentifier
-  val userName: UserName
-)
-
-/**
- * Check if player aggregate already exists.
- */
-data class CheckPlayer(
-  @get: Valid
-  @TargetAggregateIdentifier
-  val userName: UserName
-)
-
-/**
- * Command towards player aggregate to take part in the match.
- */
-data class ParticipateInMatch(
-  @TargetAggregateIdentifier
-  @get: Valid
-  val userName: UserName,
-  @get: NotEmpty
-  val matchId: String
-)
-
-/**
- * Command towards player aggregate to update the ranking.
- */
-data class UpdatePlayerRanking(
-  @TargetAggregateIdentifier
-  @get: Valid
-  val userName: UserName,
-  @get: NotEmpty
-  val matchId: String,
-  val eloRanking: Int
-)
-
-/*************************************************************
- *  Match Commands
- ************************************************************* */
-
 /**
  * Create command towards Match aggregate to create the match.
  */

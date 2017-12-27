@@ -1,5 +1,6 @@
 package de.holisticon.ranked.command.service
 
+import de.holisticon.ranked.command.elo.EloCalculationService
 import de.holisticon.ranked.properties.createProperties
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test

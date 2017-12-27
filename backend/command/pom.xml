@@ -13,12 +13,13 @@
 
   <dependencies>
     <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>ranked-model</artifactId>
+      <groupId>org.axonframework</groupId>
+      <artifactId>axon-spring-boot-starter</artifactId>
+      <version>${axon.version}</version>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>ranked-axon</artifactId>
+      <artifactId>ranked-model</artifactId>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>

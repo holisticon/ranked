@@ -16,33 +16,31 @@ inline fun <reified T : kotlin.Any> runApplicationExpr(vararg args: kotlin.Strin
   runApplication<T>(*args)
 }
 
-
-abstract class DefaultSmartLifecycle : SmartLifecycle {
+/**
+ * Opinionated best guess implementation of [SmartLifecycle], just override [onStart] and  [getPhase]
+ * to get an auto-started, startable and stoppable lifecycle manager.
+ */
+abstract class DefaultSmartLifecycle(val thePhase : Int) : SmartLifecycle {
 
   private var running: Boolean = false
 
   override fun start() {
+    onStart()
     this.running = true
   }
 
-  override fun isAutoStartup(): Boolean {
-    return true
-  }
+  abstract fun onStart()
+
+  override fun isAutoStartup() = true
 
   override fun stop(callback: Runnable?) {
     callback?.run()
     this.running = false
   }
 
-  override fun stop() {
-    this.running = false
-  }
+  override fun stop() = stop(null)
 
-  override fun getPhase(): Int {
-    return Int.MAX_VALUE
-  }
+  override fun isRunning() = running
 
-  override fun isRunning(): Boolean {
-    return running
-  }
+  override fun getPhase(): Int = thePhase
 }

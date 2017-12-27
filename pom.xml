@@ -17,13 +17,14 @@
   <modules>
     <module>backend</module>
     <module>test</module>
+    <module>extensions</module>
   </modules>
 
   <properties>
     <projectConfigScan>false</projectConfigScan>
 
     <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
-    <kotlin.version>1.2.0</kotlin.version>
+    <kotlin.version>1.2.10</kotlin.version>
 
     <kotlin-logging.version>1.4.6</kotlin-logging.version>
     <axon.version>3.1.1</axon.version>
@@ -40,12 +41,6 @@
       </dependency>
       <dependency>
         <artifactId>ranked-command-service</artifactId>
-        <groupId>${project.groupId}</groupId>
-        <version>${project.version}</version>
-      </dependency>
-
-      <dependency>
-        <artifactId>ranked-axon</artifactId>
         <groupId>${project.groupId}</groupId>
         <version>${project.version}</version>
       </dependency>

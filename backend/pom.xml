@@ -5,12 +5,11 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <artifactId>ranked-root</artifactId>
     <groupId>de.holisticon.ranked</groupId>
+    <artifactId>ranked-root</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
 
-  <groupId>de.holisticon.ranked</groupId>
   <artifactId>ranked-backend-root</artifactId>
   <packaging>pom</packaging>
 
@@ -19,8 +18,6 @@
 
     <module>properties</module>
     <module>model</module>
-    <module>lib/axon</module>
-    <module>lib/extensions</module>
 
     <module>command</module>
     <module>view</module>
