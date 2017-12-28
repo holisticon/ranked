@@ -1,17 +1,20 @@
 package de.holisticon.ranked.elo
 
 import de.holisticon.ranked.properties.RankedProperties
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import kotlin.math.absoluteValue
 import kotlin.math.pow
 import kotlin.math.sign
 
-typealias Winner = Pair<Int,Int>
-typealias Looser = Pair<Int, Int>
-typealias Elo = Pair<Winner , Looser>
-
 @Component
-class EloCalculationService(val properties: RankedProperties) {
+class EloCalculationService(val factor:Int, val maxDifference:Int) {
+
+  @Autowired
+  constructor(properties: RankedProperties) : this(
+    properties.elo.factor,
+    properties.elo.maxDifference
+  )
 
   /**
    * Calculates team elo rating.
@@ -19,7 +22,7 @@ class EloCalculationService(val properties: RankedProperties) {
    * @param looser a pair of elo rankings of the looser team before the match
    * @result a pair of new rankings for winner (first) and looser (second)
    */
-  fun calculateTeamElo(winner: Winner, looser: Looser): Pair<Winner, Looser> {
+  fun calculateTeamElo(winner: Pair<Int,Int>, looser: Pair<Int,Int>): Pair<Pair<Int,Int>, Pair<Int,Int>> {
 
     val winnerElo = (winner.first + winner.second)/2
     val looserElo = (looser.first + looser.second)/2
@@ -29,9 +32,9 @@ class EloCalculationService(val properties: RankedProperties) {
     val winnerDelta = matchResult.first - winnerElo
     val looserDelta = looserElo - matchResult.second
 
-    return Elo(
-      Winner(winner.first + (winnerDelta / 2), winner.second + (winnerDelta / 2)),
-      Looser(looser.first - (looserDelta / 2), looser.second - (looserDelta / 2))
+    return Pair(
+      Pair(winner.first + (winnerDelta / 2), winner.second + (winnerDelta / 2)),
+      Pair(looser.first - (looserDelta / 2), looser.second - (looserDelta / 2))
     )
   }
 
@@ -41,7 +44,7 @@ class EloCalculationService(val properties: RankedProperties) {
    * @return new elo with winner on the first position and looser on the second.
    */
   fun calculateElo(current: Pair<Int, Int>): Pair<Int, Int> {
-    var eloOffset = properties.elo.factor.times(1 - mean(current.first, current.second)).toInt()
+    var eloOffset = factor.times(1 - mean(current.first, current.second)).toInt()
     // don't allow to subtract more elo points as the looser has
     if (current.second <= eloOffset) {
       eloOffset = current.second
@@ -57,10 +60,10 @@ class EloCalculationService(val properties: RankedProperties) {
    */
   fun mean(ownElo: Int, enemyElo: Int): Float {
     var difference = enemyElo - ownElo
-    if (difference.absoluteValue > properties.elo.maxDifference) {
-      difference = properties.elo.maxDifference.times(difference.sign)
+    if (difference.absoluteValue > maxDifference) {
+      difference = maxDifference.times(difference.sign)
     }
-    return 1 / (1 + Integer.valueOf(10).toFloat().pow(Integer.valueOf(difference).toFloat().div(properties.elo.maxDifference)))
+    return 1 / (1 + Integer.valueOf(10).toFloat().pow(Integer.valueOf(difference).toFloat().div(maxDifference)))
   }
 
 }
