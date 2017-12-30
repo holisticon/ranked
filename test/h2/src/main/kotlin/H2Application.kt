@@ -10,7 +10,6 @@ import org.axonframework.eventsourcing.eventstore.jpa.SnapshotEventEntry
 import org.h2.tools.Server
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.SpringBootApplication
-import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Bean
 import org.springframework.data.repository.PagingAndSortingRepository
 import org.springframework.web.bind.annotation.GetMapping

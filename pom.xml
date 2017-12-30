@@ -17,6 +17,7 @@
   <modules>
     <module>backend</module>
     <module>test</module>
+    <module>extensions</module>
   </modules>
 
   <properties>
@@ -33,23 +34,6 @@
 
   <dependencyManagement>
     <dependencies>
-      <dependency>
-        <artifactId>ranked-model</artifactId>
-        <groupId>${project.groupId}</groupId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <artifactId>ranked-command-service</artifactId>
-        <groupId>${project.groupId}</groupId>
-        <version>${project.version}</version>
-      </dependency>
-
-      <dependency>
-        <artifactId>ranked-axon</artifactId>
-        <groupId>${project.groupId}</groupId>
-        <version>${project.version}</version>
-      </dependency>
-
       <dependency>
         <groupId>de.holisticon.ranked.extension</groupId>
         <artifactId>ranked-kotlin-extensions</artifactId>

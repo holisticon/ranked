@@ -15,9 +15,18 @@ import javax.validation.Validation
 import javax.validation.ValidationException
 import javax.validation.Validator
 
-// this is actually a whole lot of work to do for getting the yaml values as immutable bean.
-// but at least, it does the job
-// this will be obsolete (hopefully) because with spring boot 2 RC1 there will come a property binder for kotlin data classes
+@ConfigurationProperties(prefix = "ranked")
+data class RankedProperties(
+  @get: Range(min = 1, max = 10)
+  var scoreToWinSet: Int = 6,
+
+  @get: Range(min = 1, max = 5)
+  var setsToWinMatch: Int = 2,
+
+  @NestedConfigurationProperty
+  @get: Valid
+  var elo: EloProperty = EloProperty()
+)
 
 
 data class EloProperty(
@@ -30,19 +39,6 @@ data class EloProperty(
 
   @get: Range(min = 1, max = 100)
   var factor: Int = 20
-)
-
-@ConfigurationProperties(prefix = "ranked")
-data class RankedProperties(
-  @get: Range(min = 1, max = 10)
-  var scoreToWinSet: Int = 6,
-
-  @get: Range(min = 1, max = 5)
-  var setsToWinMatch: Int = 2,
-
-  @NestedConfigurationProperty
-  @get: Valid
-  var elo: EloProperty = EloProperty()
 )
 
 /**
@@ -81,8 +77,6 @@ fun createProperties(
   if (!violations.isEmpty()) {
     throw ValidationException(violations.map { it.message }.joinToString())
   }
-
-
 
   return p;
 

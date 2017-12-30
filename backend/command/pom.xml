@@ -13,12 +13,18 @@
 
   <dependencies>
     <dependency>
+      <groupId>org.axonframework</groupId>
+      <artifactId>axon-spring-boot-starter</artifactId>
+      <version>${axon.version}</version>
+    </dependency>
+    <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>ranked-model</artifactId>
     </dependency>
     <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>ranked-axon</artifactId>
+      <groupId>de.holisticon.ranked.elo</groupId>
+      <artifactId>ranked-elo</artifactId>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>

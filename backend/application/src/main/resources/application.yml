@@ -24,6 +24,18 @@ ranked:
     maxDifference: 400
     factor: 20
 
+axon:
+  eventhandling:
+    processors:
+      Wall:
+        mode: tracking
+      Player:
+        mode: tracking
+      PlayerLeaderBoard:
+        mode: tracking
+      Logging:
+        mode: tracking
+
 swagger:
   redirect: true
   apiInfo:
