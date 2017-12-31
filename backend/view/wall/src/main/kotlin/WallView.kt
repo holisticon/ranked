@@ -1,3 +1,5 @@
+@file:Suppress("UNUSED")
+
 package de.holisticon.ranked.view.wall
 
 import de.holisticon.ranked.model.MatchSet
@@ -14,11 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import java.time.LocalDateTime
 
-
 @ProcessingGroup(WallView.NAME)
 @Api(tags = ["News wall"])
 @RestController
-@RequestMapping(value = "/view")
+@RequestMapping(value = ["/view"])
 class WallView() {
 
   companion object : KLogging() {

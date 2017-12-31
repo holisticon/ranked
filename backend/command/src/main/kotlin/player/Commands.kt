@@ -30,6 +30,7 @@ data class ParticipateInMatch(
   @TargetAggregateIdentifier
   @get: Valid
   val userName: UserName,
+
   @get: NotEmpty
   val matchId: String
 )
@@ -41,8 +42,10 @@ data class UpdatePlayerRanking(
   @TargetAggregateIdentifier
   @get: Valid
   val userName: UserName,
+
   @get: NotEmpty
   val matchId: String,
+
   val eloRanking: Int
 )
 

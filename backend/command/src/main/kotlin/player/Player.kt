@@ -1,3 +1,5 @@
+@file:Suppress("UNUSED")
+
 package de.holisticon.ranked.command.aggregate
 
 import de.holisticon.ranked.command.api.CheckPlayer
@@ -19,9 +21,7 @@ import org.axonframework.eventsourcing.EventSourcingHandler
 import org.axonframework.spring.stereotype.Aggregate
 import org.springframework.beans.factory.annotation.Autowired
 
-
 @Aggregate
-@Suppress("UNUSED")
 class Player() {
 
   companion object : KLogging()
@@ -29,7 +29,7 @@ class Player() {
   @AggregateIdentifier
   private lateinit var userName: UserName
   private lateinit var displayName: String
-  private lateinit var eloRanking: Integer
+  private var eloRanking: Int = 0
 
   // create player aggregate when matchWinnerSaga receives matchCreated event
   // only called once for each player
@@ -39,17 +39,15 @@ class Player() {
               @Autowired properties: RankedProperties) : this() {
     // get user data from ....
     val user = userService.findUser(c.userName.value)
-    // TODO: what happens if user is not found (unlikely!)
-    if (user != null) {
-      // -> #on(e: PlayerCreated)
-      apply(
-        PlayerCreated(
-          userName = UserName(user.userName),
-          displayName = user.displayName,
-          initialElo = properties.elo.default
-        )
+
+    // -> #on(e: PlayerCreated)
+    apply(
+      PlayerCreated(
+        userName = UserName(user.userName),
+        displayName = user.displayName,
+        initialElo = properties.elo.default
       )
-    }
+    )
   }
 
   @CommandHandler
@@ -60,7 +58,7 @@ class Player() {
     apply(PlayerParticipatedInMatch(
       player = c.userName,
       matchId = c.matchId,
-      eloRanking = eloRanking.toInt()
+      eloRanking = eloRanking
     ))
   }
 
@@ -82,13 +80,13 @@ class Player() {
   fun on(e: PlayerCreated) {
     userName = e.userName
     displayName = e.displayName
-    eloRanking = Integer(e.initialElo)
+    eloRanking = e.initialElo
   }
 
   @EventSourcingHandler
   fun on(e: PlayerRankingChanged) {
     logger.trace { "Elo ranking changed for ${displayName} from ${eloRanking} to ${e.eloRanking}" }
-    eloRanking = Integer(e.eloRanking)
+    eloRanking = e.eloRanking
   }
 
 }

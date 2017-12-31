@@ -1,3 +1,5 @@
+@file:Suppress("UNUSED")
+
 package de.holisticon.ranked.command.saga
 
 import de.holisticon.ranked.command.api.WinMatch
@@ -14,10 +16,9 @@ import org.axonframework.spring.stereotype.Saga
 import org.springframework.beans.factory.annotation.Autowired
 
 @Saga
-@Suppress("UNUSED")
 class MatchWinnerSaga {
 
-  companion object: KLogging()
+  companion object : KLogging()
 
   @Autowired
   @Transient
@@ -56,7 +57,6 @@ class MatchWinnerSaga {
 
       // this saga is ended, match won, "transaction" closed
       end()
-
     }
   }
 }

@@ -1,3 +1,5 @@
+@file:Suppress("UNUSED")
+
 package de.holisticon.ranked.command.saga
 
 import de.holisticon.ranked.command.api.ParticipateInMatch
@@ -19,13 +21,13 @@ import org.springframework.beans.factory.annotation.Autowired
 @Saga
 class EloMatchSaga {
 
-  companion object: KLogging() {
-    val UNSET_ELO = -1
+  companion object : KLogging() {
+    const val UNSET_ELO = -1
   }
 
   @Autowired
   @Transient
-  lateinit var commandGateway:CommandGateway
+  lateinit var commandGateway: CommandGateway
 
   @Autowired
   @Transient
@@ -40,11 +42,11 @@ class EloMatchSaga {
     logger.trace("Elo saga started for match ${e.matchId}.")
 
     // send commands to players
-    val players = arrayOf(e.teamBlue.player1, e.teamBlue.player2, e.teamRed.player1, e.teamRed.player2)
-    players.iterator().forEach { player ->
-        commandGateway?.send<Any>(ParticipateInMatch(userName = player, matchId = e.matchId))
-        rankings.put(player, 0)
-    }
+    arrayOf(e.teamBlue.player1, e.teamBlue.player2, e.teamRed.player1, e.teamRed.player2)
+      .forEach {
+        commandGateway.send<Any>(ParticipateInMatch(userName = it, matchId = e.matchId))
+        rankings.put(it, 0)
+      }
   }
 
   @SagaEventHandler(associationProperty = "matchId")
@@ -81,6 +83,6 @@ class EloMatchSaga {
   }
 
 
-  fun validateElo(players: Array<UserName>) = players.all {  player -> rankings.containsKey(player) && rankings[player] != UNSET_ELO}
+  fun validateElo(players: Array<UserName>) = players.all { player -> rankings.containsKey(player) && rankings[player] != UNSET_ELO }
 }
 
