@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @ProcessingGroup(PlayerLeaderBoardView.NAME)
 @RestController
-@RequestMapping(value = "/view")
+@RequestMapping(value = ["/view"])
 class PlayerLeaderBoardView {
 
   companion object : KLogging() {
