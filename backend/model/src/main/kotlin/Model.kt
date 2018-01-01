@@ -7,6 +7,11 @@ import javax.validation.Valid
 import javax.validation.constraints.Size
 
 /**
+ * Representing the Elo Value of a player or team.
+ */
+typealias Elo = Int
+
+/**
  * ValueBean representing a unique user name (login value)
  *
  * @property value the unique userName, min length 4
@@ -19,7 +24,6 @@ data class UserName(
   override fun hashCode(): Int = 17 * value.hashCode()
   override fun equals(other: Any?): Boolean = other is UserName && this.value == other.value
   override fun toString(): String = value
-
 }
 
 

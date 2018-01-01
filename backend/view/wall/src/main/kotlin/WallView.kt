@@ -77,10 +77,10 @@ class WallView() {
     logger.info { "Player ${e.displayName} (${e.userName}) created with rating ${e.initialElo}" }
   }
 
-  @EventHandler
-  fun on(e: PlayerRankingChanged) {
-    logger.info { "Player ${e.player} new rating is ${e.eloRanking}" }
-  }
+ // @EventHandler
+ // fun on(e: PlayerRankingChanged) {
+ //   logger.info { "Player ${e.player} new rating is ${e.eloRanking}" }
+ // }
 
   @EventHandler
   fun on(e: PlayerParticipatedInMatch) {

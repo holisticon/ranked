@@ -39,13 +39,15 @@ class Player() {
               @Autowired properties: RankedProperties) : this() {
     // get user data from ....
     val user = userService.findUser(c.userName.value)
+    val userName = UserName(user.userName)
+    val initialElo = properties.elo.default
 
     // -> #on(e: PlayerCreated)
     apply(
       PlayerCreated(
-        userName = UserName(user.userName),
+        userName = userName,
         displayName = user.displayName,
-        initialElo = properties.elo.default
+        initialElo = initialElo
       )
     )
   }

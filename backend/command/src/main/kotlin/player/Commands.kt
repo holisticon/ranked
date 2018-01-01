@@ -1,5 +1,6 @@
 package de.holisticon.ranked.command.api
 
+import de.holisticon.ranked.model.Elo
 import de.holisticon.ranked.model.UserName
 import org.axonframework.commandhandling.TargetAggregateIdentifier
 import javax.validation.Valid
@@ -46,6 +47,6 @@ data class UpdatePlayerRanking(
   @get: NotEmpty
   val matchId: String,
 
-  val eloRanking: Int
+  val eloRanking: Elo
 )
 

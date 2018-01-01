@@ -1,5 +1,6 @@
 package de.holisticon.ranked.model.event
 
+import de.holisticon.ranked.model.Elo
 import de.holisticon.ranked.model.MatchSet
 import de.holisticon.ranked.model.Team
 import de.holisticon.ranked.model.UserName
@@ -31,12 +32,12 @@ data class PlayerWonMatch(
 data class PlayerParticipatedInMatch(
   val player: UserName,
   val matchId: String,
-  val eloRanking: Int
+  val eloRanking: Elo
 )
 
 data class PlayerRankingChanged(
   val player: UserName,
-  val eloRanking: Int
+  val eloRanking: Elo
 )
 
 data class MatchCreated(
