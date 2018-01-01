@@ -42,24 +42,40 @@ We use the following stack:
 ### Components and project structure
 
 We came up with the following components and project structure for our application. The application is separated into 
-`frontend`, `backend` and `test` modules.  
+`frontend`, `backend`, `test` and `extensions` modules.
 
-- The `test/h2` is a h2 instance used during development. It provides a in-memory database which can be connected to using the tcp-socket.
+#### Backend
+
+The core CQRS application with all the business logic and even sourcing.
+Command and Query components are separate modules, but not separated applications, they share a common bus.  
+
 - The `backend/application` is a component responsible for launching the entire application. It has dependencies to all other 
 components and works as a packaging module for SpringBoot. 
-- The `backend/axon` component contains additional code required for AxonFramework.
 - The `backend/command` component contains the core/command part of the CQRS application. It holds the aggregates and the commands and uses AxonFramework.
+- The `backend/elo` contains the business logic needed to do elo calculation
 - The `backend/model` component contains the value objects (Player, Team, etc) and the Event-Objects since they are shared between the `command` and the View-components.
 - The `backend/properties` component holding the properties definition for the entire project.
 - There are a bunch of View-Components, each responsible for a specific use case. The views have no persistence and act as tracking event processors on the stream 
-of events stored in teh event store of the application. 
+of events stored in the event store of the application. 
   - The `backend/view/wall-view` component is displaying the information about played matches. It is comparable with the facebook wall displaying news.
   - The `backend/view/leaderboard-view` component is calculating the best players and displays those.
   - The `backend/view/player-view` component encapsulates information about players available in the system.
-- The `frontend` component contains the ReactJS single page application. Its build process is based on `npm` and `webpack` and is integrated into the 
+  
+#### Frontend
+
+The `frontend` component contains the ReactJS single page application. Its build process is based on `npm` and `webpack` and is integrated into the 
 Apache Maven component build. If you want to skip the frontend build, please use the following command:
 
         mvn clean install -P \!frontend
+
+#### Test
+
+- The `test/h2` is a h2 instance used during development. It provides a in-memory database which can be connected to using the tcp-socket.
+
+#### Extensions
+
+Library that provides kotlin-extension functions for Java, Spring and Axon.
+Expect this to be maintained and released separately.
 
 ### CQRS runtime view
 

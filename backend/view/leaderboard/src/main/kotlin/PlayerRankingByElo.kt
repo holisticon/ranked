@@ -54,8 +54,7 @@ class PlayerRankingByEloHandler : Supplier<List<PlayerElo>> {
     logger.debug { "new elo ranking for player: $cache" }
   }
 
-  override fun get() = cache.get()
-
+  override fun get() = cache.get()!!
 }
 
 data class PlayerElo(val userName: UserName, val elo: Elo) : Comparable<PlayerElo>  {
