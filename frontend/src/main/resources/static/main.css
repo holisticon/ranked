@@ -1,0 +1,76 @@
+html, body {
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+.ranked {
+  background-color: pink;
+  height: 100vh;
+  width: 100%;
+  font-size: 2rem;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+/* Match */
+.match {
+  height: 100%;
+  width: 100%;
+}
+
+.match .team-blue, .match .team-red {
+  height: 50%;
+  width: 100%;
+  position: relative;
+  background-image: radial-gradient(#ffffff 0%, transparent 100%);
+}
+
+.match .team-blue {
+  background-color: #d7eeff;
+}
+
+.match .team-red {
+  background-color: #ffbdb8;
+  transform: rotate(180deg);
+}
+
+.match .goal-counter {
+  padding: 20px;
+  font-size: 5rem;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.match .team-blue .goal-counter {
+  color: #4b93e2;
+}
+
+.match .team-red .goal-counter {
+  color: #cf0017;
+}
+
+.match .add-defense, .match .add-attack {
+  position: absolute;
+  bottom: 0.4rem;
+  text-align: center;
+  opacity: 0.4;
+}
+
+.match .add-defense {
+  left: 20%;
+}
+
+.match .add-attack {
+  right: 20%;
+}
+
+.match .add-defense .name, .match .add-attack .name {
+  font-size: 40%;
+  display: block;
+  margin: -0.5rem 0 0 0;
+}
