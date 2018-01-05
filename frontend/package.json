@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/holisticon/ranked",
   "dependencies": {
+    "axios": "0.17.1",
     "react": "15.3.2",
     "react-dom": "15.3.2",
     "react-touch": "^0.4.3",
