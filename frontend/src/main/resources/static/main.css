@@ -54,6 +54,16 @@ html, body {
   color: #cf0017;
 }
 
+.match .team-blue .current-goals {
+  display: inline-block;
+  transform: rotate(90deg);
+}
+
+.match .team-red .current-goals {
+  display: inline-block;
+  transform: rotate(-90deg);
+}
+
 .match .add-defense, .match .add-attack {
   position: absolute;
   bottom: 0.4rem;
