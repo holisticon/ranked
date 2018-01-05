@@ -85,7 +85,26 @@ export class Match extends React.Component {
     this.forceUpdate();
   }
 
+  removePlayer(player) {
+    if (this.state.teams.blue.attack === player) {
+      this.state.teams.blue.attack = null;
+    }
+    
+    if (this.state.teams.blue.defense === player) {
+      this.state.teams.blue.defense = null;
+    }
+
+    if (this.state.teams.red.attack === player) {
+      this.state.teams.red.attack = null;
+    }
+
+    if (this.state.teams.red.defense === player) {
+      this.state.teams.red.defense = null;
+    }
+  }
+
   playerSelected(player) {
+    this.removePlayer(player);
     this.state.teams[this.state.selectPlayerFor.team][this.state.selectPlayerFor.position] = player;
     this.state.selectPlayerFor = null;
     this.forceUpdate();
