@@ -119,7 +119,7 @@ html, body {
   transform: rotate(90deg);
   display: inline-block;
   font-size: 3rem;
-  opacity: 0.4;
+  opacity: 0.1;
 }
 
 /* Player selection */
