@@ -10,27 +10,27 @@ export class SelectPlayer extends React.Component {
     this.getPlayers();
   }
 
-  getPlayers() {
+  getPlayersFromWebsite() {
     const that = this;
 
-    axios.get('https://holisticon.de/team.html', { headers: { 'Access-Control-Allow-Origin': '*' } })
+    axios.get('https://holisticon.de/team.html')
       .then(res => {
         const site = document.createElement('html');
         site.innerHTML = res.data;
-
+  
         const list = site.getElementsByClassName("members-list")[0].children;
         const images = [];
-
+  
         let title, name, photo, src;
-
+  
         for (let member of list) {
           title = member.getElementsByClassName("title")[0];
           name = !title ? "" : title.innerText;
-
+  
           if (!!name) {
             photo = member.getElementsByClassName("photo")[0];
             photo = !photo ? null : photo.getElementsByTagName("img")[0];
-
+  
             if (photo && photo.hasAttribute("src")) {
               src = photo.getAttribute("src");
             } else if (photo && photo.hasAttribute("data-src")) {
@@ -38,15 +38,29 @@ export class SelectPlayer extends React.Component {
             } else {
               src = null;
             }
-
+  
             if (src != null && src.endsWith(".png")) {
               images.push({ name, img: 'https://holisticon.de/' + src });
             }
           }
         }
-
+  
         that.setState({ players: images });
+  
+        console.log(images);
       });
+  }
+
+  getPlayersFromLocal() {
+    const that = this;
+
+    axios.get('players.json').then(res => {
+      that.setState({ players: res.data });
+    })
+  }
+
+  getPlayers() {
+    this.getPlayersFromLocal();
   }
 
   getPlayerIcons() {
