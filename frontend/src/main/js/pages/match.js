@@ -3,6 +3,9 @@ import { Swipeable } from 'react-touch';
 import { SelectPlayer } from '../components/select_player';
 import { PlayerIcon } from '../components/player_icon';
 
+const POINTS_PER_SET = 6;
+const POINTS_PER_MATCH = 2;
+
 export class Match extends React.Component {
   constructor(props) {
     super(props);
@@ -14,14 +17,21 @@ export class Match extends React.Component {
     this.state = {
       selectPlayerFor: null,
       teams: {
-        blue: { goals: 0, attack: null, defense: null },
-        red: { goals: 0, attack: null, defense: null }
+        blue: { goals: 0, won: 0, attack: null, defense: null },
+        red: { goals: 0, won: 0, attack: null, defense: null }
       }
     };
   }
 
   changeGoals(team, diff) {
     this.state.teams[team].goals += diff;
+    
+    if (this.state.teams[team].goals < 0) {
+      this.state.teams[team].goals = 0;
+    } else if (this.state.teams[team].goals >= POINTS_PER_SET) {
+      this.endSet(team);
+    }
+
     this.forceUpdate();
   }
 
@@ -31,6 +41,36 @@ export class Match extends React.Component {
 
   decGoals(team) {
     this.changeGoals(team, -1);
+  }
+
+  endSet(winnerTeam) {
+    if (++this.state.teams[winnerTeam].won >= POINTS_PER_MATCH) {
+      this.endMatch(winnerTeam);
+      return;
+    }
+    
+    // switch teams
+    [this.state.teams.red, this.state.teams.blue] = [this.state.teams.blue, this.state.teams.red];
+
+    // switch player positions per team
+    // TODO: calculate "best" positions for last turn?`
+    this.switchPlayerPositions('red');
+    this.switchPlayerPositions('blue');
+
+    // reset goals
+    this.state.teams.red.goals = 0;
+    this.state.teams.blue.goals = 0;
+  }
+
+  endMatch(winnerTeam) {
+    // TODO
+
+    const team = this.state.teams[winnerTeam];
+    setTimeout(() => {
+      alert(`${team.attack.name} und ${team.defense.name} haben gewonnen!`);
+    }, 100);
+
+    this.initState();
   }
 
   switchPlayerPositions(teamColor) {
