@@ -5,13 +5,12 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>de.holisticon.ranked</groupId>
-    <artifactId>ranked-backend-root</artifactId>
+    <groupId>de.holisticon.ranked.service</groupId>
+    <artifactId>ranked-services</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
 
-  <groupId>de.holisticon.ranked.elo</groupId>
-  <artifactId>ranked-elo</artifactId>
+  <artifactId>ranked-elo-service</artifactId>
 
   <dependencies>
     <dependency>

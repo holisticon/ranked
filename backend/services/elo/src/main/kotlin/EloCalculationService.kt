@@ -1,4 +1,5 @@
-package de.holisticon.ranked.elo
+@file:SuppressWarnings("UNUSED")
+package de.holisticon.ranked.service.elo
 
 import de.holisticon.ranked.properties.RankedProperties
 import org.springframework.beans.factory.annotation.Autowired

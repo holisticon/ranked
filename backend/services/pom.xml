@@ -5,17 +5,18 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>de.holisticon.ranked</groupId>
-    <artifactId>ranked-view-root</artifactId>
+    <artifactId>ranked-backend-root</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
 
-  <artifactId>ranked-view-wall</artifactId>
+  <groupId>de.holisticon.ranked.service</groupId>
+  <artifactId>ranked-services</artifactId>
+  <packaging>pom</packaging>
 
-  <dependencies>
-    <dependency>
-      <groupId>de.holisticon.ranked.service</groupId>
-      <artifactId>ranked-user-service</artifactId>
-    </dependency>
-  </dependencies>
+  <modules>
+    <module>user</module>
+    <module>elo</module>
+  </modules>
+
 
 </project>

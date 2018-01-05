@@ -2,10 +2,17 @@
 
 package de.holisticon.ranked.command
 
+import de.holisticon.ranked.command.api.CheckPlayer
+import de.holisticon.ranked.command.api.CreatePlayer
 import de.holisticon.ranked.command.data.TokenJpaRepository
 import de.holisticon.ranked.extension.DefaultSmartLifecycle
+import de.holisticon.ranked.model.UserName
+import de.holisticon.ranked.service.user.UserService
 import mu.KLogging
+import org.axonframework.commandhandling.CommandCallback
+import org.axonframework.commandhandling.CommandMessage
 import org.axonframework.commandhandling.SimpleCommandBus
+import org.axonframework.commandhandling.gateway.CommandGateway
 import org.axonframework.config.EventHandlingConfiguration
 import org.axonframework.eventhandling.EventProcessor
 import org.axonframework.eventhandling.TrackingEventProcessor
@@ -97,6 +104,27 @@ class CommandConfiguration() {
     return pairs.toList()
   }
 
+  @Bean
+  fun initializeUsers(commandGateway: CommandGateway, userService: UserService) = object : DefaultSmartLifecycle(Int.MAX_VALUE - 20) {
+
+    override fun onStart() {
+
+      userService.loadAll().forEach {
+        commandGateway.send(
+          CheckPlayer(userName = UserName(it.id)),
+          object : CommandCallback<CheckPlayer, Any> {
+            override fun onSuccess(commandMessage: CommandMessage<out CheckPlayer>?, result: Any?) {
+              // player exists - do nothing
+            }
+
+            override fun onFailure(commandMessage: CommandMessage<out CheckPlayer>?, cause: Throwable?) {
+              commandGateway.send<Any>(CreatePlayer(userName = UserName(it.id)))
+            }
+          }
+        )
+      }
+    }
+  }
 
 }
 

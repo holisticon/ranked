@@ -14,10 +14,10 @@ typealias Elo = Int
 /**
  * ValueBean representing a unique user name (login value)
  *
- * @property value the unique userName, min length 4
+ * @property value the unique id, min length 4
  */
 data class UserName(
-  @get: Size(min = 4, message = "{ranked.model.userName.too.short}") // this is the kotlin way of using jsr-303
+  @get: Size(min = 4, message = "{ranked.model.id.too.short}") // this is the kotlin way of using jsr-303
   val value: String
 ) : Serializable {
 

@@ -6,12 +6,14 @@ import de.holisticon.ranked.model.MatchSet
 import de.holisticon.ranked.model.Team
 import de.holisticon.ranked.model.UserName
 import de.holisticon.ranked.model.event.*
+import de.holisticon.ranked.service.user.UserService
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import mu.KLogging
 import org.axonframework.config.ProcessingGroup
 import org.axonframework.eventhandling.EventHandler
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import java.time.LocalDateTime
@@ -20,7 +22,7 @@ import java.time.LocalDateTime
 @Api(tags = ["News wall"])
 @RestController
 @RequestMapping(value = ["/view"])
-class WallView() {
+class WallView(val userService : UserService) {
 
   companion object : KLogging() {
     const val NAME = "Wall"
@@ -41,6 +43,14 @@ class WallView() {
   @ApiOperation(value = "Lists team wins.")
   @GetMapping("/wall/teams")
   fun teamWins() = teamWins
+
+  @ApiOperation(value = "Lists all users")
+  @GetMapping("/user")
+  fun users() = userService.loadAll()
+
+  @ApiOperation(value = "Lists all users")
+  @GetMapping("/user/{id}")
+  fun users(@PathVariable("id") id: String) = userService.loadUser(id)
 
   @EventHandler
   fun on(e: MatchCreated) {

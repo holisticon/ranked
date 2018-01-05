@@ -6,7 +6,7 @@ import de.holisticon.ranked.command.api.CheckPlayer
 import de.holisticon.ranked.command.api.CreatePlayer
 import de.holisticon.ranked.command.api.ParticipateInMatch
 import de.holisticon.ranked.command.api.UpdatePlayerRanking
-import de.holisticon.ranked.command.service.UserService
+import de.holisticon.ranked.service.user.UserService
 import de.holisticon.ranked.model.UserName
 import de.holisticon.ranked.model.event.PlayerCreated
 import de.holisticon.ranked.model.event.PlayerExists
@@ -30,6 +30,7 @@ class Player() {
   private lateinit var userName: UserName
   private lateinit var displayName: String
   private var eloRanking: Int = 0
+  private var imageUrl: String = ""
 
   // create player aggregate when matchWinnerSaga receives matchCreated event
   // only called once for each player
@@ -38,15 +39,15 @@ class Player() {
               @Autowired userService: UserService,
               @Autowired properties: RankedProperties) : this() {
     // get user data from ....
-    val user = userService.findUser(c.userName.value)
-    val userName = UserName(user.userName)
+    val user = userService.loadUser(c.userName.value)
+    val userName = UserName(user.id)
     val initialElo = properties.elo.default
 
     // -> #on(e: PlayerCreated)
     apply(
       PlayerCreated(
         userName = userName,
-        displayName = user.displayName,
+        displayName = user.name,
         initialElo = initialElo
       )
     )

@@ -26,13 +26,13 @@ class UserNameSpec {
   @Test
   fun `userName is not valid if value is ""`() {
     assertThat(validator.singleMessage(UserName("")))
-      .isEqualTo("The username must be at least 4 chars long.")
+      .isEqualTo("The user-id must be at least 4 chars long.")
   }
 
   @Test
   fun `userName is not valid if value is shorter than 4 chars`() {
     assertThat(validator.singleMessage(UserName("abc")))
-      .isEqualTo("The username must be at least 4 chars long.")
+      .isEqualTo("The user-id must be at least 4 chars long.")
   }
 }
 

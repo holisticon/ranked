@@ -4,18 +4,18 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>de.holisticon.ranked</groupId>
-    <artifactId>ranked-view-root</artifactId>
+    <groupId>de.holisticon.ranked.service</groupId>
+    <artifactId>ranked-services</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
 
-  <artifactId>ranked-view-wall</artifactId>
+  <artifactId>ranked-user-service</artifactId>
 
   <dependencies>
     <dependency>
-      <groupId>de.holisticon.ranked.service</groupId>
-      <artifactId>ranked-user-service</artifactId>
+      <groupId>de.holisticon.ranked</groupId>
+      <artifactId>ranked-model</artifactId>
+      <version>${project.version}</version>
     </dependency>
   </dependencies>
-
 </project>

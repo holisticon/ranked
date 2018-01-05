@@ -22,9 +22,12 @@
       <artifactId>ranked-model</artifactId>
     </dependency>
     <dependency>
-      <groupId>de.holisticon.ranked.elo</groupId>
-      <artifactId>ranked-elo</artifactId>
-      <version>${project.version}</version>
+      <groupId>de.holisticon.ranked.service</groupId>
+      <artifactId>ranked-elo-service</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>de.holisticon.ranked.service</groupId>
+      <artifactId>ranked-user-service</artifactId>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>

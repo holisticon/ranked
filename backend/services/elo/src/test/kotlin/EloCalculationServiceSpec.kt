@@ -1,4 +1,4 @@
-package de.holisticon.ranked.elo
+package de.holisticon.ranked.service.elo
 
 import de.holisticon.ranked.properties.createProperties
 import org.assertj.core.api.Assertions.assertThat
