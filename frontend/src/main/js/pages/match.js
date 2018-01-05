@@ -25,7 +25,7 @@ export class Match extends React.Component {
 
   changeGoals(team, diff) {
     this.state.teams[team].goals += diff;
-    
+
     if (this.state.teams[team].goals < 0) {
       this.state.teams[team].goals = 0;
     } else if (this.state.teams[team].goals >= POINTS_PER_SET) {
@@ -48,7 +48,7 @@ export class Match extends React.Component {
       this.endMatch(winnerTeam);
       return;
     }
-    
+
     // switch teams
     [this.state.teams.red, this.state.teams.blue] = [this.state.teams.blue, this.state.teams.red];
 
@@ -139,6 +139,11 @@ export class Match extends React.Component {
               <span className="current-goals">{ this.state.teams.red.goals }</span>
             </div>
           </Swipeable>
+        </div>
+        <div className="setcounter">
+          <div>
+            <span>2</span>
+          </div>
         </div>
 
         <div className="team-blue">
