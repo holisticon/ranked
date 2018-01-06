@@ -46,7 +46,7 @@ class WallView(val userService : UserService) {
 
   @ApiOperation(value = "Lists all users")
   @GetMapping("/user")
-  fun users() = userService.loadAll()
+  fun users() = userService.loadAll().sortedBy { it.id }
 
   @ApiOperation(value = "Lists all users")
   @GetMapping("/user/{id}")

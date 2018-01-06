@@ -1,3 +1,4 @@
+@file:SuppressWarnings("UNUSED")
 package de.holisticon.ranked.view.player
 
 import de.holisticon.ranked.model.UserName
@@ -35,7 +36,7 @@ class PlayerViewService {
     // TODO update ranking
   }
 
-    data class Player(
+  data class Player(
     val userName: UserName,
     val displayName: String,
     val eloRanking: Int
