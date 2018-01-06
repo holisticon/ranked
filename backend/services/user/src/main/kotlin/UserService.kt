@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component
 class UserService() {
 
   val users by lazy {
-    readUsersFromJson()
+    readUsersFromJson("/players.json")
   }
 
   fun loadUser(username: String): User = users.find { username == it.id }!!
@@ -17,6 +17,4 @@ class UserService() {
   fun loadAll() = users
 }
 
-val mapper = jacksonObjectMapper()
-
-fun readUsersFromJson(): Set<User> = mapper.readValue(UserService::class.java.getResource("/players.json"))
+fun readUsersFromJson(resource: String): Set<User> = jacksonObjectMapper().readValue(UserService::class.java.getResource(resource))
