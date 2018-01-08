@@ -13,10 +13,16 @@ html, body {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
+.hidden {
+  visibility: hidden !important;
+  display: none !important;
+}
+
 /* Match */
 .match {
   height: 100%;
   width: 100%;
+  position: relative;
 }
 
 .match .team-blue, .match .team-red {
@@ -100,7 +106,7 @@ html, body {
   border-radius: 50%;
   width: 20%;
   height: 6%;
-  position: fixed;
+  position: absolute;
   z-index: 10;
   left: 40%;
   top: 47%;
@@ -134,11 +140,6 @@ html, body {
   overflow: auto;
   padding: 5%;
   box-sizing: border-box;
-}
-
-.player-selection.hidden {
-  visibility: hidden;
-  display: none;
 }
 
 .player-selection .player-icon {

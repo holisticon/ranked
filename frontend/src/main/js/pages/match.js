@@ -16,19 +16,23 @@ export class Match extends React.Component {
   initState() {
     this.state = {
       selectPlayerFor: null,
-      teams: {
-        blue: { goals: 0, won: 0, attack: null, defense: null },
-        red: { goals: 0, won: 0, attack: null, defense: null }
-      }
+      sets: [],
     };
+
+    const newTeam = { won: 0, attack: null, defense: null };
+    this.addSet(newTeam, newTeam);
+  }
+
+  get currentSet() {
+    return this.state.sets[this.state.sets.length - 1];
   }
 
   changeGoals(team, diff) {
-    this.state.teams[team].goals += diff;
+    this.currentSet[team].goals += diff;
 
-    if (this.state.teams[team].goals < 0) {
-      this.state.teams[team].goals = 0;
-    } else if (this.state.teams[team].goals >= POINTS_PER_SET) {
+    if (this.currentSet[team].goals < 0) {
+      this.currentSet[team].goals = 0;
+    } else if (this.currentSet[team].goals >= POINTS_PER_SET) {
       this.endSet(team);
     }
 
@@ -43,29 +47,37 @@ export class Match extends React.Component {
     this.changeGoals(team, -1);
   }
 
+  addSet(blueTeam, redTeam) {
+    this.state.sets.push({
+      number: this.state.sets.length + 1,
+      blue: Object.assign({}, blueTeam, { goals : 0}),
+      red: Object.assign({}, redTeam, { goals : 0})
+    });
+  }
+
   endSet(winnerTeam) {
-    if (++this.state.teams[winnerTeam].won >= POINTS_PER_MATCH) {
+    if (++this.currentSet[winnerTeam].won >= POINTS_PER_MATCH) {
       this.endMatch(winnerTeam);
       return;
     }
 
-    // switch teams
-    [this.state.teams.red, this.state.teams.blue] = [this.state.teams.blue, this.state.teams.red];
+    // match is not ended, so start a new set with switched teams
+    this.addSet(this.currentSet.red, this.currentSet.blue);
 
     // switch player positions per team
-    // TODO: calculate "best" positions for last turn?`
+    // TODO: calculate "best" positions for last turn?
     this.switchPlayerPositions('red');
     this.switchPlayerPositions('blue');
 
     // reset goals
-    this.state.teams.red.goals = 0;
-    this.state.teams.blue.goals = 0;
+    this.currentSet.red.goals = 0;
+    this.currentSet.blue.goals = 0;
   }
 
   endMatch(winnerTeam) {
     // TODO
 
-    const team = this.state.teams[winnerTeam];
+    const team = this.currentSet[winnerTeam];
     setTimeout(() => {
       alert(`${team.attack.name} und ${team.defense.name} haben gewonnen!`);
     }, 100);
@@ -74,10 +86,8 @@ export class Match extends React.Component {
   }
 
   switchPlayerPositions(teamColor) {
-    const team = this.state.teams[teamColor];
+    const team = this.currentSet[teamColor];
     [team.attack, team.defense] = [team.defense, team.attack];
-
-    this.forceUpdate();
   }
 
   selectPlayer(team, position) {
@@ -86,28 +96,32 @@ export class Match extends React.Component {
   }
 
   removePlayer(player) {
-    if (this.state.teams.blue.attack === player) {
-      this.state.teams.blue.attack = null;
+    if (this.currentSet.blue.attack === player) {
+      this.currentSet.blue.attack = null;
     }
     
-    if (this.state.teams.blue.defense === player) {
-      this.state.teams.blue.defense = null;
+    if (this.currentSet.blue.defense === player) {
+      this.currentSet.blue.defense = null;
     }
 
-    if (this.state.teams.red.attack === player) {
-      this.state.teams.red.attack = null;
+    if (this.currentSet.red.attack === player) {
+      this.currentSet.red.attack = null;
     }
 
-    if (this.state.teams.red.defense === player) {
-      this.state.teams.red.defense = null;
+    if (this.currentSet.red.defense === player) {
+      this.currentSet.red.defense = null;
     }
   }
 
   playerSelected(player) {
     this.removePlayer(player);
-    this.state.teams[this.state.selectPlayerFor.team][this.state.selectPlayerFor.position] = player;
+    this.currentSet[this.state.selectPlayerFor.team][this.state.selectPlayerFor.position] = player;
     this.state.selectPlayerFor = null;
     this.forceUpdate();
+  }
+
+  isLastSet() {
+    return this.currentSet.number == POINTS_PER_MATCH * 2 - 1;
   }
 
   render() {
@@ -118,56 +132,65 @@ export class Match extends React.Component {
         <div className="team-red">
           <div className="add-defense" onClick={ () => this.selectPlayer('red', 'defense') }>
             {
-              !this.state.teams.red.defense ?
+              !this.currentSet.red.defense ?
                 <i className="material-icons">&#xE853;</i> :
-                <PlayerIcon name={ this.state.teams.red.defense.name } img={ this.state.teams.red.defense.img }></PlayerIcon>
+                <PlayerIcon name={ this.currentSet.red.defense.name } img={ this.currentSet.red.defense.img }></PlayerIcon>
             }
             <span className="name">Tor</span>
           </div>
 
+          <div className={ this.isLastSet() ? 'change-positions' : 'hidden' }>
+            <i className="material-icons">&#xE0C3;</i>
+          </div>
+
           <div className="add-attack" onClick={ () => this.selectPlayer('red', 'attack') }>
             {
-              !this.state.teams.red.attack ?
+              !this.currentSet.red.attack ?
                 <i className="material-icons">&#xE853;</i> :
-                <PlayerIcon name={ this.state.teams.red.attack.name } img={ this.state.teams.red.attack.img }></PlayerIcon>
+                <PlayerIcon name={ this.currentSet.red.attack.name } img={ this.currentSet.red.attack.img }></PlayerIcon>
             }
             <span className="name">Angriff</span>
           </div>
 
           <Swipeable onSwipeRight={ () => this.incGoals('red') } onSwipeLeft={ () => this.decGoals('red') }>
             <div className="goal-counter" onClick={ () => this.incGoals('red') }>
-              <span className="current-goals">{ this.state.teams.red.goals }</span>
+              <span className="current-goals">{ this.currentSet.red.goals }</span>
             </div>
           </Swipeable>
         </div>
+        
         <div className="setcounter">
           <div>
-            <span>2</span>
+            <span>{ this.currentSet.number }</span>
           </div>
         </div>
 
         <div className="team-blue">
           <div className="add-defense" onClick={ () => this.selectPlayer('blue', 'defense') }>
             {
-              !this.state.teams.blue.defense ?
+              !this.currentSet.blue.defense ?
                 <i className="material-icons">&#xE853;</i> :
-                <PlayerIcon name={ this.state.teams.blue.defense.name } img={ this.state.teams.blue.defense.img }></PlayerIcon>
+                <PlayerIcon name={ this.currentSet.blue.defense.name } img={ this.currentSet.blue.defense.img }></PlayerIcon>
             }
             <span className="name">Tor</span>
           </div>
 
+          <div className={ this.isLastSet() ? 'change-positions' : 'hidden' }>
+            <i className="material-icons">&#xE0C3;</i>
+          </div>
+
           <div className="add-attack" onClick={ () => this.selectPlayer('blue', 'attack') }>
             {
-              !this.state.teams.blue.attack ?
+              !this.currentSet.blue.attack ?
                 <i className="material-icons">&#xE853;</i> :
-                <PlayerIcon name={ this.state.teams.blue.attack.name } img={ this.state.teams.blue.attack.img }></PlayerIcon>
+                <PlayerIcon name={ this.currentSet.blue.attack.name } img={ this.currentSet.blue.attack.img }></PlayerIcon>
             }
             <span className="name">Angriff</span>
           </div>
 
           <Swipeable onSwipeLeft={ () => this.incGoals('blue') } onSwipeRight={ () => this.decGoals('blue') }>
             <div className="goal-counter" onClick={ () => this.incGoals('blue') }>
-              <span className="current-goals">{ this.state.teams.blue.goals }</span>
+              <span className="current-goals">{ this.currentSet.blue.goals }</span>
             </div>
           </Swipeable>
         </div>
