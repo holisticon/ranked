@@ -12,7 +12,6 @@ import org.axonframework.commandhandling.model.AggregateLifecycle.apply
 import org.axonframework.eventsourcing.EventSourcingHandler
 import org.axonframework.spring.stereotype.Aggregate
 import org.springframework.beans.factory.annotation.Autowired
-import java.time.LocalDateTime
 
 @Aggregate
 @Suppress("UNUSED")
@@ -20,10 +19,8 @@ class Match() {
 
   companion object : KLogging()
 
-
   @AggregateIdentifier
   private lateinit var matchId: String
-  private lateinit var date: LocalDateTime
 
   /**
    * (1) A Match aggregate is created, when a CreateMatch is received (via RestController).
@@ -37,7 +34,6 @@ class Match() {
       matchId = c.matchId,
       teamBlue = c.teamBlue,
       teamRed = c.teamRed,
-      date = c.date,
       matchSets = c.matchSets,
       tournamentId = c.tournamentId
     ))
@@ -51,7 +47,6 @@ class Match() {
             team = c.teamBlue,
             looser = c.teamRed,
             offense = m.offenseBlue,
-            date = c.date,
             matchId = c.matchId
           ))
         }
@@ -60,7 +55,6 @@ class Match() {
             team = c.teamRed,
             looser = c.teamBlue,
             offense = m.offenseRed,
-            date = c.date,
             matchId = c.matchId
           ))
         }
@@ -74,8 +68,7 @@ class Match() {
     applyEvent(TeamWonMatch(
       matchId = this.matchId,
       team = c.winner,
-      looser = c.looser,
-      date = this.date
+      looser = c.looser
     ))
   }
 
@@ -90,14 +83,12 @@ class Match() {
     apply(PlayerWonMatchSet(
       player = e.team.player1,
       teammate = e.team.player2,
-      position = if (e.offense == e.team.player1) PlayerPosition.OFFENSE else PlayerPosition.DEFENSE,
-      date = e.date
+      position = if (e.offense == e.team.player1) PlayerPosition.OFFENSE else PlayerPosition.DEFENSE
     ))
     apply(PlayerWonMatchSet(
       player = e.team.player2,
       teammate = e.team.player1,
-      position = if (e.offense == e.team.player2) PlayerPosition.OFFENSE else PlayerPosition.DEFENSE,
-      date = e.date
+      position = if (e.offense == e.team.player2) PlayerPosition.OFFENSE else PlayerPosition.DEFENSE
     ))
   }
 
@@ -110,13 +101,11 @@ class Match() {
     // each player won -> view
     apply(PlayerWonMatch(
       player = e.team.player1,
-      teammate = e.team.player2,
-      date = e.date
+      teammate = e.team.player2
     ))
     apply(PlayerWonMatch(
       player = e.team.player2,
-      teammate = e.team.player1,
-      date = e.date
+      teammate = e.team.player1
     ))
   }
 
@@ -127,7 +116,6 @@ class Match() {
   fun on(e: MatchCreated) {
     // (2) modify state of aggregate (must not be in command handler for aggregate restore)
     this.matchId = e.matchId
-    this.date = e.date
   }
 
 }

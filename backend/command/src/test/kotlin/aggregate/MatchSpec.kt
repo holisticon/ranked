@@ -19,7 +19,6 @@ import org.springframework.context.annotation.Bean
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean
-import java.time.LocalDateTime
 
 @RunWith(SpringRunner::class)
 // TODO replace with real props
@@ -36,7 +35,6 @@ class MatchSpec {
 
   private val fixture: AggregateTestFixture<Match> = AggregateTestFixture(Match::class.java)
 
-  private val now = LocalDateTime.now()
   private val piggy = UserName("piggy")
   private val kermit = UserName("kermit")
   private val gonzo = UserName("gonzo")
@@ -72,7 +70,6 @@ class MatchSpec {
       .`when`(
         CreateMatch(
           matchId = "4711",
-          date = now,
           teamRed = teamRed,
           teamBlue = teamBlue,
           matchSets = sets,
@@ -82,23 +79,22 @@ class MatchSpec {
       .expectEvents(
         MatchCreated(
           matchId = "4711",
-          date = now,
           teamRed = teamRed,
           teamBlue = teamBlue,
           matchSets = sets,
           tournamentId = "0815"
         ),
-        TeamWonMatchSet(team = teamBlue, looser = teamRed, offense = piggy, date = now, matchId = "4711"),
-        PlayerWonMatchSet(piggy, PlayerPosition.OFFENSE, kermit, now),
-        PlayerWonMatchSet(kermit, PlayerPosition.DEFENSE, piggy, now),
+        TeamWonMatchSet(team = teamBlue, looser = teamRed, offense = piggy, matchId = "4711"),
+        PlayerWonMatchSet(piggy, PlayerPosition.OFFENSE, kermit),
+        PlayerWonMatchSet(kermit, PlayerPosition.DEFENSE, piggy),
 
-        TeamWonMatchSet(team = teamRed, looser = teamBlue, offense = fozzy, date = now, matchId = "4711"),
-        PlayerWonMatchSet(gonzo, PlayerPosition.DEFENSE, fozzy, now),
-        PlayerWonMatchSet(fozzy, PlayerPosition.OFFENSE, gonzo, now),
+        TeamWonMatchSet(team = teamRed, looser = teamBlue, offense = fozzy, matchId = "4711"),
+        PlayerWonMatchSet(gonzo, PlayerPosition.DEFENSE, fozzy),
+        PlayerWonMatchSet(fozzy, PlayerPosition.OFFENSE, gonzo),
 
-        TeamWonMatchSet(team = teamBlue, looser = teamRed, offense= piggy, date = now, matchId = "4711"),
-        PlayerWonMatchSet(piggy, PlayerPosition.OFFENSE, kermit, now),
-        PlayerWonMatchSet(kermit, PlayerPosition.DEFENSE, piggy, now)
+        TeamWonMatchSet(team = teamBlue, looser = teamRed, offense= piggy, matchId = "4711"),
+        PlayerWonMatchSet(piggy, PlayerPosition.OFFENSE, kermit),
+        PlayerWonMatchSet(kermit, PlayerPosition.DEFENSE, piggy)
       )
   }
 
@@ -108,7 +104,6 @@ class MatchSpec {
       .given(
         MatchCreated(
           matchId = "4711",
-          date = now,
           teamRed = teamRed,
           teamBlue = teamBlue,
           matchSets = sets,
@@ -122,17 +117,14 @@ class MatchSpec {
       .expectEvents(
         TeamWonMatch(
           matchId = "4711",
-          date = now,
           team = teamRed,
           looser = teamBlue
         ),
         PlayerWonMatch(
-          date = now,
           player = teamRed.player1,
           teammate = teamRed.player2
         ),
         PlayerWonMatch(
-          date = now,
           player = teamRed.player2,
           teammate = teamRed.player1
         )

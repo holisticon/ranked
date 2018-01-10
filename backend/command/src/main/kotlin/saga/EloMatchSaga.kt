@@ -4,11 +4,11 @@ package de.holisticon.ranked.command.saga
 
 import de.holisticon.ranked.command.api.ParticipateInMatch
 import de.holisticon.ranked.command.api.UpdatePlayerRanking
-import de.holisticon.ranked.service.elo.EloCalculationService
 import de.holisticon.ranked.model.UserName
 import de.holisticon.ranked.model.event.MatchCreated
 import de.holisticon.ranked.model.event.PlayerParticipatedInMatch
 import de.holisticon.ranked.model.event.TeamWonMatch
+import de.holisticon.ranked.service.elo.EloCalculationService
 import mu.KLogging
 import org.axonframework.commandhandling.gateway.CommandGateway
 import org.axonframework.eventhandling.saga.EndSaga

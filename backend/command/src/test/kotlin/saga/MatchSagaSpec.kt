@@ -47,7 +47,6 @@ class MatchSagaSpec {
         matchId = "4711",
         teamBlue = teamBlue,
         teamRed = teamRed,
-        date = now,
         matchSets = sets,
         tournamentId = null))
       .expectActiveSagas(1)
@@ -63,27 +62,23 @@ class MatchSagaSpec {
           matchId = "4711",
           teamBlue = teamBlue,
           teamRed = teamRed,
-          date = now,
           matchSets = sets,
           tournamentId = null),
         TeamWonMatchSet(
           matchId = "4711",
           team = teamBlue,
           looser = teamRed,
-          date = now,
           offense = set1.offenseBlue),
         TeamWonMatchSet(
           matchId = "4711",
           team = teamRed,
           looser = teamBlue,
-          date = now,
           offense = set2.offenseRed))
       .whenPublishingA(
         TeamWonMatchSet(
           matchId = "4711",
           team = teamBlue,
           looser = teamRed,
-          date = now,
           offense = set3.offenseBlue))
       .expectDispatchedCommands(
         WinMatch(

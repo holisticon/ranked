@@ -12,11 +12,14 @@ import io.swagger.annotations.ApiOperation
 import mu.KLogging
 import org.axonframework.config.ProcessingGroup
 import org.axonframework.eventhandling.EventHandler
+import org.axonframework.eventhandling.Timestamp
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import java.time.Instant
 import java.time.LocalDateTime
+import java.time.ZoneOffset
 
 @ProcessingGroup(WallView.NAME)
 @Api(tags = ["News wall"])
@@ -53,32 +56,32 @@ class WallView(val userService : UserService) {
   fun users(@PathVariable("id") id: String) = userService.loadUser(id)
 
   @EventHandler
-  fun on(e: MatchCreated) {
-    matches.add(Match(teamRed = e.teamRed, teamBlue = e.teamBlue, matchSets = e.matchSets, matchId = e.matchId, date = e.date))
+  fun on(e: MatchCreated, @Timestamp timestamp: Instant) {
+    matches.add(Match(teamRed = e.teamRed, teamBlue = e.teamBlue, matchSets = e.matchSets, matchId = e.matchId, date = LocalDateTime.ofInstant(timestamp, ZoneOffset.UTC)))
     logger.info { "Match created for ${e.matchId}" }
   }
 
   @EventHandler
-  fun on(e: TeamWonMatch) {
-    teamWins.add(TeamWin(e.team, e.looser, Type.MATCH, e.date))
+  fun on(e: TeamWonMatch, @Timestamp timestamp: Instant) {
+    teamWins.add(TeamWin(e.team, e.looser, Type.MATCH, LocalDateTime.ofInstant(timestamp, ZoneOffset.UTC)))
     logger.info { "Team ${e.team} won a match vs ${e.looser} " }
   }
 
   @EventHandler
-  fun on(e: TeamWonMatchSet) {
-    teamWins.add(TeamWin(e.team, e.looser, Type.SET, e.date))
+  fun on(e: TeamWonMatchSet, @Timestamp timestamp: Instant) {
+    teamWins.add(TeamWin(e.team, e.looser, Type.SET, LocalDateTime.ofInstant(timestamp, ZoneOffset.UTC)))
     logger.info { "Team ${e.team} won a set vs ${e.looser}" }
   }
 
   @EventHandler
-  fun on(e: PlayerWonMatch) {
-    playerWins.add(PlayerWin(e.player, Type.MATCH, e.date))
+  fun on(e: PlayerWonMatch, @Timestamp timestamp: Instant) {
+    playerWins.add(PlayerWin(e.player, Type.MATCH, LocalDateTime.ofInstant(timestamp, ZoneOffset.UTC)))
     logger.info { "Player ${e.player} won a match " }
   }
 
   @EventHandler
-  fun on(e: PlayerWonMatchSet) {
-    playerWins.add(PlayerWin(e.player, Type.SET, e.date))
+  fun on(e: PlayerWonMatchSet, @Timestamp timestamp: Instant) {
+    playerWins.add(PlayerWin(e.player, Type.SET, LocalDateTime.ofInstant(timestamp, ZoneOffset.UTC)))
     logger.info { "Player ${e.player} won a set " }
   }
 

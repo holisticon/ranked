@@ -4,7 +4,6 @@ import cz.jirutka.validator.spring.SpELAssert
 import de.holisticon.ranked.model.MatchSet
 import de.holisticon.ranked.model.Team
 import org.axonframework.commandhandling.TargetAggregateIdentifier
-import java.time.LocalDateTime
 import java.util.*
 import javax.validation.Valid
 import javax.validation.constraints.NotEmpty
@@ -21,7 +20,6 @@ data class CreateMatch(
   @TargetAggregateIdentifier
   @get: NotEmpty
   val matchId: String = UUID.randomUUID().toString(),
-  val date: LocalDateTime = LocalDateTime.now(),
   @get: Valid
   val teamRed: Team,
   @get: Valid

@@ -2,7 +2,6 @@ package de.holisticon.ranked.command.saga
 
 import de.holisticon.ranked.command.api.ParticipateInMatch
 import de.holisticon.ranked.command.api.UpdatePlayerRanking
-import de.holisticon.ranked.service.elo.EloCalculationService
 import de.holisticon.ranked.model.MatchSet
 import de.holisticon.ranked.model.Team
 import de.holisticon.ranked.model.UserName
@@ -10,15 +9,14 @@ import de.holisticon.ranked.model.event.MatchCreated
 import de.holisticon.ranked.model.event.PlayerParticipatedInMatch
 import de.holisticon.ranked.model.event.TeamWonMatch
 import de.holisticon.ranked.properties.createProperties
+import de.holisticon.ranked.service.elo.EloCalculationService
 import org.axonframework.test.saga.SagaTestFixture
 import org.junit.Before
 import org.junit.Test
-import java.time.LocalDateTime
 
 class EloSagaSpec {
 
   private val eloSaga: SagaTestFixture<EloMatchSaga> = SagaTestFixture(EloMatchSaga::class.java)
-  private val now = LocalDateTime.now()
 
   private val piggy = UserName("piggy")
   private val kermit = UserName("kermit")
@@ -49,7 +47,6 @@ class EloSagaSpec {
         matchId = "4711",
         teamBlue = teamBlue,
         teamRed = teamRed,
-        date = now,
         matchSets = sets,
         tournamentId = null))
       .expectActiveSagas(1)
@@ -70,7 +67,6 @@ class EloSagaSpec {
           matchId = "4711",
           teamBlue = teamBlue,
           teamRed = teamRed,
-          date = now,
           matchSets = sets,
           tournamentId = null))
       .andThenAggregate("piggy")

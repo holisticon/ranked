@@ -19,14 +19,12 @@ data class PlayerExists(
 data class PlayerWonMatchSet(
   val player: UserName,
   val position: PlayerPosition,
-  val teammate: UserName,
-  val date: LocalDateTime = LocalDateTime.now()
+  val teammate: UserName
 )
 
 data class PlayerWonMatch(
   val player: UserName,
-  val teammate: UserName,
-  val date: LocalDateTime = LocalDateTime.now()
+  val teammate: UserName
 )
 
 data class PlayerParticipatedInMatch(
@@ -42,7 +40,6 @@ data class PlayerRankingChanged(
 
 data class MatchCreated(
   val matchId: String,
-  val date: LocalDateTime = LocalDateTime.now(),
   val teamRed: Team,
   val teamBlue: Team,
   val matchSets: List<MatchSet>,
@@ -53,15 +50,13 @@ data class TeamWonMatchSet(
   val team: Team,
   val looser: Team,
   val offense: UserName,
-  val date: LocalDateTime = LocalDateTime.now(),
   val matchId: String
 )
 
 data class TeamWonMatch(
   val matchId: String,
   val team: Team,
-  val looser: Team,
-  val date: LocalDateTime = LocalDateTime.now()
+  val looser: Team
 )
 
 enum class PlayerPosition {
