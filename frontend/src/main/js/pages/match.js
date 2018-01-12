@@ -128,7 +128,10 @@ export class Match extends React.Component {
   render() {
     return (
       <div className="match">
-        <SelectPlayer visible={ !!this.state.selectPlayerFor } select={ (player) => this.playerSelected(player) } ></SelectPlayer>
+        <SelectPlayer 
+          visible={ !!this.state.selectPlayerFor }
+          upsideDown={ !!this.state.selectPlayerFor && this.state.selectPlayerFor.team == 'red' }
+          select={ (player) => this.playerSelected(player) } ></SelectPlayer>
 
         <div className="team-red">
           <div className="goal-counter-container">

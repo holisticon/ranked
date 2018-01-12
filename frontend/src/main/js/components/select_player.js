@@ -117,7 +117,8 @@ export class SelectPlayer extends React.Component {
 
   render() {
     const visible = this.props.visible ? '' : 'hidden';
-    const classes = `${ visible } player-selection`;
+    const rotation = this.props.upsideDown ? 'upside-down' : ''
+    const classes = `${ visible } ${ rotation } player-selection`;
 
     return (
       <div className={ classes }>
