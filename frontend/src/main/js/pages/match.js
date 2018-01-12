@@ -91,7 +91,10 @@ export class Match extends React.Component {
     this.forceUpdate();
   }
 
-  selectPlayer(team, position) {
+  selectPlayer(team, position, event) {
+    event.preventDefault();
+    event.stopPropagation();
+
     this.state.selectPlayerFor = { team, position };
     this.forceUpdate();
   }
@@ -133,16 +136,16 @@ export class Match extends React.Component {
           upsideDown={ !!this.state.selectPlayerFor && this.state.selectPlayerFor.team == 'red' }
           select={ (player) => this.playerSelected(player) } ></SelectPlayer>
 
-        <div className="team-red">
+        <div className="team-red" onClick={ () => this.incGoals('red') }>
           <div className="goal-counter-container">
             <Swipeable onSwipeRight={ () => this.incGoals('red') } onSwipeLeft={ () => this.decGoals('red') }>
-              <div className="goal-counter" onClick={ () => this.incGoals('red') }>
+              <div className="goal-counter">
                 <span className="current-goals">{ this.currentSet.red.goals }</span>
               </div>
             </Swipeable>
           </div>
 
-          <div className="add-defense" onClick={ () => this.selectPlayer('red', 'defense') }>
+          <div className="add-defense" onClick={ (e) => this.selectPlayer('red', 'defense', e) }>
             {
               !this.currentSet.red.defense ?
                 <i className="material-icons">&#xE853;</i> :
@@ -156,7 +159,7 @@ export class Match extends React.Component {
             <i className="material-icons">&#xE0C3;</i>
           </div>
 
-          <div className="add-attack" onClick={ () => this.selectPlayer('red', 'attack') }>
+          <div className="add-attack" onClick={ (e) => this.selectPlayer('red', 'attack', e) }>
             {
               !this.currentSet.red.attack ?
                 <i className="material-icons">&#xE853;</i> :
@@ -172,16 +175,16 @@ export class Match extends React.Component {
           </div>
         </div>
 
-        <div className="team-blue">
+        <div className="team-blue" onClick={ () => this.incGoals('blue') }>
           <div className="goal-counter-container">
             <Swipeable onSwipeLeft={ () => this.incGoals('blue') } onSwipeRight={ () => this.decGoals('blue') }>
-              <div className="goal-counter" onClick={ () => this.incGoals('blue') }>
+              <div className="goal-counter">
                 <span className="current-goals">{ this.currentSet.blue.goals }</span>
               </div>
             </Swipeable>
           </div>
 
-          <div className="add-defense" onClick={ () => this.selectPlayer('blue', 'defense') }>
+          <div className="add-defense" onClick={ (e) => this.selectPlayer('blue', 'defense', e) }>
             {
               !this.currentSet.blue.defense ?
                 <i className="material-icons">&#xE853;</i> :
@@ -195,7 +198,7 @@ export class Match extends React.Component {
             <i className="material-icons">&#xE0C3;</i>
           </div>
 
-          <div className="add-attack" onClick={ () => this.selectPlayer('blue', 'attack') }>
+          <div className="add-attack" onClick={ (e) => this.selectPlayer('blue', 'attack', e) }>
             {
               !this.currentSet.blue.attack ?
                 <i className="material-icons">&#xE853;</i> :
