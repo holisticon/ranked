@@ -2,18 +2,21 @@ import React from 'react';
 import { PlayerIcon } from './player_icon';
 import axios from 'axios';
 
+const alphabet = 'abcdefghijklmnopqrstuvwxyz';
+
 export class SelectPlayer extends React.Component {
+
   constructor(props) {
     super(props);
 
-    this.state = { players: [] };
+    this.state = { showLetters: true, playerFilter: null, unavailableLetters: [], players: [] };
     this.getPlayers();
   }
 
   getPlayersFromWebsite() {
     const that = this;
 
-    axios.get('https://holisticon.de/team.html')
+    return axios.get('https://holisticon.de/team.html')
       .then(res => {
         const site = document.createElement('html');
         site.innerHTML = res.data;
@@ -54,23 +57,61 @@ export class SelectPlayer extends React.Component {
   getPlayersFromLocal() {
     const that = this;
 
-    axios.get('players.json').then(res => {
+    return axios.get('players.json').then(res => {
       that.setState({ players: res.data });
-    })
+    });
   }
 
   getPlayers() {
-    this.getPlayersFromLocal();
+    this.getPlayersFromLocal().then(() => {
+      var unavailableLetters = alphabet;
+      this.state.players.forEach(player => {
+        unavailableLetters = unavailableLetters.replace(player.name[0].toLowerCase(), '');
+      });
+      this.state.unavailableLetters = unavailableLetters;
+    });
   }
 
   getPlayerIcons() {
     const that = this;
-    return this.state.players.map(function (player, index) {
-      return <PlayerIcon
-        key={ index }
-        name={ player.name }
-        img={ player.img }
-        onClick={ () => that.props.select(player) }></PlayerIcon>
+
+    if (!this.state.playerFilter) {
+      this.state.playerFilter = (player) => true;
+    }
+
+    const filtered = this.state.players.filter(that.state.playerFilter);
+
+    return filtered.map(function (player, index) {
+        return <PlayerIcon
+          key={ index }
+          name={ player.name }
+          img={ player.img }
+          onClick={ () => that.selectPlayer(player) }></PlayerIcon>
+      });
+  }
+
+  selectPlayer(player) {
+    this.state.showLetters = true;
+    this.props.select(player);
+  }
+
+  showPlayers(firstLetter) {
+    this.state.showLetters = false;
+    this.state.playerFilter = (player) => player.name[0].toLowerCase() == firstLetter;
+    this.forceUpdate();
+  }
+
+  getLetters() {
+    const that = this;
+
+    return alphabet.split('').map(function (letter, index) {
+
+      let available = !that.state.unavailableLetters.includes(letter);
+      
+      return <div key={ index } className={ available ? 'letter' : 'letter gray' } onClick={ () => available && that.showPlayers(letter) }>
+        <div className="letter-content">
+          <div className="letter-absolute">{ letter.toUpperCase() }</div>
+        </div></div>
     });
   }
 
@@ -80,7 +121,7 @@ export class SelectPlayer extends React.Component {
 
     return (
       <div className={ classes }>
-        { this.getPlayerIcons() }
+        { this.state.showLetters ? this.getLetters() : this.getPlayerIcons() }
       </div>
     );
   }

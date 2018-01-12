@@ -158,15 +158,21 @@ html, body {
   background-color: #ffffff;
   z-index: 999;
   overflow: auto;
-  padding: 5%;
+  padding: 5% 0;
   box-sizing: border-box;
 }
 
-.player-selection .player-icon {
-  width: 20%;
+.player-selection .player-icon, .player-selection .letter {
+  width: 24%;
   height: auto;
   float: left;
-  margin: 0 0 4% 4%;
+  margin: 0 0 5% 7%;
+}
+
+.player-selection .player-icon .player-image, .player-selection .letter .letter-content {
+  height: 0;
+  padding: 50% 0;
+  position: relative;
 }
 
 .player-icon .player-image {
@@ -177,7 +183,22 @@ html, body {
   height: 100%;
 }
 
-.player-selection .player-icon .player-image {
-  height: auto;
-  padding: 50% 0;
+.player-icon .player-image .material-icons {
+  font-size: 3rem;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.player-selection .letter.gray {
+  opacity: 0.2;
+}
+
+.player-selection .letter .letter-absolute {
+  font-size: 24vw;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
 }
