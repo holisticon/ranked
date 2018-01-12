@@ -106,7 +106,7 @@ export class SelectPlayer extends React.Component {
 
     return alphabet.split('').map(function (letter, index) {
 
-      let available = !that.state.unavailableLetters.includes(letter);
+      let available = that.state.unavailableLetters.includes(letter);
       
       return <div key={ index } className={ available ? 'letter' : 'letter gray' } onClick={ () => available && that.showPlayers(letter) }>
         <div className="letter-content">
