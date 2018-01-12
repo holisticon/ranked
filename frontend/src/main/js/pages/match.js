@@ -88,6 +88,7 @@ export class Match extends React.Component {
   switchPlayerPositions(teamColor) {
     const team = this.currentSet[teamColor];
     [team.attack, team.defense] = [team.defense, team.attack];
+    this.forceUpdate();
   }
 
   selectPlayer(team, position) {
@@ -139,7 +140,8 @@ export class Match extends React.Component {
             <span className="name">Tor</span>
           </div>
 
-          <div className={ this.isLastSet() ? 'change-positions' : 'hidden' }>
+          <div className={ this.isLastSet() ? 'change-positions' : 'hidden' }
+               onClick={ () => this.switchPlayerPositions('red') }>
             <i className="material-icons">&#xE0C3;</i>
           </div>
 
@@ -175,7 +177,8 @@ export class Match extends React.Component {
             <span className="name">Tor</span>
           </div>
 
-          <div className={ this.isLastSet() ? 'change-positions' : 'hidden' }>
+          <div className={ this.isLastSet() ? 'change-positions' : 'hidden' }
+               onClick={ () => this.switchPlayerPositions('blue') }>
             <i className="material-icons">&#xE0C3;</i>
           </div>
 

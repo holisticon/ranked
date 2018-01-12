@@ -10,7 +10,7 @@ html, body {
   background-color: pink;
   height: 100vh;
   width: 100%;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-family: 'Roboto', sans-serif;
 }
 
 .hidden {
@@ -100,6 +100,18 @@ html, body {
 .match .add-defense .name, .match .add-attack .name {
   opacity: 0.4;
   display: block;
+}
+
+.match .change-positions {
+  position: absolute;
+  bottom: 2rem;
+  left: calc(50% - 1rem);
+}
+
+.match .change-positions i {
+  transform: rotate(90deg);
+  font-size: 2rem;
+  opacity: 0.4;
 }
 
 .setcounter {
