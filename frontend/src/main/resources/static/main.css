@@ -29,9 +29,9 @@ html, body {
   height: 50%;
   width: 100%;
   position: relative;
-  background-image: radial-gradient(#ffffff 0%, transparent 100%);
   border-top: 0.2rem solid white;
   box-sizing: border-box;
+  overflow: hidden;
 }
 
 .match .team-blue {
@@ -43,8 +43,16 @@ html, body {
   transform: rotate(180deg);
 }
 
+.match .goal-counter-container {
+  position: absolute;
+  width: 100%;
+  height: calc(100% + 3rem);
+  background-image: radial-gradient(#ffffff 0%, transparent 100%);
+  left: 0;
+  top: -3rem;
+}
+
 .match .goal-counter {
-  padding: 20px;
   font-size: 7rem;
   width: 100%;
   box-sizing: border-box;
@@ -111,7 +119,7 @@ html, body {
 .match .change-positions i {
   transform: rotate(90deg);
   font-size: 2rem;
-  opacity: 0.4;
+  opacity: 0.2;
 }
 
 .setcounter {

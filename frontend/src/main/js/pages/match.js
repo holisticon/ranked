@@ -131,11 +131,19 @@ export class Match extends React.Component {
         <SelectPlayer visible={ !!this.state.selectPlayerFor } select={ (player) => this.playerSelected(player) } ></SelectPlayer>
 
         <div className="team-red">
+          <div className="goal-counter-container">
+            <Swipeable onSwipeRight={ () => this.incGoals('red') } onSwipeLeft={ () => this.decGoals('red') }>
+              <div className="goal-counter" onClick={ () => this.incGoals('red') }>
+                <span className="current-goals">{ this.currentSet.red.goals }</span>
+              </div>
+            </Swipeable>
+          </div>
+
           <div className="add-defense" onClick={ () => this.selectPlayer('red', 'defense') }>
             {
               !this.currentSet.red.defense ?
                 <i className="material-icons">&#xE853;</i> :
-                <PlayerIcon name={ this.currentSet.red.defense.name } img={ this.currentSet.red.defense.img }></PlayerIcon>
+                <PlayerIcon name={ this.currentSet.red.defense.name } img={ this.currentSet.red.defense.img }></PlayerIcon>      
             }
             <span className="name">Tor</span>
           </div>
@@ -149,16 +157,10 @@ export class Match extends React.Component {
             {
               !this.currentSet.red.attack ?
                 <i className="material-icons">&#xE853;</i> :
-                <PlayerIcon name={ this.currentSet.red.attack.name } img={ this.currentSet.red.attack.img }></PlayerIcon>
+                <PlayerIcon name={ this.currentSet.red.attack.name } img={ this.currentSet.red.attack.img }></PlayerIcon>      
             }
             <span className="name">Angriff</span>
           </div>
-
-          <Swipeable onSwipeRight={ () => this.incGoals('red') } onSwipeLeft={ () => this.decGoals('red') }>
-            <div className="goal-counter" onClick={ () => this.incGoals('red') }>
-              <span className="current-goals">{ this.currentSet.red.goals }</span>
-            </div>
-          </Swipeable>
         </div>
         
         <div className="setcounter">
@@ -168,6 +170,14 @@ export class Match extends React.Component {
         </div>
 
         <div className="team-blue">
+          <div className="goal-counter-container">
+            <Swipeable onSwipeLeft={ () => this.incGoals('blue') } onSwipeRight={ () => this.decGoals('blue') }>
+              <div className="goal-counter" onClick={ () => this.incGoals('blue') }>
+                <span className="current-goals">{ this.currentSet.blue.goals }</span>
+              </div>
+            </Swipeable>
+          </div>
+
           <div className="add-defense" onClick={ () => this.selectPlayer('blue', 'defense') }>
             {
               !this.currentSet.blue.defense ?
@@ -190,12 +200,6 @@ export class Match extends React.Component {
             }
             <span className="name">Angriff</span>
           </div>
-
-          <Swipeable onSwipeLeft={ () => this.incGoals('blue') } onSwipeRight={ () => this.decGoals('blue') }>
-            <div className="goal-counter" onClick={ () => this.incGoals('blue') }>
-              <span className="current-goals">{ this.currentSet.blue.goals }</span>
-            </div>
-          </Swipeable>
         </div>
 
       </div>
