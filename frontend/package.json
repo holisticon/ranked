@@ -1,40 +1,32 @@
 {
-  "name": "ranked-frontend",
-  "version": "0.0.1",
-  "description": "Ranked Frontend",
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:holisticon/ranked.git"
-  },
-  "keywords": [
-    "rest",
-    "hateoas",
-    "spring",
-    "data",
-    "react"
-  ],
-  "author": "Holisticon AG",
-  "license": "BSD-3-Clause",
-  "bugs": {
-    "url": "https://github.com/holisticon/ranked/issues"
-  },
-  "homepage": "https://github.com/holisticon/ranked",
+  "name": "foo",
+  "version": "0.1.0",
+  "private": true,
   "dependencies": {
-    "axios": "0.17.1",
-    "react": "15.3.2",
-    "react-dom": "15.3.2",
-    "react-touch": "^0.4.3",
-    "rest": "1.3.1",
-    "webpack": "1.12.2"
+    "@types/react": "^16.0.34",
+    "@types/react-dom": "^16.0.3",
+    "@types/react-redux": "^5.0.14",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-redux": "^5.0.6",
+    "react-scripts-ts": "2.10.0",
+    "redux": "^3.7.2",
+    "webpack": "^3.10.0"
   },
   "scripts": {
-    "watch": "webpack --watch -d"
+    "start": "react-scripts-ts start",
+    "build": "react-scripts-ts build",
+    "test": "react-scripts-ts test --env=jsdom",
+    "eject": "react-scripts-ts eject",
+    "webpack": "webpack"
   },
   "devDependencies": {
-    "babel-core": "^6.18.2",
-    "babel-loader": "^6.2.7",
-    "babel-polyfill": "^6.16.0",
-    "babel-preset-es2015": "^6.18.0",
-    "babel-preset-react": "^6.16.0"
+    "@types/jest": "^22.0.1",
+    "@types/node": "^9.3.0",
+    "@types/react": "^16.0.34",
+    "@types/react-dom": "^16.0.3",
+    "awesome-typescript-loader": "^3.4.1",
+    "source-map-loader": "^0.2.3",
+    "typescript": "^2.6.2"
   }
 }
