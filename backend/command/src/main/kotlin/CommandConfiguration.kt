@@ -5,6 +5,7 @@ package de.holisticon.ranked.command
 import de.holisticon.ranked.command.api.CheckPlayer
 import de.holisticon.ranked.command.api.CreatePlayer
 import de.holisticon.ranked.command.data.TokenJpaRepository
+import de.holisticon.ranked.command.saga.EloMatchSaga
 import de.holisticon.ranked.extension.DefaultSmartLifecycle
 import de.holisticon.ranked.model.UserName
 import de.holisticon.ranked.service.user.UserService
@@ -14,13 +15,17 @@ import org.axonframework.commandhandling.CommandMessage
 import org.axonframework.commandhandling.SimpleCommandBus
 import org.axonframework.commandhandling.gateway.CommandGateway
 import org.axonframework.config.EventHandlingConfiguration
+import org.axonframework.config.SagaConfiguration
 import org.axonframework.eventhandling.EventProcessor
 import org.axonframework.eventhandling.TrackingEventProcessor
 import org.axonframework.eventhandling.tokenstore.jpa.TokenEntry
 import org.axonframework.messaging.interceptors.BeanValidationInterceptor
+import org.axonframework.messaging.interceptors.LoggingInterceptor
+import org.axonframework.spring.config.AxonConfiguration
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.Lazy
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean
 import java.util.*
 import javax.validation.ValidatorFactory
@@ -43,6 +48,11 @@ class CommandConfiguration() {
   @Autowired
   fun configure(bus: SimpleCommandBus, validationFactory: ValidatorFactory) {
     bus.registerDispatchInterceptor(BeanValidationInterceptor(validationFactory))
+  }
+
+  @Autowired
+  fun configure(config: EventHandlingConfiguration) {
+    config.registerHandlerInterceptor( "messageMonitor", { LoggingInterceptor() } )
   }
 
   /**
@@ -125,6 +135,19 @@ class CommandConfiguration() {
       }
     }
   }
+
+
+}
+
+@Configuration
+class SagaConfig {
+
+  @Lazy
+  @Bean("eloSagaConfig")
+  fun eloSagaConfig() : SagaConfiguration<EloMatchSaga> {
+    return SagaConfiguration.subscribingSagaManager(EloMatchSaga::class.java)
+  }
+
 
 }
 
