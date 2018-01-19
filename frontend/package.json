@@ -6,10 +6,12 @@
     "@types/react": "^16.0.34",
     "@types/react-dom": "^16.0.3",
     "@types/react-redux": "^5.0.14",
+    "axios": "0.17.1",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-redux": "^5.0.6",
     "react-scripts-ts": "2.10.0",
+    "react-touch": "^0.4.3",
     "redux": "^3.7.2",
     "webpack": "^3.10.0"
   },
@@ -25,6 +27,7 @@
     "@types/node": "^9.3.0",
     "@types/react": "^16.0.34",
     "@types/react-dom": "^16.0.3",
+    "@types/react-touch": "^1.8.1",
     "awesome-typescript-loader": "^3.4.1",
     "source-map-loader": "^0.2.3",
     "typescript": "^2.6.2"
