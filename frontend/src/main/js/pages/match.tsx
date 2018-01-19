@@ -6,8 +6,7 @@ import { TeamColor, PlayerPostion, Player, Team, PlayerKey } from '../types/type
 import { connect, Dispatch } from 'react-redux';
 import { StoreState } from '../types/store.state';
 import * as Actions from '../actions';
-
-const POINTS_PER_MATCH = 2;
+import { POINTS_PER_MATCH } from '../config';
 
 interface ActiveTeam {
   goals: number;

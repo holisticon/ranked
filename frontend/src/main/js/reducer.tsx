@@ -1,8 +1,7 @@
 import * as Actions from './actions';
 import { StoreState, getEmptySet } from './types/store.state';
 import { TeamColor, PlayerKey } from './types/types';
-
-const POINTS_PER_SET = 6;
+import { POINTS_PER_SET, POINTS_PER_MATCH } from './config';
 
 function changeNthSet<T>(sets: Array<T>, n: number, itemChanger: (item: T) => T): Array<T> {
   return sets.map((item, index) => {
@@ -40,7 +39,27 @@ function switchPlayerPositions(state: StoreState, teamColor: TeamColor): StoreSt
 }
 
 function startNewSet(state: StoreState): StoreState {
-  const newState = { ...state, teams: { red: state.teams.blue, blue: state.teams.red }, sets: [...state.sets] };
+  const wonSets = { red: state.teams.red.wonSets, blue: state.teams.blue.wonSets };
+  
+  if (state.sets[state.sets.length - 1].goals.red === POINTS_PER_SET) {
+    wonSets.red++;
+  } else {
+    wonSets.blue++;
+  }
+
+  if (wonSets.red === POINTS_PER_MATCH || wonSets.blue === POINTS_PER_MATCH) {
+    endMatch();
+    return state;
+  }
+
+  const newState = {
+    ...state,
+    teams: {
+      red: { ...state.teams.blue, wonSets: wonSets.blue },
+      blue: { ...state.teams.red, wonSets: wonSets.red }
+    },
+    sets: [...state.sets]
+  };
 
   // create new empty set
   const newSet = getEmptySet();
@@ -55,13 +74,17 @@ function startNewSet(state: StoreState): StoreState {
   return newState;
 }
 
+function endMatch(): void {
+  alert('Spiel ist beendet!');
+}
+
 export function rankedReducer(state: StoreState, action: Actions.RankedAction): StoreState {
   switch (action.type) {
     case Actions.INC_GOALS:
       const newState = changeGoals(state, action.team, 1);
 
       if (newState.sets[newState.sets.length - 1].goals[action.team] >= POINTS_PER_SET) {
-        return startNewSet(state);
+        return startNewSet(newState);
       }
 
       return newState;

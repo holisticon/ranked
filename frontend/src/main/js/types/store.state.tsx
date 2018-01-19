@@ -31,8 +31,8 @@ export function defaultState(): StoreState {
     availablePlayers: [],
     selectPlayerFor: null,
     teams: {
-      red: { player1: null, player2: null },
-      blue: { player1: null, player2: null }
+      red: { player1: null, player2: null, wonSets: 0 },
+      blue: { player1: null, player2: null, wonSets: 0 }
     },
     sets: [getEmptySet()]
   };
