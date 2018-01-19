@@ -52,13 +52,6 @@
         <artifactId>ranked-elo-service</artifactId>
         <version>${project.version}</version>
       </dependency>
-
-
-      <dependency>
-        <groupId>de.holisticon.ranked.service</groupId>
-        <artifactId>ranked-elo-service</artifactId>
-        <version>${project.version}</version>
-      </dependency>
     </dependencies>
   </dependencyManagement>
 

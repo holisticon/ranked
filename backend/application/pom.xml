@@ -42,6 +42,7 @@
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>ranked-properties</artifactId>
+      <version>${project.version}</version>
     </dependency>
 
     <dependency>
