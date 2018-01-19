@@ -145,6 +145,7 @@ html, body {
   transform: rotate(90deg);
   display: inline-block;
   font-size: 3rem;
+
   opacity: 0.1;
 }
 

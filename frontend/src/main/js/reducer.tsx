@@ -44,11 +44,11 @@ function startNewSet(state: StoreState): StoreState {
 
   // create new empty set
   const newSet = getEmptySet();
-  
+
   // switch player positions for new set
   newSet.offense.red = getOtherPlayerKey(state.sets[state.sets.length - 1].offense.red);
   newSet.offense.blue = getOtherPlayerKey(state.sets[state.sets.length - 1].offense.blue);
-  
+
   // add new set
   newState.sets.push(newSet);
 
@@ -67,8 +67,11 @@ export function rankedReducer(state: StoreState, action: Actions.RankedAction): 
       return newState;
 
     case Actions.DEC_GOALS:
-      // TODO: minimum limit to 0
-      return changeGoals(state, action.team, -1);
+      // only decrease score if above zero
+      if (state.sets[state.sets.length - 1].goals[action.team] > 0) {
+        return changeGoals(state, action.team, -1);
+      }
+      break;
 
     case Actions.SWITCH_PLAYER_POSITION:
       return switchPlayerPositions(state, action.team);
