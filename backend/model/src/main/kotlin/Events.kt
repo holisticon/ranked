@@ -16,21 +16,14 @@ data class PlayerExists(
   val userName: UserName
 )
 
-data class PlayerWonMatchSet(
-  val player: UserName,
-  val position: PlayerPosition,
-  val teammate: UserName
-)
-
-data class PlayerWonMatch(
-  val player: UserName,
-  val teammate: UserName
-)
-
 data class PlayerParticipatedInMatch(
   val player: UserName,
   val matchId: String,
   val eloRanking: Elo
+)
+
+data class ParticipationCancelled(
+  val player: UserName
 )
 
 data class PlayerRankingChanged(

@@ -2,15 +2,9 @@
 
 package de.holisticon.ranked.command.aggregate
 
-import de.holisticon.ranked.command.api.CheckPlayer
-import de.holisticon.ranked.command.api.CreatePlayer
-import de.holisticon.ranked.command.api.ParticipateInMatch
-import de.holisticon.ranked.command.api.UpdatePlayerRanking
+import de.holisticon.ranked.command.api.*
 import de.holisticon.ranked.model.UserName
-import de.holisticon.ranked.model.event.PlayerCreated
-import de.holisticon.ranked.model.event.PlayerExists
-import de.holisticon.ranked.model.event.PlayerParticipatedInMatch
-import de.holisticon.ranked.model.event.PlayerRankingChanged
+import de.holisticon.ranked.model.event.*
 import de.holisticon.ranked.properties.RankedProperties
 import de.holisticon.ranked.service.user.UserService
 import mu.KLogging
@@ -31,6 +25,7 @@ class Player() {
   private lateinit var displayName: String
   private var eloRanking: Int = 0
   private var imageUrl: String = ""
+  private var participatingInMatchId: String = ""
 
   // create player aggregate when matchWinnerSaga receives matchCreated event
   // only called once for each player
@@ -55,7 +50,10 @@ class Player() {
 
   @CommandHandler
   fun handle(c: ParticipateInMatch) {
-    // TODO: validate if we are already in match
+
+    if (isInMatch()) {
+      throw IllegalStateException("Current player is already participating in match " + this.participatingInMatchId)
+    }
 
     // inform the world about current elo
     apply(PlayerParticipatedInMatch(
@@ -63,6 +61,13 @@ class Player() {
       matchId = c.matchId,
       eloRanking = eloRanking
     ))
+  }
+
+  @CommandHandler
+  fun handle(c: CancelParticipation) {
+    if (isInMatch()) {
+      apply(ParticipationCancelled(this.userName))
+    }
   }
 
   @CommandHandler
@@ -88,9 +93,26 @@ class Player() {
 
   @EventSourcingHandler
   fun on(e: PlayerRankingChanged) {
-    logger.trace { "Elo ranking changed for ${displayName} from ${eloRanking} to ${e.eloRanking}" }
+    logger.trace { "Elo ranking changed for $displayName from $eloRanking to ${e.eloRanking}" }
     eloRanking = e.eloRanking
+    resetParticipation()
   }
 
+
+  @EventSourcingHandler
+  fun on(e: PlayerParticipatedInMatch) {
+    participatingInMatchId = e.matchId
+  }
+
+  @EventSourcingHandler
+  fun on(e: ParticipationCancelled) {
+    resetParticipation()
+  }
+
+
+  fun isInMatch() = this.participatingInMatchId != ""
+  fun resetParticipation() {
+    this.participatingInMatchId = ""
+  }
 }
 

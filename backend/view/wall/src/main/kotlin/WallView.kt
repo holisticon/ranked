@@ -25,7 +25,7 @@ import java.time.ZoneOffset
 @Api(tags = ["News wall"])
 @RestController
 @RequestMapping(value = ["/view"])
-class WallView(val userService : UserService) {
+class WallView(val userService: UserService) {
 
   companion object : KLogging() {
     const val NAME = "Wall"
@@ -65,24 +65,24 @@ class WallView(val userService : UserService) {
   fun on(e: TeamWonMatch, @Timestamp timestamp: Instant) {
     teamWins.add(TeamWin(e.team, e.looser, Type.MATCH, LocalDateTime.ofInstant(timestamp, ZoneOffset.UTC)))
     logger.info { "Team ${e.team} won a match vs ${e.looser} " }
+
+    playerWins.add(PlayerWin(e.team.player1, Type.MATCH, LocalDateTime.ofInstant(timestamp, ZoneOffset.UTC)))
+    logger.info { "Player ${e.team.player1} won a match." }
+
+    playerWins.add(PlayerWin(e.team.player2, Type.MATCH, LocalDateTime.ofInstant(timestamp, ZoneOffset.UTC)))
+    logger.info { "Player ${e.team.player2} won a match." }
   }
 
   @EventHandler
   fun on(e: TeamWonMatchSet, @Timestamp timestamp: Instant) {
     teamWins.add(TeamWin(e.team, e.looser, Type.SET, LocalDateTime.ofInstant(timestamp, ZoneOffset.UTC)))
     logger.info { "Team ${e.team} won a set vs ${e.looser}" }
-  }
 
-  @EventHandler
-  fun on(e: PlayerWonMatch, @Timestamp timestamp: Instant) {
-    playerWins.add(PlayerWin(e.player, Type.MATCH, LocalDateTime.ofInstant(timestamp, ZoneOffset.UTC)))
-    logger.info { "Player ${e.player} won a match " }
-  }
+    playerWins.add(PlayerWin(e.team.player1, Type.SET, LocalDateTime.ofInstant(timestamp, ZoneOffset.UTC)))
+    logger.info { "Player ${e.team.player1} won a set." }
 
-  @EventHandler
-  fun on(e: PlayerWonMatchSet, @Timestamp timestamp: Instant) {
-    playerWins.add(PlayerWin(e.player, Type.SET, LocalDateTime.ofInstant(timestamp, ZoneOffset.UTC)))
-    logger.info { "Player ${e.player} won a set " }
+    playerWins.add(PlayerWin(e.team.player2, Type.SET, LocalDateTime.ofInstant(timestamp, ZoneOffset.UTC)))
+    logger.info { "Player ${e.team.player2} won a set." }
   }
 
   @EventHandler
@@ -90,10 +90,10 @@ class WallView(val userService : UserService) {
     logger.info { "Player ${e.displayName} (${e.userName}) created with rating ${e.initialElo}" }
   }
 
- // @EventHandler
- // fun on(e: PlayerRankingChanged) {
- //   logger.info { "Player ${e.player} new rating is ${e.eloRanking}" }
- // }
+  // @EventHandler
+  // fun on(e: PlayerRankingChanged) {
+  //   logger.info { "Player ${e.player} new rating is ${e.eloRanking}" }
+  // }
 
   @EventHandler
   fun on(e: PlayerParticipatedInMatch) {
