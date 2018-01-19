@@ -19,6 +19,7 @@ export interface MatchProps {
   setNumber: number;
   red: ActiveTeam;
   blue: ActiveTeam;
+  winner: TeamColor | null;
   incGoals: (team: TeamColor) => void;
   decGoals: (team: TeamColor) => void;
   selectPlayer: (team: TeamColor, position: PlayerPostion) => void;
@@ -33,7 +34,7 @@ function stopEvent(event: React.SyntheticEvent<Object>): boolean {
   return true;
 }
 
-function Match({ selectPlayerFor, setNumber, red, blue, incGoals,
+function Match({ selectPlayerFor, setNumber, red, blue, incGoals, winner,
   decGoals, selectPlayer, setPlayer, switchPlayerPositions }: MatchProps) {
   
   const isLastSet = setNumber === (POINTS_PER_MATCH * 2 - 1);
@@ -220,11 +221,19 @@ export function mapStateToProps({ selectPlayerFor, teams, sets }: StoreState) {
     }
   };
 
+  let winner: TeamColor | null = null;
+  if (teams.red.wonSets === POINTS_PER_MATCH) {
+    winner = 'red';
+  } else if (teams.blue.wonSets === POINTS_PER_MATCH) {
+    winner = 'blue';
+  }
+
   return {
     selectPlayerFor,
     setNumber: sets.length,
     red: { ...getTeamPositions(teams.red, currentSet.offense.red), goals: currentSet.goals.red },
-    blue: { ...getTeamPositions(teams.blue, currentSet.offense.blue), goals: currentSet.goals.blue }
+    blue: { ...getTeamPositions(teams.blue, currentSet.offense.blue), goals: currentSet.goals.blue },
+    winner
   };
 }
 

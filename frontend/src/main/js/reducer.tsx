@@ -47,11 +47,17 @@ function startNewSet(state: StoreState): StoreState {
     wonSets.blue++;
   }
 
+  // match ended, just refresh score and do nothing more
   if (wonSets.red === POINTS_PER_MATCH || wonSets.blue === POINTS_PER_MATCH) {
-    endMatch();
-    return state;
+    return { ...state,
+      teams: {
+        red: { ...state.teams.red, wonSets: wonSets.red },
+        blue: { ...state.teams.blue, wonSets: wonSets.blue }
+      }
+    };
   }
 
+  // switch teams
   const newState = {
     ...state,
     teams: {
@@ -72,10 +78,6 @@ function startNewSet(state: StoreState): StoreState {
   newState.sets.push(newSet);
 
   return newState;
-}
-
-function endMatch(): void {
-  alert('Spiel ist beendet!');
 }
 
 export function rankedReducer(state: StoreState, action: Actions.RankedAction): StoreState {
