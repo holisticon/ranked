@@ -37,6 +37,15 @@ data class ParticipateInMatch(
 )
 
 /**
+ * Resets participations if any
+ */
+data class CancelParticipation(
+  @TargetAggregateIdentifier
+  @get: Valid
+  val userName: UserName
+)
+
+/**
  * Command towards player aggregate to update the ranking.
  */
 data class UpdatePlayerRanking(

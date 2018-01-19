@@ -36,7 +36,7 @@ class PlayerSpec {
 
   @Test
   fun `when a createPlayer command is received, a player is created`() {
-    Mockito.`when`(userService.loadUser("kermit")).thenReturn(User(id="kermit", name = "KERMIT", imageUrl = "/kermit.png"))
+    Mockito.`when`(userService.loadUser("kermit")).thenReturn(User(id = "kermit", name = "KERMIT", imageUrl = "/kermit.png"))
 
     fixture
       .givenNoPriorActivity()
