@@ -50,6 +50,7 @@ class MatchSpec {
   private val set3 = MatchSet(goalsBlue = 6, goalsRed = 5, offenseBlue = piggy, offenseRed = fozzy)
 
   private val sets = listOf(set1, set2, set3)
+  private val now = LocalDateTime.now()
 
   @Autowired
   private lateinit var matchService: MatchService
@@ -75,7 +76,8 @@ class MatchSpec {
           teamRed = teamRed,
           teamBlue = teamBlue,
           matchSets = sets,
-          tournamentId = "0815"
+          tournamentId = "0815",
+          startTime = now
         )
       )
       .expectEvents(
@@ -85,7 +87,7 @@ class MatchSpec {
           teamBlue = teamBlue,
           matchSets = sets,
           tournamentId = "0815",
-          startTime = LocalDateTime.now()
+          startTime = now
         ),
         TeamWonMatchSet(team = teamBlue, looser = teamRed, offense = piggy, matchId = "4711"),
         TeamWonMatchSet(team = teamRed, looser = teamBlue, offense = fozzy, matchId = "4711"),

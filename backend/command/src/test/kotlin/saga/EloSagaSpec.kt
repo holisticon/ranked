@@ -32,6 +32,7 @@ class EloSagaSpec {
   private val set3 = MatchSet(goalsBlue = 6, goalsRed = 5, offenseBlue = piggy, offenseRed = fozzy)
 
   private val sets = listOf(set1, set2, set3)
+  private val now = LocalDateTime.now()
 
   @Before
   fun init() {
@@ -50,7 +51,7 @@ class EloSagaSpec {
         teamRed = teamRed,
         matchSets = sets,
         tournamentId = null,
-        startTime = LocalDateTime.now()))
+        startTime = now))
       .expectActiveSagas(1)
       .expectDispatchedCommands(
         ParticipateInMatch(piggy, "4711"),
@@ -71,7 +72,7 @@ class EloSagaSpec {
           teamRed = teamRed,
           matchSets = sets,
           tournamentId = null,
-          startTime = LocalDateTime.now()))
+          startTime = now))
       .andThenAggregate("piggy")
       .published(PlayerParticipatedInMatch(piggy, "4711", 1000))
       .andThenAggregate("kermit")
