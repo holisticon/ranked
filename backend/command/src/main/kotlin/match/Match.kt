@@ -1,10 +1,12 @@
 package de.holisticon.ranked.command.aggregate
 
 import de.holisticon.ranked.command.api.CreateMatch
-import de.holisticon.ranked.command.api.WinMatch
 import de.holisticon.ranked.command.service.MatchService
 import de.holisticon.ranked.model.Team
-import de.holisticon.ranked.model.event.*
+import de.holisticon.ranked.model.UserName
+import de.holisticon.ranked.model.event.MatchCreated
+import de.holisticon.ranked.model.event.TeamWonMatch
+import de.holisticon.ranked.model.event.TeamWonMatchSet
 import mu.KLogging
 import org.axonframework.commandhandling.CommandHandler
 import org.axonframework.commandhandling.model.AggregateIdentifier
@@ -38,75 +40,53 @@ class Match() {
       tournamentId = c.tournamentId
     ))
 
+    var teamWins: MutableMap<Team, Int> = mutableMapOf()
+
     // (3) calculate which team won a set and fire TeamWonMatchSet event
     // **not** apply() but applyEvent() for further decomposition, each player won as well
     c.matchSets.forEach { m ->
+
+      var setTeam: Team
+      var setLooser: Team
+      var setOffense: UserName
+
       when (matchService.winsMatchSet(m)) {
         Team.BLUE -> {
-          this.applyEvent(TeamWonMatchSet(
-            team = c.teamBlue,
-            looser = c.teamRed,
-            offense = m.offenseBlue,
-            matchId = c.matchId
-          ))
+          setTeam = c.teamBlue
+          setLooser = c.teamRed
+          setOffense = m.offenseBlue
         }
         Team.RED -> {
-          this.applyEvent(TeamWonMatchSet(
-            team = c.teamRed,
-            looser = c.teamBlue,
-            offense = m.offenseRed,
-            matchId = c.matchId
-          ))
+          setTeam = c.teamRed
+          setLooser = c.teamBlue
+          setOffense = m.offenseRed
+        }
+        else -> {
+          throw IllegalStateException("No winner found for the match set")
         }
       }
+
+      apply(TeamWonMatchSet(
+        team = setTeam,
+        looser = setLooser,
+        offense = setOffense,
+        matchId = c.matchId
+      ))
+
+      // increase matchSet count for winner team
+      val wins = teamWins.getOrDefault(setTeam, 0).inc()
+      teamWins.put(setTeam, wins)
+
+      // if this was the last set (one team won), fire event
+      if (matchService.winsMatch(wins)) {
+        apply(TeamWonMatch(
+          matchId = c.matchId,
+          team = setTeam,
+          looser = setLooser
+        ))
+      }
+
     }
-  }
-
-  @CommandHandler
-  fun on(c: WinMatch) {
-    // fire TeamWonMatch
-    applyEvent(TeamWonMatch(
-      matchId = this.matchId,
-      team = c.winner,
-      looser = c.looser
-    ))
-  }
-
-  /**
-   * Apply the event and all subsequent events.
-   */
-  fun applyEvent(e: TeamWonMatchSet) {
-    // (3) event: TeamWonMatchSet
-    // -> MatchWinnerSaga#handle(e: TeamWonMatchSet)
-    apply(e)
-    // (3) each player won a set
-    apply(PlayerWonMatchSet(
-      player = e.team.player1,
-      teammate = e.team.player2,
-      position = if (e.offense == e.team.player1) PlayerPosition.OFFENSE else PlayerPosition.DEFENSE
-    ))
-    apply(PlayerWonMatchSet(
-      player = e.team.player2,
-      teammate = e.team.player1,
-      position = if (e.offense == e.team.player2) PlayerPosition.OFFENSE else PlayerPosition.DEFENSE
-    ))
-  }
-
-  /**
-   * Apply the event and all subsequent events.
-   */
-  fun applyEvent(e: TeamWonMatch) {
-    // the team won -> view, ranking calculation (ELO)
-    apply(e)
-    // each player won -> view
-    apply(PlayerWonMatch(
-      player = e.team.player1,
-      teammate = e.team.player2
-    ))
-    apply(PlayerWonMatch(
-      player = e.team.player2,
-      teammate = e.team.player1
-    ))
   }
 
   /**
