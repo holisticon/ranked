@@ -1,6 +1,7 @@
 title Match Creation
 actor Client
 participant Match("4711")
+participant MatchService
 participant EventBus
 
 participant EloRankingSaga
@@ -10,8 +11,7 @@ participant Player("gonzo")
 participant Player("fozzy")
 
 
-participant MatchWinningSaga
-participant MatchService
+
 
 
 note over Client: Client is an abstraction. It sends commands \n via UI and sees the events on the WallView.
@@ -19,15 +19,14 @@ note over Client: Client is an abstraction. It sends commands \n via UI and sees
 Client -#blue> Match("4711"): CreateMatchCommand(\nmatchId, \nteamBlue, \nteamRed,\nmatchSet[])
 
 activate Match("4711")
-activate EventBus
+
 
 Match("4711")->EventBus: MatchCreatedEvent(\nmatchId, \nteamBlue, \nteamRed,\nmatchSet[])
+activate EventBus
 
 EventBus->EloRankingSaga: TeamWonMatchSet( \nwinner, \nlooser, \noffense)
 activate EloRankingSaga
 
-EventBus->MatchWinningSaga: MatchCreatedEvent(\nmatchId, \nteamBlue, \nteamRed,\nmatchSet[])
-activate MatchWinningSaga
 
 
 EloRankingSaga-#blue>Player("kermit"): ParticipateInMatch(\nusername, \nmatchId)
@@ -53,35 +52,31 @@ EloRankingSaga-#blue>Player("fozzy"): ParticipateInMatch(\nusername, \nmatchId)
 activate Player("fozzy")
 Player("fozzy")->EventBus: PlayerParticipatedInMatch(\nusername, \neloRanking)
 deactivate Player("fozzy")
+
 EventBus->EloRankingSaga: PlayerParticipatedInMatch(\nusername, \neloRanking)
 
 Match("4711")->EventBus: TeamWonMatchSet(\nmatchId, \nwinner, \nlooser, \noffense)
-EventBus->MatchWinningSaga: TeamWonMatchSet(\nmatchId, \nwinner, \nlooser, \noffense)
-MatchWinningSaga->MatchService: winsMatch(wins)
-activate MatchService
-MatchService-->MatchWinningSaga: false
-deactivate MatchService
 
 Match("4711")->EventBus: TeamWonMatchSet(\nmatchId, \nwinner, \nlooser, \noffense)
-EventBus->MatchWinningSaga: TeamWonMatchSet(\nmatchId, \nwinner, \nlooser, \noffense)
-MatchWinningSaga->MatchService: winsMatch(wins)
-activate MatchService
-MatchService-->MatchWinningSaga: false
-deactivate MatchService
 
 Match("4711")->EventBus: TeamWonMatchSet(\nmatchId, \nwinner, \nlooser, \noffense)
-deactivate Match("4711")
 
-EventBus->MatchWinningSaga: TeamWonMatchSet(\nmatchId, \nwinner, \nlooser, \noffense)
-MatchWinningSaga->MatchService: winsMatch(wins)
+
+Match("4711")->MatchService:winsMatch(wins)
 activate MatchService
-MatchService-->MatchWinningSaga: true
+MatchService-->Match("4711"):false
 deactivate MatchService
 
+Match("4711")->MatchService:winsMatch(wins)
+activate MatchService
+MatchService-->Match("4711"):false
+deactivate MatchService
 
-MatchWinningSaga-#blue>Match("4711"): WinMatch(\nwinner, \nlooser, \nmatchId)
-deactivate MatchWinningSaga
-activate Match("4711")
+Match("4711")->MatchService:winsMatch(wins)
+activate MatchService
+MatchService-->Match("4711"):true
+deactivate MatchService
+
 
 Match("4711")->EventBus: TeamWonMatch(\nmatchId, \nteam, \nlooser)
 deactivate Match("4711")
@@ -119,4 +114,4 @@ EventBus->Client: PlayerRankingChanged(\nusername, \neloRanking)
 
 EventBus->Client: PlayerRankingChanged(\nusername, \neloRanking)
 
-EventBus->Client: PlayerRankingChanged(\nusername, \neloRanking)
+EventBus->Client: PlayerRankingChanged(\nusername, \neloRanking) 

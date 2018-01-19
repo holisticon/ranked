@@ -1,9 +1,6 @@
 package de.holisticon.ranked.model.event
 
-import de.holisticon.ranked.model.Elo
-import de.holisticon.ranked.model.MatchSet
-import de.holisticon.ranked.model.Team
-import de.holisticon.ranked.model.UserName
+import de.holisticon.ranked.model.*
 import java.time.LocalDateTime
 
 data class PlayerCreated(
@@ -35,7 +32,8 @@ data class MatchCreated(
   val matchId: String,
   val teamRed: Team,
   val teamBlue: Team,
-  val matchSets: List<MatchSet>,
+  val matchSets: List<AbstractMatchSet>,
+  val startTime: LocalDateTime,
   val tournamentId: String?
 )
 

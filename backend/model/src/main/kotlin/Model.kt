@@ -1,15 +1,26 @@
 package de.holisticon.ranked.model
 
+import com.fasterxml.jackson.annotation.JsonSubTypes
+import com.fasterxml.jackson.annotation.JsonTypeInfo
 import cz.jirutka.validator.spring.SpELAssert
 import org.hibernate.validator.constraints.Range
 import java.io.Serializable
+import java.time.LocalDateTime
 import javax.validation.Valid
+import javax.validation.constraints.NotEmpty
 import javax.validation.constraints.Size
 
 /**
  * Representing the Elo Value of a player or team.
  */
 typealias Elo = Int
+
+/**
+ * Represents the team color.
+ */
+enum class TeamColor {
+  RED, BLUE
+}
 
 /**
  * ValueBean representing a unique user name (login value)
@@ -43,11 +54,6 @@ data class Team(
   val player2: UserName
 ) {
 
-  companion object {
-    const val BLUE = "blue"
-    const val RED = "red"
-  }
-
   private val players by lazy { setOf(player1, player2) }
 
   infix fun hasMember(userName: UserName) = players.contains(userName)
@@ -61,6 +67,30 @@ data class Team(
   }
 }
 
+@JsonTypeInfo(
+  use = JsonTypeInfo.Id.NAME,
+  include = JsonTypeInfo.As.PROPERTY,
+  property = "type")
+@JsonSubTypes(value = [
+  JsonSubTypes.Type(value = MatchSet::class, name = "result"),
+  JsonSubTypes.Type(value = TimedMatchSet::class, name = "timestamp")
+])
+abstract class AbstractMatchSet {
+  abstract val goalsRed: Int
+  abstract val goalsBlue: Int
+  abstract val offenseRed: UserName
+  abstract val offenseBlue: UserName
+
+  fun winner() = if (goalsRed == AbstractMatchSet.SCORE_TO_WIN.toInt()) TeamColor.RED else TeamColor.BLUE
+
+  // TODO fix this and replace by the property!
+  // this implies to move validation logic to somewhere else (e.G. a service) -> problem with dependencies....
+  // could be executed by SpELAssert, but the properties needs to be available here...
+  companion object {
+    const val SCORE_TO_WIN: Long = 6
+  }
+
+}
 /**
  * A MatchSet represents one Set of a Match (which will have two or three (best of three) of them).
  *
@@ -71,24 +101,32 @@ data class Team(
  */
 @SpELAssert(value = "goalsBlue != goalsRed && (goalsRed == SCORE_TO_WIN || goalsBlue == SCORE_TO_WIN)", message = "{ranked.model.matchSet.ended}")
 data class MatchSet(
+  @get: Range(min = 0, max = AbstractMatchSet.SCORE_TO_WIN, message = "{ranked.model.matchSet.goals}")
+  override val goalsRed: Int,
+  @get: Range(min = 0, max = AbstractMatchSet.SCORE_TO_WIN, message = "{ranked.model.matchSet.goals}")
+  override val goalsBlue: Int,
+  @get: Valid
+  override val offenseRed: UserName,
+  @get: Valid
+  override val offenseBlue: UserName
+): AbstractMatchSet()
 
-  @get: Range(min = 0, max = MatchSet.SCORE_TO_WIN, message = "{ranked.model.matchSet.goals}")
-  val goalsRed: Int,
 
-  @get: Range(min = 0, max = MatchSet.SCORE_TO_WIN, message = "{ranked.model.matchSet.goals}")
-  val goalsBlue: Int,
+@SpELAssert(value = "goalsBlue != goalsRed && (goalsRed == SCORE_TO_WIN || goalsBlue == SCORE_TO_WIN)", message = "{ranked.model.matchSet.ended}")
+data class TimedMatchSet(
+  @get: NotEmpty
+  val goals: List<Pair<TeamColor, LocalDateTime>>,
+  @get: Valid
+  override val offenseRed: UserName,
+  @get: Valid
+  override val offenseBlue: UserName,
+  @get: Range(min = 0, max = AbstractMatchSet.SCORE_TO_WIN, message = "{ranked.model.matchSet.goals}")
+  override val goalsBlue: Int  = goalsByTeamColor(goals, TeamColor.BLUE),
+  @get: Range(min = 0, max = AbstractMatchSet.SCORE_TO_WIN, message = "{ranked.model.matchSet.goals}")
+  override val goalsRed: Int = goalsByTeamColor(goals, TeamColor.RED)
+): AbstractMatchSet()
 
-  val offenseRed: UserName,
-
-  val offenseBlue: UserName
-) {
-
-  // TODO fix this and replace by the property!
-  // this implies to move validation logic to somewhere else (e.G. a service) -> problem with dependencies....
-  // could be executed by SpELAssert, but the properties needs to be available here...
-  companion object {
-    const val SCORE_TO_WIN: Long = 6
-  }
-
-  fun winner() = if (goalsRed == SCORE_TO_WIN.toInt()) Team.RED else Team.BLUE
+private fun goalsByTeamColor(goals: List<Pair<TeamColor, LocalDateTime>>, tc: TeamColor): Int {
+  val goals = goals.groupBy { it.first }.filter { it.key == tc }.map { it.value.count() }
+  return if (goals.isEmpty()) { -1 } else { goals.first() }
 }

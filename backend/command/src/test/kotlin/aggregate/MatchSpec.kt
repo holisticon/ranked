@@ -20,6 +20,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean
+import java.time.LocalDateTime
 
 @RunWith(SpringRunner::class)
 // TODO replace with real props
@@ -83,7 +84,8 @@ class MatchSpec {
           teamRed = teamRed,
           teamBlue = teamBlue,
           matchSets = sets,
-          tournamentId = "0815"
+          tournamentId = "0815",
+          startTime = LocalDateTime.now()
         ),
         TeamWonMatchSet(team = teamBlue, looser = teamRed, offense = piggy, matchId = "4711"),
         TeamWonMatchSet(team = teamRed, looser = teamBlue, offense = fozzy, matchId = "4711"),

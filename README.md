@@ -97,6 +97,127 @@ API you want to see in the drop-down menu at the top-right of the screen.
 
 The entire Command API is offered under `/command` resource. The entire View API is offered under `/view` resource. 
 
+### Example REST Requests
+
+Currently, we support two ways of submitting the created match. In both cases, the match must contain information about the played sets. There are two possibilities to do
+so. Either you just provide the result of the set by specifying the number of goals shot by every team or you can provide a collection of goals with information which team scored and a timestamp.
+
+Here is an example request for publishing the results only. Please note the `type: result` attribute:
+
+      {
+        "matchId": "4711",
+        "teamRed": {
+          "player1": {
+            "value": "foo1"
+          },
+          "player2": {
+            "value": "bar1"
+          }
+        },
+        "teamBlue": {
+          "player1": {
+            "value": "zee1"
+          },
+          "player2": {
+            "value": "onk1"
+          }
+        },
+        "matchSets": [
+          {
+            "type": "result",
+            "goalsRed": 6,
+            "goalsBlue": 0,
+            "offenseBlue": {
+              "value": "onk1"
+            },
+            "offenseRed": {
+              "value": "foo1"
+            }
+          },
+          {
+            "type": "result",
+            "goalsRed": 6,
+            "goalsBlue": 0,
+            "offenseBlue": {
+              "value": "onk1"
+            },
+            "offenseRed": {
+              "value": "foo1"
+            }
+          }
+      
+        ],
+        "tournamentId": "string",
+        "startTime": [2018,1,19,20,49,48]
+      }
+      
+Here is an example request for publishing the goals with timestamps. Please note the `type: timestamp` attribute:
+
+      {
+        "matchId": "4712",
+        "teamRed": {
+          "player1": {
+            "value": "foo1"
+          },
+          "player2": {
+            "value": "bar1"
+          }
+        },
+        "teamBlue": {
+          "player1": {
+            "value": "zee1"
+          },
+          "player2": {
+            "value": "onk1"
+          }
+        },
+        "matchSets": [
+          {
+            "type": "timestamp",
+            "goals": [
+              {"first":"RED","second":[2018,1,19,20,49,48]},
+              {"first":"BLUE","second":[2018,1,19,20,49,51]},
+              {"first":"RED","second":[2018,1,19,20,50,15]},
+              {"first":"BLUE","second":[2018,1,19,20,52,48]},
+              {"first":"RED","second":[2018,1,19,20,53,17]},
+              {"first":"BLUE","second":[2018,1,19,20,55,21]},
+              {"first":"RED","second":[2018,1,19,20,59,1]},
+              {"first":"RED","second":[2018,1,19,21,1,2]},
+              {"first":"RED","second":[2018,1,19,21,2,57]}
+            ],
+            "offenseBlue": {
+              "value": "onk1"
+            },
+            "offenseRed": {
+              "value": "foo1"
+            }
+          },
+          {
+            "type": "timestamp",
+            "goals": [
+              {"first":"RED","second":[2018,1,19,20,49,48]},
+              {"first":"BLUE","second":[2018,1,19,20,49,51]},
+              {"first":"RED","second":[2018,1,19,20,50,15]},
+              {"first":"BLUE","second":[2018,1,19,20,52,48]},
+              {"first":"RED","second":[2018,1,19,20,53,17]},
+              {"first":"BLUE","second":[2018,1,19,20,55,21]},
+              {"first":"RED","second":[2018,1,19,20,59,1]},
+              {"first":"RED","second":[2018,1,19,21,1,2]},
+              {"first":"RED","second":[2018,1,19,21,2,57]}
+            ],
+            "offenseBlue": {
+              "value": "onk1"
+            },
+            "offenseRed": {
+              "value": "foo1"
+            }
+          }      
+        ],
+        "tournamentId": "string",
+        "startTime": [2018,1,19,20,49,48]
+      }
+
+
 
 ### Test framework
 

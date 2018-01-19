@@ -27,7 +27,7 @@ class CommandApi(val commandGateway: CommandGateway) {
     ApiResponse(code = 204, message = "If the create match request has been successfully received."),
     ApiResponse(code = 400, message = "If the create match request was not correct.")
   )
-  @PostMapping(path = ["/createMatch"])
+  @PostMapping(path = ["/match"])
   fun createMatch(@RequestBody @Valid match: CreateMatch): ResponseEntity<String> {
     try {
       commandGateway.sendAndWait<CreateMatch>(match)
