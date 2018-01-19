@@ -28,16 +28,10 @@ export interface MatchProps {
 }
 
 // helper functions
-function showPlayerSelection(
-  team: TeamColor,
-  position: PlayerPostion,
-  callback: (team: TeamColor, position: PlayerPostion) => void,
-  event: React.SyntheticEvent<Object>
-): void {
+function stopEvent(event: React.SyntheticEvent<Object>): boolean {
   event.preventDefault();
   event.stopPropagation();
-
-  callback(team, position);
+  return true;
 }
 
 function Match({ selectPlayerFor, setNumber, red, blue, incGoals,
@@ -62,7 +56,7 @@ function Match({ selectPlayerFor, setNumber, red, blue, incGoals,
           </Swipeable>
         </div>
 
-        <div className="add-defense" onClick={ (e) => showPlayerSelection('red', 'defense', selectPlayer, e) }>
+        <div className="add-defense" onClick={ (e) => stopEvent(e) && selectPlayer('red', 'defense') }>
           {
             !red.defense ?
               <i className="material-icons">&#xE853;</i> :
@@ -73,12 +67,12 @@ function Match({ selectPlayerFor, setNumber, red, blue, incGoals,
 
         <div 
           className={ isLastSet ? 'change-positions' : 'hidden' }
-          onClick={ () => switchPlayerPositions('red') }
+          onClick={ (e) => stopEvent(e) && switchPlayerPositions('red') }
         >
           <i className="material-icons">&#xE0C3;</i>
         </div>
 
-        <div className="add-attack" onClick={ (e) => showPlayerSelection('red', 'attack', selectPlayer, e) }>
+        <div className="add-attack" onClick={ (e) => stopEvent(e) && selectPlayer('red', 'attack') }>
           {
             !red.attack ?
               <i className="material-icons">&#xE853;</i> :
@@ -103,7 +97,7 @@ function Match({ selectPlayerFor, setNumber, red, blue, incGoals,
           </Swipeable>
         </div>
 
-        <div className="add-defense" onClick={ (e) => showPlayerSelection('blue', 'defense', selectPlayer, e) }>
+        <div className="add-defense" onClick={ (e) => stopEvent(e) && selectPlayer('blue', 'defense') }>
           {
             !blue.defense ?
               <i className="material-icons">&#xE853;</i> :
@@ -114,12 +108,12 @@ function Match({ selectPlayerFor, setNumber, red, blue, incGoals,
 
         <div 
           className={ isLastSet ? 'change-positions' : 'hidden' }
-          onClick={ () => switchPlayerPositions('blue') }
+          onClick={ (e) => stopEvent(e) && switchPlayerPositions('blue') }
         >
           <i className="material-icons">&#xE0C3;</i>
         </div>
 
-        <div className="add-attack" onClick={ (e) => showPlayerSelection('blue', 'attack', selectPlayer, e) }>
+        <div className="add-attack" onClick={ (e) => stopEvent(e) && selectPlayer('blue', 'attack') }>
           {
             !blue.attack ?
               <i className="material-icons">&#xE853;</i> :
