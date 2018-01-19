@@ -123,7 +123,7 @@ class MatchSetSpec {
         "One team must have 6 goals to count the set.",
         "Goals must be between 0 and 6.",
         "Goals must be between 0 and 6.",
-        "darf nicht leer sein"
+        "A timed set must not be empty."
       )
   }
 

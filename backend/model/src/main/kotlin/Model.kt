@@ -114,7 +114,7 @@ data class MatchSet(
 
 @SpELAssert(value = "goalsBlue != goalsRed && (goalsRed == SCORE_TO_WIN || goalsBlue == SCORE_TO_WIN)", message = "{ranked.model.matchSet.ended}")
 data class TimedMatchSet(
-  @get: NotEmpty
+  @get: NotEmpty(message = "{ranked.model.matchSet.empty}")
   val goals: List<Pair<TeamColor, LocalDateTime>>,
   @get: Valid
   override val offenseRed: UserName,
