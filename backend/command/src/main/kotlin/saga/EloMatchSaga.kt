@@ -35,8 +35,8 @@ class EloMatchSaga {
   lateinit var eloCalculationService: EloCalculationService
 
   private val rankings: MutableMap<UserName, Int> = mutableMapOf()
-  private var winner: Team? = null
-  private var looser: Team? = null
+  private lateinit var winner: Team
+  private lateinit var looser: Team
   private lateinit var matchId: String
 
   @StartSaga
@@ -83,14 +83,14 @@ class EloMatchSaga {
     if (validateElo()) {
       logger.trace("Elo saga calculated new rankings for the match $matchId.")
       val teamResultElo = eloCalculationService.calculateTeamElo(
-        Pair(rankings[winner!!.player1]!!, rankings[winner!!.player2]!!), // winner
-        Pair(rankings[looser!!.player1]!!, rankings[looser!!.player2]!!) // looser
+        Pair(rankings[winner.player1]!!, rankings[winner.player2]!!), // winner
+        Pair(rankings[looser.player1]!!, rankings[looser.player2]!!) // looser
       )
 
-      commandGateway.send<Any>(UpdatePlayerRanking(userName = winner!!.player1, matchId = matchId, eloRanking = teamResultElo.first.first))
-      commandGateway.send<Any>(UpdatePlayerRanking(userName = winner!!.player2, matchId = matchId, eloRanking = teamResultElo.first.second))
-      commandGateway.send<Any>(UpdatePlayerRanking(userName = looser!!.player1, matchId = matchId, eloRanking = teamResultElo.second.first))
-      commandGateway.send<Any>(UpdatePlayerRanking(userName = looser!!.player2, matchId = matchId, eloRanking = teamResultElo.second.second))
+      commandGateway.send<Any>(UpdatePlayerRanking(userName = winner.player1, matchId = matchId, eloRanking = teamResultElo.first.first))
+      commandGateway.send<Any>(UpdatePlayerRanking(userName = winner.player2, matchId = matchId, eloRanking = teamResultElo.first.second))
+      commandGateway.send<Any>(UpdatePlayerRanking(userName = looser.player1, matchId = matchId, eloRanking = teamResultElo.second.first))
+      commandGateway.send<Any>(UpdatePlayerRanking(userName = looser.player2, matchId = matchId, eloRanking = teamResultElo.second.second))
 
       // end saga
       end()
@@ -98,7 +98,11 @@ class EloMatchSaga {
   }
 
   fun validateElo(): Boolean {
-    return winner != null && looser != null && arrayOf(winner!!.player1, winner!!.player2, looser!!.player1, looser!!.player2).all { player -> rankings.containsKey(player) && rankings[player] != UNSET_ELO }
+    return ::winner.isInitialized
+      && ::looser.isInitialized
+      && arrayOf(winner.player1, winner.player2, looser.player1, looser.player2).all { player ->
+        rankings.containsKey(player) && rankings[player] != UNSET_ELO
+      }
   }
 
 }

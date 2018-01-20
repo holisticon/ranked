@@ -2,6 +2,8 @@
 
 package de.holisticon.ranked.command
 
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
+import com.fasterxml.jackson.module.kotlin.KotlinModule
 import de.holisticon.ranked.command.api.CancelParticipation
 import de.holisticon.ranked.command.api.CheckPlayer
 import de.holisticon.ranked.command.api.CreatePlayer
@@ -134,6 +136,13 @@ class CommandConfiguration {
       }
     }
   }
+
+  @Bean
+  fun jacksonDatTime() = JavaTimeModule()
+
+  @Bean
+  fun jacksonKotlin() = KotlinModule()
+
 }
 
 class TrackingProcessorToken(

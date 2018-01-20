@@ -32,16 +32,10 @@
       <groupId>${project.groupId}</groupId>
       <version>${project.version}</version>
     </dependency>
-
     <dependency>
       <artifactId>ranked-command</artifactId>
       <groupId>${project.groupId}</groupId>
       <version>${project.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>ranked-properties</artifactId>
     </dependency>
 
     <dependency>

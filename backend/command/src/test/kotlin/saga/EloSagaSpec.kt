@@ -13,6 +13,7 @@ import de.holisticon.ranked.service.elo.EloCalculationService
 import org.axonframework.test.saga.SagaTestFixture
 import org.junit.Before
 import org.junit.Test
+import java.time.LocalDateTime
 
 class EloSagaSpec {
 
@@ -31,6 +32,7 @@ class EloSagaSpec {
   private val set3 = MatchSet(goalsBlue = 6, goalsRed = 5, offenseBlue = piggy, offenseRed = fozzy)
 
   private val sets = listOf(set1, set2, set3)
+  private val now = LocalDateTime.now()
 
   @Before
   fun init() {
@@ -48,7 +50,8 @@ class EloSagaSpec {
         teamBlue = teamBlue,
         teamRed = teamRed,
         matchSets = sets,
-        tournamentId = null))
+        tournamentId = null,
+        startTime = now))
       .expectActiveSagas(1)
       .expectDispatchedCommands(
         ParticipateInMatch(piggy, "4711"),
@@ -68,7 +71,8 @@ class EloSagaSpec {
           teamBlue = teamBlue,
           teamRed = teamRed,
           matchSets = sets,
-          tournamentId = null))
+          tournamentId = null,
+          startTime = now))
       .andThenAggregate("piggy")
       .published(PlayerParticipatedInMatch(piggy, "4711", 1000))
       .andThenAggregate("kermit")

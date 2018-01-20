@@ -1,9 +1,12 @@
 package de.holisticon.ranked.command.api
 
 import cz.jirutka.validator.spring.SpELAssert
+import de.holisticon.ranked.model.AbstractMatchSet
 import de.holisticon.ranked.model.MatchSet
 import de.holisticon.ranked.model.Team
+import de.holisticon.ranked.model.TimedMatchSet
 import org.axonframework.commandhandling.TargetAggregateIdentifier
+import java.time.LocalDateTime
 import java.util.*
 import javax.validation.Valid
 import javax.validation.constraints.NotEmpty
@@ -25,8 +28,10 @@ data class CreateMatch(
   @get: Valid
   val teamBlue: Team,
   @SpELAssert("@matchService.validateMatch(#this)", message = "{ranked.createMatch.finished}")
-  val matchSets: List<MatchSet>,
-  val tournamentId: String? = null
+  val matchSets: List<AbstractMatchSet>,
+  val tournamentId: String? = null,
+
+  val startTime: LocalDateTime = LocalDateTime.now()
 ) {
 
   fun disjunct() = setOf(teamRed.player1, teamRed.player2).intersect(setOf(teamBlue.player1, teamBlue.player2)).isEmpty()

@@ -3,6 +3,7 @@ package de.holisticon.ranked.model
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
+import java.time.LocalDateTime
 import javax.validation.Validation
 import javax.validation.Validator
 
@@ -77,6 +78,123 @@ class TeamSpec {
 class MatchSetSpec {
 
   @Test
+  fun `timed invalid user names`() {
+    assertThat(validator.validate(
+      TimedMatchSet(
+        goals = (0..10).map {
+          Pair(if (it % 2 == 0) {
+            TeamColor.BLUE
+          } else {
+            TeamColor.RED
+          }, LocalDateTime.now())
+        },
+        offenseBlue = UserName("a"),
+        offenseRed = UserName("b"))).stream().map { v -> v.message })
+      .containsExactlyInAnyOrder(
+        "The user-id must be at least 4 chars long.",
+        "The user-id must be at least 4 chars long."
+      )
+  }
+
+
+  @Test
+  fun `invalid user names`() {
+    assertThat(validator.validate(
+      MatchSet(
+        goalsBlue = 6,
+        goalsRed = 0,
+        offenseBlue = UserName("a"),
+        offenseRed = UserName("b"))).stream().map { v -> v.message })
+      .containsExactlyInAnyOrder(
+        "The user-id must be at least 4 chars long.",
+        "The user-id must be at least 4 chars long."
+      )
+  }
+
+
+  @Test
+  fun `goals timed must be in 0-6`() {
+    assertThat(validator.validate(
+      TimedMatchSet(
+        goals = listOf(),
+        offenseBlue = piggy,
+        offenseRed = kermit)).stream().map { v -> v.message })
+      .containsExactlyInAnyOrder(
+        "One team must have 6 goals to count the set.",
+        "Goals must be between 0 and 6.",
+        "Goals must be between 0 and 6.",
+        "A timed set must not be empty."
+      )
+  }
+
+  @Test
+  fun `timed winner is BLUE`() {
+
+    val s = TimedMatchSet(
+      goals = (0..10).map {
+        Pair(if (it % 2 == 0) {
+          TeamColor.BLUE
+        } else {
+          TeamColor.RED
+        }, LocalDateTime.now())
+      },
+      offenseBlue = piggy,
+      offenseRed = kermit)
+
+    assertThat(validator.validate(s)).isEmpty()
+    assertThat(s.winner()).isEqualTo(TeamColor.BLUE)
+  }
+
+  @Test
+  fun `timed winner is RED`() {
+    val s = TimedMatchSet(
+      goals = (0..10).map {
+        Pair(if (it % 2 == 1) {
+          TeamColor.BLUE
+        } else {
+          TeamColor.RED
+        }, LocalDateTime.now())
+      },
+      offenseBlue = piggy,
+      offenseRed = kermit)
+
+    assertThat(validator.validate(s)).isEmpty()
+    assertThat(s.winner()).isEqualTo(TeamColor.RED)
+  }
+
+  @Test
+  fun `timed not valid - no team won`() {
+
+    assertThat(validator.singleMessage(
+      TimedMatchSet(
+        goals = (0..11).map {
+          Pair(if (it % 2 == 1) {
+            TeamColor.BLUE
+          } else {
+            TeamColor.RED
+          }, LocalDateTime.now())
+        },
+        offenseBlue = piggy,
+        offenseRed = kermit)
+    )).isEqualTo("One team must have 6 goals to count the set.")
+
+    assertThat(validator.singleMessage(
+      TimedMatchSet(
+        goals = (0..11).map {
+          Pair(if (it % 2 == 0) {
+            TeamColor.BLUE
+          } else {
+            TeamColor.RED
+          }, LocalDateTime.now())
+        },
+        offenseBlue = piggy,
+        offenseRed = kermit)
+    )).isEqualTo("One team must have 6 goals to count the set.")
+
+  }
+
+
+  @Test
   fun `goalsRed must be in 0-6`() {
     assertThat(validator.validate(
       MatchSet(
@@ -118,8 +236,7 @@ class MatchSetSpec {
       offenseRed = kermit)
 
     assertThat(validator.validate(s)).isEmpty()
-
-    assertThat(s.winner()).isEqualTo(Team.BLUE)
+    assertThat(s.winner()).isEqualTo(TeamColor.BLUE)
   }
 
   @Test
@@ -131,8 +248,7 @@ class MatchSetSpec {
       offenseRed = kermit)
 
     assertThat(validator.validate(s)).isEmpty()
-
-    assertThat(s.winner()).isEqualTo(Team.RED)
+    assertThat(s.winner()).isEqualTo(TeamColor.RED)
   }
 
   @Test
@@ -152,7 +268,6 @@ class MatchSetSpec {
         offenseBlue = piggy,
         offenseRed = kermit)
     )).isEqualTo("One team must have 6 goals to count the set.")
-
   }
 
 }

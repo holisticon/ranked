@@ -2,7 +2,7 @@
 
 package de.holisticon.ranked.view.wall
 
-import de.holisticon.ranked.model.MatchSet
+import de.holisticon.ranked.model.AbstractMatchSet
 import de.holisticon.ranked.model.Team
 import de.holisticon.ranked.model.UserName
 import de.holisticon.ranked.model.event.*
@@ -106,7 +106,7 @@ data class Match(
   val date: LocalDateTime,
   val teamRed: Team,
   val teamBlue: Team,
-  val matchSets: List<MatchSet>
+  val matchSets: List<AbstractMatchSet>
 )
 
 data class PlayerWin(

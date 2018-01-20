@@ -3,6 +3,8 @@ package de.holisticon.ranked.command.aggregate
 import de.holisticon.ranked.command.api.CreateMatch
 import de.holisticon.ranked.command.service.MatchService
 import de.holisticon.ranked.model.Team
+import de.holisticon.ranked.model.TeamColor
+import de.holisticon.ranked.model.TimedMatchSet
 import de.holisticon.ranked.model.UserName
 import de.holisticon.ranked.model.event.MatchCreated
 import de.holisticon.ranked.model.event.TeamWonMatch
@@ -37,6 +39,7 @@ class Match() {
       teamBlue = c.teamBlue,
       teamRed = c.teamRed,
       matchSets = c.matchSets,
+      startTime = c.startTime,
       tournamentId = c.tournamentId
     ))
 
@@ -51,18 +54,15 @@ class Match() {
       var setOffense: UserName
 
       when (matchService.winsMatchSet(m)) {
-        Team.BLUE -> {
+        TeamColor.BLUE -> {
           setTeam = c.teamBlue
           setLooser = c.teamRed
           setOffense = m.offenseBlue
         }
-        Team.RED -> {
+        TeamColor.RED -> {
           setTeam = c.teamRed
           setLooser = c.teamBlue
           setOffense = m.offenseRed
-        }
-        else -> {
-          throw IllegalStateException("No winner found for the match set")
         }
       }
 
