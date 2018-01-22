@@ -10,9 +10,9 @@ import javax.validation.Valid
 import javax.validation.constraints.NotEmpty
 import javax.validation.constraints.Size
 
-/**
- * Representing the Elo Value of a player or team.
- */
+  /**
+   * Representing the Elo Value of a player or team.
+   */
 typealias Elo = Int
 
 /**
@@ -28,7 +28,7 @@ enum class TeamColor {
  * @property value the unique id, min length 4
  */
 data class UserName(
-  @get: Size(min = 4, message = "{ranked.model.id.too.short}") // this is the kotlin way of using jsr-303
+  @field:Size(min = 4, message = "{ranked.model.id.too.short}") // this is the kotlin way of using jsr-303
   val value: String
 ) : Serializable {
 
@@ -47,10 +47,10 @@ data class UserName(
 @SpELAssert(value = "player1 != player2", message = "{ranked.model.team.two.players}")
 data class Team(
 
-  @get: Valid
+  @field:Valid
   val player1: UserName,
 
-  @get: Valid
+  @field:Valid
   val player2: UserName
 ) {
 
@@ -91,6 +91,7 @@ abstract class AbstractMatchSet {
   }
 
 }
+
 /**
  * A MatchSet represents one Set of a Match (which will have two or three (best of three) of them).
  *
@@ -101,32 +102,36 @@ abstract class AbstractMatchSet {
  */
 @SpELAssert(value = "goalsBlue != goalsRed && (goalsRed == SCORE_TO_WIN || goalsBlue == SCORE_TO_WIN)", message = "{ranked.model.matchSet.ended}")
 data class MatchSet(
-  @get: Range(min = 0, max = AbstractMatchSet.SCORE_TO_WIN, message = "{ranked.model.matchSet.goals}")
+  @field: Range(min = 0, max = AbstractMatchSet.SCORE_TO_WIN, message = "{ranked.model.matchSet.goals}")
   override val goalsRed: Int,
-  @get: Range(min = 0, max = AbstractMatchSet.SCORE_TO_WIN, message = "{ranked.model.matchSet.goals}")
+  @field: Range(min = 0, max = AbstractMatchSet.SCORE_TO_WIN, message = "{ranked.model.matchSet.goals}")
   override val goalsBlue: Int,
-  @get: Valid
+  @field: Valid
   override val offenseRed: UserName,
-  @get: Valid
+  @field: Valid
   override val offenseBlue: UserName
-): AbstractMatchSet()
+) : AbstractMatchSet()
 
 
 @SpELAssert(value = "goalsBlue != goalsRed && (goalsRed == SCORE_TO_WIN || goalsBlue == SCORE_TO_WIN)", message = "{ranked.model.matchSet.ended}")
 data class TimedMatchSet(
-  @get: NotEmpty(message = "{ranked.model.matchSet.empty}")
+  @field: NotEmpty(message = "{ranked.model.matchSet.empty}")
   val goals: List<Pair<TeamColor, LocalDateTime>>,
-  @get: Valid
+  @field: Valid
   override val offenseRed: UserName,
-  @get: Valid
+  @field: Valid
   override val offenseBlue: UserName,
-  @get: Range(min = 0, max = AbstractMatchSet.SCORE_TO_WIN, message = "{ranked.model.matchSet.goals}")
-  override val goalsBlue: Int  = goalsByTeamColor(goals, TeamColor.BLUE),
-  @get: Range(min = 0, max = AbstractMatchSet.SCORE_TO_WIN, message = "{ranked.model.matchSet.goals}")
+  @field: Range(min = 0, max = AbstractMatchSet.SCORE_TO_WIN, message = "{ranked.model.matchSet.goals}")
+  override val goalsBlue: Int = goalsByTeamColor(goals, TeamColor.BLUE),
+  @field: Range(min = 0, max = AbstractMatchSet.SCORE_TO_WIN, message = "{ranked.model.matchSet.goals}")
   override val goalsRed: Int = goalsByTeamColor(goals, TeamColor.RED)
-): AbstractMatchSet()
+) : AbstractMatchSet()
 
 private fun goalsByTeamColor(goals: List<Pair<TeamColor, LocalDateTime>>, tc: TeamColor): Int {
   val goals = goals.groupBy { it.first }.filter { it.key == tc }.map { it.value.count() }
-  return if (goals.isEmpty()) { -1 } else { goals.first() }
+  return if (goals.isEmpty()) {
+    -1
+  } else {
+    goals.first()
+  }
 }

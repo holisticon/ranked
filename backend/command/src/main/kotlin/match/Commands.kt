@@ -2,9 +2,7 @@ package de.holisticon.ranked.command.api
 
 import cz.jirutka.validator.spring.SpELAssert
 import de.holisticon.ranked.model.AbstractMatchSet
-import de.holisticon.ranked.model.MatchSet
 import de.holisticon.ranked.model.Team
-import de.holisticon.ranked.model.TimedMatchSet
 import org.axonframework.commandhandling.TargetAggregateIdentifier
 import java.time.LocalDateTime
 import java.util.*
@@ -21,11 +19,11 @@ import javax.validation.constraints.NotEmpty
 data class CreateMatch(
 
   @TargetAggregateIdentifier
-  @get: NotEmpty
+  @field: NotEmpty
   val matchId: String = UUID.randomUUID().toString(),
-  @get: Valid
+  @field: Valid
   val teamRed: Team,
-  @get: Valid
+  @field: Valid
   val teamBlue: Team,
   @SpELAssert("@matchService.validateMatch(#this)", message = "{ranked.createMatch.finished}")
   val matchSets: List<AbstractMatchSet>,
@@ -43,11 +41,11 @@ data class CreateMatch(
  */
 data class WinMatch(
   @TargetAggregateIdentifier
-  @get: NotEmpty
+  @field: NotEmpty
   val matchId: String,
-  @get: Valid
+  @field: Valid
   val winner: Team,
-  @get: Valid
+  @field: Valid
   val looser: Team
 )
 

@@ -10,7 +10,7 @@ import javax.validation.constraints.NotEmpty
  * Create command for Player aggregate.
  */
 data class CreatePlayer(
-  @get: Valid
+  @field: Valid
   @TargetAggregateIdentifier
   val userName: UserName
 )
@@ -19,7 +19,7 @@ data class CreatePlayer(
  * Check if player aggregate already exists.
  */
 data class CheckPlayer(
-  @get: Valid
+  @field: Valid
   @TargetAggregateIdentifier
   val userName: UserName
 )
@@ -29,10 +29,10 @@ data class CheckPlayer(
  */
 data class ParticipateInMatch(
   @TargetAggregateIdentifier
-  @get: Valid
+  @field: Valid
   val userName: UserName,
 
-  @get: NotEmpty
+  @field: NotEmpty
   val matchId: String
 )
 
@@ -41,7 +41,7 @@ data class ParticipateInMatch(
  */
 data class CancelParticipation(
   @TargetAggregateIdentifier
-  @get: Valid
+  @field: Valid
   val userName: UserName
 )
 
@@ -50,10 +50,10 @@ data class CancelParticipation(
  */
 data class UpdatePlayerRanking(
   @TargetAggregateIdentifier
-  @get: Valid
+  @field: Valid
   val userName: UserName,
 
-  @get: NotEmpty
+  @field: NotEmpty
   val matchId: String,
 
   val eloRanking: Elo

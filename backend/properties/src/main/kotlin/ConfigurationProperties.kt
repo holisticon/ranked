@@ -17,27 +17,27 @@ import javax.validation.Validator
 
 @ConfigurationProperties(prefix = "ranked")
 data class RankedProperties(
-  @get: Range(min = 1, max = 10)
+  @field: Range(min = 1, max = 10)
   var scoreToWinSet: Int = 6,
 
-  @get: Range(min = 1, max = 5)
+  @field: Range(min = 1, max = 5)
   var setsToWinMatch: Int = 2,
 
   @NestedConfigurationProperty
-  @get: Valid
+  @field: Valid
   var elo: EloProperty = EloProperty()
 )
 
 
 data class EloProperty(
 
-  @get: Range(min = 100, max = 2000)
+  @field: Range(min = 100, max = 2000)
   var default: Int = 1000,
 
-  @get: Range(min = 1, max = 500)
+  @field: Range(min = 1, max = 500)
   var maxDifference: Int = 400,
 
-  @get: Range(min = 1, max = 100)
+  @field: Range(min = 1, max = 100)
   var factor: Int = 20
 )
 
