@@ -7,6 +7,7 @@ import { connect, Dispatch } from 'react-redux';
 import { StoreState } from '../types/store.state';
 import * as Actions from '../actions';
 import { POINTS_PER_MATCH } from '../config';
+import { Dialog } from '../components/dialog';
 
 interface ActiveTeam {
   goals: number;
@@ -25,6 +26,7 @@ export interface MatchProps {
   selectPlayer: (team: TeamColor, position: PlayerPostion) => void;
   setPlayer: (team: TeamColor, position: PlayerKey, player: Player) => void;
   switchPlayerPositions: (team: TeamColor) => void;
+  startNewMatch: () => void;
 }
 
 // helper functions
@@ -34,13 +36,29 @@ function stopEvent(event: React.SyntheticEvent<Object>): boolean {
   return true;
 }
 
+function endMatch() {
+  // TODO: send match data to backend
+}
+
 function Match({ selectPlayerFor, setNumber, red, blue, incGoals, winner,
-  decGoals, selectPlayer, setPlayer, switchPlayerPositions }: MatchProps) {
+  decGoals, selectPlayer, setPlayer, switchPlayerPositions, startNewMatch }: MatchProps) {
   
   const isLastSet = setNumber === (POINTS_PER_MATCH * 2 - 1);
 
   return (
     <div className="match">
+      {
+        winner &&
+        <Dialog 
+          headline="Spiel beendet"
+          text="Ente Ente Ente Ente Ente Ente Ente Ente Ente"
+          buttons={ [{ text: 'ok', type: 'ok', click: () => {
+            endMatch();
+            startNewMatch();
+          } }] }
+        />
+      }
+
       <SelectPlayer 
         visible={ !!selectPlayerFor }
         upsideDown={ !!selectPlayerFor && selectPlayerFor.team === 'red' }
@@ -244,7 +262,8 @@ export function mapDispatchToProps(dispatch: Dispatch<Actions.RankedAction>) {
     selectPlayer: (team: TeamColor, position: PlayerPostion) => dispatch(Actions.selectPlayer(team, position)),
     setPlayer: (team: TeamColor, position: PlayerKey, player: Player) =>
       dispatch(Actions.setPlayer(team, position, player)),
-    switchPlayerPositions: (team: TeamColor) => dispatch(Actions.switchPlayerPositions(team))
+    switchPlayerPositions: (team: TeamColor) => dispatch(Actions.switchPlayerPositions(team)),
+    startNewMatch: () => dispatch(Actions.startNewMatch())
   };
 }
 

@@ -1,5 +1,5 @@
 import * as Actions from './actions';
-import { StoreState, getEmptySet } from './types/store.state';
+import { StoreState, getEmptySet, defaultState } from './types/store.state';
 import { TeamColor, PlayerKey } from './types/types';
 import { POINTS_PER_SET, POINTS_PER_MATCH } from './config';
 
@@ -80,9 +80,11 @@ function startNewSet(state: StoreState): StoreState {
   return newState;
 }
 
-export function rankedReducer(state: StoreState, action: Actions.RankedAction): StoreState {
-  switch (action.type) {
+export function rankedReducer(state: StoreState, rankedAction: Actions.RankedAction): StoreState {
+  let action;
+  switch (rankedAction.type) {
     case Actions.INC_GOALS:
+      action = rankedAction as Actions.IncGoals;
       const newState = changeGoals(state, action.team, 1);
 
       if (newState.sets[newState.sets.length - 1].goals[action.team] >= POINTS_PER_SET) {
@@ -92,6 +94,7 @@ export function rankedReducer(state: StoreState, action: Actions.RankedAction): 
       return newState;
 
     case Actions.DEC_GOALS:
+      action = rankedAction as Actions.DecGoals;
       // only decrease score if above zero
       if (state.sets[state.sets.length - 1].goals[action.team] > 0) {
         return changeGoals(state, action.team, -1);
@@ -99,10 +102,12 @@ export function rankedReducer(state: StoreState, action: Actions.RankedAction): 
       break;
 
     case Actions.SWITCH_PLAYER_POSITION:
+      action = rankedAction as Actions.SwitchPlayerPositions;
       return switchPlayerPositions(state, action.team);
 
     case Actions.SELECT_PLAYER:
-      let playerPosition = (action as Actions.SelectPlayer).position;
+      action = rankedAction as Actions.SelectPlayer;
+      let playerPosition = action.position;
       let currentSet = state.sets[state.sets.length - 1];
       let playerKey: PlayerKey = currentSet.offense[action.team];
 
@@ -113,13 +118,16 @@ export function rankedReducer(state: StoreState, action: Actions.RankedAction): 
       return { ...state, selectPlayerFor: { team: action.team, position: playerKey } };
 
     case Actions.SET_PLAYER:
-      const a = action as Actions.SetPlayer;
+      action = rankedAction as Actions.SetPlayer;
       const teams = { ...state.teams };
 
-      teams[a.team] = { ...state.teams[a.team] };
-      teams[a.team][a.position] = a.player;
+      teams[action.team] = { ...state.teams[action.team] };
+      teams[action.team][action.position] = action.player;
 
       return { ...state, selectPlayerFor: null, teams };
+
+    case Actions.START_NEW_MATCH:
+      return defaultState();
 
     default:
       break;
