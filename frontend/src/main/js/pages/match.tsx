@@ -8,6 +8,7 @@ import { StoreState } from '../types/store.state';
 import * as Actions from '../actions';
 import { POINTS_PER_MATCH } from '../config';
 import { Dialog } from '../components/dialog';
+import './match.css';
 
 interface ActiveTeam {
   goals: number;

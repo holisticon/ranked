@@ -29,6 +29,7 @@
     "@types/react-dom": "^16.0.3",
     "@types/react-touch": "^1.8.1",
     "awesome-typescript-loader": "^3.4.1",
+    "css-loader": "^0.28.9",
     "source-map-loader": "^0.2.3",
     "typescript": "^2.6.2"
   }

@@ -6,7 +6,7 @@ import registerServiceWorker from '../../registerServiceWorker';
 import { Provider } from 'react-redux';
 import { StoreState, defaultState } from './types/store.state';
 import { rankedReducer } from './reducer';
-import '../resources/static/main.css';
+import './app.css';
 
 class Ranked extends React.Component {
   constructor(props: any) {

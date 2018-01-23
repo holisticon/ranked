@@ -2,6 +2,7 @@ import * as React from 'react';
 import { PlayerIcon } from './player_icon';
 import axios from 'axios';
 import { Player } from '../types/types';
+import './select_player.css';
 
 const alphabet = 'abcdefghijklmnopqrstuvwxyz';
 

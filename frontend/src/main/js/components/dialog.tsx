@@ -1,4 +1,5 @@
 import * as React from 'react';
+import './dialog.css';
 
 export type ButtonType = 'ok' | 'error' | 'warn' | 'grey';
 
