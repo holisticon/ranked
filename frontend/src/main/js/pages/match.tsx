@@ -1,14 +1,13 @@
 import * as React from 'react';
 import { Swipeable } from 'react-touch';
-import { SelectPlayer } from '../components/select_player';
 import { PlayerIcon } from '../components/player_icon';
 import { TeamColor, PlayerPostion, Player, Team, PlayerKey } from '../types/types';
 import { connect, Dispatch } from 'react-redux';
-import { StoreState } from '../types/store.state';
 import * as Actions from '../actions';
 import { POINTS_PER_MATCH } from '../config';
 import { Dialog } from '../components/dialog';
 import './match.css';
+import { push } from 'react-router-redux';
 
 interface ActiveTeam {
   goals: number;
@@ -59,12 +58,6 @@ function Match({ selectPlayerFor, setNumber, red, blue, incGoals, winner,
           } }] }
         />
       }
-
-      <SelectPlayer 
-        visible={ !!selectPlayerFor }
-        upsideDown={ !!selectPlayerFor && selectPlayerFor.team === 'red' }
-        select={ (player: Player) => setPlayer(selectPlayerFor.team, selectPlayerFor.position, player) }
-      />
 
       <div className="team-red" onClick={ () => incGoals('red') }>
         <div className="goal-counter-container">
@@ -229,7 +222,7 @@ export class Match extends React.Component {
 }
  */
 
-export function mapStateToProps({ selectPlayerFor, teams, sets }: StoreState) {
+export function mapStateToProps({ranked: { selectPlayerFor, teams, sets }}: any) {
   const currentSet = sets[sets.length - 1];
 
   const getTeamPositions = (team: Team, offense: string) => {
@@ -260,7 +253,10 @@ export function mapDispatchToProps(dispatch: Dispatch<Actions.RankedAction>) {
   return {
     incGoals: (team: TeamColor) => dispatch(Actions.incGoals(team)),
     decGoals: (team: TeamColor) => dispatch(Actions.decGoals(team)),
-    selectPlayer: (team: TeamColor, position: PlayerPostion) => dispatch(Actions.selectPlayer(team, position)),
+    selectPlayer: (team: TeamColor, position: PlayerPostion) => {
+      dispatch(Actions.selectPlayer(team, position));
+      dispatch(push('/select'));
+    },
     setPlayer: (team: TeamColor, position: PlayerKey, player: Player) =>
       dispatch(Actions.setPlayer(team, position, player)),
     switchPlayerPositions: (team: TeamColor) => dispatch(Actions.switchPlayerPositions(team)),

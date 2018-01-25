@@ -80,7 +80,7 @@ function startNewSet(state: StoreState): StoreState {
   return newState;
 }
 
-export function rankedReducer(state: StoreState, rankedAction: Actions.RankedAction): StoreState {
+export function ranked(state: StoreState, rankedAction: Actions.RankedAction): StoreState {
   let action;
   switch (rankedAction.type) {
     case Actions.INC_GOALS:
@@ -129,9 +129,14 @@ export function rankedReducer(state: StoreState, rankedAction: Actions.RankedAct
     case Actions.START_NEW_MATCH:
       return defaultState();
 
+    case Actions.UPDATE_AVAILABLE_PLAYERS:
+      action = rankedAction as Actions.UpdateAvailablePlayers;
+
+      return { ...state, availablePlayers: action.players };
+
     default:
       break;
   }
 
-  return state;
+  return state || defaultState();
 }

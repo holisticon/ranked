@@ -6,6 +6,7 @@ export const SELECT_PLAYER = 'SELECT_PLAYER';
 export const SET_PLAYER = 'SET_PLAYER';
 export const SWITCH_PLAYER_POSITION = 'SWITCH_PLAYER_POSITION';
 export const START_NEW_MATCH = 'START_NEW_MATCH';
+export const UPDATE_AVAILABLE_PLAYERS = 'UPDATE_AVAILABLE_PLAYERS';
 
 export type RankedAction = IncGoals | DecGoals | SelectPlayer | SetPlayer | SwitchPlayerPositions | StartNewMatch;
 
@@ -39,6 +40,11 @@ export interface SwitchPlayerPositions {
 
 export interface StartNewMatch {
   type: string;
+}
+
+export interface UpdateAvailablePlayers {
+  type: string;
+  players: Array<Player>;
 }
 
 export function incGoals(team: TeamColor): IncGoals {
@@ -82,5 +88,12 @@ export function switchPlayerPositions(team: TeamColor): SwitchPlayerPositions {
 export function startNewMatch(): StartNewMatch {
   return {
     type: START_NEW_MATCH
+  };
+}
+
+export function updateAvailablePlayers(players: Array<Player>): UpdateAvailablePlayers {
+  return {
+    type: UPDATE_AVAILABLE_PLAYERS,
+    players
   };
 }
