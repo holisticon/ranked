@@ -2,6 +2,7 @@
 
 package de.holisticon.ranked.command
 
+import de.holisticon.ranked.command.api.CancelParticipation
 import de.holisticon.ranked.command.api.CheckPlayer
 import de.holisticon.ranked.command.api.CreatePlayer
 import de.holisticon.ranked.command.data.TokenJpaRepository
@@ -18,6 +19,7 @@ import org.axonframework.eventhandling.EventProcessor
 import org.axonframework.eventhandling.TrackingEventProcessor
 import org.axonframework.eventhandling.tokenstore.jpa.TokenEntry
 import org.axonframework.messaging.interceptors.BeanValidationInterceptor
+import org.axonframework.messaging.interceptors.LoggingInterceptor
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -30,7 +32,7 @@ import javax.validation.ValidatorFactory
  */
 
 @Configuration
-class CommandConfiguration() {
+class CommandConfiguration {
 
   companion object : KLogging() {
     const val REPLAY_PHASE = Int.MAX_VALUE - 10
@@ -43,6 +45,11 @@ class CommandConfiguration() {
   @Autowired
   fun configure(bus: SimpleCommandBus, validationFactory: ValidatorFactory) {
     bus.registerDispatchInterceptor(BeanValidationInterceptor(validationFactory))
+  }
+
+  @Autowired
+  fun configure(config: EventHandlingConfiguration) {
+    config.registerHandlerInterceptor("messageMonitor", { LoggingInterceptor() })
   }
 
   /**
@@ -114,7 +121,9 @@ class CommandConfiguration() {
           CheckPlayer(userName = UserName(it.id)),
           object : CommandCallback<CheckPlayer, Any> {
             override fun onSuccess(commandMessage: CommandMessage<out CheckPlayer>?, result: Any?) {
-              // player exists - do nothing
+              // player exists - reset if in match
+              commandGateway.send<Any>(CancelParticipation(userName = UserName(it.id))
+              )
             }
 
             override fun onFailure(commandMessage: CommandMessage<out CheckPlayer>?, cause: Throwable?) {
@@ -125,7 +134,6 @@ class CommandConfiguration() {
       }
     }
   }
-
 }
 
 class TrackingProcessorToken(
@@ -149,5 +157,4 @@ class TrackingProcessorToken(
   fun deleteToken() {
     repository.deleteById(id)
   }
-
 }

@@ -16,4 +16,5 @@ class MatchService(val properties: RankedProperties) {
 
   fun winsMatch(numberOfWins: Int) = numberOfWins == properties.setsToWinMatch
   fun winsMatchSet(matchSet: MatchSet): String = if (matchSet.goalsRed == properties.scoreToWinSet) Team.RED else Team.BLUE
+
 }
