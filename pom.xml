@@ -34,6 +34,7 @@
 
   <dependencyManagement>
     <dependencies>
+
       <dependency>
         <groupId>de.holisticon.ranked.extension</groupId>
         <artifactId>ranked-kotlin-extensions</artifactId>

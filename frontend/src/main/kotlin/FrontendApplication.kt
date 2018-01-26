@@ -2,6 +2,7 @@ package de.holisticon.ranked.frontend
 
 import de.holisticon.ranked.extension.runApplicationExpr
 import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.cloud.netflix.zuul.EnableZuulProxy
 
 
 /**
@@ -10,4 +11,5 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 fun main(args: Array<String>) = runApplicationExpr<FrontendApplication>(*args)
 
 @SpringBootApplication
+@EnableZuulProxy
 class FrontendApplication
