@@ -18,6 +18,9 @@ import java.util.function.Supplier
 
 const val PROCESSING_GROUP = "PlayerLeaderBoard"
 
+/**
+ * The rest controller just provides a facade for [PlayerRankingByEloHandler.get].
+ */
 @RestController
 @RequestMapping(value = ["/view"])
 class PlayerLeaderBoardView(
@@ -27,36 +30,50 @@ class PlayerLeaderBoardView(
   fun userByEloRank() : List<PlayerElo> = playerRankingByElo.get()
 }
 
+/**
+ * The business logic for elo-rankings, handles axon events that affect players and elo and provides a sorted list
+ * descending by elo value.
+ */
 @Component
 @ProcessingGroup(PROCESSING_GROUP)
 class PlayerRankingByEloHandler : Supplier<List<PlayerElo>> {
   companion object : KLogging()
 
+  /**
+   * Holds a mutable list of userName->elo, this is the data store that is updated with every elo change.
+   */
   private val ranking = mutableMapOf<UserName, Elo>()
+
+  /**
+   * The cache holds an imutable list of [PlayerElo] for the json return. It is sorted descending by elo value.
+   * A cache is used because we only need to sort once per update and can return the same immutable sorted list
+   * for every get request after that.
+   */
   private val cache = AtomicReference<List<PlayerElo>>(listOf())
 
   @EventHandler
   fun on(e: PlayerRankingChanged) {
-    logger.info { "Player '${e.player}' new rating is '${e.eloRanking}'" }
+    logger.debug { "Player '${e.player}' new rating is '${e.eloRanking}'" }
     update(PlayerElo(e.player.value , e.eloRanking))
   }
 
   @EventHandler
   fun on(e: PlayerCreated) {
-    logger.info { "Player '${e.userName}' initial rating is '${e.initialElo}'" }
+    logger.debug { "Player '${e.userName}' initial rating is '${e.initialElo}'" }
     update(PlayerElo(e.userName.value, e.initialElo))
   }
 
   private fun update(playerElo: PlayerElo) {
-    ranking.put(playerElo.userName, playerElo.elo)
+    ranking[playerElo.userName] = playerElo.elo
     cache.set(ranking.map { it.toPair() }.map { PlayerElo(it.first, it.second) }.sorted())
-
-    logger.debug { "new elo ranking for player: $cache" }
   }
 
   override fun get() = cache.get()!!
 }
 
+/**
+ * The return value for the player ranking provides a username (string) and an elo value (int).
+ */
 data class PlayerElo(val userName: UserName, val elo: Elo) : Comparable<PlayerElo>  {
 
   constructor(userName: String, elo: Elo) : this(UserName(userName), elo)

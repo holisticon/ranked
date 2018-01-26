@@ -2,26 +2,24 @@ version: '3'
 
 services:
   backend:
-    build:
-      context: ./backend/application
+    image: holisticon/ranked-application:0.0.1-SNAPSHOT
     ports:
       - 8081:8081
     depends_on:
       - 'h2'
 
   frontend:
-    build:
-      context: ./frontend
+    image: holisticon/ranked-frontend:0.0.1-SNAPSHOT
     ports:
       - 8080:8080
     depends_on:
       - 'backend'
 
   h2:
-    build:
-      context: ./test/h2
+    image: holisticon/ranked-h2:0.0.1-SNAPSHOT
     ports:
       - 9092:9092
+      - 8092:8092
 
   # see https://github.com/dadarek/docker-wait-for-dependencies
   start_dependencies:
@@ -30,4 +28,4 @@ services:
       - backend
       - frontend
       - h2
-    command: h2:9092 backend:8081 frontend:8080
+    command: h2:9092 h2:8092 backend:8081 frontend:8080

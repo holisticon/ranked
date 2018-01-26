@@ -17,10 +17,24 @@ Use spring profile "local"
 
 ### Docker
 
-* run `docker-compose up --build`
+* run `docker-compose up`
 
 Depending on your os, you might have to replace `localhost` with your `DOCKER_IP` for all given urls.
 
+## Build
+
+We use the maven-wrapper extension, to build everything, just run `./mvnw`,
+which will default to `mvn clean install` using the maven version configured in `.mvn/wrapper/maven-wrapper.properties`.
+
+To build docker images of the components 
+
+* h2 (database)
+* application (backend)
+* frontend
+
+run `/mvnw dockerfile:build` after the regular maven install ( extend with `-f <DIR>` if you need to rebuild a particular image).
+
+During maven install, activate the profile `docker` (`./mvnw -Pdocker,frontend`) to clean, install and create the docker images.
 
 ## Side Goals
 
