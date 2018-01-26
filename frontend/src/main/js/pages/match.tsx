@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Swipeable } from 'react-touch';
 import { PlayerIcon } from '../components/player_icon';
-import { TeamColor, PlayerPostion, Player, Team, PlayerKey } from '../types/types';
+import { TeamColor, PlayerPostion, Player, Team, PlayerKey, Sets, Teams } from '../types/types';
 import { connect, Dispatch } from 'react-redux';
 import * as Actions from '../actions';
 import { POINTS_PER_MATCH } from '../config';
@@ -16,6 +16,8 @@ interface ActiveTeam {
 }
 
 export interface MatchProps {
+  sets: Sets;
+  teams: Teams;
   selectPlayerFor: {team: TeamColor, position: PlayerKey};
   setNumber: number;
   red: ActiveTeam;
@@ -36,15 +38,40 @@ function stopEvent(event: React.SyntheticEvent<Object>): boolean {
   return true;
 }
 
-function sendResults() {
-  fetch('localhost:8081/command/createMatch', {
+function getUsernameByPlayerKey(team: Team, playerKey: PlayerKey): string {
+  // FIXME Can we omit this null-checks somehow?!
+  if (team.player1 && team.player2) {
+    return playerKey === 'player1' ? team.player1.username : team.player2.username;
+  } else {
+    return '';
+  }
+}
+
+function sendResults (sets: Sets, teams: Teams) {
+  fetch('http://localhost:8080/command/match', {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-
+      teamRed: {
+        // make the linter happy by adding this ternary expressions...
+        player1: { value: teams.red.player1 ? teams.red.player1.username : ''},
+        player2: { value: teams.red.player2 ? teams.red.player2.username : ''}
+      },
+      teamBlue: {
+        player1: { value: teams.blue.player1 ? teams.blue.player1.username : ''},
+        player2: { value: teams.blue.player2 ? teams.blue.player2.username : ''}
+      },
+      matchSets: sets.map((set, index) => {
+        return {
+          goalsRed: set.goals.red,
+          goalsBlue: set.goals.blue,
+          offenseRed: {value: getUsernameByPlayerKey(teams.red, set.offense.red)},
+          offenseBlue: {value: getUsernameByPlayerKey(teams.blue, set.offense.blue)}
+      }; }),
+      type: 'result'
     })
   });
 }
@@ -70,7 +97,7 @@ function getDialogMessage(winner: TeamColor, red: ActiveTeam, blue: ActiveTeam):
 }
 
 function Match({ selectPlayerFor, setNumber, red, blue, incGoals, winner,
-  decGoals, selectPlayer, setPlayer, switchPlayerPositions, startNewMatch }: MatchProps) {
+  decGoals, selectPlayer, setPlayer, switchPlayerPositions, startNewMatch, sets, teams }: MatchProps) {
 
   const isLastSet = setNumber === (POINTS_PER_MATCH * 2 - 1);
 
@@ -83,7 +110,7 @@ function Match({ selectPlayerFor, setNumber, red, blue, incGoals, winner,
           text={getDialogMessage(winner, red, blue)}
           buttons={ [
             { text: 'OKBÄM!', type: 'ok', click: () => {
-              sendResults();
+              sendResults(sets, teams);
               startNewMatch();
             } }
           ] }
@@ -272,6 +299,8 @@ export function mapStateToProps({ranked: { selectPlayerFor, teams, sets }}: any)
   }
 
   return {
+    sets,
+    teams,
     selectPlayerFor,
     setNumber: sets.length,
     red: { ...getTeamPositions(teams.red, currentSet.offense.red), goals: currentSet.goals.red },

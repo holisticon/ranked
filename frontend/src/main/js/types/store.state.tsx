@@ -1,22 +1,10 @@
-import { Player, Team, PlayerKey } from './types';
+import { Player, PlayerKey, Sets, Teams } from './types';
 
 export interface StoreState {
   availablePlayers: Array<Player>;
   selectPlayerFor: any;
-  teams: { 
-    red: Team,
-    blue: Team
-  };
-  sets: Array<{
-    goals: {
-      red: number,
-      blue: number
-    }
-    offense: {
-      red: PlayerKey,
-      blue: PlayerKey
-    }
-  }>;
+  teams: Teams;
+  sets: Sets;
 }
 
 export function getEmptySet() {
