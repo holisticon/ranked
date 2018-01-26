@@ -37,7 +37,7 @@ function stopEvent(event: React.SyntheticEvent<Object>): boolean {
 }
 
 function sendResults() {
-  fetch('localhost:8082/', {
+  fetch('localhost:8081/command/createMatch', {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
