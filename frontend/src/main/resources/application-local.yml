@@ -1,0 +1,9 @@
+#
+# Override for local development
+#
+ranked:
+  host:
+    backend: ${DOCKER_IP:localhost}
+zuul:
+  debug:
+    request: true

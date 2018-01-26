@@ -261,7 +261,6 @@ Here is an example request for publishing the goals with timestamps. Please note
       }
 
 
-
 ### Test framework
 
 Though using plain `junit/assertj` unit tests would be possible, we want to try the kotlin way.
@@ -280,6 +279,8 @@ If you are still interested, check out the [legacy-scala](https://github.com/hol
 
 - Simon Zambrovski
 - Jan Galinski
+- Oliver Niebsch
 - Timo Gröger
-- Daniel Wegener
+- Daniel Wegener (Scala version)
+
 

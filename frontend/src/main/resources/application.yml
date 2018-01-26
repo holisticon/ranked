@@ -1,19 +1,14 @@
 server:
   port: 8080
 
+ranked:
+  host:
+    backend: backend
 zuul:
-  debug:
-    request: true
   routes:
     command:
       path: /command/**
-      url: http://localhost:8081/command
+      url: http://${ranked.host.backend}:8081/command
     view:
       path: /view/**
-      url: http://localhost:8081/view
-    swagger:
-      path: /swagger-ui.html
-      url: http://localhost:8081/swagger-ui.html
-    form:
-      path: /form
-      url: http://localhost:8081
+      url: http://${ranked.host.backend}:8081/view
