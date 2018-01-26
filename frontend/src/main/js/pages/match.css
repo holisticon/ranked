@@ -1,24 +1,3 @@
-html, body {
-  height: 100%;
-  width: 100%;
-  padding: 0;
-  margin: 0;
-  font-size: 18px;
-}
-
-.ranked {
-  background-color: pink;
-  height: 100vh;
-  width: 100%;
-  font-family: 'Roboto', sans-serif;
-}
-
-.hidden {
-  visibility: hidden !important;
-  display: none !important;
-}
-
-/* Match */
 .match {
   height: 100%;
   width: 100%;
@@ -145,64 +124,6 @@ html, body {
   transform: rotate(90deg);
   display: inline-block;
   font-size: 3rem;
+
   opacity: 0.1;
-}
-
-/* Player selection */
-.player-selection {
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  background-color: #ffffff;
-  z-index: 999;
-  overflow: auto;
-  padding: 5% 0;
-  box-sizing: border-box;
-}
-
-.player-selection.upside-down {
-  transform: rotate(180deg);
-}
-
-.player-selection .player-icon, .player-selection .letter {
-  width: 24%;
-  height: auto;
-  float: left;
-  margin: 0 0 5% 7%;
-}
-
-.player-selection .player-icon .player-image, .player-selection .letter .letter-content {
-  height: 0;
-  padding: 50% 0;
-  position: relative;
-}
-
-.player-icon .player-image {
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center top;
-  width: 100%;
-  height: 100%;
-}
-
-.player-icon .player-image .material-icons {
-  font-size: 3rem;
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.player-selection .letter.gray {
-  opacity: 0.2;
-}
-
-.player-selection .letter .letter-absolute {
-  font-size: 24vw;
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
 }
