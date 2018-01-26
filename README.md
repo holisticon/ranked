@@ -6,10 +6,21 @@ Application for tracking table-soccer results.
 
 ## Running
 
+### Local
+
+Use spring profile "local"
+
 * start the h2Application (from `/test/h2`)
 * start the RankedApplication (from `backend/application`)
 
 * create new Match using the form on [http://localhost:8081/](http://localhost:8081/) or using [Swagger](http://localhost:8081/swagger-ui.html). 
+
+### Docker
+
+* run `docker-compose up --build`
+
+Depending on your os, you might have to replace `localhost` with your `DOCKER_IP` for all given urls.
+
 
 ## Side Goals
 
