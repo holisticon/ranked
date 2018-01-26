@@ -30,7 +30,7 @@ function getLetters(unavailableLetters: string) {
   return alphabet.split('').map((letter, index) => {
 
     const available = !unavailableLetters.includes(letter);
-    
+
     return (
       <Link key={ index } to={'/select/' + letter}>
         <div className={ available ? 'letter' : 'letter gray' }>
@@ -44,7 +44,7 @@ function getLetters(unavailableLetters: string) {
 }
 
 function getPlayerIcons(availablePlayers: Array<Player>, select: (player: Player) => void, selectedLetter?: string) {
-  const players = !selectedLetter ? availablePlayers : 
+  const players = !selectedLetter ? availablePlayers :
     availablePlayers.filter(player => player.name[0].toLowerCase() === selectedLetter);
 
   return players.map((player, index) => {
@@ -74,8 +74,8 @@ function PlayerSelection({ upsideDown, unavailableLetters, availablePlayers,
 
   return (
     <div className={ classes }>
-      { !selectedLetter ? 
-        getLetters(unavailableLetters) : 
+      { !selectedLetter ?
+        getLetters(unavailableLetters) :
         getPlayerIcons(availablePlayers, selectPlayer, selectedLetter ) }
     </div>
   );

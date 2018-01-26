@@ -1,7 +1,7 @@
 import * as React from 'react';
 import './dialog.css';
 
-export type ButtonType = 'ok' | 'error' | 'warn' | 'grey';
+export type ButtonType = 'ok' | 'error' | 'warn' | 'gray';
 
 export interface DialogProps {
   headline: string;
@@ -25,7 +25,7 @@ export class Dialog extends React.Component<DialogProps> {
           { btn.text }
         </div>
       );
-    }); 
+    });
   }
 
   render() {

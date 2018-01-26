@@ -36,26 +36,57 @@ function stopEvent(event: React.SyntheticEvent<Object>): boolean {
   return true;
 }
 
-function endMatch() {
-  // TODO: send match data to backend
+function sendResults() {
+  fetch('localhost:8082/', {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+
+    })
+  });
+}
+
+function getWinningPlayersAsString (team: ActiveTeam): string {
+  if (team && team.defense && team.attack) {
+    return `${team.defense.name} und ${team.attack.name}`;
+  } else {
+    return '';
+  }
+}
+
+function allPlayersSet(red: ActiveTeam, blue: ActiveTeam): boolean {
+  return !!red && !!blue && !!red.attack && !!red.defense && !!blue.attack && !!blue.defense;
+}
+
+function getDialogMessage(winner: TeamColor, red: ActiveTeam, blue: ActiveTeam): string {
+  if (allPlayersSet(red, blue)) {
+    return 'Ganz großes Kino, ' + getWinningPlayersAsString(winner === 'red' ? red : blue) + '!';
+  } else {
+    return 'Tolles Spiel! Zum Übermitteln der Ergebnisse müssen die Spieler vorab festgelegt werden.';
+  }
 }
 
 function Match({ selectPlayerFor, setNumber, red, blue, incGoals, winner,
   decGoals, selectPlayer, setPlayer, switchPlayerPositions, startNewMatch }: MatchProps) {
-  
+
   const isLastSet = setNumber === (POINTS_PER_MATCH * 2 - 1);
 
   return (
     <div className="match">
       {
         winner &&
-        <Dialog 
+        <Dialog
           headline="Spiel beendet"
-          text="Ente Ente Ente Ente Ente Ente Ente Ente Ente"
-          buttons={ [{ text: 'ok', type: 'ok', click: () => {
-            endMatch();
-            startNewMatch();
-          } }] }
+          text={getDialogMessage(winner, red, blue)}
+          buttons={ [
+            { text: 'OKBÄM!', type: 'ok', click: () => {
+              sendResults();
+              startNewMatch();
+            } }
+          ] }
         />
       }
 
@@ -77,7 +108,7 @@ function Match({ selectPlayerFor, setNumber, red, blue, incGoals, winner,
           <span className="name">Tor</span>
         </div>
 
-        <div 
+        <div
           className={ isLastSet ? 'change-positions' : 'hidden' }
           onClick={ (e) => stopEvent(e) && switchPlayerPositions('red') }
         >
@@ -93,7 +124,7 @@ function Match({ selectPlayerFor, setNumber, red, blue, incGoals, winner,
           <span className="name">Angriff</span>
         </div>
       </div>
-      
+
       <div className="setcounter">
         <div>
           <span>{ setNumber }</span>
@@ -118,7 +149,7 @@ function Match({ selectPlayerFor, setNumber, red, blue, incGoals, winner,
           <span className="name">Tor</span>
         </div>
 
-        <div 
+        <div
           className={ isLastSet ? 'change-positions' : 'hidden' }
           onClick={ (e) => stopEvent(e) && switchPlayerPositions('blue') }
         >
@@ -139,7 +170,7 @@ function Match({ selectPlayerFor, setNumber, red, blue, incGoals, winner,
   );
 }
 
-/* 
+/*
 export class Match extends React.Component {
 
   addSet(blueTeam, redTeam) {
@@ -152,7 +183,7 @@ export class Match extends React.Component {
 
   endSet(winnerTeam) {
     if (++this.currentSet[winnerTeam].won >= POINTS_PER_MATCH) {
-      this.endMatch(winnerTeam);
+      this.sendResults(winnerTeam);
       return;
     }
 
@@ -169,7 +200,7 @@ export class Match extends React.Component {
     this.currentSet.blue.goals = 0;
   }
 
-  endMatch(winnerTeam) {
+  sendResults(winnerTeam) {
     // TODO
 
     const team = this.currentSet[winnerTeam];
@@ -198,7 +229,7 @@ export class Match extends React.Component {
     if (this.currentSet.blue.attack === player) {
       this.currentSet.blue.attack = null;
     }
-    
+
     if (this.currentSet.blue.defense === player) {
       this.currentSet.blue.defense = null;
     }
