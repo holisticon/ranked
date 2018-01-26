@@ -30,6 +30,10 @@
     <axon.version>3.1.1</axon.version>
     <springfox.version>2.7.0</springfox.version>
     <spring-validator.version>1.1.0</spring-validator.version>
+
+    <maven-docker.plugin>1.3.7</maven-docker.plugin>
+
+    <dockerfile.skip>true</dockerfile.skip>
   </properties>
 
   <dependencyManagement>
@@ -109,16 +113,6 @@
     <sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
     <testSourceDirectory>${project.basedir}/src/test/kotlin</testSourceDirectory>
 
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <groupId>com.spotify</groupId>
-          <artifactId>docker-maven-plugin</artifactId>
-          <version>0.4.13</version>
-        </plugin>
-      </plugins>
-    </pluginManagement>
-
     <plugins>
       <plugin>
         <artifactId>kotlin-maven-plugin</artifactId>
@@ -195,6 +189,16 @@
             </goals>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <groupId>com.spotify</groupId>
+        <artifactId>dockerfile-maven-plugin</artifactId>
+        <version>${maven-docker.plugin}</version>
+        <configuration>
+          <repository>holisticon/ranked</repository>
+          <tag>${project.version}</tag>
+
+        </configuration>
       </plugin>
     </plugins>
   </build>

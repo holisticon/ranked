@@ -13,6 +13,8 @@
 
   <properties>
     <h2.version>1.4.192</h2.version>
+
+    <dockerfile.skip>false</dockerfile.skip>
   </properties>
 
   <dependencies>

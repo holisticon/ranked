@@ -11,6 +11,10 @@
 
   <artifactId>ranked-application</artifactId>
 
+  <properties>
+    <dockerfile.skip>false</dockerfile.skip>
+  </properties>
+
   <dependencies>
     <dependency>
       <artifactId>ranked-view-wall</artifactId>

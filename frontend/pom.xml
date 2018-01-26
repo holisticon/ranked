@@ -10,6 +10,11 @@
   </parent>
 
   <artifactId>ranked-frontend</artifactId>
+
+  <properties>
+    <dockerfile.skip>false</dockerfile.skip>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>de.holisticon.ranked.extension</groupId>
