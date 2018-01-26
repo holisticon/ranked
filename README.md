@@ -108,6 +108,24 @@ API you want to see in the drop-down menu at the top-right of the screen.
 
 The entire Command API is offered under `/command` resource. The entire View API is offered under `/view` resource. 
 
+#### Endpoints
+
+A Zuul proxy is configured in a way, that it redirects the requests to the frontend (port 8080) to the backend (8081) for the following URLs
+
+
+- http://localhost:8080/command/match
+
+- http://localhost:8080/view/wall/players
+- http://localhost:8080/view/wall/matches
+- http://localhost:8080/view/wall/teams
+- http://localhost:8080/view/user
+- http://localhost:8080/view/user/{id}
+
+
+
+
+
+
 ### Example REST Requests
 
 Currently, we support two ways of submitting the created match. In both cases, the match must contain information about the played sets. There are two possibilities to do
