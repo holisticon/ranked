@@ -5,7 +5,7 @@ spring:
   application:
     name: ranked
   datasource:
-    url: jdbc:h2:tcp://localhost:9092/mem:ranked
+    url: jdbc:h2:tcp://h2:9092/mem:ranked
     username: sa
     password: sa
   jpa:

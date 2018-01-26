@@ -1,7 +1,36 @@
-version: '2'
+version: '3'
+
 services:
-  rabbitmq:
-    image: rabbitmq:3-management
+  backend:
+    build:
+      context: ./backend/application
+      dockerfile: ./src/main/docker/Dockerfile
     ports:
-      - "5672:5672"
-      - "15672:15672"
+      - 8081:8081
+    depends_on:
+      - 'h2'
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: ./src/main/docker/Dockerfile
+    ports:
+      - 8080:8080
+    depends_on:
+      - 'backend'
+
+  h2:
+    build:
+      context: ./test/h2
+      dockerfile: ./src/main/docker/Dockerfile
+    ports:
+      - 9092:9092
+
+  # see https://github.com/dadarek/docker-wait-for-dependencies
+  start_dependencies:
+    image: dadarek/wait-for-dependencies
+    depends_on:
+      - backend
+      - frontend
+      - h2
+    command: h2:9092 backend:8081 frontend:8080
