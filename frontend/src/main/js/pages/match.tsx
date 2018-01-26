@@ -66,12 +66,12 @@ function sendResults (sets: Sets, teams: Teams) {
       },
       matchSets: sets.map((set, index) => {
         return {
+          type: 'result',
           goalsRed: set.goals.red,
           goalsBlue: set.goals.blue,
           offenseRed: {value: getUsernameByPlayerKey(teams.red, set.offense.red)},
           offenseBlue: {value: getUsernameByPlayerKey(teams.blue, set.offense.blue)}
-      }; }),
-      type: 'result'
+      }; })
     })
   });
 }
