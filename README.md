@@ -92,6 +92,10 @@ The `frontend` component contains the ReactJS single page application. Its build
 Apache Maven component build. If you want to skip the frontend build, please use the following command:
 
         mvn clean install -P \!frontend
+        
+Then compile and start the frontend via `mvn spring-boot:run` in /frontend directory. It is then up and running under `http://localhost:8080/`.
+
+Hot reloading is enabled via `npm run start`; which opens `localhost:3000` automatically.
 
 #### Test
 
