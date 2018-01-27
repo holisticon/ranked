@@ -9,8 +9,8 @@ export type TeamColor = 'red' | 'blue';
 export type PlayerPostion = 'attack' | 'defense';
 
 export interface Team {
-  player1: Player | null;
-  player2: Player | null;
+  player1: Player;
+  player2: Player;
   wonSets: number;
 }
 

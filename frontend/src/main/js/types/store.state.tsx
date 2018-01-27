@@ -7,10 +7,18 @@ export interface StoreState {
   sets: Sets;
 }
 
-export function getEmptySet() {
+export function createEmptySet() {
   return {
     goals: { red: 0, blue: 0 },
     offense: { red: 'player1' as PlayerKey, blue: 'player1' as PlayerKey }
+  };
+}
+
+function createEmptyPlayer(): Player {
+  return {
+    name: '',
+    img: '',
+    username: '',
   };
 }
 
@@ -19,9 +27,9 @@ export function defaultState(): StoreState {
     availablePlayers: [],
     selectPlayerFor: null,
     teams: {
-      red: { player1: null, player2: null, wonSets: 0 },
-      blue: { player1: null, player2: null, wonSets: 0 }
+      red: { player1: createEmptyPlayer(), player2: createEmptyPlayer(), wonSets: 0 },
+      blue: { player1: createEmptyPlayer(), player2: createEmptyPlayer(), wonSets: 0 }
     },
-    sets: [getEmptySet()]
+    sets: [createEmptySet()]
   };
 }

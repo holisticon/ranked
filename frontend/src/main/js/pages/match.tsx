@@ -6,13 +6,13 @@ import { connect, Dispatch } from 'react-redux';
 import * as Actions from '../actions';
 import { POINTS_PER_MATCH } from '../config';
 import { Dialog } from '../components/dialog';
-import './match.css';
 import { push } from 'react-router-redux';
+import './match.css';
 
 interface ActiveTeam {
   goals: number;
-  attack: Player | null;
-  defense: Player | null;
+  attack: Player;
+  defense: Player;
 }
 
 export interface MatchProps {
@@ -38,15 +38,6 @@ function stopEvent(event: React.SyntheticEvent<Object>): boolean {
   return true;
 }
 
-function getUsernameByPlayerKey(team: Team, playerKey: PlayerKey): string {
-  // FIXME Can we omit this null-checks somehow?!
-  if (team.player1 && team.player2) {
-    return playerKey === 'player1' ? team.player1.username : team.player2.username;
-  } else {
-    return '';
-  }
-}
-
 function sendResults (sets: Sets, teams: Teams) {
   fetch('http://localhost:8080/command/match', {
     method: 'POST',
@@ -56,28 +47,28 @@ function sendResults (sets: Sets, teams: Teams) {
     },
     body: JSON.stringify({
       teamRed: {
-        // make the linter happy by adding this ternary expressions...
-        player1: { value: teams.red.player1 ? teams.red.player1.username : ''},
-        player2: { value: teams.red.player2 ? teams.red.player2.username : ''}
+        player1: { value: teams.red.player1.username},
+        player2: { value: teams.red.player2.username}
       },
       teamBlue: {
-        player1: { value: teams.blue.player1 ? teams.blue.player1.username : ''},
-        player2: { value: teams.blue.player2 ? teams.blue.player2.username : ''}
+        player1: { value: teams.blue.player1.username},
+        player2: { value: teams.blue.player2.username}
       },
-      matchSets: sets.map((set, index) => {
+      matchSets: sets.map(set => {
         return {
           type: 'result',
           goalsRed: set.goals.red,
           goalsBlue: set.goals.blue,
-          offenseRed: {value: getUsernameByPlayerKey(teams.red, set.offense.red)},
-          offenseBlue: {value: getUsernameByPlayerKey(teams.blue, set.offense.blue)}
-      }; })
+          offenseRed: {value: teams.red[set.offense.red].username},
+          offenseBlue: {value: teams.blue[set.offense.blue].username}
+        };
+      })
     })
   });
 }
 
 function getWinningPlayersAsString (team: ActiveTeam): string {
-  if (team && team.defense && team.attack) {
+  if (team) {
     return `${team.defense.name} und ${team.attack.name}`;
   } else {
     return '';
@@ -128,7 +119,7 @@ function Match({ selectPlayerFor, setNumber, red, blue, incGoals, winner,
 
         <div className="add-defense" onClick={ (e) => stopEvent(e) && selectPlayer('red', 'defense') }>
           {
-            !red.defense ?
+            !red.defense.username ?
               <i className="material-icons">&#xE853;</i> :
               <PlayerIcon click={ () => { return; } } img={ red.defense.img } />
           }
@@ -144,7 +135,7 @@ function Match({ selectPlayerFor, setNumber, red, blue, incGoals, winner,
 
         <div className="add-attack" onClick={ (e) => stopEvent(e) && selectPlayer('red', 'attack') }>
           {
-            !red.attack ?
+            !red.attack.username ?
               <i className="material-icons">&#xE853;</i> :
               <PlayerIcon click={ () => { return; } } img={ red.attack.img } />
           }
@@ -169,7 +160,7 @@ function Match({ selectPlayerFor, setNumber, red, blue, incGoals, winner,
 
         <div className="add-defense" onClick={ (e) => stopEvent(e) && selectPlayer('blue', 'defense') }>
           {
-            !blue.defense ?
+            !blue.defense.username ?
               <i className="material-icons">&#xE853;</i> :
               <PlayerIcon click={ () => { return; } } img={ blue.defense.img } />
           }
@@ -185,7 +176,7 @@ function Match({ selectPlayerFor, setNumber, red, blue, incGoals, winner,
 
         <div className="add-attack" onClick={ (e) => stopEvent(e) && selectPlayer('blue', 'attack') }>
           {
-            !blue.attack ?
+            !blue.attack.username ?
               <i className="material-icons">&#xE853;</i> :
               <PlayerIcon click={ () => { return; } } img={ blue.attack.img } />
           }

@@ -1,5 +1,5 @@
 import * as Actions from './actions';
-import { StoreState, getEmptySet, defaultState } from './types/store.state';
+import { StoreState, createEmptySet, defaultState } from './types/store.state';
 import { TeamColor, PlayerKey } from './types/types';
 import { POINTS_PER_SET, POINTS_PER_MATCH } from './config';
 
@@ -68,7 +68,7 @@ function startNewSet(state: StoreState): StoreState {
   };
 
   // create new empty set
-  const newSet = getEmptySet();
+  const newSet = createEmptySet();
 
   // switch player positions for new set
   newSet.offense.red = getOtherPlayerKey(state.sets[state.sets.length - 1].offense.red);
