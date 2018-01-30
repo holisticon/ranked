@@ -5,7 +5,7 @@ import { routerReducer, routerMiddleware, ConnectedRouter } from 'react-router-r
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import Match from './pages/match';
 import PlayerSelection from './pages/player-selection';
-import registerServiceWorker from '../../registerServiceWorker';
+import registerServiceWorker from './registerServiceWorker';
 import createHistory from 'history/createBrowserHistory';
 import { Provider } from 'react-redux';
 import { ranked } from './reducer';
@@ -32,7 +32,7 @@ class Ranked extends React.Component {
   constructor(props: any) {
     super(props);
   }
-  
+
   render() {
     return (
       <div className="ranked">
