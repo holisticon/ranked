@@ -1,7 +1,7 @@
 import * as Actions from './actions';
-import {createEmptySet, defaultState, StoreState} from './types/store.state';
-import {PlayerKey, TeamColor} from './types/types';
-import {POINTS_PER_MATCH, POINTS_PER_SET} from './config';
+import { StoreState, createEmptySet, defaultState, createEmptyPlayer } from './types/store.state';
+import { TeamColor, PlayerKey, Teams, Team } from './types/types';
+import { POINTS_PER_SET, POINTS_PER_MATCH } from './config';
 
 function changeNthSet<T>(sets: Array<T>, n: number, itemChanger: (item: T) => T): Array<T> {
   return sets.map((item, index) => {
@@ -35,6 +35,23 @@ function switchPlayerPositions(state: StoreState, teamColor: TeamColor): StoreSt
       offense[teamColor] = getOtherPlayerKey(offense[teamColor]);
       return {...item, offense};
     })
+  };
+}
+
+function removePlayerFromTeam(playerUsername: string, team: Team): Team {
+  if (team.player1.username === playerUsername) {
+    return { ...team, player1: createEmptyPlayer() };
+  } else if (team.player2.username === playerUsername) {
+    return { ...team, player2: createEmptyPlayer() };
+  } else {
+    return team;
+  }
+}
+
+function removePlayer(playerUsername: string, teams: Teams): Teams {
+  return {
+    red: removePlayerFromTeam(playerUsername, teams.red),
+    blue: removePlayerFromTeam(playerUsername, teams.blue)
   };
 }
 
@@ -123,9 +140,7 @@ export function ranked(state: StoreState, rankedAction: Actions.RankedAction): S
 
     case Actions.SET_PLAYER:
       action = rankedAction as Actions.SetPlayer;
-      const teams = {...state.teams};
-
-      teams[action.team] = {...state.teams[action.team]};
+      const teams = removePlayer(action.player.username, state.teams);
       teams[action.team][action.position] = action.player;
 
       return {...state, selectPlayerFor: null, teams};

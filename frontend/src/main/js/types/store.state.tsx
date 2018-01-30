@@ -14,7 +14,7 @@ export function createEmptySet() {
   };
 }
 
-function createEmptyPlayer(): Player {
+export function createEmptyPlayer(): Player {
   return {
     name: '',
     img: '',
