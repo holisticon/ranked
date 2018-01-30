@@ -3,8 +3,7 @@ import TeamComponent from '../components/team';
 import {Sets, Team, TeamColor, Teams} from '../types/types';
 import {connect, Dispatch} from 'react-redux';
 import * as Actions from '../actions';
-import {POINTS_PER_MATCH} from '../config';
-import {BACKEND_URL} from '../config';
+import {BACKEND_URL, POINTS_PER_MATCH} from '../config';
 import {Dialog} from '../components/dialog';
 import './match.css';
 
@@ -68,7 +67,6 @@ function getDialogMessage(winner: TeamColor, teams: Teams): string {
 function Match({setNumber, winner, sets, teams, startNewMatch}: MatchProps) {
 
   const isLastSet = setNumber === (POINTS_PER_MATCH * 2 - 1);
-
   return (
     <div className="match">
       {

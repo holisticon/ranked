@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Swipeable } from 'react-touch';
 import { connect, Dispatch } from 'react-redux';
 import * as Actions from '../actions';
-import { Player, TeamColor, PlayerPostion, Team } from '../types/types';
+import { Player, TeamColor, PlayerPosition, Team } from '../types/types';
 import { PlayerIcon } from './player_icon';
 import { push } from 'react-router-redux';
 
@@ -23,7 +23,7 @@ interface InternalTeamProps {
   classes: string;
   incGoals: () => void;
   decGoals: () => void;
-  selectPlayer: (position: PlayerPostion) => void;
+  selectPlayer: (position: PlayerPosition) => void;
   switchPlayerPositions: () => void;
 }
 
@@ -96,7 +96,7 @@ export function mapDispatchToProps(dispatch: Dispatch<Actions.RankedAction>, { c
   return {
     incGoals: () => dispatch(Actions.incGoals(color)),
     decGoals: () => dispatch(Actions.decGoals(color)),
-    selectPlayer: (position: PlayerPostion) => {
+    selectPlayer: (position: PlayerPosition) => {
       dispatch(Actions.selectPlayer(color, position));
       dispatch(push('/select'));
     },

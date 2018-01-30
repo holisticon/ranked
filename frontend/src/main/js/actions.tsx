@@ -1,4 +1,4 @@
-import { Player, TeamColor, PlayerPostion, PlayerKey } from './types/types';
+import { Player, TeamColor, PlayerPosition, PlayerKey } from './types/types';
 
 export const INC_GOALS = 'INC_GOALS';
 export const DEC_GOALS = 'DEC_GOALS';
@@ -23,7 +23,7 @@ export interface DecGoals {
 export interface SelectPlayer {
   type: string;
   team: TeamColor;
-  position: PlayerPostion;
+  position: PlayerPosition;
 }
 
 export interface SetPlayer {
@@ -61,7 +61,7 @@ export function decGoals(team: TeamColor): DecGoals {
   };
 }
 
-export function selectPlayer(team: TeamColor, position: PlayerPostion): SelectPlayer {
+export function selectPlayer(team: TeamColor, position: PlayerPosition): SelectPlayer {
   return {
     type: SELECT_PLAYER,
     team,

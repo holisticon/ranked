@@ -39,7 +39,10 @@ function switchPlayerPositions(state: StoreState, teamColor: TeamColor): StoreSt
 }
 
 function startNewSet(state: StoreState): StoreState {
-  const wonSets = {red: state.teams.red.wonSets, blue: state.teams.blue.wonSets};
+  const wonSets = {
+    red: state.teams.red.wonSets,
+    blue: state.teams.blue.wonSets
+  };
 
   if (state.sets[state.sets.length - 1].goals.red === POINTS_PER_SET) {
     wonSets.red++;
