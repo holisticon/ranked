@@ -1,10 +1,11 @@
 import * as React from 'react';
 import TeamComponent from '../components/team';
-import { TeamColor, Team, Sets, Teams } from '../types/types';
-import { connect, Dispatch } from 'react-redux';
+import {Sets, Team, TeamColor, Teams} from '../types/types';
+import {connect, Dispatch} from 'react-redux';
 import * as Actions from '../actions';
-import { POINTS_PER_MATCH } from '../config';
-import { Dialog } from '../components/dialog';
+import {POINTS_PER_MATCH} from '../config';
+import {BACKEND_URL} from '../config';
+import {Dialog} from '../components/dialog';
 import './match.css';
 
 export interface MatchProps {
@@ -15,8 +16,8 @@ export interface MatchProps {
   startNewMatch: () => void;
 }
 
-function sendResults (sets: Sets, teams: Teams) {
-  fetch('http://localhost:8080/command/match', {
+function sendResults(sets: Sets, teams: Teams) {
+  fetch(BACKEND_URL + '/command/match', {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
@@ -24,12 +25,12 @@ function sendResults (sets: Sets, teams: Teams) {
     },
     body: JSON.stringify({
       teamRed: {
-        player1: { value: teams.red.player1.username},
-        player2: { value: teams.red.player2.username}
+        player1: {value: teams.red.player1.username},
+        player2: {value: teams.red.player2.username}
       },
       teamBlue: {
-        player1: { value: teams.blue.player1.username},
-        player2: { value: teams.blue.player2.username}
+        player1: {value: teams.blue.player1.username},
+        player2: {value: teams.blue.player2.username}
       },
       matchSets: sets.map(set => {
         return {
@@ -44,7 +45,7 @@ function sendResults (sets: Sets, teams: Teams) {
   });
 }
 
-function getWinningPlayersAsString (team: Team): string {
+function getWinningPlayersAsString(team: Team): string {
   if (team) {
     return `${team.player1.name} und ${team.player2.name}`;
   } else {
@@ -64,7 +65,7 @@ function getDialogMessage(winner: TeamColor, teams: Teams): string {
   }
 }
 
-function Match({ setNumber, winner, sets, teams, startNewMatch }: MatchProps) {
+function Match({setNumber, winner, sets, teams, startNewMatch}: MatchProps) {
 
   const isLastSet = setNumber === (POINTS_PER_MATCH * 2 - 1);
 
@@ -75,30 +76,32 @@ function Match({ setNumber, winner, sets, teams, startNewMatch }: MatchProps) {
         <Dialog
           headline="Spiel beendet"
           text={getDialogMessage(winner, teams)}
-          buttons={ [
-            { text: 'OKBÄM!', type: 'ok', click: () => {
-              sendResults(sets, teams);
-              startNewMatch();
-            } }
-          ] }
+          buttons={[
+            {
+              text: 'OKBÄM!', type: 'ok', click: () => {
+                sendResults(sets, teams);
+                startNewMatch();
+              }
+            }
+          ]}
         />
       }
 
-      <TeamComponent color={'red'} isLastSet={isLastSet}  />
+      <TeamComponent color={'red'} isLastSet={isLastSet}/>
 
       <div className="setcounter">
         <div>
-          <span>{ setNumber }</span>
+          <span>{setNumber}</span>
         </div>
       </div>
 
-      <TeamComponent color={'blue'} isLastSet={isLastSet} />
+      <TeamComponent color={'blue'} isLastSet={isLastSet}/>
 
     </div>
   );
 }
 
-export function mapStateToProps({ranked: { selectPlayerFor, teams, sets }}: any) {
+export function mapStateToProps({ranked: {selectPlayerFor, teams, sets}}: any) {
   let winner: TeamColor | null = null;
   if (teams.red.wonSets === POINTS_PER_MATCH) {
     winner = 'red';

@@ -1,7 +1,7 @@
 import * as Actions from './actions';
-import { StoreState, createEmptySet, defaultState } from './types/store.state';
-import { TeamColor, PlayerKey } from './types/types';
-import { POINTS_PER_SET, POINTS_PER_MATCH } from './config';
+import {createEmptySet, defaultState, StoreState} from './types/store.state';
+import {PlayerKey, TeamColor} from './types/types';
+import {POINTS_PER_MATCH, POINTS_PER_SET} from './config';
 
 function changeNthSet<T>(sets: Array<T>, n: number, itemChanger: (item: T) => T): Array<T> {
   return sets.map((item, index) => {
@@ -16,10 +16,10 @@ function changeNthSet<T>(sets: Array<T>, n: number, itemChanger: (item: T) => T)
 function changeGoals(state: StoreState, team: TeamColor, offset: number): StoreState {
   return {
     ...state, sets: changeNthSet(state.sets, state.sets.length - 1, (item) => {
-      const goals = { ...item.goals };
+      const goals = {...item.goals};
       goals[team] += offset;
 
-      return { ...item, goals: goals };
+      return {...item, goals: goals};
     })
   };
 }
@@ -31,16 +31,16 @@ function getOtherPlayerKey(onePlayerKey: string): PlayerKey {
 function switchPlayerPositions(state: StoreState, teamColor: TeamColor): StoreState {
   return {
     ...state, sets: changeNthSet(state.sets, state.sets.length - 1, (item) => {
-      const offense = { ...item.offense };
+      const offense = {...item.offense};
       offense[teamColor] = getOtherPlayerKey(offense[teamColor]);
-      return { ...item, offense };
+      return {...item, offense};
     })
   };
 }
 
 function startNewSet(state: StoreState): StoreState {
-  const wonSets = { red: state.teams.red.wonSets, blue: state.teams.blue.wonSets };
-  
+  const wonSets = {red: state.teams.red.wonSets, blue: state.teams.blue.wonSets};
+
   if (state.sets[state.sets.length - 1].goals.red === POINTS_PER_SET) {
     wonSets.red++;
   } else {
@@ -49,10 +49,11 @@ function startNewSet(state: StoreState): StoreState {
 
   // match ended, just refresh score and do nothing more
   if (wonSets.red === POINTS_PER_MATCH || wonSets.blue === POINTS_PER_MATCH) {
-    return { ...state,
+    return {
+      ...state,
       teams: {
-        red: { ...state.teams.red, wonSets: wonSets.red },
-        blue: { ...state.teams.blue, wonSets: wonSets.blue }
+        red: {...state.teams.red, wonSets: wonSets.red},
+        blue: {...state.teams.blue, wonSets: wonSets.blue}
       }
     };
   }
@@ -61,8 +62,8 @@ function startNewSet(state: StoreState): StoreState {
   const newState = {
     ...state,
     teams: {
-      red: { ...state.teams.blue, wonSets: wonSets.blue },
-      blue: { ...state.teams.red, wonSets: wonSets.red }
+      red: {...state.teams.blue, wonSets: wonSets.blue},
+      blue: {...state.teams.red, wonSets: wonSets.red}
     },
     sets: [...state.sets]
   };
@@ -115,16 +116,16 @@ export function ranked(state: StoreState, rankedAction: Actions.RankedAction): S
         playerKey = getOtherPlayerKey(playerKey);
       }
 
-      return { ...state, selectPlayerFor: { team: action.team, position: playerKey } };
+      return {...state, selectPlayerFor: {team: action.team, position: playerKey}};
 
     case Actions.SET_PLAYER:
       action = rankedAction as Actions.SetPlayer;
-      const teams = { ...state.teams };
+      const teams = {...state.teams};
 
-      teams[action.team] = { ...state.teams[action.team] };
+      teams[action.team] = {...state.teams[action.team]};
       teams[action.team][action.position] = action.player;
 
-      return { ...state, selectPlayerFor: null, teams };
+      return {...state, selectPlayerFor: null, teams};
 
     case Actions.START_NEW_MATCH:
       return defaultState();
@@ -132,7 +133,7 @@ export function ranked(state: StoreState, rankedAction: Actions.RankedAction): S
     case Actions.UPDATE_AVAILABLE_PLAYERS:
       action = rankedAction as Actions.UpdateAvailablePlayers;
 
-      return { ...state, availablePlayers: action.players };
+      return {...state, availablePlayers: action.players};
 
     default:
       break;
