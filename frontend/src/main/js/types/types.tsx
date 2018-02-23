@@ -1,7 +1,7 @@
 export interface Player {
   name: string;
-  img: string;
-  username: string;
+  imageUrl: string;
+  id: string;
 }
 
 export type PlayerKey = 'player1' | 'player2';

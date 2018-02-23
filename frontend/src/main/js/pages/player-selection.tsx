@@ -22,8 +22,7 @@ export interface PlayerSelectionProps {
 }
 
 function getPlayers(): Promise<Array<Player>> {
-  // TODO: use real backend
-  return axios.get('/players.json').then(res => res.data);
+  return axios.get('/view/user').then(res => res.data);
 }
 
 function getLetters(unavailableLetters: string) {
@@ -49,7 +48,7 @@ function getPlayerIcons(availablePlayers: Array<Player>, select: (player: Player
 
   return players.map((player, index) => {
       return (
-        <PlayerIcon key={ index } img={ player.img } click={ () => select(player) } />
+        <PlayerIcon key={ index } img={ player.imageUrl } click={ () => select(player) } />
       );
     });
 }

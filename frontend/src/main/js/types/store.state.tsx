@@ -17,8 +17,8 @@ export function createEmptySet() {
 export function createEmptyPlayer(): Player {
   return {
     name: '',
-    img: '',
-    username: '',
+    imageUrl: '',
+    id: '',
   };
 }
 

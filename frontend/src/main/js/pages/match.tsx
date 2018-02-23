@@ -1,10 +1,10 @@
 import * as React from 'react';
 import TeamComponent from '../components/team';
-import {Sets, Team, TeamColor, Teams} from '../types/types';
-import {connect, Dispatch} from 'react-redux';
+import { Sets, Team, TeamColor, Teams } from '../types/types';
+import { connect, Dispatch } from 'react-redux';
 import * as Actions from '../actions';
-import {BACKEND_URL, POINTS_PER_MATCH} from '../config';
-import {Dialog} from '../components/dialog';
+import { BACKEND_URL, POINTS_PER_MATCH } from '../config';
+import { Dialog } from '../components/dialog';
 import './match.css';
 
 export interface MatchProps {
@@ -24,20 +24,20 @@ function sendResults(sets: Sets, teams: Teams) {
     },
     body: JSON.stringify({
       teamRed: {
-        player1: {value: teams.red.player1.username},
-        player2: {value: teams.red.player2.username}
+        player1: { value: teams.red.player1.id },
+        player2: { value: teams.red.player2.id }
       },
       teamBlue: {
-        player1: {value: teams.blue.player1.username},
-        player2: {value: teams.blue.player2.username}
+        player1: { value: teams.blue.player1.id },
+        player2: { value: teams.blue.player2.id }
       },
       matchSets: sets.map(set => {
         return {
           type: 'result',
           goalsRed: set.goals.red,
           goalsBlue: set.goals.blue,
-          offenseRed: {value: teams.red[set.offense.red].username},
-          offenseBlue: {value: teams.blue[set.offense.blue].username}
+          offenseRed: { value: teams.red[set.offense.red].id },
+          offenseBlue: { value: teams.blue[set.offense.blue].id }
         };
       })
     })
@@ -64,7 +64,7 @@ function getDialogMessage(winner: TeamColor, teams: Teams): string {
   }
 }
 
-function Match({setNumber, winner, sets, teams, startNewMatch}: MatchProps) {
+function Match({ setNumber, winner, sets, teams, startNewMatch }: MatchProps) {
 
   const isLastSet = setNumber === (POINTS_PER_MATCH * 2 - 1);
   return (
@@ -85,7 +85,7 @@ function Match({setNumber, winner, sets, teams, startNewMatch}: MatchProps) {
         />
       }
 
-      <TeamComponent color={'red'} isLastSet={isLastSet}/>
+      <TeamComponent color={'red'} isLastSet={isLastSet} />
 
       <div className="setcounter">
         <div>
@@ -93,13 +93,13 @@ function Match({setNumber, winner, sets, teams, startNewMatch}: MatchProps) {
         </div>
       </div>
 
-      <TeamComponent color={'blue'} isLastSet={isLastSet}/>
+      <TeamComponent color={'blue'} isLastSet={isLastSet} />
 
     </div>
   );
 }
 
-export function mapStateToProps({ranked: {selectPlayerFor, teams, sets}}: any) {
+export function mapStateToProps({ ranked: { selectPlayerFor, teams, sets } }: any) {
   let winner: TeamColor | null = null;
   if (teams.red.wonSets === POINTS_PER_MATCH) {
     winner = 'red';

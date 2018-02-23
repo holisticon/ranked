@@ -39,9 +39,9 @@ function switchPlayerPositions(state: StoreState, teamColor: TeamColor): StoreSt
 }
 
 function removePlayerFromTeam(playerUsername: string, team: Team): Team {
-  if (team.player1.username === playerUsername) {
+  if (team.player1.id === playerUsername) {
     return { ...team, player1: createEmptyPlayer() };
-  } else if (team.player2.username === playerUsername) {
+  } else if (team.player2.id === playerUsername) {
     return { ...team, player2: createEmptyPlayer() };
   } else {
     return team;
@@ -140,7 +140,7 @@ export function ranked(state: StoreState, rankedAction: Actions.RankedAction): S
 
     case Actions.SET_PLAYER:
       action = rankedAction as Actions.SetPlayer;
-      const teams = removePlayer(action.player.username, state.teams);
+      const teams = removePlayer(action.player.id, state.teams);
       teams[action.team][action.position] = action.player;
 
       return {...state, selectPlayerFor: null, teams};

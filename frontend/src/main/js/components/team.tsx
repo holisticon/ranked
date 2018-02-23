@@ -48,9 +48,9 @@ function Team({ team, isLastSet, classes,
 
       <div className="add-defense" onClick={ (e) => stopEvent(e) && selectPlayer('defense') }>
         {
-          !team.defense.username ?
+          !team.defense.id ?
             <i className="material-icons">&#xE853;</i> :
-            <PlayerIcon click={ () => { return; } } img={ team.defense.img } />
+            <PlayerIcon click={ () => { return; } } img={ team.defense.imageUrl } />
         }
         <span className="name">Tor</span>
       </div>
@@ -64,9 +64,9 @@ function Team({ team, isLastSet, classes,
 
       <div className="add-attack" onClick={ (e) => stopEvent(e) && selectPlayer('attack') }>
         {
-          !team.attack.username ?
+          !team.attack.id ?
             <i className="material-icons">&#xE853;</i> :
-            <PlayerIcon click={ () => { return; } } img={ team.attack.img } />
+            <PlayerIcon click={ () => { return; } } img={ team.attack.imageUrl } />
         }
         <span className="name">Angriff</span>
       </div>
