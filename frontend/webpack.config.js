@@ -8,7 +8,7 @@ module.exports = {
         "./src/main/js/app.tsx",
     ],
     output: {
-        path: path.join(__dirname, 'target/webpack/built'),
+        path: path.join(__dirname, 'src/main/resources/static'),
         filename: "bundle.js",
     },
 
@@ -24,7 +24,7 @@ module.exports = {
         new webpack.NamedModulesPlugin(),
         new webpack.HotModuleReplacementPlugin(),
         new HtmlWebpackPlugin({
-            template: path.resolve(__dirname, './src/main/resources/static/index.html')
+            template: path.resolve(__dirname, './src/main/js/index.html')
         }),
     ],
 
@@ -54,9 +54,10 @@ module.exports = {
     devServer: {
         hot: true,
         port: 3000,
-        proxy: {
-            "/": "http://localhost:8080"
-        }
+        proxy: [{
+            context: ["/command", "/view"],
+            target: "http://localhost:8080"
+        }]
     },
 
     // When importing a module whose path matches one of the following, just

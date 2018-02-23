@@ -3,7 +3,8 @@ import TeamComponent from '../components/team';
 import { Sets, Team, TeamColor, Teams } from '../types/types';
 import { connect, Dispatch } from 'react-redux';
 import * as Actions from '../actions';
-import { BACKEND_URL, POINTS_PER_MATCH } from '../config';
+import axios from 'axios';
+import { POINTS_PER_MATCH } from '../config';
 import { Dialog } from '../components/dialog';
 import './match.css';
 
@@ -16,30 +17,23 @@ export interface MatchProps {
 }
 
 function sendResults(sets: Sets, teams: Teams) {
-  fetch(BACKEND_URL + '/command/match', {
-    method: 'POST',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
+  axios.post('command/match', {
+    teamRed: {
+      player1: { value: teams.red.player1.id },
+      player2: { value: teams.red.player2.id }
     },
-    body: JSON.stringify({
-      teamRed: {
-        player1: { value: teams.red.player1.id },
-        player2: { value: teams.red.player2.id }
-      },
-      teamBlue: {
-        player1: { value: teams.blue.player1.id },
-        player2: { value: teams.blue.player2.id }
-      },
-      matchSets: sets.map(set => {
-        return {
-          type: 'result',
-          goalsRed: set.goals.red,
-          goalsBlue: set.goals.blue,
-          offenseRed: { value: teams.red[set.offense.red].id },
-          offenseBlue: { value: teams.blue[set.offense.blue].id }
-        };
-      })
+    teamBlue: {
+      player1: { value: teams.blue.player1.id },
+      player2: { value: teams.blue.player2.id }
+    },
+    matchSets: sets.map(set => {
+      return {
+        type: 'result',
+        goalsRed: set.goals.red,
+        goalsBlue: set.goals.blue,
+        offenseRed: { value: teams.red[set.offense.red].id },
+        offenseBlue: { value: teams.blue[set.offense.blue].id }
+      };
     })
   });
 }
