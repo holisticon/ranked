@@ -5,13 +5,8 @@ export interface Player {
 }
 
 export type PlayerKey = 'player1' | 'player2';
-export type TeamColor = 'red' | 'blue';
-export type PlayerPosition = 'attack' | 'defense';
-
-export interface Teams {
-  red: Team;
-  blue: Team;
-}
+export type TeamColor= 'red' | 'blue';
+export type TeamKey = 'team1' | 'team2';
 
 export interface Team {
   player1: Player;
@@ -19,15 +14,16 @@ export interface Team {
   wonSets: number;
 }
 
-export interface Sets extends Array<Set> {}
+export type Sets = Array<Set>;
 
 export interface Set {
-  goals: {
-    red: number,
-    blue: number
-  };
-  offense: {
-    red: PlayerKey,
-    blue: PlayerKey
-  };
+  red: Composition;
+  blue: Composition;
+}
+
+export interface Composition {
+  attack: PlayerKey;
+  defense: PlayerKey;
+  team: TeamKey;
+  goals: number;
 }

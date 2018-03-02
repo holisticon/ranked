@@ -2,15 +2,9 @@ import * as React from 'react';
 import { Swipeable } from 'react-touch';
 import { connect, Dispatch } from 'react-redux';
 import * as Actions from '../actions';
-import { Player, TeamColor, PlayerPosition, Team } from '../types/types';
+import { Composition, TeamColor, PlayerKey, Team, TeamKey, Set } from '../types/types';
 import { PlayerIcon } from './player_icon';
 import { push } from 'react-router-redux';
-
-interface ActiveTeam {
-  goals: number;
-  attack: Player;
-  defense: Player;
-}
 
 export interface TeamProps {
   color: TeamColor;
@@ -18,12 +12,13 @@ export interface TeamProps {
 }
 
 interface InternalTeamProps {
-  team: ActiveTeam;
+  team: Team;
+  composition: Composition;
   isLastSet: boolean;
   classes: string;
   incGoals: () => void;
   decGoals: () => void;
-  selectPlayer: (position: PlayerPosition) => void;
+  selectPlayer: (team: TeamKey, player: PlayerKey) => void;
   switchPlayerPositions: () => void;
 }
 
@@ -33,7 +28,7 @@ function stopEvent(event: React.SyntheticEvent<Object>): boolean {
   return true;
 }
 
-function Team({ team, isLastSet, classes,
+function Team({ team, composition, isLastSet, classes,
   incGoals, decGoals, selectPlayer, switchPlayerPositions }: InternalTeamProps) {
 
   return (
@@ -41,16 +36,19 @@ function Team({ team, isLastSet, classes,
       <div className="goal-counter-container">
         <Swipeable onSwipeRight={ () => incGoals() } onSwipeLeft={ () => decGoals() }>
           <div className="goal-counter">
-            <span className="current-goals">{ team.goals }</span>
+            <span className="current-goals">{ composition.goals }</span>
           </div>
         </Swipeable>
       </div>
 
-      <div className="add-defense" onClick={ (e) => stopEvent(e) && selectPlayer('defense') }>
+      <div
+        className="add-defense"
+        onClick={ (e) => stopEvent(e) && selectPlayer(composition.team, composition.defense) }
+      >
         {
-          !team.defense.id ?
+          !team[composition.defense].id ?
             <i className="material-icons">&#xE853;</i> :
-            <PlayerIcon click={ () => { return; } } img={ team.defense.imageUrl } />
+            <PlayerIcon click={ () => { return; } } img={ team[composition.defense].imageUrl } />
         }
         <span className="name">Tor</span>
       </div>
@@ -62,11 +60,14 @@ function Team({ team, isLastSet, classes,
         <i className="material-icons">&#xE0C3;</i>
       </div>
 
-      <div className="add-attack" onClick={ (e) => stopEvent(e) && selectPlayer('attack') }>
+      <div
+        className="add-attack"
+        onClick={ (e) => stopEvent(e) && selectPlayer(composition.team, composition.attack) }
+      >
         {
-          !team.attack.id ?
+          !team[composition.attack].id ?
             <i className="material-icons">&#xE853;</i> :
-            <PlayerIcon click={ () => { return; } } img={ team.attack.imageUrl } />
+            <PlayerIcon click={ () => { return; } } img={ team[composition.attack].imageUrl } />
         }
         <span className="name">Angriff</span>
       </div>
@@ -74,19 +75,13 @@ function Team({ team, isLastSet, classes,
   );
 }
 
-export function mapStateToProps({ranked: { selectPlayerFor, teams, sets }}: any, { color, isLastSet }: TeamProps) {
-  const currentSet = sets[sets.length - 1];
-
-  const getTeamPositions = (team: Team, offense: string) => {
-    if (offense === 'player1') {
-      return { attack: team.player1, defense: team.player2 };
-    } else {
-      return { attack: team.player2, defense: team.player1 };
-    }
-  };
+export function mapStateToProps({ranked: store}: any, { color, isLastSet }: TeamProps) {
+  const currentSet: Set = store.sets[store.sets.length - 1];
+  const composition: Composition = currentSet[color];
 
   return {
-    team: { ...getTeamPositions(teams[color], currentSet.offense[color]), goals: currentSet.goals[color]},
+    team: store[composition.team],
+    composition,
     classes: 'team-' + color,
     isLastSet
   };
@@ -96,8 +91,8 @@ export function mapDispatchToProps(dispatch: Dispatch<Actions.RankedAction>, { c
   return {
     incGoals: () => dispatch(Actions.incGoals(color)),
     decGoals: () => dispatch(Actions.decGoals(color)),
-    selectPlayer: (position: PlayerPosition) => {
-      dispatch(Actions.selectPlayer(color, position));
+    selectPlayer: (team: TeamKey, player: PlayerKey) => {
+      dispatch(Actions.selectPlayer(team, player));
       dispatch(push('/select'));
     },
     switchPlayerPositions: () => dispatch(Actions.switchPlayerPositions(color))

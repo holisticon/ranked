@@ -1,38 +1,44 @@
 import * as React from 'react';
 import TeamComponent from '../components/team';
-import { Sets, Team, TeamColor, Teams } from '../types/types';
+import { Sets, Team, TeamKey, Set, Composition } from '../types/types';
 import { connect, Dispatch } from 'react-redux';
 import * as Actions from '../actions';
 import axios from 'axios';
 import { POINTS_PER_MATCH } from '../config';
 import { Dialog } from '../components/dialog';
 import './match.css';
+import { PartialStoreState } from '../types/store.state';
 
 export interface MatchProps {
   sets: Sets;
-  teams: Teams;
+  team1: Team;
+  team2: Team;
   setNumber: number;
-  winner: TeamColor | null;
+  winner: TeamKey | null;
   startNewMatch: () => void;
 }
 
-function sendResults(sets: Sets, teams: Teams) {
+function getTeam(set: Set, team: TeamKey): Composition {
+  return set.red.team === team ? set.red : set.blue;
+}
+
+function sendResults(sets: Sets, team1: Team, team2: Team) {
   axios.post('command/match', {
     teamRed: {
-      player1: { value: teams.red.player1.id },
-      player2: { value: teams.red.player2.id }
+      player1: { value: team1.player1.id },
+      player2: { value: team1.player2.id }
     },
     teamBlue: {
-      player1: { value: teams.blue.player1.id },
-      player2: { value: teams.blue.player2.id }
+      player1: { value: team2.player1.id },
+      player2: { value: team2.player2.id }
     },
     matchSets: sets.map(set => {
       return {
         type: 'result',
-        goalsRed: set.goals.red,
-        goalsBlue: set.goals.blue,
-        offenseRed: { value: teams.red[set.offense.red].id },
-        offenseBlue: { value: teams.blue[set.offense.blue].id }
+        goalsRed: getTeam(set, 'team1').goals,
+        goalsBlue: getTeam(set, 'team1').goals,
+        offenseRed: { value: team1[getTeam(set, 'team1').attack].id },
+        offenseBlue: { value: team2[getTeam(set, 'team2').attack].id }
       };
     })
   });
@@ -46,19 +52,19 @@ function getWinningPlayersAsString(team: Team): string {
   }
 }
 
-function allPlayersSet(red: Team, blue: Team): boolean {
-  return !!red && !!blue && !!red.player1 && !!red.player2 && !!blue.player1 && !!blue.player2;
+function allPlayersSet(team1: Team, team2: Team): boolean {
+  return !!team1 && !!team2 && !!team1.player1 && !!team1.player2 && !!team2.player1 && !!team2.player2;
 }
 
-function getDialogMessage(winner: TeamColor, teams: Teams): string {
-  if (allPlayersSet(teams.red, teams.blue)) {
-    return 'Ganz großes Kino, ' + getWinningPlayersAsString(winner === 'red' ? teams.red : teams.blue) + '!';
+function getDialogMessage(winner: TeamKey, team1: Team, team2: Team): string {
+  if (allPlayersSet(team1, team2)) {
+    return 'Ganz großes Kino, ' + getWinningPlayersAsString(winner === 'team1' ? team1 : team2) + '!';
   } else {
     return 'Tolles Spiel! Zum Übermitteln der Ergebnisse müssen die Spieler vorab festgelegt werden.';
   }
 }
 
-function Match({ setNumber, winner, sets, teams, startNewMatch }: MatchProps) {
+function Match({ setNumber, winner, sets, team1, team2, startNewMatch }: MatchProps) {
 
   const isLastSet = setNumber === (POINTS_PER_MATCH * 2 - 1);
   return (
@@ -67,11 +73,11 @@ function Match({ setNumber, winner, sets, teams, startNewMatch }: MatchProps) {
         winner &&
         <Dialog
           headline="Spiel beendet"
-          text={getDialogMessage(winner, teams)}
+          text={getDialogMessage(winner, team1, team2)}
           buttons={[
             {
               text: 'OKBÄM!', type: 'ok', click: () => {
-                sendResults(sets, teams);
+                sendResults(sets, team1, team2);
                 startNewMatch();
               }
             }
@@ -93,17 +99,18 @@ function Match({ setNumber, winner, sets, teams, startNewMatch }: MatchProps) {
   );
 }
 
-export function mapStateToProps({ ranked: { selectPlayerFor, teams, sets } }: any) {
-  let winner: TeamColor | null = null;
-  if (teams.red.wonSets === POINTS_PER_MATCH) {
-    winner = 'red';
-  } else if (teams.blue.wonSets === POINTS_PER_MATCH) {
-    winner = 'blue';
+export function mapStateToProps({ ranked: { selectPlayerFor, team1, team2, sets } }: PartialStoreState) {
+  let winner: TeamKey | null = null;
+  if (team1.wonSets === POINTS_PER_MATCH) {
+    winner = 'team1';
+  } else if (team2.wonSets === POINTS_PER_MATCH) {
+    winner = 'team2';
   }
 
   return {
     sets,
-    teams,
+    team1,
+    team2,
     setNumber: sets.length,
     winner
   };

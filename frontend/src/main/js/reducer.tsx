@@ -1,7 +1,14 @@
 import * as Actions from './actions';
-import { StoreState, createEmptySet, defaultState, createEmptyPlayer } from './types/store.state';
-import { TeamColor, PlayerKey, Teams, Team } from './types/types';
+import { RankedStore, defaultState, createEmptyPlayer } from './types/store.state';
+import { TeamColor, Team, Composition, TeamKey } from './types/types';
 import { POINTS_PER_SET, POINTS_PER_MATCH } from './config';
+
+function copyAndSet<T>(item: any, setter: (itemCopy: T) => void): T {
+  const copy: T = {...item};
+  setter(copy);
+
+  return copy;
+}
 
 function changeNthSet<T>(sets: Array<T>, n: number, itemChanger: (item: T) => T): Array<T> {
   return sets.map((item, index) => {
@@ -13,27 +20,26 @@ function changeNthSet<T>(sets: Array<T>, n: number, itemChanger: (item: T) => T)
   });
 }
 
-function changeGoals(state: StoreState, team: TeamColor, offset: number): StoreState {
+function changeGoals(state: RankedStore, color: TeamColor, offset: number): RankedStore {
   return {
     ...state, sets: changeNthSet(state.sets, state.sets.length - 1, (item) => {
-      const goals = {...item.goals};
-      goals[team] += offset;
+      const team: Composition = copyAndSet(item[color], newTeam => newTeam.goals += offset);
 
-      return {...item, goals: goals};
+      return copyAndSet(item, newItem => newItem[color] = team);
     })
   };
 }
 
-function getOtherPlayerKey(onePlayerKey: string): PlayerKey {
-  return onePlayerKey === 'player1' ? 'player2' : 'player1';
-}
-
-function switchPlayerPositions(state: StoreState, teamColor: TeamColor): StoreState {
+function switchPlayerPositions(state: RankedStore, teamColor: TeamColor): RankedStore {
   return {
     ...state, sets: changeNthSet(state.sets, state.sets.length - 1, (item) => {
-      const offense = {...item.offense};
-      offense[teamColor] = getOtherPlayerKey(offense[teamColor]);
-      return {...item, offense};
+      return copyAndSet(item, newItem => {
+        newItem[teamColor] = {
+          ...item[teamColor],
+          attack: item[teamColor].defense,
+          defense: item[teamColor].attack
+        };
+      });
     })
   };
 }
@@ -48,67 +54,48 @@ function removePlayerFromTeam(playerUsername: string, team: Team): Team {
   }
 }
 
-function removePlayer(playerUsername: string, teams: Teams): Teams {
-  return {
-    red: removePlayerFromTeam(playerUsername, teams.red),
-    blue: removePlayerFromTeam(playerUsername, teams.blue)
-  };
-}
+function startNewSet(state: RankedStore): RankedStore {
+  const currentSet = state.sets[state.sets.length - 1];
+  let winnerTeam: TeamKey;
 
-function startNewSet(state: StoreState): StoreState {
-  const wonSets = {
-    red: state.teams.red.wonSets,
-    blue: state.teams.blue.wonSets
-  };
-
-  if (state.sets[state.sets.length - 1].goals.red === POINTS_PER_SET) {
-    wonSets.red++;
+  if (currentSet.red.goals === POINTS_PER_SET) {
+    winnerTeam = currentSet.red.team;
   } else {
-    wonSets.blue++;
+    winnerTeam = currentSet.blue.team;
   }
-
-  // match ended, just refresh score and do nothing more
-  if (wonSets.red === POINTS_PER_MATCH || wonSets.blue === POINTS_PER_MATCH) {
-    return {
-      ...state,
-      teams: {
-        red: {...state.teams.red, wonSets: wonSets.red},
-        blue: {...state.teams.blue, wonSets: wonSets.blue}
-      }
-    };
-  }
-
-  // switch teams
-  const newState = {
-    ...state,
-    teams: {
-      red: {...state.teams.blue, wonSets: wonSets.blue},
-      blue: {...state.teams.red, wonSets: wonSets.red}
-    },
-    sets: [...state.sets]
-  };
-
-  // create new empty set
-  const newSet = createEmptySet();
-
-  // switch player positions for new set
-  newSet.offense.red = getOtherPlayerKey(state.sets[state.sets.length - 1].offense.red);
-  newSet.offense.blue = getOtherPlayerKey(state.sets[state.sets.length - 1].offense.blue);
-
-  // add new set
-  newState.sets.push(newSet);
-
-  return newState;
+  const refreshedWinnerTeam: Team = copyAndSet(state[winnerTeam], copy => copy.wonSets += 1);
+  
+  return copyAndSet(state, newState => {
+    newState[winnerTeam] = refreshedWinnerTeam;
+    if (refreshedWinnerTeam.wonSets < POINTS_PER_MATCH) {
+      // match not ended, add next set to match
+      // switch teams and player positions
+      newState.sets.push({
+        red: {
+          attack: currentSet.blue.defense,
+          defense: currentSet.blue.attack,
+          team: currentSet.blue.team,
+          goals: 0
+        },
+        blue: {
+          attack: currentSet.red.defense,
+          defense: currentSet.red.attack,
+          team: currentSet.red.team,
+          goals: 0
+        }
+      });
+    }
+  });
 }
 
-export function ranked(state: StoreState, rankedAction: Actions.RankedAction): StoreState {
+export function ranked(state: RankedStore, rankedAction: Actions.RankedAction): RankedStore {
   let action;
   switch (rankedAction.type) {
     case Actions.INC_GOALS:
       action = rankedAction as Actions.IncGoals;
       const newState = changeGoals(state, action.team, 1);
 
-      if (newState.sets[newState.sets.length - 1].goals[action.team] >= POINTS_PER_SET) {
+      if (newState.sets[newState.sets.length - 1][action.team].goals >= POINTS_PER_SET) {
         return startNewSet(newState);
       }
 
@@ -117,7 +104,7 @@ export function ranked(state: StoreState, rankedAction: Actions.RankedAction): S
     case Actions.DEC_GOALS:
       action = rankedAction as Actions.DecGoals;
       // only decrease score if above zero
-      if (state.sets[state.sets.length - 1].goals[action.team] > 0) {
+      if (state.sets[state.sets.length - 1][action.team].goals > 0) {
         return changeGoals(state, action.team, -1);
       }
       break;
@@ -128,22 +115,22 @@ export function ranked(state: StoreState, rankedAction: Actions.RankedAction): S
 
     case Actions.SELECT_PLAYER:
       action = rankedAction as Actions.SelectPlayer;
-      let playerPosition = action.position;
-      let currentSet = state.sets[state.sets.length - 1];
-      let playerKey: PlayerKey = currentSet.offense[action.team];
 
-      if (playerPosition === 'defense') {
-        playerKey = getOtherPlayerKey(playerKey);
-      }
-
-      return {...state, selectPlayerFor: {team: action.team, position: playerKey}};
+      return {...state, selectPlayerFor: {team: action.team, player: action.player}};
 
     case Actions.SET_PLAYER:
-      action = rankedAction as Actions.SetPlayer;
-      const teams = removePlayer(action.player.id, state.teams);
-      teams[action.team][action.position] = action.player;
+      const setPlayerAction = rankedAction as Actions.SetPlayer;
 
-      return {...state, selectPlayerFor: null, teams};
+      return copyAndSet(state, copyState => {
+        copyState.selectPlayerFor = null;
+
+        // remove selected player from everywhere if it was already selected
+        copyState.team1 = removePlayerFromTeam(setPlayerAction.selected.id, copyState.team1);
+        copyState.team2 = removePlayerFromTeam(setPlayerAction.selected.id, copyState.team2);
+
+        // add selected player
+        copyState[setPlayerAction.team][setPlayerAction.player] = setPlayerAction.selected;
+      });
 
     case Actions.START_NEW_MATCH:
       return defaultState();

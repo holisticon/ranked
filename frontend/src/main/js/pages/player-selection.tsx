@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import * as Actions from '../actions';
-import { Player, TeamColor, PlayerKey } from '../types/types';
+import { Player, PlayerKey, TeamKey } from '../types/types';
 import axios from 'axios';
 import { PlayerIcon } from '../components/player_icon';
 import { Link } from 'react-router-dom';
@@ -13,11 +13,10 @@ const alphabet = 'abcdefghijklmnopqrstuvwxyz';
 
 export interface PlayerSelectionProps {
   match?: Match<any>;
-  upsideDown: boolean;
   unavailableLetters: string;
   availablePlayers: Array<Player>;
   selectPlayerFor: any;
-  select: (team: TeamColor, position: PlayerKey, player: Player) => void;
+  select: (team: TeamKey, player: PlayerKey, selected: Player) => void;
   updateAvailablePlayers: (players: Array<Player>) => void;
 }
 
@@ -53,7 +52,7 @@ function getPlayerIcons(availablePlayers: Array<Player>, select: (player: Player
     });
 }
 
-function PlayerSelection({ upsideDown, unavailableLetters, availablePlayers,
+function PlayerSelection({ unavailableLetters, availablePlayers,
   selectPlayerFor, updateAvailablePlayers, select, match }: PlayerSelectionProps) {
 
   if (availablePlayers.length === 0) {
@@ -66,13 +65,10 @@ function PlayerSelection({ upsideDown, unavailableLetters, availablePlayers,
     selectedLetter = match.params.letter;
   }
 
-  const selectPlayer = (player: Player) => select(selectPlayerFor.team, selectPlayerFor.position, player);
-
-  const rotation = upsideDown ? 'upside-down' : '';
-  const classes = `${ rotation } player-selection`;
+  const selectPlayer = (player: Player) => select(selectPlayerFor.team, selectPlayerFor.player, player);
 
   return (
-    <div className={ classes }>
+    <div className={ 'player-selection' }>
       { !selectedLetter ?
         getLetters(unavailableLetters) :
         getPlayerIcons(availablePlayers, selectPlayer, selectedLetter ) }
@@ -87,7 +83,6 @@ export function mapStateToProps({ ranked: { availablePlayers, selectPlayerFor } 
   });
 
   return {
-    upsideDown: selectPlayerFor && selectPlayerFor.team === 'red',
     unavailableLetters,
     availablePlayers,
     selectPlayerFor
@@ -97,8 +92,8 @@ export function mapStateToProps({ ranked: { availablePlayers, selectPlayerFor } 
 export function mapDispatchToProps(dispatch: Dispatch<Actions.RankedAction>) {
   return {
     updateAvailablePlayers: (players: Array<Player>) => dispatch(Actions.updateAvailablePlayers(players)),
-    select: (team: TeamColor, position: PlayerKey, player: Player) => {
-      dispatch(Actions.setPlayer(team, position, player));
+    select: (team: TeamKey, player: PlayerKey, selected: Player) => {
+      dispatch(Actions.setPlayer(team, player, selected));
       dispatch(push('/'));
     }
   };

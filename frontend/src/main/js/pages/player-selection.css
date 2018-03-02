@@ -11,10 +11,6 @@
   box-sizing: border-box;
 }
 
-.player-selection.upside-down {
-  transform: rotate(180deg);
-}
-
 .player-selection .player-icon, .player-selection .letter {
   width: 24%;
   height: auto;

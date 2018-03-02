@@ -1,16 +1,31 @@
-import { Player, PlayerKey, Sets, Teams } from './types';
+import { Player, PlayerKey, Sets, Set, Team, TeamKey } from './types';
 
-export interface StoreState {
+export interface PartialStoreState {
+  ranked: RankedStore;
+}
+
+export interface RankedStore {
   availablePlayers: Array<Player>;
-  selectPlayerFor: any;
-  teams: Teams;
+  selectPlayerFor: { team: TeamKey, player: PlayerKey } | null;
+  team1: Team;
+  team2: Team;
   sets: Sets;
 }
 
-export function createEmptySet() {
+export function createFirstSet(): Set {
   return {
-    goals: { red: 0, blue: 0 },
-    offense: { red: 'player1' as PlayerKey, blue: 'player1' as PlayerKey }
+    red: {
+      attack: 'player1',
+      defense: 'player2',
+      team: 'team1',
+      goals: 0
+    },
+    blue: {
+      attack: 'player1',
+      defense: 'player2',
+      team: 'team2',
+      goals: 0
+    }
   };
 }
 
@@ -22,14 +37,20 @@ export function createEmptyPlayer(): Player {
   };
 }
 
-export function defaultState(): StoreState {
+function createEmptyTeam(): Team {
+  return {
+    player1: createEmptyPlayer(),
+    player2: createEmptyPlayer(),
+    wonSets: 0
+  };
+}
+
+export function defaultState(): RankedStore {
   return {
     availablePlayers: [],
     selectPlayerFor: null,
-    teams: {
-      red: { player1: createEmptyPlayer(), player2: createEmptyPlayer(), wonSets: 0 },
-      blue: { player1: createEmptyPlayer(), player2: createEmptyPlayer(), wonSets: 0 }
-    },
-    sets: [createEmptySet()]
+    team1: createEmptyTeam(),
+    team2: createEmptyTeam(),
+    sets: [createFirstSet()]
   };
 }
