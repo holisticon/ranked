@@ -8,12 +8,15 @@ import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiResponse
 import io.swagger.annotations.ApiResponses
 import mu.KLogging
+import org.axonframework.commandhandling.CommandCallback
+import org.axonframework.commandhandling.CommandMessage
 import org.axonframework.commandhandling.gateway.CommandGateway
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import java.util.function.BiConsumer
 import javax.validation.Valid
 
 @RestController
@@ -29,12 +32,18 @@ class CommandApi(val commandGateway: CommandGateway) {
   )
   @PostMapping(path = ["/match"])
   fun createMatch(@RequestBody @Valid match: CreateMatch): ResponseEntity<String> {
-    try {
-      commandGateway.sendAndWait<CreateMatch>(match)
-      return ResponseEntity.noContent().build()
-    } catch (e: Throwable) {
-      return ResponseEntity.badRequest().body(e.message)
-    }
+
+      var response: ResponseEntity<String> = ResponseEntity.noContent().build()
+      commandGateway.send<CreateMatch, Any>(match, object: CommandCallback<CreateMatch, Any> {
+        override fun onSuccess(commandMessage: CommandMessage<out CreateMatch>?, result: Any?) {
+          logger.debug { "Successfully submitted a match" }
+        }
+
+        override fun onFailure(commandMessage: CommandMessage<out CreateMatch>?, cause: Throwable?) {
+          logger.debug { "Failure by submitting a match" }
+          response = ResponseEntity.badRequest().build()
+        }
+      })
+      return response
   }
 }
-

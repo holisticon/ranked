@@ -128,10 +128,10 @@ data class TimedMatchSet(
 ) : AbstractMatchSet()
 
 private fun goalsByTeamColor(goals: List<Pair<TeamColor, LocalDateTime>>, tc: TeamColor): Int {
-  val goals = goals.groupBy { it.first }.filter { it.key == tc }.map { it.value.count() }
-  return if (goals.isEmpty()) {
+  val groupedGoals = goals.groupBy { it.first }.filter { it.key == tc }.map { it.value.count() }
+  return if (groupedGoals.isEmpty()) {
     -1
   } else {
-    goals.first()
+    groupedGoals.first()
   }
 }
