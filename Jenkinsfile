@@ -27,25 +27,20 @@ timeout(30) {
         checkout scm
       }
 
-      dir('server') {
+      stage('Build Docker Image') {
+        // build docker images
+        sh "./mvnw dockerfile:build"
+        sh "./mvnw -Pdocker,frontend"
+      }
 
-        stage('Build Docker Image') {
-          // build docker images
-          sh "./mvnw dockerfile:build"
-          sh "./mvnw -Pdocker,frontend"
-        }
-
-        stage('Start Docker Image') {
-          // run images
-          sh "./docker-run.sh"
-          sh "echo Waiting for containers to come up"
-          utils.waitForAppToBeReady('localhost:18080')
-        }
-
+      stage('Start Docker Image') {
+        // run images
+        sh "./docker-run.sh"
+        sh "echo Waiting for containers to come up"
+        utils.waitForAppToBeReady('localhost:18080')
       }
 
     } catch (err) {
-      rocketSend 'Error during pipeline'
       throw err
     }
   }
