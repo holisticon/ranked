@@ -56,7 +56,7 @@ module.exports = {
         port: 3000,
         proxy: [{
             context: ["/command", "/view"],
-            target: "http://localhost:8080"
+            target: "http://localhost:11080"
         }]
     },
 
