@@ -1,3 +1,5 @@
 node/
 node_modules/
 *.log
+src/main/resources/static/bundle*
+src/main/resources/static/index.html
