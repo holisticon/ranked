@@ -23,6 +23,8 @@ import org.axonframework.eventhandling.tokenstore.jpa.TokenEntry
 import org.axonframework.messaging.interceptors.BeanValidationInterceptor
 import org.axonframework.messaging.interceptors.LoggingInterceptor
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean

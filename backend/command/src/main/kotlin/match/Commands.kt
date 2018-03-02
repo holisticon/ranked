@@ -21,12 +21,16 @@ data class CreateMatch(
   @TargetAggregateIdentifier
   @field: NotEmpty
   val matchId: String = UUID.randomUUID().toString(),
+
   @field: Valid
   val teamRed: Team,
+
   @field: Valid
   val teamBlue: Team,
+
   @SpELAssert("@matchService.validateMatch(#this)", message = "{ranked.createMatch.finished}")
   val matchSets: List<AbstractMatchSet>,
+
   val tournamentId: String? = null,
 
   val startTime: LocalDateTime = LocalDateTime.now()

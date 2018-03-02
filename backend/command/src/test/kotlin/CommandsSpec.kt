@@ -25,7 +25,7 @@ import javax.validation.Validator
     "ranked.score.set=6"
   )
 )*/
-@ContextConfiguration(classes = arrayOf(CreateMatchSpec.MatchSpecTestConfiguration::class))
+@ContextConfiguration(classes = [CreateMatchSpec.MatchSpecTestConfiguration::class])
 class CreateMatchSpec {
 
   val piggy = UserName("piggy")

@@ -45,6 +45,7 @@ class Match() {
 
     var teamWins: MutableMap<Team, Int> = mutableMapOf()
 
+    var matchSetCompleted = false
     // (3) calculate which team won a set and fire TeamWonMatchSet event
     // **not** apply() but applyEvent() for further decomposition, each player won as well
     c.matchSets.forEach { m ->
@@ -79,13 +80,17 @@ class Match() {
 
       // if this was the last set (one team won), fire event
       if (matchService.winsMatch(wins)) {
+        matchSetCompleted = true
         apply(TeamWonMatch(
           matchId = c.matchId,
           team = setTeam,
           looser = setLooser
         ))
       }
+    }
 
+    if (!matchSetCompleted) {
+      throw IllegalArgumentException("Match set has no winner.")
     }
   }
 

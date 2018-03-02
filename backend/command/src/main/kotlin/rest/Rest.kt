@@ -31,7 +31,7 @@ class CommandApi(val commandGateway: CommandGateway) {
     ApiResponse(code = 400, message = "If the create match request was not correct.")
   )
   @PostMapping(path = ["/match"])
-  fun createMatch(@RequestBody @Valid match: CreateMatch): ResponseEntity<String> {
+  fun createMatch(@RequestBody match: CreateMatch): ResponseEntity<String> {
 
       var response: ResponseEntity<String> = ResponseEntity.noContent().build()
       commandGateway.send<CreateMatch, Any>(match, object: CommandCallback<CreateMatch, Any> {
@@ -39,8 +39,8 @@ class CommandApi(val commandGateway: CommandGateway) {
           logger.debug { "Successfully submitted a match" }
         }
 
-        override fun onFailure(commandMessage: CommandMessage<out CreateMatch>?, cause: Throwable?) {
-          logger.debug { "Failure by submitting a match" }
+        override fun onFailure(commandMessage: CommandMessage<out CreateMatch>?, cause: Throwable) {
+          logger.error { "Failure by submitting a match: ${cause.localizedMessage}" }
           response = ResponseEntity.badRequest().build()
         }
       })
