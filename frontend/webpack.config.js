@@ -58,6 +58,7 @@ module.exports = {
             context: ["/command", "/view"],
             target: "http://localhost:11080"
         }]
+        historyApiFallback: true
     },
 
     // When importing a module whose path matches one of the following, just
