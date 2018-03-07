@@ -54,11 +54,11 @@ module.exports = {
     devServer: {
         hot: true,
         port: 3000,
+        historyApiFallback: true,
         proxy: [{
             context: ["/command", "/view"],
             target: "http://localhost:11080"
         }]
-        historyApiFallback: true
     },
 
     // When importing a module whose path matches one of the following, just
