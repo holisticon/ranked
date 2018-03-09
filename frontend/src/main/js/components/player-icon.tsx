@@ -1,4 +1,5 @@
 import * as React from 'react';
+import './player-icon.css';
 
 export interface PlayerIconProps {
   click: () => void;
