@@ -1,0 +1,18 @@
+.panel {
+    z-index: 10;
+}
+
+.panel .display {
+    position: absolute;
+    height: 1.6rem;
+    width: 8rem;
+    top: calc(50% - 0.8rem);
+    right: -3.2rem;
+    background-color: #535353;
+    border-radius: 0 0 1.2rem 1.2rem;
+    color: #ffffff;
+    text-align: center;
+    line-height: 1.6rem;
+    vertical-align: middle;
+    transform: rotate(90deg);
+}

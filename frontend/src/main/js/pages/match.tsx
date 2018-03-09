@@ -8,6 +8,8 @@ import { POINTS_PER_MATCH } from '../config';
 import { Dialog } from '../components/dialog';
 import './match.css';
 import { PartialStoreState } from '../types/store.state';
+import PanelComponent from '../components/panel';
+import { Timer } from '../misc/timer.service';
 
 export interface MatchProps {
   sets: Sets;
@@ -23,6 +25,15 @@ function getTeam(set: Set, team: TeamKey): Composition {
 }
 
 function sendResults(sets: Sets, team1: Team, team2: Team) {
+  const matchTime = Timer.Service.getTimeInSec();
+  let startTime = null;
+
+  if (matchTime > 0) {
+    let now = new Date();
+    startTime = new Date(now.getTime() - (Timer.Service.getTimeInSec() * 1000));
+  }
+  Timer.Service.reset();
+
   axios.post('command/match', {
     teamRed: {
       player1: { value: team1.player1.id },
@@ -40,7 +51,8 @@ function sendResults(sets: Sets, team1: Team, team2: Team) {
         offenseRed: { value: team1[getTeam(set, 'team1').attack].id },
         offenseBlue: { value: team2[getTeam(set, 'team2').attack].id }
       };
-    })
+    }),
+    startTime: startTime == null ? undefined : startTime.toISOString()
   });
 }
 
@@ -65,8 +77,12 @@ function getDialogMessage(winner: TeamKey, team1: Team, team2: Team): string {
 }
 
 function Match({ setNumber, winner, sets, team1, team2, startNewMatch }: MatchProps) {
-
   const isLastSet = setNumber === (POINTS_PER_MATCH * 2 - 1);
+
+  if (winner) {
+    Timer.Service.pause();
+  }
+
   return (
     <div className="match">
       {
@@ -94,6 +110,8 @@ function Match({ setNumber, winner, sets, team1, team2, startNewMatch }: MatchPr
       </div>
 
       <TeamComponent color={'blue'} isLastSet={isLastSet} />
+
+      <PanelComponent />
 
     </div>
   );
