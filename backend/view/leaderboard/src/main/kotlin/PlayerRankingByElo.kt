@@ -45,7 +45,7 @@ class PlayerRankingByEloHandler : Supplier<List<PlayerElo>> {
   private val ranking = mutableMapOf<UserName, Elo>()
 
   /**
-   * The cache holds an imutable list of [PlayerElo] for the json return. It is sorted descending by elo value.
+   * The cache holds an immutable list of [PlayerElo] for the json return. It is sorted descending by elo value.
    * A cache is used because we only need to sort once per update and can return the same immutable sorted list
    * for every get request after that.
    */
@@ -60,12 +60,18 @@ class PlayerRankingByEloHandler : Supplier<List<PlayerElo>> {
   @EventHandler
   fun on(e: PlayerCreated) {
     logger.debug { "Player '${e.userName}' initial rating is '${e.initialElo}'" }
-    update(PlayerElo(e.userName.value, e.initialElo))
+    update(PlayerElo(e.userName.value, e.initialElo), false)
   }
 
-  private fun update(playerElo: PlayerElo) {
+  /**
+   * Update the elo rankings of the players.
+   * @param playerElo new player elo
+   */
+  private fun update(playerElo: PlayerElo, change: Boolean = true) {
     ranking[playerElo.userName] = playerElo.elo
-    cache.set(ranking.map { it.toPair() }.map { PlayerElo(it.first, it.second) }.sorted())
+    if (change) {
+      cache.set(ranking.map { it.toPair() }.map { PlayerElo(it.first, it.second) }.sorted())
+    }
   }
 
   override fun get() = cache.get()!!
