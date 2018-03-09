@@ -53,9 +53,10 @@ module.exports = {
 
     devServer: {
         hot: true,
+        host: "0.0.0.0",
         port: 3000,
         historyApiFallback: true,
-        host: "0.0.0.0",
+        contentBase: path.join(__dirname, 'src/main/resources/static'),
         proxy: [{
             context: ["/command", "/view"],
             target: "http://docker.holisticon.local:11080"
