@@ -54,24 +54,17 @@ class PlayerRankingByEloHandler : Supplier<List<PlayerElo>> {
   @EventHandler
   fun on(e: PlayerRankingChanged) {
     logger.debug { "Player '${e.player}' new rating is '${e.eloRanking}'" }
-    update(PlayerElo(e.player.value , e.eloRanking))
+    ranking[e.player] = e.eloRanking
+    cache.set(ranking.map { it.toPair() }.map { PlayerElo(it.first, it.second) }.sorted())
   }
 
-  @EventHandler
-  fun on(e: PlayerCreated) {
-    logger.debug { "Player '${e.userName}' initial rating is '${e.initialElo}'" }
-    update(PlayerElo(e.userName.value, e.initialElo), false)
-  }
 
   /**
    * Update the elo rankings of the players.
    * @param playerElo new player elo
    */
   private fun update(playerElo: PlayerElo, change: Boolean = true) {
-    ranking[playerElo.userName] = playerElo.elo
-    if (change) {
-      cache.set(ranking.map { it.toPair() }.map { PlayerElo(it.first, it.second) }.sorted())
-    }
+
   }
 
   override fun get() = cache.get()!!

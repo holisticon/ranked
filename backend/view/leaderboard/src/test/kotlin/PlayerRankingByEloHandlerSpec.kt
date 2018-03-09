@@ -17,6 +17,8 @@ class PlayerRankingByEloHandlerSpec {
     assertThat(handler.get()).isEmpty()
   }
 
+
+
   @Test
   fun `a new player ranking is added`() {
     handler.on(PlayerRankingChanged(UserName("kermit"), 1000))
