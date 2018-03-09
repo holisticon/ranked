@@ -27,6 +27,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.Profile
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean
 import java.util.*
 import javax.validation.ValidatorFactory
@@ -116,6 +117,7 @@ class CommandConfiguration {
   }
 
   @Bean
+  @Profile("!itest")
   fun initializeUsers(commandGateway: CommandGateway, userService: UserService) = object : DefaultSmartLifecycle(Int.MAX_VALUE - 20) {
 
     override fun onStart() {

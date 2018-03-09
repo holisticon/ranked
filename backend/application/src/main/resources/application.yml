@@ -5,15 +5,15 @@ spring:
   application:
     name: ranked
   datasource:
-    url: jdbc:h2:tcp://h2:9092/mem:ranked
-    username: sa
-    password: sa
+      url: jdbc:mysql://mysql:3306/ranked?useSSL=false
+      username: ranked
+      password: ranked
   jpa:
     generate-ddl: false
-    hibernate.ddl-auto: none
+    hibernate.ddl-auto: create
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.H2Dialect
+        dialect: org.hibernate.dialect.MySQL5Dialect
     show-sql: false
 
 ranked:
