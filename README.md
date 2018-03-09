@@ -19,22 +19,21 @@ Use spring profile "local"
 
 * run `docker-compose up`
 
-Depending on your os, you might have to replace `localhost` with your `DOCKER_IP` for all given urls.
+Depending on your OS, you might have to replace `localhost` with your `DOCKER_IP` for all given urls.
 
 ## Build
 
 We use the maven-wrapper extension, to build everything, just run `./mvnw`,
 which will default to `mvn clean install` using the maven version configured in `.mvn/wrapper/maven-wrapper.properties`.
 
-To build docker images of the components 
+If you want to produce docker images run `/mvnw dockerfile:build` after the regular maven install ( extend with `-f <DIR>` if you need to rebuild a particular image).
+Docker builds produce images of the components 
 
-* h2 (database)
-* application (backend)
+* backend
 * frontend
 
-run `/mvnw dockerfile:build` after the regular maven install ( extend with `-f <DIR>` if you need to rebuild a particular image).
-
-During maven install, activate the profile `docker` (`./mvnw -Pdocker,frontend`) to clean, install and create the docker images.
+If you want to produce docker images during the regular build, please run it eith Maven profile `docker`:
+(`./mvnw -Pdocker`) to clean, install and create the docker images.
 
 ## Side Goals
 
@@ -89,7 +88,7 @@ of events stored in the event store of the application.
 #### Frontend
 
 The `frontend` component contains the ReactJS single page application. Its build process is based on `npm` and `webpack` and is integrated into the 
-Apache Maven component build. If you want to skip the frontend build, please use the following command:
+Apache Maven component build. If you want to **skip** the frontend build, please use the following command:
 
         mvn clean install -P \!frontend
         
@@ -138,10 +137,6 @@ A Zuul proxy is configured in a way, that it redirects the requests to the front
 - http://localhost:8080/view/wall/teams
 - http://localhost:8080/view/user
 - http://localhost:8080/view/user/{id}
-
-
-
-
 
 
 ### Example REST Requests
