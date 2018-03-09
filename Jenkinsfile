@@ -29,8 +29,7 @@ timeout(30) {
 
       stage('Build Docker Image') {
         // build docker images
-        sh "./mvnw clean package dockerfile:build"
-        sh "./mvnw -Pdocker,frontend"
+        sh "./mvnw -Pdocker"
       }
 
       stage('Start Docker Image') {

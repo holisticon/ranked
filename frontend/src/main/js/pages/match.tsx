@@ -24,9 +24,44 @@ function getTeam(set: Set, team: TeamKey): Composition {
   return set.red.team === team ? set.red : set.blue;
 }
 
+function mapGoalsForBackend(teamRedGoals: Array<number>, teamBlueGoals: Array<number>, startTime?: Date) {
+  let timestamps = teamRedGoals.every(t => t >= 0) && teamBlueGoals.every(t => t >= 0);
+
+  if (startTime !== undefined && timestamps) {
+    let goals = [];
+
+    // merge both goal arrays together ...
+    goals.push(...teamRedGoals.map(sec => {
+      return { team: 'RED', time: sec };
+    }));
+    goals.push(...teamBlueGoals.map(sec => {
+      return { team: 'BLUE', time: sec };
+    }));
+
+    // ... and sort them
+    goals.sort((a, b) => a.time - b.time);
+
+    return {
+      type: 'timestamp',
+      goals: goals.map(timedGoal => {
+        return {
+          first: timedGoal.team,
+          second: new Date(startTime.getTime() + timedGoal.time * 1000)
+        };
+      })
+    };
+  } else {
+    return {
+      type: 'result',
+      goalsRed: teamRedGoals.length,
+      goalsBlue: teamBlueGoals.length,
+    };
+  }
+}
+
 function sendResults(sets: Sets, team1: Team, team2: Team) {
   const matchTime = Timer.Service.getTimeInSec();
-  let startTime = null;
+  let startTime: Date | undefined = undefined;
 
   if (matchTime > 0) {
     let now = new Date();
@@ -45,14 +80,12 @@ function sendResults(sets: Sets, team1: Team, team2: Team) {
     },
     matchSets: sets.map(set => {
       return {
-        type: 'result',
-        goalsRed: getTeam(set, 'team1').goals,
-        goalsBlue: getTeam(set, 'team1').goals,
+        ...mapGoalsForBackend(getTeam(set, 'team1').goals, getTeam(set, 'team2').goals, startTime),
         offenseRed: { value: team1[getTeam(set, 'team1').attack].id },
         offenseBlue: { value: team2[getTeam(set, 'team2').attack].id }
       };
     }),
-    startTime: startTime == null ? undefined : startTime.toISOString()
+    startTime
   });
 }
 
@@ -65,7 +98,7 @@ function getWinningPlayersAsString(team: Team): string {
 }
 
 function allPlayersSet(team1: Team, team2: Team): boolean {
-  return !!team1 && !!team2 && !!team1.player1 && !!team1.player2 && !!team2.player1 && !!team2.player2;
+  return !!team1 && !!team2 && !!team1.player1.id && !!team1.player2.id && !!team2.player1.id && !!team2.player2.id;
 }
 
 function getDialogMessage(winner: TeamKey, team1: Team, team2: Team): string {
