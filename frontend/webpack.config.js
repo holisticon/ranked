@@ -55,9 +55,10 @@ module.exports = {
         hot: true,
         port: 3000,
         historyApiFallback: true,
+        host: "0.0.0.0",
         proxy: [{
             context: ["/command", "/view"],
-            target: "http://localhost:11080"
+            target: "http://docker.holisticon.local:11080"
         }]
     },
 
