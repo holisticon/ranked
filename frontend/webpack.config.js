@@ -54,6 +54,7 @@ module.exports = {
     devServer: {
         hot: true,
         port: 3000,
+        historyApiFallback: true,
         proxy: [{
             context: ["/command", "/view"],
             target: "http://localhost:11080"
