@@ -36,7 +36,7 @@ function Team({ team, composition, isLastSet, classes,
       <div className="goal-counter-container">
         <Swipeable onSwipeRight={ () => incGoals() } onSwipeLeft={ () => decGoals() }>
           <div className="goal-counter">
-            <span className="current-goals">{ composition.goals }</span>
+            <span className="current-goals">{ composition.goals.length }</span>
           </div>
         </Swipeable>
       </div>

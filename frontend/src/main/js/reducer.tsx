@@ -2,6 +2,7 @@ import * as Actions from './actions';
 import { RankedStore, defaultState, createEmptyPlayer } from './types/store.state';
 import { TeamColor, Team, Composition, TeamKey } from './types/types';
 import { POINTS_PER_SET, POINTS_PER_MATCH } from './config';
+import { Timer } from './misc/timer.service';
 
 function copyAndSet<T>(item: any, setter: (itemCopy: T) => void): T {
   const copy: T = {...item};
@@ -22,8 +23,17 @@ function changeNthSet<T>(sets: Array<T>, n: number, itemChanger: (item: T) => T)
 
 function changeGoals(state: RankedStore, color: TeamColor, offset: number): RankedStore {
   return {
-    ...state, sets: changeNthSet(state.sets, state.sets.length - 1, (item) => {
-      const team: Composition = copyAndSet(item[color], newTeam => newTeam.goals += offset);
+    ...state,
+    sets: changeNthSet(state.sets, state.sets.length - 1, (item) => {
+      const team: Composition = copyAndSet(item[color], newTeam => {
+        // remove goals if offset is negative
+        let newGoals = newTeam.goals.slice(0, newTeam.goals.length + offset);
+
+        // push new elements if offset is positive
+        newGoals.push(...Array(Math.max(offset, 0)).fill(Timer.Service.getTimeInSec()));
+
+        newTeam.goals = newGoals;
+      });
 
       return copyAndSet(item, newItem => newItem[color] = team);
     })
@@ -58,7 +68,7 @@ function startNewSet(state: RankedStore): RankedStore {
   const currentSet = state.sets[state.sets.length - 1];
   let winnerTeam: TeamKey;
 
-  if (currentSet.red.goals === POINTS_PER_SET) {
+  if (currentSet.red.goals.length === POINTS_PER_SET) {
     winnerTeam = currentSet.red.team;
   } else {
     winnerTeam = currentSet.blue.team;
@@ -75,13 +85,13 @@ function startNewSet(state: RankedStore): RankedStore {
           attack: currentSet.blue.defense,
           defense: currentSet.blue.attack,
           team: currentSet.blue.team,
-          goals: 0
+          goals: []
         },
         blue: {
           attack: currentSet.red.defense,
           defense: currentSet.red.attack,
           team: currentSet.red.team,
-          goals: 0
+          goals: []
         }
       });
     }
@@ -95,7 +105,7 @@ export function ranked(state: RankedStore, rankedAction: Actions.RankedAction): 
       action = rankedAction as Actions.IncGoals;
       const newState = changeGoals(state, action.team, 1);
 
-      if (newState.sets[newState.sets.length - 1][action.team].goals >= POINTS_PER_SET) {
+      if (newState.sets[newState.sets.length - 1][action.team].goals.length >= POINTS_PER_SET) {
         return startNewSet(newState);
       }
 
@@ -104,7 +114,7 @@ export function ranked(state: RankedStore, rankedAction: Actions.RankedAction): 
     case Actions.DEC_GOALS:
       action = rankedAction as Actions.DecGoals;
       // only decrease score if above zero
-      if (state.sets[state.sets.length - 1][action.team].goals > 0) {
+      if (state.sets[state.sets.length - 1][action.team].goals.length > 0) {
         return changeGoals(state, action.team, -1);
       }
       break;

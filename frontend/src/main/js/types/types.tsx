@@ -25,5 +25,5 @@ export interface Composition {
   attack: PlayerKey;
   defense: PlayerKey;
   team: TeamKey;
-  goals: number;
+  goals: Array<number>;
 }

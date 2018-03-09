@@ -18,13 +18,13 @@ export function createFirstSet(): Set {
       attack: 'player1',
       defense: 'player2',
       team: 'team1',
-      goals: 0
+      goals: []
     },
     blue: {
       attack: 'player1',
       defense: 'player2',
       team: 'team2',
-      goals: 0
+      goals: []
     }
   };
 }

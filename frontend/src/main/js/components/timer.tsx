@@ -15,21 +15,23 @@ export class TimerComponent extends React.Component<TimerProps, TimerState> {
 
   constructor(props: TimerProps) {
     super(props);
-    this.state = { time: 0, intervalId: null, status: 'STOPPED' };
+    this.state = { time: -1, intervalId: null, status: 'STOPPED' };
 
     Timer.Service.register(this);
   }
 
   public start(): void {
-    const id = setInterval(() => this.tick(), this.interval * 1000);
-    this.setState({ time: this.state.time, intervalId: id, status: 'STARTED' });
+    if (this.state.status !== 'STARTED') {
+      const id = setInterval(() => this.tick(), this.interval * 1000);
+      this.setState({ time: Math.max(0, this.state.time), intervalId: id, status: 'STARTED' });
+    }
   }
 
   public reset(): void {
     if (this.state.intervalId) {
       clearInterval(this.state.intervalId);
     }
-    this.setState({ time: 0, intervalId: null, status: 'STOPPED' });
+    this.setState({ time: -1, intervalId: null, status: 'STOPPED' });
   }
 
   public pause(): void {
