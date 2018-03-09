@@ -24,6 +24,9 @@ services:
       - MYSQL_DATABASE=ranked
     ports:
       - "3306:3306"
+    volumes:
+      - "/var/lib/docker/volumes/ranked-mysql-data/_data:/var/lib/mysql
+
 
   # see https://github.com/dadarek/docker-wait-for-dependencies
   start_dependencies:
