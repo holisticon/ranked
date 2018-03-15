@@ -7,6 +7,7 @@ services:
       - 11081:8081
     depends_on:
       - 'mysql'
+    container_name: ranked_backend
 
   frontend:
     image: holisticon/ranked-frontend:0.0.1-SNAPSHOT
@@ -14,6 +15,7 @@ services:
       - 11080:8080
     depends_on:
       - 'backend'
+    container_name: ranked_frontend
 
   mysql:
     image: mysql:5.7.17
@@ -26,6 +28,7 @@ services:
       - "3306:3306"
     volumes:
       - "/var/lib/docker/volumes/ranked-mysql-data/_data:/var/lib/mysql"
+    container_name: ranked_mysql
 
 
   # see https://github.com/dadarek/docker-wait-for-dependencies
