@@ -215,6 +215,11 @@
     "id": "simonspruenker"
   },
   {
+    "name": "Simon Henning Nehls",
+    "imageUrl": "https://holisticon.de/assets/img/employees/SimonNehls.png",
+    "id": "simonnehls"
+  },
+  {
     "name": "Simon Zambrovski",
     "imageUrl": "https://holisticon.de/assets/img/employees/SimonZambrovski.png",
     "id": "simonzambrovski"
@@ -253,5 +258,10 @@
     "name": "Tobias Stamann",
     "imageUrl": "https://holisticon.de/assets/img/employees/TobiasStamann.png",
     "id": "tobiasstamann"
+  },
+  {
+    "name": "Wiebke Dahl",
+    "imageUrl": "https://holisticon.de/assets/img/employees/WiebkeDahl.png",
+    "id": "wiebkedahl"
   }
 ]
