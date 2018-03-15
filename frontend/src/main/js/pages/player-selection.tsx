@@ -47,7 +47,7 @@ function getPlayerIcons(availablePlayers: Array<Player>, select: (player: Player
 
   return players.map((player, index) => {
       return (
-        <PlayerIcon key={ index } img={ player.imageUrl } click={ () => select(player) } />
+        <PlayerIcon key={ index } img={ player.imageUrl } name={ player.name } click={ () => select(player) } />
       );
     });
 }

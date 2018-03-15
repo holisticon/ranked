@@ -48,7 +48,11 @@ function Team({ team, composition, isLastSet, classes,
         {
           !team[composition.defense].id ?
             <i className="material-icons">&#xE853;</i> :
-            <PlayerIcon click={ () => { return; } } img={ team[composition.defense].imageUrl } />
+            <PlayerIcon
+              click={ () => { return; } }
+              img={ team[composition.defense].imageUrl }
+              name={ team[composition.defense].name }
+            />
         }
         <span className="name">Tor</span>
       </div>
@@ -67,7 +71,11 @@ function Team({ team, composition, isLastSet, classes,
         {
           !team[composition.attack].id ?
             <i className="material-icons">&#xE853;</i> :
-            <PlayerIcon click={ () => { return; } } img={ team[composition.attack].imageUrl } />
+            <PlayerIcon
+              click={ () => { return; } }
+              img={ team[composition.attack].imageUrl }
+              name={ team[composition.attack].name }
+            />
         }
         <span className="name">Angriff</span>
       </div>
