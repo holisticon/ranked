@@ -10,12 +10,12 @@ class UserServiceSpec() {
   fun `read players from json file`() {
     val players = readUsersFromJson("/players.json")
 
-    assertThat(players).hasSize(53)
+    assertThat(players).hasSize(54)
   }
 
   @Test
   fun `load all users`() {
-    assertThat(UserService().loadAll()).hasSize(53)
+    assertThat(UserService().loadAll()).hasSize(54)
   }
 
   @Test

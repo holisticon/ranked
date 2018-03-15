@@ -80,6 +80,11 @@
     "id": "franziskaknorr"
   },
   {
+    "name": "Ina Galinsky",
+    "imageUrl": "https://holisticon.de/assets/img/employees/InaGalinsky.png",
+    "id": "inagalinsky"
+  },
+  {
     "name": "Jan Galinski",
     "imageUrl": "https://holisticon.de/assets/img/employees/JanGalinski.png",
     "id": "jangalinski"
@@ -210,14 +215,14 @@
     "id": "romanschloemmer"
   },
   {
-    "name": "Simon Sprünker",
-    "imageUrl": "https://holisticon.de/assets/img/employees/SimonSpruenker.png",
-    "id": "simonspruenker"
-  },
-  {
     "name": "Simon Henning Nehls",
     "imageUrl": "https://holisticon.de/assets/img/employees/SimonNehls.png",
     "id": "simonnehls"
+  },
+  {
+    "name": "Simon Sprünker",
+    "imageUrl": "https://holisticon.de/assets/img/employees/SimonSpruenker.png",
+    "id": "simonspruenker"
   },
   {
     "name": "Simon Zambrovski",
