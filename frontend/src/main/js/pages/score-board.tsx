@@ -16,6 +16,7 @@ interface PlayerWithElo extends Player {
 }
 
 type ScoreBoardState = {
+  playersMap: { [id: string]: Player },
   players: Array<PlayerWithElo>,
   maxElo: number,
   minElo: number
@@ -27,19 +28,29 @@ export class ScoreBoard extends React.Component<any, ScoreBoardState> {
 
     // init data
     this.getAllPlayers().then(playersMap => {
-      this.getPlayersScore().then(eloData => {
-        const players = eloData.map(elo => {
-          return {
-            ...playersMap[elo.userName.value],
-            score: elo.elo
-          };
-        });
+      this.setState({ ...this.state, playersMap });
+      this.updateList();
+    });
+    setInterval(() => this.updateList(), 60 * 1000);
+  }
 
-        this.setState({
-          players,
-          maxElo: eloData[0].elo,
-          minElo: eloData[eloData.length - 1].elo
-        });
+  private updateList(): void {
+    if (!this.state.playersMap) {
+      return;
+    }
+
+    this.getPlayersScore().then(eloData => {
+      const players = eloData.map(elo => {
+        return {
+          ...this.state.playersMap[elo.userName.value],
+          score: elo.elo
+        };
+      });
+
+      this.setState({
+        players,
+        maxElo: eloData[0].elo,
+        minElo: eloData[eloData.length - 1].elo
       });
     });
   }
