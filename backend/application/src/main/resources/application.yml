@@ -10,7 +10,7 @@ spring:
       password: ranked
   jpa:
     generate-ddl: false
-    hibernate.ddl-auto: create
+    hibernate.ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL5Dialect
