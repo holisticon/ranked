@@ -1,3 +1,5 @@
+@file:Suppress("UNUSED")
+
 package de.holisticon.ranked.view.leaderboard
 
 import de.holisticon.ranked.model.Team
@@ -80,6 +82,6 @@ data class PlayerGoalDifference(val userName: UserName, val goalDifference: Int)
 }
 
 /**
- * Carries
+ * Carries various stats for a player on goal level.
  */
 data class PlayerGoalStats(val goalSum: Int?, val goalDifference: Int?)
