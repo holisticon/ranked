@@ -3,14 +3,10 @@ package de.holisticon.ranked.command.aggregate
 import de.holisticon.ranked.command.api.*
 import de.holisticon.ranked.model.UserName
 import de.holisticon.ranked.model.event.*
-import de.holisticon.ranked.model.user.User
 import de.holisticon.ranked.properties.createProperties
-import de.holisticon.ranked.service.user.UserService
 import org.axonframework.test.aggregate.AggregateTestFixture
 import org.junit.Before
 import org.junit.Test
-import org.mockito.Mockito
-import org.mockito.Mockito.mock
 
 class PlayerSpec {
 
@@ -19,21 +15,17 @@ class PlayerSpec {
   }
 
   private val fixture: AggregateTestFixture<Player> = AggregateTestFixture(Player::class.java)
-  private val userService = mock(UserService::class.java)
 
   @Before
   fun init() {
     fixture.registerInjectableResource(createProperties(eloDefault = elo))
-    fixture.registerInjectableResource(userService)
   }
 
   @Test
   fun `when a createPlayer command is received, a player is created`() {
-    Mockito.`when`(userService.loadUser("kermit")).thenReturn(User(id = "kermit", name = "KERMIT", imageUrl = "/kermit.png"))
-
     fixture
       .givenNoPriorActivity()
-      .`when`(CreatePlayer(UserName("kermit")))
+      .`when`(CreatePlayerAndUser(userName = UserName("kermit"), displayName = "KERMIT", imageUrl = "/kermit.png"))
       .expectEvents(PlayerCreated(userName = UserName("kermit"), displayName = "KERMIT", initialElo = elo, imageUrl = "/kermit.png"))
   }
 
