@@ -34,13 +34,13 @@ class PlayerSpec {
     fixture
       .givenNoPriorActivity()
       .`when`(CreatePlayer(UserName("kermit")))
-      .expectEvents(PlayerCreated(userName = UserName("kermit"), displayName = "KERMIT", initialElo = elo))
+      .expectEvents(PlayerCreated(userName = UserName("kermit"), displayName = "KERMIT", initialElo = elo, imageUrl = "/kermit.png"))
   }
 
   @Test
   fun `when a player participates in a match, his elo ranking is published`() {
     fixture
-      .given(PlayerCreated(userName = UserName("kermit"), displayName = "KERMIT", initialElo = elo))
+      .given(PlayerCreated(userName = UserName("kermit"), displayName = "KERMIT", initialElo = elo, imageUrl = "/kermit.png"))
       .`when`(ParticipateInMatch(UserName("kermit"), "4711"))
       .expectEvents(PlayerParticipatedInMatch(UserName("kermit"), "4711", elo))
   }
@@ -49,7 +49,7 @@ class PlayerSpec {
   fun `when a player participates in a match, he can not participate in another`() {
     fixture
       .given(
-        PlayerCreated(userName = UserName("kermit"), displayName = "KERMIT", initialElo = elo),
+        PlayerCreated(userName = UserName("kermit"), displayName = "KERMIT", initialElo = elo, imageUrl = "/kermit.png"),
         PlayerParticipatedInMatch(UserName("kermit"), "4711", elo))
       .`when`(ParticipateInMatch(UserName("kermit"), "4712"))
       .expectNoEvents()
@@ -60,7 +60,7 @@ class PlayerSpec {
   fun `when a player participates in no match, he can participate in another`() {
     fixture
       .given(
-        PlayerCreated(userName = UserName("kermit"), displayName = "KERMIT", initialElo = elo),
+        PlayerCreated(userName = UserName("kermit"), displayName = "KERMIT", initialElo = elo, imageUrl = "/kermit.png"),
         PlayerParticipatedInMatch(UserName("kermit"), "4711", elo),
         ParticipationCancelled(UserName("kermit")))
       .`when`(ParticipateInMatch(UserName("kermit"), "4712"))
@@ -72,7 +72,7 @@ class PlayerSpec {
   fun `when a player participation is cancelled the is announced`() {
     fixture
       .given(
-        PlayerCreated(userName = UserName("kermit"), displayName = "KERMIT", initialElo = elo),
+        PlayerCreated(userName = UserName("kermit"), displayName = "KERMIT", initialElo = elo, imageUrl = "/kermit.png"),
         PlayerParticipatedInMatch(UserName("kermit"), "4711", elo))
       .`when`(CancelParticipation(UserName("kermit")))
       .expectEvents(ParticipationCancelled(UserName("kermit")))
@@ -84,7 +84,7 @@ class PlayerSpec {
   fun `when a player wins in a match, his elo ranking is published`() {
     fixture
       .given(
-        PlayerCreated(userName = UserName("kermit"), displayName = "KERMIT", initialElo = elo),
+        PlayerCreated(userName = UserName("kermit"), displayName = "KERMIT", initialElo = elo, imageUrl = "/kermit.png"),
         PlayerParticipatedInMatch(UserName("kermit"), "4711", elo))
       .`when`(UpdatePlayerRanking(UserName("kermit"), "4711", elo + 67))
       .expectEvents(PlayerRankingChanged(UserName("kermit"), elo + 67))
@@ -94,7 +94,7 @@ class PlayerSpec {
   fun `when a player exists, it can be checked`() {
     fixture
       .given(
-        PlayerCreated(userName = UserName("kermit"), displayName = "KERMIT", initialElo = elo))
+        PlayerCreated(userName = UserName("kermit"), displayName = "KERMIT", initialElo = elo, imageUrl = "/kermit.png"))
       .`when`(CheckPlayer(UserName("kermit")))
       .expectEvents(PlayerExists(UserName("kermit")))
   }

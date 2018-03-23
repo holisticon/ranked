@@ -10,3 +10,11 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.H2Dialect
     show-sql: false
+
+logging:
+  level:
+    de.holisticon.ranked: TRACE
+#    org.springframework.web.servlet: WARN
+#    org.springframework.boot.web.servlet: WARN
+#    org.springframework.boot.actuate.endpoint.web.servlet: WARN
+#    org.springframework.context.support: WARN

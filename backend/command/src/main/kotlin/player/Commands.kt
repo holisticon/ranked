@@ -16,6 +16,18 @@ data class CreatePlayer(
 )
 
 /**
+ * Create command for player and user (no user service request is required, all information is contained in the command)
+ */
+data class CreatePlayerAndUser(
+  @field: Valid
+  @TargetAggregateIdentifier
+  val userName: UserName,
+
+  val displayName: String,
+  val imageUrl: String
+)
+
+/**
  * Check if player aggregate already exists.
  */
 data class CheckPlayer(
