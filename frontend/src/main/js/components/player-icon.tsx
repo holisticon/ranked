@@ -8,17 +8,17 @@ export interface PlayerIconProps {
 }
 
 interface PlayerIconState {
-  showAltImage: boolean;
+  imageNotFound: boolean;
 }
 
 export class PlayerIcon extends React.Component<PlayerIconProps, PlayerIconState> {
   constructor(props: PlayerIconProps) {
     super(props);
-    this.state = { showAltImage: !props.img };
+    this.state = { imageNotFound: false };
   }
 
   private showAltImage(): void {
-    this.setState({ showAltImage: true });
+    this.setState({ imageNotFound: true });
   }
 
   private getInitials(): string {
@@ -29,11 +29,13 @@ export class PlayerIcon extends React.Component<PlayerIconProps, PlayerIconState
   }
 
   render() {
+    const showAltImage = this.state.imageNotFound || !this.props.img;
+
     return (
       <div className="player-icon" onClick={ this.props.click }>
         <div className="player-image">
           {
-            this.state.showAltImage ?
+            showAltImage ?
             <div className="placeholder"><span>{ this.getInitials() }</span></div> :
             <img src={ this.props.img } onError={ () => this.showAltImage() } />
           }
