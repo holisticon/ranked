@@ -6,54 +6,49 @@ import de.holisticon.ranked.model.AbstractMatchSet
 import de.holisticon.ranked.model.Team
 import de.holisticon.ranked.model.UserName
 import de.holisticon.ranked.model.event.*
-import de.holisticon.ranked.service.user.UserService
+import de.holisticon.ranked.model.user.User
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import mu.KLogging
 import org.axonframework.config.ProcessingGroup
 import org.axonframework.eventhandling.EventHandler
 import org.axonframework.eventhandling.Timestamp
+import org.springframework.stereotype.Component
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 
-@ProcessingGroup(WallView.NAME)
+
 @Api(tags = ["News wall"])
 @RestController
 @RequestMapping(value = ["/view"])
-class WallView(val userService: UserService) {
+class WallView(val service: WallService) {
+
+  @ApiOperation(value = "Lists all users")
+  @GetMapping("/user")
+  fun users() = service.users.sortedBy { it.id }
+
+  @ApiOperation(value = "Lists all matches")
+  @GetMapping("/wall/matches")
+  fun matches() = service.matches
+
+}
+
+@ProcessingGroup(WallService.NAME)
+@Component
+class WallService {
 
   companion object : KLogging() {
     const val NAME = "Wall"
   }
 
+  val users: MutableList<User> = mutableListOf()
   val matches: MutableList<Match> = mutableListOf()
   val playerWins: MutableList<PlayerWin> = mutableListOf()
   val teamWins: MutableList<TeamWin> = mutableListOf()
-
-  @ApiOperation(value = "Lists matches.")
-  @GetMapping("/wall/matches")
-  fun matches() = matches
-
-  @ApiOperation(value = "Lists player wins.")
-  @GetMapping("/wall/players")
-  fun playerWins() = playerWins
-
-  @ApiOperation(value = "Lists team wins.")
-  @GetMapping("/wall/teams")
-  fun teamWins() = teamWins
-
-  @ApiOperation(value = "Lists all users")
-  @GetMapping("/user")
-  fun users() = userService.loadAll().sortedBy { it.id }
-
-  @ApiOperation(value = "Lists all users")
-  @GetMapping("/user/{id}")
-  fun users(@PathVariable("id") id: String) = userService.loadUser(id)
 
   @EventHandler
   fun on(e: MatchCreated, @Timestamp timestamp: Instant) {
@@ -87,18 +82,15 @@ class WallView(val userService: UserService) {
 
   @EventHandler
   fun on(e: PlayerCreated) {
-    logger.info { "Player ${e.displayName} (${e.userName}) created with rating ${e.initialElo}" }
+    logger.info { "Player ${e.displayName} (${e.userName}) initialized with rating ${e.initialElo}" }
+    users.add(User(id = e.userName.value, name = e.displayName, imageUrl = e.imageUrl))
   }
-
-  // @EventHandler
-  // fun on(e: PlayerRankingChanged) {
-  //   logger.info { "Player ${e.player} new rating is ${e.eloRanking}" }
-  // }
 
   @EventHandler
   fun on(e: PlayerParticipatedInMatch) {
     logger.info { "Player ${e.player} with ranking ${e.eloRanking} played in match ${e.matchId}" }
   }
+
 }
 
 data class Match(
@@ -125,4 +117,5 @@ data class TeamWin(
 enum class Type {
   MATCH, SET
 }
+
 

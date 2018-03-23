@@ -17,22 +17,7 @@
 
   <dependencies>
     <dependency>
-      <artifactId>ranked-view-wall</artifactId>
-      <groupId>${project.groupId}</groupId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
       <artifactId>ranked-properties</artifactId>
-      <groupId>${project.groupId}</groupId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <artifactId>ranked-view-leaderboard</artifactId>
-      <groupId>${project.groupId}</groupId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <artifactId>ranked-view-player</artifactId>
       <groupId>${project.groupId}</groupId>
       <version>${project.version}</version>
     </dependency>
@@ -41,6 +26,18 @@
       <groupId>${project.groupId}</groupId>
       <version>${project.version}</version>
     </dependency>
+
+    <dependency>
+      <artifactId>ranked-view-leaderboard</artifactId>
+      <groupId>${project.groupId}</groupId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <artifactId>ranked-view-wall</artifactId>
+      <groupId>${project.groupId}</groupId>
+      <version>${project.version}</version>
+    </dependency>
+
 
     <dependency>
       <groupId>io.toolisticon.springboot</groupId>

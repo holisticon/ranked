@@ -20,19 +20,19 @@
           <tr>
             <th>Team Red</th>
             <td colspan="2">1: <select th:field="*{red1}">
-              <option th:each="player : ${players}" th:value="${player.userName}" th:text="${player.displayName}">Player</option>
+              <option th:each="player : ${players}" th:value="${player.id}" th:text="${player.name}">Player</option>
             </select></td>
             <td colspan="2">2: <select th:field="*{red2}">
-              <option th:each="player : ${players}" th:value="${player.userName}" th:text="${player.displayName}">Player</option>
+              <option th:each="player : ${players}" th:value="${player.id}" th:text="${player.name}">Player</option>
             </select></td>
           </tr>
           <tr>
             <th>Team Blue</th>
             <td colspan="2">1: <select th:field="*{blue1}">
-              <option th:each="player : ${players}" th:value="${player.userName}" th:text="${player.displayName}">Player</option>
+              <option th:each="player : ${players}" th:value="${player.id}" th:text="${player.name}">Player</option>
             </select></td>
             <td colspan="2"> 2: <select th:field="*{blue2}">
-              <option th:each="player : ${players}" th:value="${player.userName}" th:text="${player.displayName}">Player</option>
+              <option th:each="player : ${players}" th:value="${player.id}" th:text="${player.name}">Player</option>
             </select></td>
           </tr>
 
@@ -41,10 +41,10 @@
             <td>Goals Red:<input type="text" th:field="*{goalsRed1}"/></td>
             <td>Goals Blue:<input type="text" th:field="*{goalsBlue1}"/></td>
             <td>Offense Red: <select th:field="*{offenseRed1}">
-              <option th:each="player : ${players}" th:value="${player.userName}" th:text="${player.displayName}">Player</option>
+              <option th:each="player : ${players}" th:value="${player.id}" th:text="${player.name}">Player</option>
             </select></td>
             <td>Offense Blue: <select th:field="*{offenseBlue1}">
-              <option th:each="player : ${players}" th:value="${player.userName}" th:text="${player.displayName}">Player</option>
+              <option th:each="player : ${players}" th:value="${player.id}" th:text="${player.name}">Player</option>
             </select></td>
           </tr>
           <tr>
@@ -52,10 +52,10 @@
             <td>Goals Red:<input type="text" th:field="*{goalsRed2}"/></td>
             <td>Goals Blue:<input type="text" th:field="*{goalsBlue2}"/></td>
             <td>Offense Red: <select th:field="*{offenseRed2}">
-              <option th:each="player : ${players}" th:value="${player.userName}" th:text="${player.displayName}">Player</option>
+              <option th:each="player : ${players}" th:value="${player.id}" th:text="${player.name}">Player</option>
             </select></td>
             <td>Offense Blue: <select th:field="*{offenseBlue2}">
-              <option th:each="player : ${players}" th:value="${player.userName}" th:text="${player.displayName}">Player</option>
+              <option th:each="player : ${players}" th:value="${player.id}" th:text="${player.name}">Player</option>
             </select></td>
           </tr>
           <tr>
@@ -63,10 +63,10 @@
             <td>Goals Red:<input type="text" th:field="*{goalsRed3}"/></td>
             <td>Goals Blue:<input type="text" th:field="*{goalsBlue3}"/></td>
             <td>Offense Red: <select th:field="*{offenseRed3}">
-              <option th:each="player : ${players}" th:value="${player.userName}" th:text="${player.displayName}">Player</option>
+              <option th:each="player : ${players}" th:value="${player.id}" th:text="${player.name}">Player</option>
             </select></td>
             <td>Offense Blue: <select th:field="*{offenseBlue3}">
-              <option th:each="player : ${players}" th:value="${player.userName}" th:text="${player.displayName}">Player</option>
+              <option th:each="player : ${players}" th:value="${player.id}" th:text="${player.name}">Player</option>
             </select></td>
           </tr>
         </table>

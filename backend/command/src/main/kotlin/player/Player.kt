@@ -27,26 +27,36 @@ class Player() {
   private var imageUrl: String = ""
   private var participatingInMatchId: String = ""
 
-  // create player aggregate when matchWinnerSaga receives matchCreated event
-  // only called once for each player
   @CommandHandler
   constructor(c: CreatePlayer,
               @Autowired userService: UserService,
               @Autowired properties: RankedProperties) : this() {
     // get user data from ....
     val user = userService.loadUser(c.userName.value)
-    val userName = UserName(user.id)
-    val initialElo = properties.elo.default
 
-    // -> #on(e: PlayerCreated)
     apply(
       PlayerCreated(
-        userName = userName,
+        userName = UserName(user.id),
         displayName = user.name,
-        initialElo = initialElo
+        initialElo = properties.elo.default,
+        imageUrl = user.imageUrl
       )
     )
   }
+
+  @CommandHandler
+  constructor(c: CreatePlayerAndUser,
+              @Autowired properties: RankedProperties) : this() {
+    apply(
+      PlayerCreated(
+        userName = c.userName,
+        displayName = c.displayName,
+        initialElo = properties.elo.default,
+        imageUrl = c.imageUrl
+      )
+    )
+  }
+
 
   @CommandHandler
   fun handle(c: ParticipateInMatch) {
