@@ -29,7 +29,7 @@ axon:
     processors:
       Wall:
         mode: tracking
-      Player:
+      User:
         mode: tracking
       PlayerLeaderBoard:
         mode: tracking

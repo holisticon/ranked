@@ -6,7 +6,6 @@ import de.holisticon.ranked.command.api.*
 import de.holisticon.ranked.model.UserName
 import de.holisticon.ranked.model.event.*
 import de.holisticon.ranked.properties.RankedProperties
-import de.holisticon.ranked.service.user.UserService
 import mu.KLogging
 import org.axonframework.commandhandling.CommandHandler
 import org.axonframework.commandhandling.model.AggregateIdentifier
@@ -26,23 +25,6 @@ class Player() {
   private var eloRanking: Int = 0
   private var imageUrl: String = ""
   private var participatingInMatchId: String = ""
-
-  @CommandHandler
-  constructor(c: CreatePlayer,
-              @Autowired userService: UserService,
-              @Autowired properties: RankedProperties) : this() {
-    // get user data from ....
-    val user = userService.loadUser(c.userName.value)
-
-    apply(
-      PlayerCreated(
-        userName = UserName(user.id),
-        displayName = user.name,
-        initialElo = properties.elo.default,
-        imageUrl = user.imageUrl
-      )
-    )
-  }
 
   @CommandHandler
   constructor(c: CreatePlayerAndUser,
