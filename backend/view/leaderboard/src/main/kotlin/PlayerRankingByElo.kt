@@ -4,13 +4,13 @@ package de.holisticon.ranked.view.leaderboard
 
 import de.holisticon.ranked.model.Elo
 import de.holisticon.ranked.model.UserName
-import de.holisticon.ranked.model.event.PlayerCreated
 import de.holisticon.ranked.model.event.PlayerRankingChanged
 import mu.KLogging
 import org.axonframework.config.ProcessingGroup
 import org.axonframework.eventhandling.EventHandler
 import org.springframework.stereotype.Component
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import java.util.concurrent.atomic.AtomicReference
@@ -24,10 +24,20 @@ const val PROCESSING_GROUP = "PlayerLeaderBoard"
 @RestController
 @RequestMapping(value = ["/view"])
 class PlayerLeaderBoardView(
-  private val playerRankingByElo: PlayerRankingByEloHandler
+  private val playerRankingByElo: PlayerRankingByEloHandler,
+  private val playerRankingByGoals: PlayerRankingByGoals
 ) {
   @GetMapping(path = ["/elo/player"])
-  fun userByEloRank() : List<PlayerElo> = playerRankingByElo.get()
+  fun userListByEloRank() : List<PlayerElo> = playerRankingByElo.get()
+
+  @GetMapping(path = ["/goals/sum"])
+  fun userListByGoalSum() : List<PlayerGoalSum> = playerRankingByGoals.getGoalSum()
+
+  @GetMapping(path = ["/goals/difference"])
+  fun userListByGoalDifference() : List<PlayerGoalDifference> = playerRankingByGoals.getGoalDifference()
+
+  @GetMapping(path = ["/goals/player/{userName}"])
+  fun goalStatsByPlayer(@PathVariable("userName") userName: String) : PlayerGoalStats = playerRankingByGoals.getGoalStatsForPlayer(userName)
 }
 
 /**
