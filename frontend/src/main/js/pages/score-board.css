@@ -90,7 +90,8 @@
 
 .ranking-entry .icon {
   float: left;
-  width: 15%;
+  width: 9%;
+  margin: 0 3%;
   height: 2rem;
 }
 
