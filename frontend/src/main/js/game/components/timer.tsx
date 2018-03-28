@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Timer } from '../misc/timer.service';
+import { Timer } from '../services/timer.service';
 
 export interface TimerProps {
 }

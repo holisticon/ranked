@@ -1,4 +1,4 @@
-import { Player, TeamColor, PlayerKey, TeamKey } from './types/types';
+import { Player, TeamColor, PlayerKey, TeamKey } from '../types/types';
 
 export const INC_GOALS = 'INC_GOALS';
 export const DEC_GOALS = 'DEC_GOALS';

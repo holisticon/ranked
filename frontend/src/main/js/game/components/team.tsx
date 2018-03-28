@@ -2,8 +2,8 @@ import * as React from 'react';
 import { Swipeable } from 'react-touch';
 import { connect, Dispatch } from 'react-redux';
 import * as Actions from '../actions';
-import { Composition, TeamColor, PlayerKey, Team, TeamKey, Set } from '../types/types';
-import { PlayerIcon } from './player-icon';
+import { Composition, TeamColor, PlayerKey, Team, TeamKey, Set } from '../../types/types';
+import { PlayerIcon } from '../../components/player-icon';
 import { push } from 'react-router-redux';
 
 export interface TeamProps {

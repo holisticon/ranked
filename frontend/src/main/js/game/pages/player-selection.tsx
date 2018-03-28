@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import * as Actions from '../actions';
-import { Player, PlayerKey, TeamKey } from '../types/types';
+import { Player, PlayerKey, TeamKey } from '../../types/types';
 import axios from 'axios';
-import { PlayerIcon } from '../components/player-icon';
+import { PlayerIcon } from '../../components/player-icon';
 import { Link } from 'react-router-dom';
 import { match as Match } from 'react-router';
 import { push } from 'react-router-redux';

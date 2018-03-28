@@ -1,15 +1,15 @@
 import * as React from 'react';
 import TeamComponent from '../components/team';
-import { Sets, Team, TeamKey, Set, Composition } from '../types/types';
+import { Sets, Team, TeamKey, Set, Composition } from '../../types/types';
 import { connect, Dispatch } from 'react-redux';
 import * as Actions from '../actions';
 import axios from 'axios';
-import { POINTS_PER_MATCH } from '../config';
-import { Dialog } from '../components/dialog';
+import { POINTS_PER_MATCH } from '../../config';
+import { Dialog } from '../../components/dialog';
 import './match.css';
-import { PartialStoreState } from '../types/store.state';
+import { PartialStoreState } from '../store.state';
 import PanelComponent from '../components/panel';
-import { Timer } from '../misc/timer.service';
+import { Timer } from '../services/timer.service';
 
 export interface MatchProps {
   sets: Sets;

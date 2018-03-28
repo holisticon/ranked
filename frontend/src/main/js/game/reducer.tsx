@@ -1,8 +1,8 @@
 import * as Actions from './actions';
-import { RankedStore, defaultState, createEmptyPlayer } from './types/store.state';
-import { TeamColor, Team, Composition, TeamKey } from './types/types';
-import { POINTS_PER_SET, POINTS_PER_MATCH } from './config';
-import { Timer } from './misc/timer.service';
+import { RankedStore, defaultState, createEmptyPlayer } from './store.state';
+import { TeamColor, Team, Composition, TeamKey } from '../types/types';
+import { POINTS_PER_SET, POINTS_PER_MATCH } from '../config';
+import { Timer } from './services/timer.service';
 
 function copyAndSet<T>(item: any, setter: (itemCopy: T) => void): T {
   const copy: T = {...item};

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import * as Actions from '../actions';
-import { PartialStoreState } from '../types/store.state';
+import { PartialStoreState } from '../store.state';
 import './panel.css';
 import { TimerComponent } from './timer';
 

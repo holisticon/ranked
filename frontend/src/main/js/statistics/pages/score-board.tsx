@@ -1,8 +1,8 @@
 import * as React from 'react';
 import axios from 'axios';
 import './score-board.css';
-import { Player } from '../types/types';
-import { PlayerIcon } from '../components/player-icon';
+import { Player } from '../../types/types';
+import { PlayerIcon } from '../../components/player-icon';
 
 type EloData = {
   userName: {

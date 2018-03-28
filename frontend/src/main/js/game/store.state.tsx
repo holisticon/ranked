@@ -1,4 +1,4 @@
-import { Player, PlayerKey, Sets, Set, Team, TeamKey } from './types';
+import { Player, PlayerKey, Sets, Set, Team, TeamKey } from '../types/types';
 
 export interface PartialStoreState {
   ranked: RankedStore;

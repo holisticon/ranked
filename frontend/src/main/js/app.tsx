@@ -3,15 +3,15 @@ import * as ReactDOM from 'react-dom';
 import { Route } from 'react-router-dom';
 import { routerReducer, routerMiddleware, ConnectedRouter } from 'react-router-redux';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
-import Match from './pages/match';
-import PlayerSelection from './pages/player-selection';
+import Match from './game/pages/match';
+import PlayerSelection from './game/pages/player-selection';
 import registerServiceWorker from './registerServiceWorker';
 import createHistory from 'history/createBrowserHistory';
 import { Provider } from 'react-redux';
-import { ranked } from './reducer';
+import { ranked } from './game/reducer';
 import './app.css';
 import { Switch } from 'react-router';
-import { ScoreBoard } from './pages/score-board';
+import { ScoreBoard } from './statistics/pages/score-board';
 
 // Create a history of your choosing (we're using a browser history in this case)
 const history = createHistory();
