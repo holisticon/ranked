@@ -38,6 +38,9 @@ class PlayerLeaderBoardView(
 
   @GetMapping(path = ["/goals/player/{userName}"])
   fun goalStatsByPlayer(@PathVariable("userName") userName: String) : PlayerGoalStats = playerRankingByGoals.getGoalStatsForPlayer(userName)
+
+  @GetMapping(path = ["/goals/time/average"])
+  fun userListByGoalTimeAverage() : List<PlayerGoalTimeAverage> = playerRankingByGoals.getGoalTimeAverage()
 }
 
 /**
