@@ -2,6 +2,7 @@ import * as React from 'react';
 import { ChartData2D } from '../types';
 import { Player } from '../../types/types';
 import { PlayerIcon } from '../../components/player-icon';
+import './ranking-chart.css';
 
 type RankingChartProps = {
   data?: ChartData2D<Player, number>

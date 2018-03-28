@@ -61,11 +61,11 @@ export class ScoreBoard extends React.Component<any, ScoreBoardState> {
           <div className="title">{this.getTitle()}</div>
         </div>
         <Carousel swipeScrollTolerance={130} onChange={ (index) => this.setState({ currentCarouselIndex: index }) } autoPlay={true} showThumbs={false} infiniteLoop={true} interval={10000} showStatus={false} showArrows={false}>
-          <div className="ranking-list">
+          <div className="chart-container">
             <div className="fading-top" />
             <RankingChart data={ !this.state ? undefined : this.state.playerValues } />
           </div>
-          <div className="ranking-list">
+          <div className="chart-container">
             <div className="fading-top" />
             <RankingChart data={ !this.state ? undefined : this.state.playerGoals } />
           </div>
