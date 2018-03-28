@@ -6,11 +6,11 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import de.holisticon.ranked.command.api.CancelParticipation
 import de.holisticon.ranked.command.api.CheckPlayer
-import de.holisticon.ranked.command.api.CreatePlayerAndUser
+import de.holisticon.ranked.command.api.CreatePlayer
 import de.holisticon.ranked.command.data.TokenJpaRepository
 import de.holisticon.ranked.extension.DefaultSmartLifecycle
 import de.holisticon.ranked.model.UserName
-import de.holisticon.ranked.service.user.PlayerImportService
+import de.holisticon.ranked.service.user.UserService
 import mu.KLogging
 import org.axonframework.commandhandling.CommandCallback
 import org.axonframework.commandhandling.CommandMessage
@@ -23,6 +23,8 @@ import org.axonframework.eventhandling.tokenstore.jpa.TokenEntry
 import org.axonframework.messaging.interceptors.BeanValidationInterceptor
 import org.axonframework.messaging.interceptors.LoggingInterceptor
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Profile
@@ -116,11 +118,11 @@ class CommandConfiguration {
 
   @Bean
   @Profile("!itest")
-  fun initializeUsers(commandGateway: CommandGateway, playerImportService: PlayerImportService) = object : DefaultSmartLifecycle(Int.MAX_VALUE - 20) {
+  fun initializeUsers(commandGateway: CommandGateway, userService: UserService) = object : DefaultSmartLifecycle(Int.MAX_VALUE - 20) {
 
     override fun onStart() {
 
-      playerImportService.loadAll().forEach {
+      userService.loadAll().forEach {
         commandGateway.send(
           CheckPlayer(userName = UserName(it.id)),
           object : CommandCallback<CheckPlayer, Any> {
@@ -131,11 +133,7 @@ class CommandConfiguration {
             }
 
             override fun onFailure(commandMessage: CommandMessage<out CheckPlayer>?, cause: Throwable?) {
-              commandGateway.send<Any>(CreatePlayerAndUser(
-                userName = UserName(it.id),
-                imageUrl = it.imageUrl,
-                displayName = it.name
-              ))
+              commandGateway.send<Any>(CreatePlayer(userName = UserName(it.id)))
             }
           }
         )

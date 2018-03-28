@@ -63,7 +63,7 @@ class CommandApi(val commandGateway: CommandGateway) {
       imageUrl = userInfo.imageUrl
     ), object: CommandCallback<CreatePlayerAndUser, Any> {
       override fun onSuccess(commandMessage: CommandMessage<out CreatePlayerAndUser>?, result: Any?) {
-        logger.debug { "Successfully created a user ${userInfo.displayName}" }
+        logger.debug { "Successfully created a user" }
       }
 
       override fun onFailure(commandMessage: CommandMessage<out CreatePlayerAndUser>?, cause: Throwable) {

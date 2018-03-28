@@ -2,7 +2,6 @@ package de.holisticon.ranked
 
 import de.holisticon.ranked.command.api.CreateMatch
 import de.holisticon.ranked.command.api.CreatePlayer
-import de.holisticon.ranked.command.api.CreatePlayerAndUser
 import de.holisticon.ranked.model.MatchSet
 import de.holisticon.ranked.model.Team
 import de.holisticon.ranked.model.UserName
@@ -39,10 +38,10 @@ class CreateMatchSpec {
 
   @Before
   fun `init players`() {
-    commandGateway.send<Any>(CreatePlayerAndUser(userName = kermit, imageUrl = "kermit.png", displayName = "KERMIT"))
-    commandGateway.send<Any>(CreatePlayerAndUser(userName = gonzo, imageUrl = "gonzo.png", displayName = "GONZO"))
-    commandGateway.send<Any>(CreatePlayerAndUser(userName = piggy, imageUrl = "piggy.png", displayName = "PIGGY"))
-    commandGateway.send<Any>(CreatePlayerAndUser(userName = fozzy, imageUrl = "fozzy.png", displayName = "FOZZY"))
+    commandGateway.send<Any>(CreatePlayer(userName = kermit))
+    commandGateway.send<Any>(CreatePlayer(userName = gonzo))
+    commandGateway.send<Any>(CreatePlayer(userName = piggy))
+    commandGateway.send<Any>(CreatePlayer(userName = fozzy))
   }
 
 
