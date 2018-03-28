@@ -2,6 +2,7 @@ ranked:
   h2:
     port: 9092
     name: ranked
+    path: mem
 
 server:
   port: 8092
@@ -10,7 +11,7 @@ spring:
   application:
     name: ranked-h2
   datasource:
-    url: jdbc:h2:mem:${ranked.h2.name};MODE=Oracle;DB_CLOSE_DELAY=-1
+    url: jdbc:h2:${ranked.h2.path}:${ranked.h2.name};MODE=Oracle;DB_CLOSE_DELAY=-1
     username: sa
     password: sa
     driver-class-name: org.h2.Driver
@@ -22,3 +23,9 @@ spring:
         dialect: org.hibernate.dialect.H2Dialect
     show-sql: true
 
+---
+spring:
+  profiles: h2-201803281207
+ranked:
+  h2:
+    path: ./test/h2/src/main/resources/h2/201803281207

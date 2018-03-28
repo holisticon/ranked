@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:h2:tcp://localhost:9092/mem:ranked
+    url: jdbc:h2:tcp://localhost:9092/${ranked.h2.path}:${ranked.h2.name}
     username: sa
     password: sa
   jpa:
@@ -10,3 +10,15 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.H2Dialect
     show-sql: false
+
+ranked:
+  h2:
+    name: ranked
+    path: mem
+
+---
+spring:
+  profiles: h2-201803281207
+ranked:
+  h2:
+    path: ./test/h2/src/main/resources/h2/201803281207
