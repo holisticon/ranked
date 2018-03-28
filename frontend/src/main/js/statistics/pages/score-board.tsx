@@ -4,23 +4,29 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { Player } from '../../types/types';
 import { RankingChart } from '../components/ranking-chart';
 import { ChartData2D } from '../types';
-import { EloAdapter } from '../adapter/elo-adapter';
-import { GoalsAdapter } from '../adapter/goals-adapter';
+import { EloAdapter } from '../services/elo-adapter';
+import { GoalsAdapter } from '../services/goals-adapter';
 import './score-board.css';
+import { Heading } from '../services/heading.service';
+import { HeadingComponent, HeadingConfig } from '../components/heading';
 
 type ScoreBoardState = {
   playerValues: ChartData2D<Player, number>,
   playerGoals: ChartData2D<Player, number>,
-  headings: Array<{ title: string, icon: string }>,
-  currentCarouselIndex: number
 };
 
 export class ScoreBoard extends React.Component<any, ScoreBoardState> {
+  private headings: Array<HeadingConfig>;
+
   constructor(props: any) {
     super(props);
-    this.state = { ...this.state, currentCarouselIndex: 0, headings: [] };
+    this.state = { ...this.state };
 
     // init data
+    this.headings = [
+      { title: 'Holisticon AllStars', iconPath: '/img/trophy.png' },
+      { title: 'Erzielte Tore', iconPath: '/img/goal.png' }
+    ];
     this.updateList();
     setInterval(() => this.updateList(), 60 * 1000);
   }
@@ -28,39 +34,19 @@ export class ScoreBoard extends React.Component<any, ScoreBoardState> {
   private updateList(): void {
     Promise.all([EloAdapter.getEloData(), GoalsAdapter.getTotalGoalsData()])
       .then(([eloData, totalGoalsData]) => {
-        const headings = [
-          { title: 'Holisticon AllStars', icon: '/img/trophy.png' },
-          { title: 'Erzielte Tore', icon: '/img/goal.png' }
-        ];
-        this.setState({ playerValues: eloData, playerGoals: totalGoalsData, headings });
+        this.setState({ playerValues: eloData, playerGoals: totalGoalsData });
       });
   }
 
-  private getHeaderIconPath(): string {
-    if (this.state.currentCarouselIndex >= this.state.headings.length) {
-      return '';
-    }
-
-    return this.state.headings[this.state.currentCarouselIndex].icon;
-  }
-
-  private getTitle(): string {
-    if (this.state.currentCarouselIndex >= this.state.headings.length) {
-      return '';
-    }
-
-    return this.state.headings[this.state.currentCarouselIndex].title;
+  private updateHeading(index: number): void {
+    Heading.Service.update(this.headings[index]);
   }
 
   public render() {
     return (
       <div className="score-board">
-        <div className="header">
-          <div className="background" />
-          <div className="icon" style={{ backgroundImage: `url(${this.getHeaderIconPath()})` }} />
-          <div className="title">{this.getTitle()}</div>
-        </div>
-        <Carousel swipeScrollTolerance={130} onChange={ (index) => this.setState({ currentCarouselIndex: index }) } autoPlay={true} showThumbs={false} infiniteLoop={true} interval={10000} showStatus={false} showArrows={false}>
+        <HeadingComponent title={ this.headings[0].title } iconPath={ this.headings[0].iconPath } />
+        <Carousel swipeScrollTolerance={130} onChange={ (index) => this.updateHeading(index) } autoPlay={true} showThumbs={false} infiniteLoop={true} interval={10000} showStatus={false} showArrows={false}>
           <div className="chart-container">
             <div className="fading-top" />
             <RankingChart data={ !this.state ? undefined : this.state.playerValues } />
