@@ -26,6 +26,9 @@ spring:
 ---
 spring:
   profiles: h2-201803281207
+  jpa:
+    hibernate:
+      ddl-auto: update
 ranked:
   h2:
     path: ./test/h2/src/main/resources/h2/201803281207
