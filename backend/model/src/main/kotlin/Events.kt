@@ -6,8 +6,7 @@ import java.time.LocalDateTime
 data class PlayerCreated(
   val userName: UserName,
   val displayName: String,
-  val initialElo: Int,
-  val imageUrl: String
+  val initialElo: Int
 )
 
 data class PlayerExists(

@@ -3,8 +3,6 @@
 package de.holisticon.ranked.command.rest
 
 import de.holisticon.ranked.command.api.CreateMatch
-import de.holisticon.ranked.command.api.CreatePlayerAndUser
-import de.holisticon.ranked.model.UserName
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiResponse
@@ -47,43 +45,5 @@ class CommandApi(val commandGateway: CommandGateway) {
         }
       })
       return response
-  }
-
-  @ApiOperation(value = "Creates a new user.")
-  @ApiResponses(
-    ApiResponse(code = 204, message = "If the create user request has been successfully received."),
-    ApiResponse(code = 400, message = "If the create user request was not correct.")
-  )
-  @PostMapping(path = ["/user"])
-  fun createPlayer(@RequestBody userInfo: UserInfo): ResponseEntity<String> {
-    var response: ResponseEntity<String> = ResponseEntity.noContent().build()
-    commandGateway.send<CreatePlayerAndUser, Any>(CreatePlayerAndUser(
-      userName = UserName(userInfo.username()),
-      displayName = userInfo.displayName,
-      imageUrl = userInfo.imageUrl
-    ), object: CommandCallback<CreatePlayerAndUser, Any> {
-      override fun onSuccess(commandMessage: CommandMessage<out CreatePlayerAndUser>?, result: Any?) {
-        logger.debug { "Successfully created a user" }
-      }
-
-      override fun onFailure(commandMessage: CommandMessage<out CreatePlayerAndUser>?, cause: Throwable) {
-        logger.error { "Failure by submitting a user: ${cause.localizedMessage}" }
-        response = ResponseEntity.badRequest().build()
-      }
-    })
-    return response
-  }
-
-  data class UserInfo(
-    val displayName: String,
-    val imageUrl: String
-  ) {
-    fun username() = displayName
-      .replace(" ", "")
-      .toLowerCase()
-      .replace("ü", "ue")
-      .replace("ä", "ae")
-      .replace("ö", "oe")
-      .replace("ß", "ss")
   }
 }
