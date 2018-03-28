@@ -1,6 +1,7 @@
 .score-board {
   width: 100%;
   height: 100%;
+  background-color: white;
 }
 
 .header {
@@ -44,10 +45,11 @@
 }
 
 .ranking-list {
-  padding-top: 8rem;
+  padding: 8rem 0 2rem 0;
   position: relative;
   display: inline-block;
   text-align: center;
+  background-color: white;
 }
 
 @media (min-width: 1000px) {
@@ -113,4 +115,8 @@
 
 .ranking-entry .score {
   float: right;
+}
+
+.carousel .control-dots .dot {
+  background: #FF2D55 !important;
 }
