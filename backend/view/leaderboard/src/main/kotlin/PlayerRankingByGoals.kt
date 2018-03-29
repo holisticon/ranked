@@ -53,9 +53,6 @@ class PlayerRankingByGoals {
     var lastGoalTime = e.startTime
 
     e.matchSets.forEach {
-      goalsRed += it.goalsRed
-      goalsBlue += it.goalsBlue
-
       addScoredGoalsToPlayersOfTeam(e.teamRed, it.offenseRed, it.goalsRed)
       addScoredGoalsToPlayersOfTeam(e.teamBlue, it.offenseBlue, it.goalsBlue)
 
@@ -67,10 +64,14 @@ class PlayerRankingByGoals {
         it.goals.forEach {
           goalTime = ChronoUnit.SECONDS.between(lastGoalTime.toLocalTime(), it.second.toLocalTime())
 
-          if (it.first == TeamColor.RED) {
-            goalTimeSumRed += goalTime
-          } else {
-            goalTimeSumBlue += goalTime
+          if (goalTime > 0) {
+            if (it.first == TeamColor.RED) {
+              goalsRed++
+              goalTimeSumRed += goalTime
+            } else {
+              goalsBlue++
+              goalTimeSumBlue += goalTime
+            }
           }
 
           lastGoalTime = it.second;
@@ -78,10 +79,14 @@ class PlayerRankingByGoals {
       }
     }
 
-    addAverageGoalTimeToPlayersOfTeam(e.teamRed, goalTimeSumRed, goalsRed)
-    addAverageGoalTimeToPlayersOfTeam(e.teamBlue, goalTimeSumBlue, goalsBlue)
+    if (goalTimeSumRed > 0) {
+      addAverageGoalTimeToPlayersOfTeam(e.teamRed, goalTimeSumRed, goalsRed)
+    }
+    if (goalTimeSumBlue > 0) {
+      addAverageGoalTimeToPlayersOfTeam(e.teamBlue, goalTimeSumBlue, goalsBlue)
+    }
 
-    goalTimeAverageCache.set(goalTimeAverage.map { it.toPair() }.map { PlayerGoalTimeAverage(it.first, it.second) }.sorted())
+    goalTimeAverageCache.set(goalTimeAverage.map { it.toPair() }.map { PlayerGoalTimeAverage(it.first, it.second) }.sortedDescending())
   }
 
   private fun addScoredGoalsToPlayersOfTeam(team: Team, offense: UserName, goals: Int) {
