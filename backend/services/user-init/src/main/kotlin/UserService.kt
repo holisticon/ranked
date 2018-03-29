@@ -1,14 +1,13 @@
 package de.holisticon.ranked.service.user
 
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.fasterxml.jackson.module.kotlin.readValue
 import de.holisticon.ranked.model.user.User
 import org.springframework.stereotype.Component
 
 @Component
-class UserService() {
+@Deprecated("we do not use UserService anymore, just the UserInitialization")
+class UserService {
 
-  val users by lazy {
+  private val users by lazy {
     readUsersFromJson("/players.json")
   }
 
@@ -17,4 +16,3 @@ class UserService() {
   fun loadAll() = users
 }
 
-fun readUsersFromJson(resource: String): Set<User> = jacksonObjectMapper().readValue(UserService::class.java.getResource(resource))

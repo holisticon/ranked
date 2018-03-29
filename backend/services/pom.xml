@@ -14,7 +14,7 @@
   <packaging>pom</packaging>
 
   <modules>
-    <module>user</module>
+    <module>user-init</module>
     <module>elo</module>
   </modules>
 

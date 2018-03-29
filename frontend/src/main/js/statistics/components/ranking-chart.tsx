@@ -34,7 +34,7 @@ export class RankingChart extends React.Component<RankingChartProps, any> {
             <div className="icon">
               <PlayerIcon img={entry[0].imageUrl} click={() => { return; }} />
             </div>
-            <div className="name">{entry[0].name}</div>
+            <div className="name">{entry[0].displayName}</div>
             <div className="bar">
               <div className="bar-inner" style={{ width: barWidth + '%' }} />
             </div>

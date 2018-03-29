@@ -12,7 +12,9 @@ import javax.validation.constraints.NotEmpty
 data class CreatePlayer(
   @field: Valid
   @TargetAggregateIdentifier
-  val userName: UserName
+  val userName: UserName,
+  val displayName: String,
+  val imageUrl: String
 )
 
 /**

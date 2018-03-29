@@ -2,6 +2,7 @@ package de.holisticon.ranked.form
 
 import de.holisticon.ranked.command.api.CreateMatch
 import de.holisticon.ranked.model.MatchSet
+import de.holisticon.ranked.model.Player
 import de.holisticon.ranked.model.Team
 import de.holisticon.ranked.model.UserName
 import de.holisticon.ranked.view.player.PlayerViewService
@@ -18,8 +19,8 @@ import javax.validation.Valid
 class WebController(val commandGateway: CommandGateway, val playerViewService: PlayerViewService) : WebMvcConfigurer {
 
   @ModelAttribute("players")
-  fun allPlayers(): Set<PlayerViewService.Player> {
-    return playerViewService.getAllPlayers()
+  fun allPlayers(): List<Player> {
+    return playerViewService.findAll()
   }
 
   @GetMapping("/")

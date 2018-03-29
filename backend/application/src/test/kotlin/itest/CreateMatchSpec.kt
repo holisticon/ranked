@@ -36,12 +36,17 @@ class CreateMatchSpec {
   val piggy = UserName("piggy")
   val fozzy = UserName("fozzy")
 
+  fun createPlayer(user: UserName) = CreatePlayer(
+    userName = user,
+    displayName = user.value.toUpperCase(),
+    imageUrl = user.value + ".jpg")
+
   @Before
   fun `init players`() {
-    commandGateway.send<Any>(CreatePlayer(userName = kermit))
-    commandGateway.send<Any>(CreatePlayer(userName = gonzo))
-    commandGateway.send<Any>(CreatePlayer(userName = piggy))
-    commandGateway.send<Any>(CreatePlayer(userName = fozzy))
+    commandGateway.send<Any>(createPlayer(kermit))
+    commandGateway.send<Any>(createPlayer(gonzo))
+    commandGateway.send<Any>(createPlayer(piggy))
+    commandGateway.send<Any>(createPlayer(fozzy))
   }
 
 

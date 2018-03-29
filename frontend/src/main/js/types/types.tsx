@@ -1,7 +1,18 @@
-export interface Player {
-  name: string;
-  imageUrl: string;
-  id: string;
+export abstract class PlayerData {
+  public displayName: string;
+  public imageUrl: string;
+  public userName: { value: string };
+}
+
+export class Player extends PlayerData {
+  public constructor(data: PlayerData) {
+    super();
+    Object.assign(this, data);
+  }
+
+  public get id(): string {
+    return this.userName ? this.userName.value : '';
+  }
 }
 
 export type PlayerKey = 'player1' | 'player2';

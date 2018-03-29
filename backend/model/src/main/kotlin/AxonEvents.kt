@@ -1,11 +1,14 @@
 package de.holisticon.ranked.model.event
 
 import de.holisticon.ranked.model.*
+import org.axonframework.serialization.Revision
 import java.time.LocalDateTime
 
+@Revision("2")
 data class PlayerCreated(
   val userName: UserName,
   val displayName: String,
+  val imageUrl: String,
   val initialElo: Int
 )
 

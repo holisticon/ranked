@@ -31,19 +31,16 @@ class Player() {
   // only called once for each player
   @CommandHandler
   constructor(c: CreatePlayer,
-              @Autowired userService: UserService,
               @Autowired properties: RankedProperties) : this() {
-    // get user data from ....
-    val user = userService.loadUser(c.userName.value)
-    val userName = UserName(user.id)
-    val initialElo = properties.elo.default
+    val userName = c.userName
 
     // -> #on(e: PlayerCreated)
     apply(
       PlayerCreated(
         userName = userName,
-        displayName = user.name,
-        initialElo = initialElo
+        displayName = c.displayName,
+        imageUrl = c.imageUrl,
+        initialElo = properties.elo.default
       )
     )
   }
@@ -89,6 +86,7 @@ class Player() {
     userName = e.userName
     displayName = e.displayName
     eloRanking = e.initialElo
+    imageUrl = e.imageUrl
   }
 
   @EventSourcingHandler

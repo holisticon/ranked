@@ -3,7 +3,7 @@ package de.holisticon.ranked.service.user
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
-class UserServiceSpec() {
+class UserInitializationSpec() {
 
 
   @Test

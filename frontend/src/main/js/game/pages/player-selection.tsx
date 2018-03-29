@@ -2,12 +2,12 @@ import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import * as Actions from '../actions';
 import { Player, PlayerKey, TeamKey } from '../../types/types';
-import axios from 'axios';
 import { PlayerIcon } from '../../components/player-icon';
 import { Link } from 'react-router-dom';
 import { match as Match } from 'react-router';
 import { push } from 'react-router-redux';
 import './player-selection.css';
+import { PlayerService } from '../../services/player-service';
 
 const alphabet = 'abcdefghijklmnopqrstuvwxyz';
 
@@ -18,10 +18,6 @@ export interface PlayerSelectionProps {
   selectPlayerFor: any;
   select: (team: TeamKey, player: PlayerKey, selected: Player) => void;
   updateAvailablePlayers: (players: Array<Player>) => void;
-}
-
-function getPlayers(): Promise<Array<Player>> {
-  return axios.get('/view/user').then(res => res.data);
 }
 
 function getLetters(unavailableLetters: string) {
@@ -43,11 +39,11 @@ function getLetters(unavailableLetters: string) {
 
 function getPlayerIcons(availablePlayers: Array<Player>, select: (player: Player) => void, selectedLetter?: string) {
   const players = !selectedLetter ? availablePlayers :
-    availablePlayers.filter(player => player.name[0].toLowerCase() === selectedLetter);
+    availablePlayers.filter(player => player.displayName[0].toLowerCase() === selectedLetter);
 
   return players.map((player, index) => {
       return (
-        <PlayerIcon key={ index } img={ player.imageUrl } name={ player.name } click={ () => select(player) } />
+        <PlayerIcon key={ index } img={ player.imageUrl } name={ player.displayName } click={ () => select(player) } />
       );
     });
 }
@@ -57,7 +53,7 @@ function PlayerSelection({ unavailableLetters, availablePlayers,
 
   if (availablePlayers.length === 0) {
     // no player avaiable -> try to load them from backend
-    getPlayers().then(updateAvailablePlayers);
+    PlayerService.getAllPlayers().then(updateAvailablePlayers);
   }
 
   let selectedLetter = '';
@@ -79,7 +75,7 @@ function PlayerSelection({ unavailableLetters, availablePlayers,
 export function mapStateToProps({ ranked: { availablePlayers, selectPlayerFor } }: any) {
   let unavailableLetters = alphabet;
   availablePlayers.forEach((player: Player) => {
-    unavailableLetters = unavailableLetters.replace(player.name[0].toLowerCase(), '');
+    unavailableLetters = unavailableLetters.replace(player.displayName[0].toLowerCase(), '');
   });
 
   return {

@@ -43,6 +43,11 @@
         <artifactId>ranked-kotlin-extensions</artifactId>
         <version>${project.version}</version>
       </dependency>
+      <dependency>
+        <groupId>de.holisticon.ranked</groupId>
+        <artifactId>ranked-model</artifactId>
+        <version>${project.version}</version>
+      </dependency>
 
 
       <dependency>

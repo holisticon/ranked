@@ -30,11 +30,7 @@ export function createFirstSet(): Set {
 }
 
 export function createEmptyPlayer(): Player {
-  return {
-    name: '',
-    imageUrl: '',
-    id: '',
-  };
+  return new Player({ displayName: '', imageUrl: '', userName: { value: '' } });
 }
 
 function createEmptyTeam(): Team {

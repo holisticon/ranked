@@ -3,6 +3,8 @@
 package de.holisticon.ranked.command.rest
 
 import de.holisticon.ranked.command.api.CreateMatch
+import de.holisticon.ranked.command.api.CreatePlayer
+import de.holisticon.ranked.model.UserName
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiResponse
@@ -16,8 +18,6 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import java.util.function.BiConsumer
-import javax.validation.Valid
 
 @RestController
 @RequestMapping("/command")
@@ -33,17 +33,57 @@ class CommandApi(val commandGateway: CommandGateway) {
   @PostMapping(path = ["/match"])
   fun createMatch(@RequestBody match: CreateMatch): ResponseEntity<String> {
 
-      var response: ResponseEntity<String> = ResponseEntity.noContent().build()
-      commandGateway.send<CreateMatch, Any>(match, object: CommandCallback<CreateMatch, Any> {
-        override fun onSuccess(commandMessage: CommandMessage<out CreateMatch>?, result: Any?) {
-          logger.debug { "Successfully submitted a match" }
-        }
+    var response: ResponseEntity<String> = ResponseEntity.noContent().build()
+    commandGateway.send<CreateMatch, Any>(match, object : CommandCallback<CreateMatch, Any> {
+      override fun onSuccess(commandMessage: CommandMessage<out CreateMatch>?, result: Any?) {
+        logger.debug { "Successfully submitted a match" }
+      }
 
-        override fun onFailure(commandMessage: CommandMessage<out CreateMatch>?, cause: Throwable) {
-          logger.error { "Failure by submitting a match: ${cause.localizedMessage}" }
-          response = ResponseEntity.badRequest().build()
-        }
-      })
-      return response
+      override fun onFailure(commandMessage: CommandMessage<out CreateMatch>?, cause: Throwable) {
+        logger.error { "Failure by submitting a match: ${cause.localizedMessage}" }
+        response = ResponseEntity.badRequest().build()
+      }
+    })
+    return response
+  }
+
+  @ApiOperation(value = "Creates a new player.")
+  @ApiResponses(
+    ApiResponse(code = 204, message = "If the create player request has been successfully received."),
+    ApiResponse(code = 400, message = "If the create player request was not correct.")
+  )
+  @PostMapping(path = ["/player"])
+  fun createPlayer(@RequestBody playerInfo: PlayerInfo): ResponseEntity<String> {
+    var response: ResponseEntity<String> = ResponseEntity.noContent().build()
+    commandGateway.send<CreatePlayer, Any>(CreatePlayer(
+      userName = playerInfo.userName(),
+      displayName = playerInfo.displayName,
+      imageUrl = playerInfo.imageUrl
+    ), object : CommandCallback<CreatePlayer, Any> {
+      override fun onSuccess(commandMessage: CommandMessage<out CreatePlayer>?, result: Any?) {
+        logger.debug { "Successfully created a user ${playerInfo.displayName}" }
+      }
+
+      override fun onFailure(commandMessage: CommandMessage<out CreatePlayer>?, cause: Throwable) {
+        logger.error { "Failure by submitting a user: ${cause.localizedMessage}" }
+        response = ResponseEntity.badRequest().build()
+      }
+    })
+    return response
+  }
+
+  data class PlayerInfo(
+    val displayName: String,
+    val imageUrl: String
+  ) {
+    fun userName() = UserName(displayName
+        .replace(" ", "")
+        .toLowerCase()
+        .replace("ü", "ue")
+        .replace("ä", "ae")
+        .replace("ö", "oe")
+        .replace("ß", "ss")
+      )
+
   }
 }

@@ -91,7 +91,7 @@ function sendResults(sets: Sets, team1: Team, team2: Team) {
 
 function getWinningPlayersAsString(team: Team): string {
   if (team) {
-    return `${team.player1.name} und ${team.player2.name}`;
+    return `${team.player1.displayName} und ${team.player2.displayName}`;
   } else {
     return '';
   }
