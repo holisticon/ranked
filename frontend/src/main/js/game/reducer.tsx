@@ -2,7 +2,7 @@ import * as Actions from './actions';
 import { RankedStore, defaultState, createEmptyPlayer } from './store.state';
 import { TeamColor, Team, Composition, TeamKey } from '../types/types';
 import { POINTS_PER_SET, POINTS_PER_MATCH } from '../config';
-import { Timer } from './services/timer.service';
+import { TimerService } from './services/timer.service';
 
 function copyAndSet<T>(item: any, setter: (itemCopy: T) => void): T {
   const copy: T = {...item};
@@ -30,7 +30,7 @@ function changeGoals(state: RankedStore, color: TeamColor, offset: number): Rank
         let newGoals = newTeam.goals.slice(0, newTeam.goals.length + offset);
 
         // push new elements if offset is positive
-        newGoals.push(...Array(Math.max(offset, 0)).fill(Timer.Service.getTimeInSec()));
+        newGoals.push(...Array(Math.max(offset, 0)).fill(TimerService.getTimeInSec()));
 
         newTeam.goals = newGoals;
       });
@@ -108,6 +108,9 @@ export function ranked(state: RankedStore, rankedAction: Actions.RankedAction): 
       if (newState.sets[newState.sets.length - 1][action.team].goals.length >= POINTS_PER_SET) {
         return startNewSet(newState);
       }
+
+      // Start timer whenever a goal is scored to be sure it's running ;)
+      TimerService.start();
 
       return newState;
 

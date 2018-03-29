@@ -1,36 +1,25 @@
 import { TimerComponent } from '../components/timer';
 
-export class Timer {
-  private static instance: Timer;
+export namespace TimerService {
+  let timerComponent: TimerComponent;
 
-  public static get Service(): Timer {
-    if (this.instance == null) {
-      this.instance = new Timer();
-    }
-    return this.instance;
+  export function register(component: TimerComponent): void {
+    timerComponent = component;
   }
 
-  private timerComponent: TimerComponent;
-
-  private constructor() { }
-
-  public register(component: TimerComponent): void {
-    this.timerComponent = component;
+  export function start(): void {
+    timerComponent.start();
   }
 
-  public start(): void {
-    this.timerComponent.start();
+  export function pause(): void {
+    timerComponent.pause();
   }
 
-  public pause(): void {
-    this.timerComponent.pause();
+  export function reset(): void {
+    timerComponent.reset();
   }
 
-  public reset(): void {
-    this.timerComponent.reset();
-  }
-
-  public getTimeInSec(): number {
-    return this.timerComponent == null ? 0 : this.timerComponent.getTime();
+  export function getTimeInSec(): number {
+    return timerComponent == null ? 0 : timerComponent.getTime();
   }
 }

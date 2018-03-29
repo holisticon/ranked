@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Timer } from '../services/timer.service';
+import { TimerService } from '../services/timer.service';
 
 export interface TimerProps {
 }
@@ -17,7 +17,7 @@ export class TimerComponent extends React.Component<TimerProps, TimerState> {
     super(props);
     this.state = { time: -1, intervalId: null, status: 'STOPPED' };
 
-    Timer.Service.register(this);
+    TimerService.register(this);
   }
 
   public start(): void {
@@ -57,7 +57,7 @@ export class TimerComponent extends React.Component<TimerProps, TimerState> {
   }
 
   public getTime(): number {
-    return this.state.time;
+    return Math.max(this.state.time, 0);
   }
 
   public render() {

@@ -8,7 +8,6 @@ import { push } from 'react-router-redux';
 import { PartialStoreState } from '../store.state';
 import { POINTS_PER_MATCH } from '../../config';
 
-
 export interface TeamProps {
   color: TeamColor;
 }

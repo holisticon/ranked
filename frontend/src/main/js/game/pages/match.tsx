@@ -9,7 +9,7 @@ import { Dialog } from '../../components/dialog';
 import './match.css';
 import { PartialStoreState } from '../store.state';
 import PanelComponent from '../components/panel';
-import { Timer } from '../services/timer.service';
+import { TimerService } from '../services/timer.service';
 
 export interface MatchProps {
   sets: Sets;
@@ -25,9 +25,7 @@ function getTeam(set: Set, team: TeamKey): Composition {
 }
 
 function mapGoalsForBackend(teamRedGoals: Array<number>, teamBlueGoals: Array<number>, startTime?: Date) {
-  let timestamps = teamRedGoals.every(t => t >= 0) && teamBlueGoals.every(t => t >= 0);
-
-  if (startTime !== undefined && timestamps) {
+  if (startTime !== undefined) {
     let goals = [];
 
     // merge both goal arrays together ...
@@ -60,14 +58,14 @@ function mapGoalsForBackend(teamRedGoals: Array<number>, teamBlueGoals: Array<nu
 }
 
 function sendResults(sets: Sets, team1: Team, team2: Team) {
-  const matchTime = Timer.Service.getTimeInSec();
+  const matchTime = TimerService.getTimeInSec();
   let startTime: Date | undefined = undefined;
 
   if (matchTime > 0) {
     let now = new Date();
-    startTime = new Date(now.getTime() - (Timer.Service.getTimeInSec() * 1000));
+    startTime = new Date(now.getTime() - (TimerService.getTimeInSec() * 1000));
   }
-  Timer.Service.reset();
+  TimerService.reset();
 
   axios.post('command/match', {
     teamRed: {
@@ -112,7 +110,7 @@ function getDialogMessage(winner: TeamKey, team1: Team, team2: Team): string {
 function Match({ setNumber, winner, sets, team1, team2, startNewMatch }: MatchProps) {
 
   if (winner) {
-    Timer.Service.pause();
+    TimerService.pause();
   }
 
   return (
