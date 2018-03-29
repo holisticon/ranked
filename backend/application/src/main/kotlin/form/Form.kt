@@ -20,7 +20,7 @@ class WebController(val commandGateway: CommandGateway, val playerViewService: P
 
   @ModelAttribute("players")
   fun allPlayers(): List<Player> {
-    return playerViewService.getAllPlayers()
+    return playerViewService.findAll()
   }
 
   @GetMapping("/")
