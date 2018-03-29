@@ -2,6 +2,7 @@ import { Player } from '../types/types';
 
 interface Dimension {
   description: string;
+  unit?: string;
 }
 
 type DimensionValue = number | string | Player;

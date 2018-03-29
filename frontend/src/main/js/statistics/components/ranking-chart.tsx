@@ -22,8 +22,10 @@ export class RankingChart extends React.Component<RankingChartProps, any> {
       return null;
     }
 
-    const maxValue = +this.props.data.entries[0][1];
-    const minValue = +this.props.data.entries[this.props.data.entries.length - 1][1];
+    const first = +this.props.data.entries[0][1];
+    const last = +this.props.data.entries[this.props.data.entries.length - 1][1];
+    const minValue = Math.min(first, last);
+    const maxValue = Math.max(first, last);
 
     return this.props.data.entries
       .map((entry, i) => {
@@ -32,13 +34,13 @@ export class RankingChart extends React.Component<RankingChartProps, any> {
         return (
           <div key="i" className="ranking-entry">
             <div className="icon">
-              <PlayerIcon img={entry[0].imageUrl} click={() => { return; }} />
+              <PlayerIcon img={ entry[0].imageUrl } click={() => { return; }} />
             </div>
-            <div className="name">{entry[0].displayName}</div>
+            <div className="name">{ entry[0].displayName }</div>
             <div className="bar">
               <div className="bar-inner" style={{ width: barWidth + '%' }} />
             </div>
-            <div className="score">{entry[1]}</div>
+            <div className="score">{ entry[1] }{ this.props.data!!.dimensions[1].unit }</div>
           </div>
         );
       });

@@ -23,7 +23,7 @@ export namespace GoalsAdapter {
       value: string
     },
     goalTime: number
-  }
+  };
 
   function total(goals: GoalsCount): number {
     return goals.whenInDefense + goals.whenInOffense;
@@ -60,7 +60,7 @@ export namespace GoalsAdapter {
     return Promise.all([getPlayerAvgScoreTime(), PlayersAdapter.getPlayersMap()])
       .then(([avgScoreTimes, playersMap]) => {
         const playerAvgScoreTime: ChartData2D<Player, number> = {
-          dimensions: [{description: 'Player'}, {description: 'Average time to score'}],
+          dimensions: [{description: 'Player'}, {description: 'Average time to score', unit: 's'}],
           entries: avgScoreTimes.map(avgScoreTime => {
             return [
               playersMap[avgScoreTime.userName.value],
