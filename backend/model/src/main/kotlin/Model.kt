@@ -41,7 +41,7 @@ data class Player(
   val userName: UserName,
   val displayName: String,
   val imageUrl: String,
-  val eloRanking: Int
+  val eloRanking: Int?
 )
 
 /**

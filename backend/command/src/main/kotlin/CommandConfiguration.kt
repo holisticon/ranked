@@ -135,8 +135,7 @@ class CommandConfiguration {
         object : CommandCallback<CheckPlayer, Any> {
           override fun onSuccess(commandMessage: CommandMessage<out CheckPlayer>?, result: Any?) {
             // player exists - reset if in match
-            commandGateway.send<Any>(CancelParticipation(userName)
-            )
+            commandGateway.send<Any>(CancelParticipation(userName))
           }
 
           override fun onFailure(commandMessage: CommandMessage<out CheckPlayer>?, cause: Throwable?) {

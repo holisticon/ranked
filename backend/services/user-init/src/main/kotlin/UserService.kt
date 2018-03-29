@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component
 
 @Component
 @Deprecated("we do not use UserService anymore, just the UserInitialization")
-class UserService() {
+class UserService {
 
   private val users by lazy {
     readUsersFromJson("/players.json")
