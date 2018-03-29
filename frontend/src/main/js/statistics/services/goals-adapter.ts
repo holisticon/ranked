@@ -18,17 +18,29 @@ export namespace GoalsAdapter {
     goalsConceded: GoalsCount
   };
 
+  type PlayerScoreTime = {
+    userName: {
+      value: string
+    },
+    goalTime: number
+  }
+
   function total(goals: GoalsCount): number {
     return goals.whenInDefense + goals.whenInOffense;
   }
 
-  function getPlayerGoals(): Promise<Array<PlayerGoals>> {
+  function getPlayerGoalsCount(): Promise<Array<PlayerGoals>> {
     return axios.get('/view/goals/count')
       .then(res => res.data);
   }
 
+  function getPlayerAvgScoreTime(): Promise<Array<PlayerScoreTime>> {
+    return axios.get('/view/goals/time/average')
+      .then(res => res.data);
+  }
+
   export function getTotalGoalsData(): Promise<ChartData2D<Player, string>> {
-    return Promise.all([getPlayerGoals(), PlayersAdapter.getPlayersMap()])
+    return Promise.all([getPlayerGoalsCount(), PlayersAdapter.getPlayersMap()])
       .then(([goalsData, playersMap]) => {
         const playerElos: ChartData2D<Player, string> = {
           dimensions: [{ description: 'Player' }, { description: 'Total goals count' }],
@@ -44,4 +56,20 @@ export namespace GoalsAdapter {
       });
   }
 
+  export function getPlayerAvgScoreTimeData(): Promise<ChartData2D<Player, number>> {
+    return Promise.all([getPlayerAvgScoreTime(), PlayersAdapter.getPlayersMap()])
+      .then(([avgScoreTimes, playersMap]) => {
+        const playerAvgScoreTime: ChartData2D<Player, number> = {
+          dimensions: [{description: 'Player'}, {description: 'Average time to score'}],
+          entries: avgScoreTimes.map(avgScoreTime => {
+            return [
+              playersMap[avgScoreTime.userName.value],
+              avgScoreTime.goalTime
+            ] as [Player, number];
+          })
+        };
+
+        return playerAvgScoreTime;
+      });
+  }
 }
