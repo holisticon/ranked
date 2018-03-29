@@ -57,15 +57,6 @@ class PlayerRankingByEloHandler : Supplier<List<PlayerElo>> {
     cache.set(ranking.map { it.toPair() }.map { PlayerElo(it.first, it.second) }.sorted())
   }
 
-
-  /**
-   * Update the elo rankings of the players.
-   * @param playerElo new player elo
-   */
-  private fun update(playerElo: PlayerElo, change: Boolean = true) {
-
-  }
-
   override fun get() = cache.get()!!
 }
 
