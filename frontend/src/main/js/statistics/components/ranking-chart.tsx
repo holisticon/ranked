@@ -5,7 +5,7 @@ import { PlayerIcon } from '../../components/player-icon';
 import './ranking-chart.css';
 
 type RankingChartProps = {
-  data?: ChartData2D<Player, number>
+  data?: ChartData2D<Player, number | string>
 };
 
 export class RankingChart extends React.Component<RankingChartProps, any> {
@@ -18,16 +18,16 @@ export class RankingChart extends React.Component<RankingChartProps, any> {
   }
 
   public render() {
-    if (!this.props || !this.props.data) {
+    if (!this.props || !this.props.data || this.props.data.entries.length === 0) {
       return null;
     }
 
-    const maxValue = this.props.data.entries[0][1];
-    const minValue = this.props.data.entries[this.props.data.entries.length - 1][1];
+    const maxValue = +this.props.data.entries[0][1];
+    const minValue = +this.props.data.entries[this.props.data.entries.length - 1][1];
 
     return this.props.data.entries
       .map((entry, i) => {
-        const barWidth = this.calcPercentage(entry[1], minValue, maxValue) * 70 + 30;
+        const barWidth = this.calcPercentage(+entry[1], minValue, maxValue) * 70 + 30;
 
         return (
           <div key="i" className="ranking-entry">

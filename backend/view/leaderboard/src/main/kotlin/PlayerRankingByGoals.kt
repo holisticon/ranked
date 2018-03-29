@@ -10,19 +10,38 @@ import de.holisticon.ranked.model.event.MatchCreated
 import org.axonframework.config.ProcessingGroup
 import org.axonframework.eventhandling.EventHandler
 import org.springframework.stereotype.Component
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 import java.time.temporal.ChronoUnit
 import java.util.concurrent.atomic.AtomicReference
+
+/**
+ * The rest controller provides getters for key figures based on the player goals.
+ */
+@RestController
+@RequestMapping(value = ["/view/goals"])
+class PlayerRankingByGoalsView(
+    private val playerRankingByGoals: PlayerRankingByGoals
+) {
+  @GetMapping(path = ["/count"])
+  fun userListByGoalSum(): Set<PlayerGoalCount> = playerRankingByGoals.getGoalCount()
+
+  @GetMapping(path = ["/player/{userName}"])
+  fun goalStatsByPlayer(@PathVariable("userName") userName: String): PlayerGoalStats = playerRankingByGoals.getGoalStatsForPlayer(userName)
+
+  @GetMapping(path = ["/time/average"])
+  fun userListByGoalTimeAverage(): List<PlayerGoalTimeAverage> = playerRankingByGoals.getGoalTimeAverage()
+}
 
 @Component
 @ProcessingGroup(PROCESSING_GROUP)
 class PlayerRankingByGoals {
 
-  private val goalSum = mutableMapOf<UserName, Int>()
-  private val goalDifference = mutableMapOf<UserName, Int>()
+  private val goalCount = mutableMapOf<UserName, PlayerGoalCount>()
   private val goalTimeAverage = mutableMapOf<UserName, Int>()
 
-  private val goalSumCache = AtomicReference<List<PlayerGoalSum>>(listOf())
-  private val goalDifferenceCache = AtomicReference<List<PlayerGoalDifference>>(listOf())
   private val goalTimeAverageCache = AtomicReference<List<PlayerGoalTimeAverage>>(listOf())
 
   @EventHandler
@@ -37,10 +56,16 @@ class PlayerRankingByGoals {
       goalsRed += it.goalsRed
       goalsBlue += it.goalsBlue
 
+      addScoredGoalsToPlayersOfTeam(e.teamRed, it.offenseRed, it.goalsRed)
+      addScoredGoalsToPlayersOfTeam(e.teamBlue, it.offenseBlue, it.goalsBlue)
+
+      addConcededGoalsToPlayersOfTeam(e.teamRed, it.offenseRed, it.goalsBlue)
+      addConcededGoalsToPlayersOfTeam(e.teamBlue, it.offenseBlue, it.goalsRed)
+
       if (it is TimedMatchSet) {
         var goalTime: Long
         it.goals.forEach {
-          goalTime = ChronoUnit.SECONDS.between(it.second.toLocalTime(), lastGoalTime.toLocalTime())
+          goalTime = ChronoUnit.SECONDS.between(lastGoalTime.toLocalTime(), it.second.toLocalTime())
 
           if (it.first == TeamColor.RED) {
             goalTimeSumRed += goalTime
@@ -56,32 +81,36 @@ class PlayerRankingByGoals {
     addAverageGoalTimeToPlayersOfTeam(e.teamRed, goalTimeSumRed, goalsRed)
     addAverageGoalTimeToPlayersOfTeam(e.teamBlue, goalTimeSumBlue, goalsBlue)
 
-    addGoalSumToPlayersOfTeam(e.teamRed, goalsRed)
-    addGoalSumToPlayersOfTeam(e.teamBlue, goalsBlue)
-
-    addGoalDifferenceToPlayersOfTeam(e.teamRed, goalsRed - goalsBlue)
-    addGoalDifferenceToPlayersOfTeam(e.teamBlue, goalsBlue - goalsRed)
-
     goalTimeAverageCache.set(goalTimeAverage.map { it.toPair() }.map { PlayerGoalTimeAverage(it.first, it.second) }.sorted())
-    goalSumCache.set(goalSum.map { it.toPair() }.map { PlayerGoalSum(it.first, it.second) }.sorted())
-    goalDifferenceCache.set(goalDifference.map { it.toPair() }.map { PlayerGoalDifference(it.first, it.second) }.sorted())
   }
 
-  private fun addGoalSumToPlayersOfTeam(team: Team, increment: Int) {
-    goalSum.putIfAbsent(team.player1, 0)
-    goalSum.putIfAbsent(team.player2, 0)
+  private fun addScoredGoalsToPlayersOfTeam(team: Team, offense: UserName, goals: Int) {
+    goalCount.putIfAbsent(team.player1, PlayerGoalCount(team.player1, 0, 0, 0, 0))
+    goalCount.putIfAbsent(team.player2, PlayerGoalCount(team.player2, 0, 0, 0, 0))
 
-    goalSum[team.player1] = increment + goalSum[team.player1]!!
-    goalSum[team.player2] = increment + goalSum[team.player2]!!
+    if (team.player1 == offense) {
+      goalCount[team.player1]!!.addGoalsScoredInOffense(goals)
+      goalCount[team.player2]!!.addGoalsScoredInDefense(goals)
+    } else if (team.player2 == offense) {
+      goalCount[team.player1]!!.addGoalsScoredInDefense(goals)
+      goalCount[team.player2]!!.addGoalsScoredInOffense(goals)
+    }
   }
 
-  private fun addGoalDifferenceToPlayersOfTeam(team: Team, increment: Int) {
-    goalDifference.putIfAbsent(team.player1, 0)
-    goalDifference.putIfAbsent(team.player2, 0)
+  private fun addConcededGoalsToPlayersOfTeam(team: Team, offense: UserName, goals: Int) {
+    goalCount.putIfAbsent(team.player1, PlayerGoalCount(team.player1, 0, 0, 0, 0))
+    goalCount.putIfAbsent(team.player2, PlayerGoalCount(team.player2, 0, 0, 0, 0))
 
-    goalDifference[team.player1] = increment + goalDifference[team.player1]!!
-    goalDifference[team.player2] = increment + goalDifference[team.player2]!!
+    if (team.player1 == offense) {
+      goalCount[team.player1]!!.addGoalsConcededInOffense(goals)
+      goalCount[team.player2]!!.addGoalsConcededInDefense(goals)
+    } else if (team.player2 == offense) {
+      goalCount[team.player1]!!.addGoalsConcededInDefense(goals)
+      goalCount[team.player2]!!.addGoalsConcededInOffense(goals)
+    }
   }
+
+  private fun getGoalSumOfPlayer(player: UserName) = goalCount[player]?.goalsScored?.let { it.whenInOffense + it.whenInDefense }
 
   private fun addAverageGoalTimeToPlayersOfTeam(team: Team, goalTimeSum: Long, goalCount: Int) {
     addAverageGoalTimeToPlayer(team.player1, goalTimeSum, goalCount)
@@ -92,35 +121,45 @@ class PlayerRankingByGoals {
     if (goalTimeAverage[player] == null) {
       goalTimeAverage[player] = (goalTimeSum / goalCount).toInt()
     } else {
-      val previousGoalTimeSum = goalTimeAverage[player]!! * goalSum[player]!!
-      goalTimeAverage[player] = ((previousGoalTimeSum + goalTimeSum) / (goalSum[player]!! + goalCount)).toInt()
+      val previousGoalTimeSum = goalTimeAverage[player]!! * (getGoalSumOfPlayer(player)!! - goalCount)
+      goalTimeAverage[player] = ((previousGoalTimeSum + goalTimeSum) / getGoalSumOfPlayer(player)!!).toInt()
     }
   }
 
-  fun getGoalSum() = goalSumCache.get()!!
-  fun getGoalDifference() = goalDifferenceCache.get()!!
+  fun getGoalCount() = goalCount.values.toSet()
   fun getGoalTimeAverage() = goalTimeAverageCache.get()!!
-  fun getGoalStatsForPlayer(userName: String) = PlayerGoalStats(goalSum[UserName(userName)], goalDifference[UserName(userName)])
+  fun getGoalStatsForPlayer(userName: String) =
+      UserName(userName).let { PlayerGoalStats(goalTimeAverage[it], goalCount[it]?.goalsScored, goalCount[it]?.goalsConceded) }
 }
+
+data class GoalCount(var whenInOffense: Int, var whenInDefense: Int)
 
 /**
  * Return value for the total goal count provides a username (string) and the sum of goals (int).
  */
-data class PlayerGoalSum(val userName: UserName, val goals: Int) : Comparable<PlayerGoalSum> {
+data class PlayerGoalCount(val userName: UserName, val goalsScored: GoalCount, val goalsConceded: GoalCount) {
 
-  constructor(userName: String, goals: Int) : this(UserName(userName), goals)
+  constructor(userName: UserName, goalsScoredInOffense: Int, goalsScoredInDefense: Int,
+              goalsConcededInOffense: Int, goalsConcededInDefense: Int) :
+      this(userName,
+          GoalCount(goalsScoredInOffense, goalsScoredInDefense),
+          GoalCount(goalsConcededInOffense, goalsConcededInDefense))
 
-  override fun compareTo(other: PlayerGoalSum): Int = other.goals.compareTo(goals)
-}
+  fun addGoalsScoredInOffense(goals: Int) {
+    goalsScored.whenInOffense += goals;
+  }
 
-/**
- * Return value for the total goal difference provides a username (string) and the sum of goal differences (int).
- */
-data class PlayerGoalDifference(val userName: UserName, val goalDifference: Int) : Comparable<PlayerGoalDifference> {
+  fun addGoalsScoredInDefense(goals: Int) {
+    goalsScored.whenInDefense += goals;
+  }
 
-  constructor(userName: String, goalDifference: Int) : this(UserName(userName), goalDifference)
+  fun addGoalsConcededInOffense(goals: Int) {
+    goalsConceded.whenInOffense += goals;
+  }
 
-  override fun compareTo(other: PlayerGoalDifference): Int = other.goalDifference.compareTo(goalDifference)
+  fun addGoalsConcededInDefense(goals: Int) {
+    goalsConceded.whenInDefense += goals;
+  }
 }
 
 /**
@@ -136,4 +175,4 @@ data class PlayerGoalTimeAverage(val userName: UserName, val goalTime: Int) : Co
 /**
  * Carries various stats for a player on goal level.
  */
-data class PlayerGoalStats(val goalSum: Int?, val goalDifference: Int?)
+data class PlayerGoalStats(val goalTimeAverage: Int?, val goalsScored: GoalCount?, val goalsConceded: GoalCount?)
