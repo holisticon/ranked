@@ -16,11 +16,21 @@ inline fun <reified T : kotlin.Any> runApplicationExpr(vararg args: kotlin.Strin
   runApplication<T>(*args)
 }
 
+inline fun defaultSmartLifecycle(thePhase:Int, crossinline action:() ->Unit) = object: DefaultSmartLifecycle(thePhase) {
+  override fun onStart() {
+    action()
+  }
+}
+
 /**
  * Opinionated best guess implementation of [SmartLifecycle], just override [onStart] and  [getPhase]
  * to get an auto-started, startable and stoppable lifecycle manager.
+ *
+ * object: DefaultSmartLifecycle(50) {
+ *   override fun onStart() { ... }
+ * }
  */
-abstract class DefaultSmartLifecycle(val thePhase : Int) : SmartLifecycle {
+abstract class DefaultSmartLifecycle(private val thePhase : Int) : SmartLifecycle {
 
   private var running: Boolean = false
 

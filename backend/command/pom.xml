@@ -27,7 +27,7 @@
     </dependency>
     <dependency>
       <groupId>de.holisticon.ranked.service</groupId>
-      <artifactId>ranked-user-service</artifactId>
+      <artifactId>ranked-user-init</artifactId>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>

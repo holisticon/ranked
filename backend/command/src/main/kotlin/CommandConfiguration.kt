@@ -10,26 +10,32 @@ import de.holisticon.ranked.command.api.CreatePlayer
 import de.holisticon.ranked.command.data.TokenJpaRepository
 import de.holisticon.ranked.extension.DefaultSmartLifecycle
 import de.holisticon.ranked.model.UserName
-import de.holisticon.ranked.service.user.UserService
+import de.holisticon.ranked.model.event.internal.InitUser
 import mu.KLogging
 import org.axonframework.commandhandling.CommandCallback
 import org.axonframework.commandhandling.CommandMessage
 import org.axonframework.commandhandling.SimpleCommandBus
 import org.axonframework.commandhandling.gateway.CommandGateway
+import org.axonframework.common.jpa.EntityManagerProvider
+import org.axonframework.common.transaction.TransactionManager
 import org.axonframework.config.EventHandlingConfiguration
 import org.axonframework.eventhandling.EventProcessor
 import org.axonframework.eventhandling.TrackingEventProcessor
 import org.axonframework.eventhandling.tokenstore.jpa.TokenEntry
+import org.axonframework.eventsourcing.eventstore.jpa.JpaEventStorageEngine
 import org.axonframework.messaging.interceptors.BeanValidationInterceptor
 import org.axonframework.messaging.interceptors.LoggingInterceptor
+import org.axonframework.serialization.Serializer
+import org.axonframework.serialization.upcasting.event.EventUpcaster
+import org.axonframework.serialization.upcasting.event.EventUpcasterChain
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.context.annotation.Profile
+import org.springframework.context.event.EventListener
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean
 import java.util.*
+import java.util.function.Consumer
+import javax.sql.DataSource
 import javax.validation.ValidatorFactory
 
 /**
@@ -117,32 +123,41 @@ class CommandConfiguration {
   }
 
   @Bean
-  @Profile("!itest")
-  fun initializeUsers(commandGateway: CommandGateway, userService: UserService) = object : DefaultSmartLifecycle(Int.MAX_VALUE - 20) {
+  @Suppress("ObjectLiteralToLambda")
+  fun onInitUser(commandGateway: CommandGateway) = object : Consumer<InitUser> {
 
-    override fun onStart() {
+    @EventListener
+    override fun accept(user: InitUser) {
+      val userName = UserName(user.id)
 
-      userService.loadAll().forEach {
-        commandGateway.send(
-          CheckPlayer(userName = UserName(it.id)),
-          object : CommandCallback<CheckPlayer, Any> {
-            override fun onSuccess(commandMessage: CommandMessage<out CheckPlayer>?, result: Any?) {
-              // player exists - reset if in match
-              commandGateway.send<Any>(CancelParticipation(userName = UserName(it.id))
-              )
-            }
-
-            override fun onFailure(commandMessage: CommandMessage<out CheckPlayer>?, cause: Throwable?) {
-              commandGateway.send<Any>(CreatePlayer(userName = UserName(it.id)))
-            }
+      commandGateway.send(
+        CheckPlayer(userName),
+        object : CommandCallback<CheckPlayer, Any> {
+          override fun onSuccess(commandMessage: CommandMessage<out CheckPlayer>?, result: Any?) {
+            // player exists - reset if in match
+            commandGateway.send<Any>(CancelParticipation(userName)
+            )
           }
-        )
-      }
+
+          override fun onFailure(commandMessage: CommandMessage<out CheckPlayer>?, cause: Throwable?) {
+            commandGateway.send<Any>(CreatePlayer(userName = userName, displayName = user.name, imageUrl = user.imageUrl))
+          }
+        }
+      )
     }
   }
 
   @Bean
-  fun jacksonDatTime() = JavaTimeModule()
+  fun jpaEventStorageEngine(serializer: Serializer, dataSource: DataSource, upcasters: List<out EventUpcaster>, entityManagerProvider: EntityManagerProvider, transactionManager: TransactionManager) =
+    JpaEventStorageEngine(serializer,
+      EventUpcasterChain(upcasters),
+      dataSource,
+      entityManagerProvider,
+      transactionManager)
+
+
+  @Bean
+  fun jacksonDateTime() = JavaTimeModule()
 
   @Bean
   fun jacksonKotlin() = KotlinModule()

@@ -47,10 +47,12 @@ class WallView(val userService: UserService) {
   @GetMapping("/wall/teams")
   fun teamWins() = teamWins
 
+  @Deprecated("use PlayerView")
   @ApiOperation(value = "Lists all users")
   @GetMapping("/user")
   fun users() = userService.loadAll().sortedBy { it.id }
 
+  @Deprecated("use PlayerView")
   @ApiOperation(value = "Lists all users")
   @GetMapping("/user/{id}")
   fun users(@PathVariable("id") id: String) = userService.loadUser(id)
@@ -84,16 +86,6 @@ class WallView(val userService: UserService) {
     playerWins.add(PlayerWin(e.team.player2, Type.SET, LocalDateTime.ofInstant(timestamp, ZoneOffset.UTC)))
     logger.info { "Player ${e.team.player2} won a set." }
   }
-
-  @EventHandler
-  fun on(e: PlayerCreated) {
-    logger.info { "Player ${e.displayName} (${e.userName}) created with rating ${e.initialElo}" }
-  }
-
-  // @EventHandler
-  // fun on(e: PlayerRankingChanged) {
-  //   logger.info { "Player ${e.player} new rating is ${e.eloRanking}" }
-  // }
 
   @EventHandler
   fun on(e: PlayerParticipatedInMatch) {

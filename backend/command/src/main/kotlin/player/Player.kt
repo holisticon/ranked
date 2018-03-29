@@ -43,6 +43,7 @@ class Player() {
       PlayerCreated(
         userName = userName,
         displayName = user.name,
+        imageUrl = user.imageUrl,
         initialElo = initialElo
       )
     )
@@ -89,6 +90,7 @@ class Player() {
     userName = e.userName
     displayName = e.displayName
     eloRanking = e.initialElo
+    imageUrl = e.imageUrl
   }
 
   @EventSourcingHandler

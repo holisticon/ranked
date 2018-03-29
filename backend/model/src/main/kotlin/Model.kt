@@ -37,6 +37,12 @@ data class UserName(
   override fun toString(): String = value
 }
 
+data class Player(
+  val userName: UserName,
+  val displayName: String,
+  val imageUrl: String,
+  val eloRanking: Int
+)
 
 /**
  * ValueBean representing a kicker team of two *different* players.
