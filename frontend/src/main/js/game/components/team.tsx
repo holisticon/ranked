@@ -51,7 +51,7 @@ function Team({ team, composition, isLastSet, classes,
             <PlayerIcon
               click={ () => { return; } }
               img={ team[composition.defense].imageUrl }
-              name={ team[composition.defense].name }
+              name={ team[composition.defense].displayName }
             />
         }
         <span className="name">Tor</span>
@@ -74,7 +74,7 @@ function Team({ team, composition, isLastSet, classes,
             <PlayerIcon
               click={ () => { return; } }
               img={ team[composition.attack].imageUrl }
-              name={ team[composition.attack].name }
+              name={ team[composition.attack].displayName }
             />
         }
         <span className="name">Angriff</span>

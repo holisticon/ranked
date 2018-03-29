@@ -21,7 +21,7 @@ export interface PlayerSelectionProps {
 }
 
 function getPlayers(): Promise<Array<Player>> {
-  return axios.get('/view/user').then(res => res.data);
+  return axios.get('/view/player').then(res => res.data);
 }
 
 function getLetters(unavailableLetters: string) {
@@ -43,11 +43,11 @@ function getLetters(unavailableLetters: string) {
 
 function getPlayerIcons(availablePlayers: Array<Player>, select: (player: Player) => void, selectedLetter?: string) {
   const players = !selectedLetter ? availablePlayers :
-    availablePlayers.filter(player => player.name[0].toLowerCase() === selectedLetter);
+    availablePlayers.filter(player => player.displayName[0].toLowerCase() === selectedLetter);
 
   return players.map((player, index) => {
       return (
-        <PlayerIcon key={ index } img={ player.imageUrl } name={ player.name } click={ () => select(player) } />
+        <PlayerIcon key={ index } img={ player.imageUrl } name={ player.displayName } click={ () => select(player) } />
       );
     });
 }
@@ -79,7 +79,7 @@ function PlayerSelection({ unavailableLetters, availablePlayers,
 export function mapStateToProps({ ranked: { availablePlayers, selectPlayerFor } }: any) {
   let unavailableLetters = alphabet;
   availablePlayers.forEach((player: Player) => {
-    unavailableLetters = unavailableLetters.replace(player.name[0].toLowerCase(), '');
+    unavailableLetters = unavailableLetters.replace(player.displayName[0].toLowerCase(), '');
   });
 
   return {

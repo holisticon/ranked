@@ -5,8 +5,10 @@ package de.holisticon.ranked.view.wall
 import de.holisticon.ranked.model.AbstractMatchSet
 import de.holisticon.ranked.model.Team
 import de.holisticon.ranked.model.UserName
-import de.holisticon.ranked.model.event.*
-import de.holisticon.ranked.service.user.UserService
+import de.holisticon.ranked.model.event.MatchCreated
+import de.holisticon.ranked.model.event.PlayerParticipatedInMatch
+import de.holisticon.ranked.model.event.TeamWonMatch
+import de.holisticon.ranked.model.event.TeamWonMatchSet
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import mu.KLogging
@@ -14,7 +16,6 @@ import org.axonframework.config.ProcessingGroup
 import org.axonframework.eventhandling.EventHandler
 import org.axonframework.eventhandling.Timestamp
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import java.time.Instant
@@ -25,7 +26,7 @@ import java.time.ZoneOffset
 @Api(tags = ["News wall"])
 @RestController
 @RequestMapping(value = ["/view"])
-class WallView(val userService: UserService) {
+class WallView {
 
   companion object : KLogging() {
     const val NAME = "Wall"
@@ -46,16 +47,6 @@ class WallView(val userService: UserService) {
   @ApiOperation(value = "Lists team wins.")
   @GetMapping("/wall/teams")
   fun teamWins() = teamWins
-
-  @Deprecated("use PlayerView")
-  @ApiOperation(value = "Lists all users")
-  @GetMapping("/user")
-  fun users() = userService.loadAll().sortedBy { it.id }
-
-  @Deprecated("use PlayerView")
-  @ApiOperation(value = "Lists all users")
-  @GetMapping("/user/{id}")
-  fun users(@PathVariable("id") id: String) = userService.loadUser(id)
 
   @EventHandler
   fun on(e: MatchCreated, @Timestamp timestamp: Instant) {

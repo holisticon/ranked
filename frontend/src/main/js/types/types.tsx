@@ -1,7 +1,10 @@
-export interface Player {
-  name: string;
+export class Player {
+  displayName: string;
   imageUrl: string;
-  id: string;
+  userName: { value: string };
+  get id(): string {
+    return this.userName ? this.userName.value : '';
+  }
 }
 
 export type PlayerKey = 'player1' | 'player2';

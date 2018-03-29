@@ -27,11 +27,11 @@ class PlayerViewService {
 
   @ApiOperation(value = "Lists all players")
   @GetMapping("/player")
-  fun getAllPlayers() = players.sortedBy { it.userName.value }
+  fun findAll() = players.sortedBy { it.userName.value }
 
   @ApiOperation(value = "Get player by userName")
   @GetMapping("/player/{userName}")
-  fun users(@PathVariable("userName") userName: String) = players.find { userName == it.userName.value }
+  fun findUser(@PathVariable("userName") userName: String) = players.find { userName == it.userName.value }
 
 
   @EventHandler
