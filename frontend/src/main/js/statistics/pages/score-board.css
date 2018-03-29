@@ -1,6 +1,7 @@
 .score-board {
   width: 100%;
   height: 100%;
+  background-color: white;
 }
 
 .header {
@@ -43,15 +44,16 @@
   color: white;
 }
 
-.ranking-list {
-  padding-top: 8rem;
+.chart-container {
+  padding: 8rem 0 2rem 0;
   position: relative;
   display: inline-block;
   text-align: center;
+  background-color: white;
 }
 
 @media (min-width: 1000px) {
-  .ranking-list {
+  .chart-container {
     column-count: 2;
     column-rule: 0.1rem solid rgba(0, 0, 0, 0.3);
     padding-left: 5rem;
@@ -60,7 +62,7 @@
 }
 
 @media (min-width: 1500px) {
-  .ranking-list {
+  .chart-container {
     column-count: 3;
     column-rule: 0.1rem solid rgba(0, 0, 0, 0.3);
     padding-left: 5rem;
@@ -68,7 +70,7 @@
   }
 }
 
-.ranking-list .fading-top {
+.chart-container .fading-top {
   height: 5rem;
   width: 100%;
   position: fixed;
@@ -77,40 +79,6 @@
   z-index: 2;
 }
 
-.ranking-entry {
-  margin: 0.8rem 0;
-  padding: 0 1rem;
-  width: 100%;
-  position: relative;
-  display: inline-block;
-  box-sizing: border-box;
-  max-width: 700px;
-  text-align: left;
-}
-
-.ranking-entry .icon {
-  float: left;
-  width: 9%;
-  margin: 0 3%;
-  height: 2rem;
-}
-
-.ranking-entry .name {
-  float: left;
-  width: 83%;
-}
-
-.ranking-entry .bar {
-  float: left;
-  width: 70%;
-  height: 1rem;
-}
-
-.ranking-entry .bar .bar-inner {
-  height: 100%;
-  background-color: #4EB4F9;
-}
-
-.ranking-entry .score {
-  float: right;
+.carousel .control-dots .dot {
+  background: #FF2D55 !important;
 }

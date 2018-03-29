@@ -37,6 +37,8 @@
 }
 
 .player-icon .player-image img {
+  width: auto!important;
+  height: auto;
   max-width: 100%;
   max-height: 100%;
   margin: auto;
