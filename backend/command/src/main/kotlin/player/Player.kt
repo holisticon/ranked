@@ -6,7 +6,6 @@ import de.holisticon.ranked.command.api.*
 import de.holisticon.ranked.model.UserName
 import de.holisticon.ranked.model.event.*
 import de.holisticon.ranked.properties.RankedProperties
-import de.holisticon.ranked.service.user.UserService
 import mu.KLogging
 import org.axonframework.commandhandling.CommandHandler
 import org.axonframework.commandhandling.model.AggregateIdentifier

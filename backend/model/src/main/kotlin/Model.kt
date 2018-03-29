@@ -14,6 +14,7 @@ import javax.validation.constraints.Size
    * Representing the Elo Value of a player or team.
    */
 typealias Elo = Int
+typealias ImageUrl = String
 
 /**
  * Represents the team color.
@@ -81,7 +82,7 @@ data class Team(
   JsonSubTypes.Type(value = MatchSet::class, name = "result"),
   JsonSubTypes.Type(value = TimedMatchSet::class, name = "timestamp")
 ])
-abstract class AbstractMatchSet {
+sealed class AbstractMatchSet {
   abstract val goalsRed: Int
   abstract val goalsBlue: Int
   abstract val offenseRed: UserName

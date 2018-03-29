@@ -9,11 +9,10 @@ import de.holisticon.ranked.command.api.CheckPlayer
 import de.holisticon.ranked.command.api.CreatePlayer
 import de.holisticon.ranked.command.data.TokenJpaRepository
 import de.holisticon.ranked.extension.DefaultSmartLifecycle
+import de.holisticon.ranked.extension.send
 import de.holisticon.ranked.model.UserName
 import de.holisticon.ranked.model.event.internal.InitUser
 import mu.KLogging
-import org.axonframework.commandhandling.CommandCallback
-import org.axonframework.commandhandling.CommandMessage
 import org.axonframework.commandhandling.SimpleCommandBus
 import org.axonframework.commandhandling.gateway.CommandGateway
 import org.axonframework.common.jpa.EntityManagerProvider
@@ -129,25 +128,18 @@ class CommandConfiguration {
     @EventListener
     override fun accept(user: InitUser) {
       val userName = UserName(user.id)
-
-      commandGateway.send(
-        CheckPlayer(userName),
-        object : CommandCallback<CheckPlayer, Any> {
-          override fun onSuccess(commandMessage: CommandMessage<out CheckPlayer>?, result: Any?) {
-            // player exists - reset if in match
-            commandGateway.send<Any>(CancelParticipation(userName))
-          }
-
-          override fun onFailure(commandMessage: CommandMessage<out CheckPlayer>?, cause: Throwable?) {
-            commandGateway.send<Any>(CreatePlayer(userName = userName, displayName = user.name, imageUrl = user.imageUrl))
-          }
-        }
-      )
+      with(commandGateway) {
+        send(
+          command = CheckPlayer(userName),
+          success = { _, _: Any -> send<Any>(CancelParticipation(userName)) },
+          failure = { _, _: Throwable -> send<Any>(CreatePlayer(userName = userName, displayName = user.name, imageUrl = user.imageUrl)) }
+        )
+      }
     }
   }
 
   @Bean
-  fun jpaEventStorageEngine(serializer: Serializer, dataSource: DataSource, upcasters: List<out EventUpcaster>, entityManagerProvider: EntityManagerProvider, transactionManager: TransactionManager) =
+  fun jpaEventStorageEngine(serializer: Serializer, dataSource: DataSource, upcasters: List<EventUpcaster>, entityManagerProvider: EntityManagerProvider, transactionManager: TransactionManager) =
     JpaEventStorageEngine(serializer,
       EventUpcasterChain(upcasters),
       dataSource,
