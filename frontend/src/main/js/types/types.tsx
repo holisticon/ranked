@@ -1,8 +1,16 @@
-export class Player {
-  displayName: string;
-  imageUrl: string;
-  userName: { value: string };
-  get id(): string {
+export abstract class PlayerData {
+  public displayName: string;
+  public imageUrl: string;
+  public userName: { value: string };
+}
+
+export class Player extends PlayerData {
+  public constructor(data: PlayerData) {
+    super();
+    Object.assign(this, data);
+  }
+
+  public get id(): string {
     return this.userName ? this.userName.value : '';
   }
 }

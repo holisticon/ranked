@@ -2,12 +2,12 @@ import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import * as Actions from '../actions';
 import { Player, PlayerKey, TeamKey } from '../../types/types';
-import axios from 'axios';
 import { PlayerIcon } from '../../components/player-icon';
 import { Link } from 'react-router-dom';
 import { match as Match } from 'react-router';
 import { push } from 'react-router-redux';
 import './player-selection.css';
+import { PlayerService } from '../../services/player-service';
 
 const alphabet = 'abcdefghijklmnopqrstuvwxyz';
 
@@ -18,10 +18,6 @@ export interface PlayerSelectionProps {
   selectPlayerFor: any;
   select: (team: TeamKey, player: PlayerKey, selected: Player) => void;
   updateAvailablePlayers: (players: Array<Player>) => void;
-}
-
-function getPlayers(): Promise<Array<Player>> {
-  return axios.get('/view/player').then(res => res.data);
 }
 
 function getLetters(unavailableLetters: string) {
@@ -57,7 +53,7 @@ function PlayerSelection({ unavailableLetters, availablePlayers,
 
   if (availablePlayers.length === 0) {
     // no player avaiable -> try to load them from backend
-    getPlayers().then(updateAvailablePlayers);
+    PlayerService.getAllPlayers().then(updateAvailablePlayers);
   }
 
   let selectedLetter = '';
