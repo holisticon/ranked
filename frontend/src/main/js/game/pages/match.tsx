@@ -110,7 +110,6 @@ function getDialogMessage(winner: TeamKey, team1: Team, team2: Team): string {
 }
 
 function Match({ setNumber, winner, sets, team1, team2, startNewMatch }: MatchProps) {
-  const isLastSet = setNumber === (POINTS_PER_MATCH * 2 - 1);
 
   if (winner) {
     Timer.Service.pause();
@@ -134,7 +133,7 @@ function Match({ setNumber, winner, sets, team1, team2, startNewMatch }: MatchPr
         />
       }
 
-      <TeamComponent color={'red'} isLastSet={isLastSet} />
+      <TeamComponent color={'red'} />
 
       <div className="setcounter">
         <div>
@@ -142,7 +141,7 @@ function Match({ setNumber, winner, sets, team1, team2, startNewMatch }: MatchPr
         </div>
       </div>
 
-      <TeamComponent color={'blue'} isLastSet={isLastSet} />
+      <TeamComponent color={'blue'} />
 
       <PanelComponent />
 

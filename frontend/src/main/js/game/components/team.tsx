@@ -5,16 +5,18 @@ import * as Actions from '../actions';
 import { Composition, TeamColor, PlayerKey, Team, TeamKey, Set } from '../../types/types';
 import { PlayerIcon } from '../../components/player-icon';
 import { push } from 'react-router-redux';
+import { PartialStoreState } from '../store.state';
+import { POINTS_PER_MATCH } from '../../config';
+
 
 export interface TeamProps {
   color: TeamColor;
-  isLastSet: boolean;
 }
 
 interface InternalTeamProps {
   team: Team;
   composition: Composition;
-  isLastSet: boolean;
+  showSwitchPlayerButtons: boolean;
   classes: string;
   incGoals: () => void;
   decGoals: () => void;
@@ -28,7 +30,7 @@ function stopEvent(event: React.SyntheticEvent<Object>): boolean {
   return true;
 }
 
-function Team({ team, composition, isLastSet, classes,
+function Team({ team, composition, showSwitchPlayerButtons, classes,
   incGoals, decGoals, selectPlayer, switchPlayerPositions }: InternalTeamProps) {
 
   return (
@@ -58,7 +60,7 @@ function Team({ team, composition, isLastSet, classes,
       </div>
 
       <div
-        className={ isLastSet ? 'change-positions' : 'hidden' }
+        className={ showSwitchPlayerButtons ? 'change-positions' : 'hidden' }
         onClick={ (e) => stopEvent(e) && switchPlayerPositions() }
       >
         <i className="material-icons">&#xE0C3;</i>
@@ -83,15 +85,18 @@ function Team({ team, composition, isLastSet, classes,
   );
 }
 
-export function mapStateToProps({ranked: store}: any, { color, isLastSet }: TeamProps) {
+export function mapStateToProps({ranked: store}: PartialStoreState, { color }: TeamProps) {
   const currentSet: Set = store.sets[store.sets.length - 1];
   const composition: Composition = currentSet[color];
+  const isCurrentSetStarted = (currentSet.blue.goals.length > 0) || (currentSet.red.goals.length > 0);
+  const isFirstOrLastSet =  (store.sets.length === 1) || (store.sets.length === POINTS_PER_MATCH * 2 - 1);
 
   return {
     team: store[composition.team],
     composition,
     classes: 'team-' + color,
-    isLastSet
+    showSwitchPlayerButtons: !isCurrentSetStarted && isFirstOrLastSet
+
   };
 }
 
