@@ -25,9 +25,9 @@
     <dockerfile.skip>true</dockerfile.skip>
 
     <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
-    <kotlin.version>1.2.10</kotlin.version>
+    <kotlin.version>1.2.31</kotlin.version>
 
-    <kotlin-logging.version>1.4.6</kotlin-logging.version>
+    <kotlin-logging.version>1.5.3</kotlin-logging.version>
     <axon.version>3.1.1</axon.version>
     <springfox.version>2.7.0</springfox.version>
     <spring-validator.version>1.1.0</spring-validator.version>
@@ -47,13 +47,6 @@
         <groupId>de.holisticon.ranked</groupId>
         <artifactId>ranked-model</artifactId>
         <version>${project.version}</version>
-      </dependency>
-
-
-      <dependency>
-        <groupId>io.toolisticon.springboot</groupId>
-        <artifactId>springboot-swagger-starter</artifactId>
-        <version>0.0.3</version>
       </dependency>
 
       <dependency>
