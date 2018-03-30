@@ -5,17 +5,10 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>de.holisticon.ranked</groupId>
-    <artifactId>ranked-view-root</artifactId>
+    <artifactId>ranked-views</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
 
   <artifactId>ranked-view-wall</artifactId>
-
-  <dependencies>
-    <dependency>
-      <groupId>de.holisticon.ranked.service</groupId>
-      <artifactId>ranked-user-init</artifactId>
-    </dependency>
-  </dependencies>
 
 </project>

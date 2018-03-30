@@ -9,13 +9,14 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
 
-  <artifactId>ranked-view-root</artifactId>
+  <artifactId>ranked-views</artifactId>
   <packaging>pom</packaging>
 
   <modules>
     <module>wall</module>
     <module>leaderboard</module>
 	  <module>player</module>
+    <module>configuration</module>
   </modules>
 
   <dependencies>

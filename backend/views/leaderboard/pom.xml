@@ -5,10 +5,11 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>de.holisticon.ranked</groupId>
-    <artifactId>ranked-view-root</artifactId>
+    <artifactId>ranked-views</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
 
-  <artifactId>ranked-view-player</artifactId>
+  <artifactId>ranked-view-leaderboard</artifactId>
+
 
 </project>

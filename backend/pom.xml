@@ -20,8 +20,8 @@
     <module>model</module>
 
     <module>command</module>
-    <module>view</module>
     <module>services</module>
+    <module>views</module>
   </modules>
 
   <dependencyManagement>
