@@ -14,7 +14,12 @@ import kotlin.reflect.KClass
  */
 typealias Revisions = Pair<String?, String>
 
-fun singleEventUpcaster(eventType: KClass<*>, revisions: Revisions, converter: (Document) -> Document): SingleEventUpcaster = object : SingleEventUpcaster() {
+/**
+ * Creates a singleEventUpcaster for given type and revisions and calls [IntermediateEventRepresentation#upcastPayload] using the [converter].
+ */
+fun singleEventUpcaster(eventType: KClass<*>,
+                        revisions: Revisions,
+                        converter: (Document) -> Document): SingleEventUpcaster = object : SingleEventUpcaster() {
 
   override fun canUpcast(ir: IntermediateEventRepresentation): Boolean = SimpleSerializedType(eventType.qualifiedName, revisions.first) == ir.type
 
@@ -26,6 +31,9 @@ fun singleEventUpcaster(eventType: KClass<*>, revisions: Revisions, converter: (
 }
 
 
+/**
+ * Simplifies sending commands with callback to the CommandGateway.
+ */
 inline fun <C, R> CommandGateway.send(command: C,
                                       crossinline success: (CommandMessage<out C>, R) -> Unit = { _, _: R -> },
                                       crossinline failure: (CommandMessage<out C>, Throwable) -> Unit = { _, _: Throwable -> }

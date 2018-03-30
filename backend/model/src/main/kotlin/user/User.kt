@@ -11,4 +11,7 @@ data class User(
   val imageUrl: ImageUrl
 )
 
+/**
+ * A user supplier is a function that can return a user for a given string (userId).
+ */
 typealias UserSupplier = (String) -> User
