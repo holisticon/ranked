@@ -69,7 +69,7 @@ class CommandApi(val commandGateway: CommandGateway) {
     return response
   }
 
-  inner class PlayerInfo(
+  data class PlayerInfo(
     val displayName: String,
     val imageUrl: String
   ) {
