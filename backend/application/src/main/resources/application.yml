@@ -36,31 +36,6 @@ axon:
       Logging:
         mode: tracking
 
-swagger:
-  redirect: true
-  apiInfo:
-    version: 1.0.0
-    termsOfService: None
-    lisense: Revised BSD License
-    licenseUrl: https://github.com/holisticon/ranked/blob/master/LICENSE.txt
-    contact:
-      name: Holisticon Craftsmen
-      email: jobs@holisticon.de
-      url: https://www.holisticon.de
-  dockets:
-    Views:
-      basePackage: "de.holisticon.ranked.view"
-      path: "/view/**"
-      apiInfo:
-        title: Ranked View API
-        description: View API to access different views in ranked.
-    Commands:
-      basePackage: "de.holisticon.ranked.command"
-      path: "/command/**"
-      apiInfo:
-        title: Ranked Command API
-        description: Command API to write to ranked.
-
 logging:
   level:
     com.zaxxer.hikari: WARN
