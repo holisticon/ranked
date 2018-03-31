@@ -3,6 +3,8 @@ package de.holisticon.ranked.extension
 import org.axonframework.commandhandling.CommandCallback
 import org.axonframework.commandhandling.CommandMessage
 import org.axonframework.commandhandling.gateway.CommandGateway
+import org.axonframework.config.EventHandlingConfiguration
+import org.axonframework.eventhandling.TrackingEventProcessor
 import org.axonframework.serialization.SimpleSerializedType
 import org.axonframework.serialization.upcasting.event.IntermediateEventRepresentation
 import org.axonframework.serialization.upcasting.event.SingleEventUpcaster
@@ -46,3 +48,8 @@ inline fun <C, R> CommandGateway.send(command: C,
     failure(commandMessage, cause)
   }
 })
+
+/**
+ * Access all tracking processors.
+ */
+fun EventHandlingConfiguration.trackingEventProcessors() =  this.processors.filter { it is TrackingEventProcessor }.map { it as TrackingEventProcessor }
