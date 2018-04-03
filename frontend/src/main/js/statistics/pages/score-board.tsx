@@ -54,7 +54,7 @@ export class ScoreBoard extends React.Component<any, ScoreBoardState> {
           autoPlay={ true }
           showThumbs={ false }
           infiniteLoop={ true }
-          interval={ 30000 }
+          interval={ 20000 }
           showStatus={ false }
           showArrows={ false }
         >
