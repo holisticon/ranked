@@ -37,6 +37,8 @@ timeout(30) {
         sh "./docker-run.sh"
         sh "echo Waiting for containers to come up"
         utils.waitForAppToBeReady('localhost:18080')
+        // send deploy event to logstash
+        logstashSend failBuild: false, maxLines: 1000
       }
 
     } catch (err) {
