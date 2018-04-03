@@ -18,6 +18,7 @@ import org.axonframework.commandhandling.gateway.CommandGateway
 import org.axonframework.common.jpa.EntityManagerProvider
 import org.axonframework.common.transaction.TransactionManager
 import org.axonframework.config.EventHandlingConfiguration
+import org.axonframework.eventhandling.tokenstore.inmemory.InMemoryTokenStore
 import org.axonframework.eventsourcing.eventstore.jpa.JpaEventStorageEngine
 import org.axonframework.messaging.interceptors.BeanValidationInterceptor
 import org.axonframework.messaging.interceptors.LoggingInterceptor
@@ -63,26 +64,6 @@ class CommandConfiguration {
   @Bean
   fun validatorFactoryBean(): ValidatorFactory = LocalValidatorFactoryBean()
 
-  /**
-   * Register Lifecycle handler for event replay.
-   */
-  @Bean
-  fun replayTrackingProcessors(eventHandlingConfiguration: EventHandlingConfiguration) = defaultSmartLifecycle(REPLAY_PHASE) {
-    with(eventHandlingConfiguration.trackingEventProcessors()) {
-      // note: this has to be done in 3 iterations, because we have eventProcessors that
-      // listen to the same event types and they would miss events.
-      forEach {
-        it.shutDown()
-      }
-      forEach {
-        it.resetTokens()
-      }
-      forEach {
-        it.start()
-        logger.debug { "Replayed ${it.name}" }
-      }
-    }
-  }
 
   @Bean
   @Suppress("ObjectLiteralToLambda")
@@ -100,6 +81,9 @@ class CommandConfiguration {
       }
     }
   }
+
+  @Bean
+  fun tokenStore() = InMemoryTokenStore()
 
   @Bean
   fun jpaEventStorageEngine(serializer: Serializer, dataSource: DataSource, upcasters: List<EventUpcaster>, entityManagerProvider: EntityManagerProvider, transactionManager: TransactionManager) =
