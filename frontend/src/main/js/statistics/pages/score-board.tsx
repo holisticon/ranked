@@ -30,7 +30,7 @@ export class ScoreBoard extends React.Component<any, ScoreBoardState> {
       { title: '∅ Zeit zum Tor', iconPath: '/img/stopwatch.png' }
     ];
     this.updateList();
-    setInterval(() => this.updateList(), 60 * 1000);
+    setInterval(() => this.updateList(), 80 * 1000);
   }
 
   private updateList(): void {
@@ -49,7 +49,7 @@ export class ScoreBoard extends React.Component<any, ScoreBoardState> {
       <div className="score-board">
         <HeadingComponent title={ this.headings[0].title } iconPath={ this.headings[0].iconPath } />
         <Carousel
-          swipeScrollTolerance={130}
+          swipeScrollTolerance={ 130 }
           onChange={ (index) => this.updateHeading(index) }
           autoPlay={ true }
           showThumbs={ false }
