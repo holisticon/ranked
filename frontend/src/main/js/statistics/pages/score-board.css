@@ -49,24 +49,30 @@
   position: relative;
   display: inline-block;
   text-align: center;
-  height: 100vh;
+  min-height: 100vh;
 }
 
-@media (min-width: 1000px) {
+@media (min-width: 800px) {
   .chart-container {
     column-count: 2;
+    -webkit-column-count: 2;
     column-rule: 0.1rem solid rgba(0, 0, 0, 0.3);
     padding-left: 5rem;
     padding-right: 5rem;
   }
 }
 
-@media (min-width: 1500px) {
+@media (min-width: 1300px) {
   .chart-container {
     column-count: 3;
-    column-rule: 0.1rem solid rgba(0, 0, 0, 0.3);
-    padding-left: 5rem;
-    padding-right: 5rem;
+    -webkit-column-count: 3;
+  }
+}
+
+@media (min-width: 1800px) {
+  .chart-container {
+    column-count: 4;
+    -webkit-column-count: 4;
   }
 }
 
