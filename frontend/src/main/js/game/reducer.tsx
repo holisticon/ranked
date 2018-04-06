@@ -145,6 +145,22 @@ export function ranked(state: RankedStore, rankedAction: Actions.RankedAction): 
         copyState[setPlayerAction.team][setPlayerAction.player] = setPlayerAction.selected;
       });
 
+    case Actions.SET_TEAM:
+      const setTeamAction = rankedAction as Actions.SetTeam;
+
+      return copyAndSet(state, copyState => {
+        // TODO This!
+        /*
+        copyState.selectPlayerFor = null;
+
+        // remove selected player from everywhere if it was already selected
+        copyState.team1 = removePlayerFromTeam(setPlayerAction.selected.id, copyState.team1);
+        copyState.team2 = removePlayerFromTeam(setPlayerAction.selected.id, copyState.team2);
+
+        // add selected player
+        copyState[setPlayerAction.team][setPlayerAction.player] = setPlayerAction.selected;*/
+      });
+
     case Actions.START_NEW_MATCH:
       return defaultState();
 
@@ -152,6 +168,11 @@ export function ranked(state: RankedStore, rankedAction: Actions.RankedAction): 
       action = rankedAction as Actions.UpdateAvailablePlayers;
 
       return {...state, availablePlayers: action.players};
+
+    case Actions.UPDATE_AVAILABLE_TEAMS:
+      action = rankedAction as Actions.UpdateAvailableTeams;
+
+      return {...state, availableTeams: action.teams};
 
     default:
       break;

@@ -52,7 +52,8 @@ function TeamSelection({ unavailableLetters, availableTeams,
 
   if (availableTeams.length === 0) {
     // no player available -> try to load them from backend
-    PlayerService.getAllTeams().then(updateAvailableTeams);
+    // PlayerService.getAllTeams().then(updateAvailableTeams);
+    updateAvailableTeams(PlayerService.getAllTeams());
   }
 
   let selectedLetter = '';

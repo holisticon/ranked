@@ -4,6 +4,7 @@ export const INC_GOALS = 'INC_GOALS';
 export const DEC_GOALS = 'DEC_GOALS';
 export const SELECT_PLAYER = 'SELECT_PLAYER';
 export const SET_PLAYER = 'SET_PLAYER';
+export const SET_TEAM = 'SET_TEAM';
 export const SWITCH_PLAYER_POSITION = 'SWITCH_PLAYER_POSITION';
 export const START_NEW_MATCH = 'START_NEW_MATCH';
 export const UPDATE_AVAILABLE_PLAYERS = 'UPDATE_AVAILABLE_PLAYERS';
@@ -32,6 +33,12 @@ export interface SetPlayer {
   team: TeamKey;
   player: PlayerKey;
   selected: Player;
+}
+
+export interface SetTeam {
+  type: string;
+  team: TeamKey;
+  selected: Team;
 }
 
 export interface SwitchPlayerPositions {
@@ -80,6 +87,14 @@ export function setPlayer(team: TeamKey, player: PlayerKey, selected: Player): S
     type: SET_PLAYER,
     team,
     player,
+    selected
+  };
+}
+
+export function setTeam(team: TeamKey, selected: Team): SetTeam {
+  return {
+    type: SET_TEAM,
+    team,
     selected
   };
 }

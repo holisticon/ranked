@@ -6,6 +6,7 @@ export interface PartialStoreState {
 
 export interface RankedStore {
   availablePlayers: Array<Player>;
+  availableTeams: Array<Team>;
   selectPlayerFor: { team: TeamKey, player: PlayerKey } | null;
   team1: Team;
   team2: Team;
@@ -44,6 +45,7 @@ function createEmptyTeam(): Team {
 export function defaultState(): RankedStore {
   return {
     availablePlayers: [],
+    availableTeams: [],
     selectPlayerFor: null,
     team1: createEmptyTeam(),
     team2: createEmptyTeam(),
