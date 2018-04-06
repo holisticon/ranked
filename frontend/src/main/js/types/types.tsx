@@ -22,6 +22,7 @@ export type TeamKey = 'team1' | 'team2';
 export interface Team {
   player1: Player;
   player2: Player;
+  name?: string;
   wonSets: number;
 }
 

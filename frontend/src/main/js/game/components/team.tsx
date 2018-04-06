@@ -29,19 +29,9 @@ function stopEvent(event: React.SyntheticEvent<Object>): boolean {
   return true;
 }
 
-function Team({ team, composition, showSwitchPlayerButtons, classes,
-  incGoals, decGoals, selectPlayer, switchPlayerPositions }: InternalTeamProps) {
-
+function renderPlayerIcons({ team, composition, showSwitchPlayerButtons, selectPlayer, switchPlayerPositions }: InternalTeamProps) {
   return (
-    <div className={ classes } onClick={ () => incGoals() }>
-      <div className="goal-counter-container">
-        <Swipeable onSwipeRight={ () => incGoals() } onSwipeLeft={ () => decGoals() }>
-          <div className="goal-counter">
-            <span className="current-goals">{ composition.goals.length }</span>
-          </div>
-        </Swipeable>
-      </div>
-
+    <div>
       <div
         className="add-defense"
         onClick={ (e) => stopEvent(e) && selectPlayer(composition.team, composition.defense) }
@@ -80,6 +70,33 @@ function Team({ team, composition, showSwitchPlayerButtons, classes,
         }
         <span className="name">Angriff</span>
       </div>
+    </div>
+  );
+}
+
+function renderTeamIcon( team: Team ) {
+  return(
+    <div className="add-team">
+      <i className="material-icons">&#xE7FB;</i>
+      <span className="team-name">{ team.name }</span>
+    </div>
+  );
+}
+
+function Team(props: InternalTeamProps) {
+
+  return (
+    <div className={ props.classes } onClick={ () => props.incGoals() }>
+      <div className="goal-counter-container">
+        <Swipeable onSwipeRight={ () => props.incGoals() } onSwipeLeft={ () => props.decGoals() }>
+          <div className="goal-counter">
+            <span className="current-goals">{ props.composition.goals.length }</span>
+          </div>
+        </Swipeable>
+      </div>
+
+      { props.team.name ? renderTeamIcon(props.team) : renderPlayerIcons(props)}
+
     </div>
   );
 }

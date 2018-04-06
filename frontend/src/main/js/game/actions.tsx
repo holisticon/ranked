@@ -1,4 +1,4 @@
-import { Player, TeamColor, PlayerKey, TeamKey } from '../types/types';
+import { Player, TeamColor, PlayerKey, TeamKey, Team } from '../types/types';
 
 export const INC_GOALS = 'INC_GOALS';
 export const DEC_GOALS = 'DEC_GOALS';
@@ -7,6 +7,7 @@ export const SET_PLAYER = 'SET_PLAYER';
 export const SWITCH_PLAYER_POSITION = 'SWITCH_PLAYER_POSITION';
 export const START_NEW_MATCH = 'START_NEW_MATCH';
 export const UPDATE_AVAILABLE_PLAYERS = 'UPDATE_AVAILABLE_PLAYERS';
+export const UPDATE_AVAILABLE_TEAMS = 'UPDATE_AVAILABLE_TEAMS';
 
 export type RankedAction = IncGoals | DecGoals | SelectPlayer | SetPlayer | SwitchPlayerPositions | StartNewMatch;
 
@@ -45,6 +46,11 @@ export interface StartNewMatch {
 export interface UpdateAvailablePlayers {
   type: string;
   players: Array<Player>;
+}
+
+export interface UpdateAvailableTeams {
+  type: string;
+  teams: Array<Team>;
 }
 
 export function incGoals(team: TeamColor): IncGoals {
@@ -95,5 +101,12 @@ export function updateAvailablePlayers(players: Array<Player>): UpdateAvailableP
   return {
     type: UPDATE_AVAILABLE_PLAYERS,
     players
+  };
+}
+
+export function updateAvailableTeams(teams: Array<Team>): UpdateAvailableTeams {
+  return {
+    type: UPDATE_AVAILABLE_TEAMS,
+    teams
   };
 }

@@ -89,6 +89,24 @@
   display: block;
 }
 
+.match .add-team {
+  width: 100%;
+  position: absolute;
+  bottom: 0.4rem;
+  text-align: center;
+}
+
+.match .add-team .material-icons {
+  opacity: 0.33;
+  font-size: 2rem;
+}
+
+.match .add-team .team-name {
+  font-size: 1.2rem;
+  opacity: 0.54;
+  display: block;
+}
+
 .match .change-positions {
   position: absolute;
   bottom: 2rem;
