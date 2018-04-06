@@ -7,7 +7,7 @@ class UserInitializationSpec {
 
   @Test
   fun `read players from json file`() {
-    assertThat(readUsersFromJson("/players.json")).hasSize(54)
+    assertThat(readUsersFromJson("/players.json")).hasSize(56)
   }
 
   @Test
