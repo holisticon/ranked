@@ -4,7 +4,6 @@ import de.holisticon.ranked.command.api.CreateMatch
 import de.holisticon.ranked.command.service.MatchService
 import de.holisticon.ranked.model.Team
 import de.holisticon.ranked.model.TeamColor
-import de.holisticon.ranked.model.TimedMatchSet
 import de.holisticon.ranked.model.UserName
 import de.holisticon.ranked.model.event.MatchCreated
 import de.holisticon.ranked.model.event.TeamWonMatch

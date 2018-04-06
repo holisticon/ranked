@@ -1,6 +1,6 @@
 @file:Suppress("UNUSED")
 
-package de.holisticon.ranked.command.saga
+package de.holisticon.ranked.command.elo
 
 import de.holisticon.ranked.command.api.ParticipateInMatch
 import de.holisticon.ranked.command.api.UpdatePlayerRanking
@@ -50,7 +50,7 @@ class EloMatchSaga {
     arrayOf(e.teamBlue.player1, e.teamBlue.player2, e.teamRed.player1, e.teamRed.player2)
       .forEach {
         // initialize elo
-        rankings.put(it, UNSET_ELO)
+        rankings[it] = UNSET_ELO
         // send participation request
         commandGateway.send<Any>(ParticipateInMatch(userName = it, matchId = matchId))
       }
@@ -60,7 +60,7 @@ class EloMatchSaga {
   fun on(e: PlayerParticipatedInMatch) {
     if (rankings.contains(e.player) && e.matchId == matchId) {
       logger.trace("Player ${e.player} participated in a match ${e.matchId} and had elo ranking ${e.eloRanking}.")
-      rankings.put(e.player, e.eloRanking)
+      rankings[e.player] = e.eloRanking
 
       calculateElo()
     } else {

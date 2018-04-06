@@ -39,18 +39,3 @@ data class CreateMatch(
   fun disjunct() = setOf(teamRed.player1, teamRed.player2).intersect(setOf(teamBlue.player1, teamBlue.player2)).isEmpty()
   fun correctOffense() = matchSets.filter { s -> !teamRed.hasMember(s.offenseRed) || !teamBlue.hasMember(s.offenseBlue) }.isEmpty()
 }
-
-/**
- * Command towards Match aggregate to mark the match as won.
- */
-data class WinMatch(
-  @TargetAggregateIdentifier
-  @field: NotEmpty
-  val matchId: String,
-  @field: Valid
-  val winner: Team,
-  @field: Valid
-  val looser: Team
-)
-
-

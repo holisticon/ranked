@@ -4,8 +4,8 @@ package de.holisticon.ranked.command.rest
 
 import de.holisticon.ranked.command.api.CreateMatch
 import de.holisticon.ranked.command.api.CreatePlayer
+import de.holisticon.ranked.command.api.CreateTeam
 import de.holisticon.ranked.extension.send
-import de.holisticon.ranked.model.UserName
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiResponse
@@ -56,7 +56,6 @@ class CommandApi(val commandGateway: CommandGateway) {
 
     commandGateway.send(
       command = CreatePlayer(
-        userName = playerInfo.userName(),
         displayName = playerInfo.displayName,
         imageUrl = playerInfo.imageUrl
       ),
@@ -72,15 +71,31 @@ class CommandApi(val commandGateway: CommandGateway) {
   data class PlayerInfo(
     val displayName: String,
     val imageUrl: String
-  ) {
-    fun userName() = UserName(displayName
-      .replace(" ", "")
-      .toLowerCase()
-      .replace("ü", "ue")
-      .replace("ä", "ae")
-      .replace("ö", "oe")
-      .replace("ß", "ss")
-    )
+  )
 
+
+  @ApiOperation(value = "Creates a new team.")
+  @ApiResponses(
+    ApiResponse(code = 204, message = "If the create team request has been successfully received."),
+    ApiResponse(code = 400, message = "If the create team request was not correct.")
+  )
+  @PostMapping(path = ["/team"])
+  fun createTeam(@RequestBody teamInfo: TeamInfo): ResponseEntity<String> {
+    var response: ResponseEntity<String> = ResponseEntity.noContent().build()
+
+    commandGateway.send(
+      command = CreateTeam(teamInfo.name),
+      success = { _, _: Any -> logger.debug { "Successfully created a team ${teamInfo.name}" } },
+      failure = { _, cause: Throwable ->
+        logger.error { "Failure by submitting a team: ${cause.localizedMessage}" }
+        response = ResponseEntity.badRequest().build()
+      })
+
+    return response
   }
+
+
+  data class TeamInfo(
+    val name: String
+  )
 }

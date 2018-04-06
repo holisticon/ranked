@@ -15,7 +15,23 @@ data class CreatePlayer(
   val userName: UserName,
   val displayName: String,
   val imageUrl: String
-)
+) {
+  constructor(displayName: String, imageUrl: String): this(
+    displayName = displayName,
+    imageUrl = imageUrl,
+    /**
+     * Calculate a username out of display name, putting the parts together, going lower case and replacing the umlauts.
+     */
+    userName = UserName(displayName
+        .replace(" ", "")
+        .toLowerCase()
+        .replace("ü", "ue")
+        .replace("ä", "ae")
+        .replace("ö", "oe")
+        .replace("ß", "ss")
+    )
+  )
+}
 
 /**
  * Check if player aggregate already exists.
