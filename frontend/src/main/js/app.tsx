@@ -12,6 +12,7 @@ import { ranked } from './game/reducer';
 import './app.css';
 import { Switch } from 'react-router';
 import { ScoreBoard } from './statistics/pages/score-board';
+import { Config } from './config';
 
 // Create a history of your choosing (we're using a browser history in this case)
 const history = createHistory();
@@ -29,12 +30,21 @@ const store = createStore(
   applyMiddleware(middleware)
 );
 
-class Ranked extends React.Component {
+class Ranked extends React.Component<{}, { initialized: boolean }> {
   constructor(props: any) {
     super(props);
+    this.state = { initialized: false };
+  }
+
+  componentWillMount(): void {
+    Config.initConfig().then(() => this.setState({ initialized: true }));
   }
 
   render() {
+    if (!this.state.initialized) {
+      return null;
+    }
+
     return (
       <div className="ranked">
         <ConnectedRouter history={history}>

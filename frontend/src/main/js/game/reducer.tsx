@@ -1,8 +1,8 @@
 import * as Actions from './actions';
 import { RankedStore, defaultState, createEmptyPlayer } from './store.state';
 import { TeamColor, Team, Composition, TeamKey } from '../types/types';
-import { POINTS_PER_SET, POINTS_PER_MATCH } from '../config';
 import { TimerService } from './services/timer.service';
+import { Config } from '../config';
 
 function copyAndSet<T>(item: any, setter: (itemCopy: T) => void): T {
   const copy: T = {...item};
@@ -68,16 +68,16 @@ function startNewSet(state: RankedStore): RankedStore {
   const currentSet = state.sets[state.sets.length - 1];
   let winnerTeam: TeamKey;
 
-  if (currentSet.red.goals.length === POINTS_PER_SET) {
+  if (currentSet.red.goals.length === Config.pointsPerSet) {
     winnerTeam = currentSet.red.team;
   } else {
     winnerTeam = currentSet.blue.team;
   }
   const refreshedWinnerTeam: Team = copyAndSet(state[winnerTeam], copy => copy.wonSets += 1);
-  
+
   return copyAndSet(state, newState => {
     newState[winnerTeam] = refreshedWinnerTeam;
-    if (refreshedWinnerTeam.wonSets < POINTS_PER_MATCH) {
+    if (refreshedWinnerTeam.wonSets < Config.pointsPerMatch) {
       // match not ended, add next set to match
       // switch teams and player positions
       newState.sets.push({
@@ -105,7 +105,7 @@ export function ranked(state: RankedStore, rankedAction: Actions.RankedAction): 
       action = rankedAction as Actions.IncGoals;
       const newState = changeGoals(state, action.team, 1);
 
-      if (newState.sets[newState.sets.length - 1][action.team].goals.length >= POINTS_PER_SET) {
+      if (newState.sets[newState.sets.length - 1][action.team].goals.length >= Config.pointsPerSet) {
         return startNewSet(newState);
       }
 

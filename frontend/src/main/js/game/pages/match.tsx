@@ -4,12 +4,12 @@ import { Sets, Team, TeamKey, Set, Composition } from '../../types/types';
 import { connect, Dispatch } from 'react-redux';
 import * as Actions from '../actions';
 import axios from 'axios';
-import { POINTS_PER_MATCH } from '../../config';
 import { Dialog } from '../../components/dialog';
 import './match.css';
 import { PartialStoreState } from '../store.state';
 import PanelComponent from '../components/panel';
 import { TimerService } from '../services/timer.service';
+import { Config } from '../../config';
 
 export interface MatchProps {
   sets: Sets;
@@ -149,9 +149,9 @@ function Match({ setNumber, winner, sets, team1, team2, startNewMatch }: MatchPr
 
 export function mapStateToProps({ ranked: { selectPlayerFor, team1, team2, sets } }: PartialStoreState) {
   let winner: TeamKey | null = null;
-  if (team1.wonSets === POINTS_PER_MATCH) {
+  if (team1.wonSets === Config.pointsPerMatch) {
     winner = 'team1';
-  } else if (team2.wonSets === POINTS_PER_MATCH) {
+  } else if (team2.wonSets === Config.pointsPerMatch) {
     winner = 'team2';
   }
 

@@ -6,7 +6,7 @@ import { Composition, TeamColor, PlayerKey, Team, TeamKey, Set } from '../../typ
 import { PlayerIcon } from '../../components/player-icon';
 import { push } from 'react-router-redux';
 import { PartialStoreState } from '../store.state';
-import { POINTS_PER_MATCH } from '../../config';
+import { Config } from '../../config';
 
 export interface TeamProps {
   color: TeamColor;
@@ -88,7 +88,7 @@ export function mapStateToProps({ranked: store}: PartialStoreState, { color }: T
   const currentSet: Set = store.sets[store.sets.length - 1];
   const composition: Composition = currentSet[color];
   const isCurrentSetStarted = (currentSet.blue.goals.length > 0) || (currentSet.red.goals.length > 0);
-  const isFirstOrLastSet =  (store.sets.length === 1) || (store.sets.length === POINTS_PER_MATCH * 2 - 1);
+  const isFirstOrLastSet =  (store.sets.length === 1) || (store.sets.length === Config.pointsPerMatch * 2 - 1);
 
   return {
     team: store[composition.team],
