@@ -268,5 +268,15 @@
     "name": "Wiebke Dahl",
     "imageUrl": "https://holisticon.de/assets/img/employees/WiebkeDahl.png",
     "id": "wiebkedahl"
+  },
+  {
+    "name": "Marvin Luchs",
+    "imageUrl": "https://holisticon.de/assets/img/employees/MarvinLuchs.png",
+    "id": "marvinluchs"
+  },
+  {
+    "name": "Swantje Thüring",
+    "imageUrl": "https://holisticon.de/assets/img/employees/SwantjeThuering.png",
+    "id": "swantjethuering"
   }
 ]
