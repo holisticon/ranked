@@ -4,6 +4,13 @@ import de.holisticon.ranked.model.*
 import org.axonframework.serialization.Revision
 import java.time.LocalDateTime
 
+enum class PlayerPosition {
+  OFFENSE, DEFENSE
+}
+
+/**
+ * Player events.
+ */
 @Revision("2")
 data class PlayerCreated(
   val userName: UserName,
@@ -31,6 +38,9 @@ data class PlayerRankingChanged(
   val eloRanking: Elo
 )
 
+/**
+ * Match events.
+ */
 data class MatchCreated(
   val matchId: String,
   val teamRed: Team,
@@ -53,6 +63,19 @@ data class TeamWonMatch(
   val looser: Team
 )
 
-enum class PlayerPosition {
-  OFFENSE, DEFENSE
-}
+/**
+ * Team events
+ */
+
+data class TeamCreated(
+  val id: String,
+  val team: Team,
+  val name: String
+)
+
+data class TeamRenamed(
+  val id: String,
+  val name: String
+)
+
+

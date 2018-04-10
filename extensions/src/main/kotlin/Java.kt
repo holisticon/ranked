@@ -11,3 +11,12 @@ fun Class<*>.inPackage(pkg: String): Boolean {
   val p: Package? = this.`package`
   return if (p != null) p.name.startsWith(pkg) else false
 }
+
+fun String.toFirstUpper(): String = if (this.isEmpty()) { this } else { this.substring(0, 1).toUpperCase() + this.substring(1) }
+
+fun String.snakeCaseToSpace(): String = this.replace("_", " ")
+
+fun String.toFirstUpperSentence(text: String): String = text.split(" ").joinToString(separator = " ") { it.toFirstUpper() }
+
+
+

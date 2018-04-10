@@ -22,6 +22,11 @@
       <artifactId>ranked-model</artifactId>
     </dependency>
     <dependency>
+      <groupId>de.holisticon.ranked.extension</groupId>
+      <artifactId>ranked-kotlin-extensions</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
       <groupId>de.holisticon.ranked.service</groupId>
       <artifactId>ranked-elo-service</artifactId>
     </dependency>

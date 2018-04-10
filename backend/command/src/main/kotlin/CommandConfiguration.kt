@@ -86,8 +86,12 @@ class CommandConfiguration {
   fun tokenStore() = InMemoryTokenStore()
 
   @Bean
-  fun jpaEventStorageEngine(serializer: Serializer, dataSource: DataSource, upcasters: List<EventUpcaster>, entityManagerProvider: EntityManagerProvider, transactionManager: TransactionManager) =
-    JpaEventStorageEngine(serializer,
+  fun jpaEventStorageEngine(
+    serializer: Serializer,
+    dataSource: DataSource,
+    upcasters: List<EventUpcaster>,
+    entityManagerProvider: EntityManagerProvider,
+    transactionManager: TransactionManager) = JpaEventStorageEngine(serializer,
       EventUpcasterChain(upcasters),
       dataSource,
       entityManagerProvider,
