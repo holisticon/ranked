@@ -81,7 +81,7 @@ function renderTeamIcon( {team, composition, selectTeam }: InternalTeamProps ) {
          onClick={ (e) => stopEvent(e) && selectTeam(composition.team) }
     >
       <i className="material-icons">&#xE7FB;</i>
-      <span className="team-name">{ team.name }</span>
+      <span className="team-name">{ team.name || 'Team' }</span>
     </div>
   );
 }
