@@ -17,6 +17,10 @@ export class PlayerIcon extends React.Component<PlayerIconProps, PlayerIconState
     this.state = { imageNotFound: false };
   }
 
+  componentWillReceiveProps(): void {
+    this.setState({ imageNotFound: false });
+  }
+
   private showAltImage(): void {
     this.setState({ imageNotFound: true });
   }
