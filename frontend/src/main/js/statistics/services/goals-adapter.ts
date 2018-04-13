@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { ChartData2D } from '../types';
+import { ChartData2D, ChartData3D } from '../types';
 import { Player } from '../../types/types';
 import { PlayersAdapter } from './players-adapter';
 
@@ -53,6 +53,24 @@ export namespace GoalsAdapter {
         };
 
         return playerElos;
+      });
+  }
+
+  export function getPlayerGoalsData(): Promise<ChartData3D<Player, number, number>> {
+    return Promise.all([getPlayerGoalsCount(), PlayersAdapter.getPlayersMap()])
+      .then(([goalsData, playersMap]) => {
+        const playerGoals: ChartData3D<Player, number, number> = {
+          dimensions: [{ description: 'Spieler' }, { description: 'Kassiert' }, { description: 'Geschossen' }],
+          entries: goalsData.map(goals => {
+            return [
+              playersMap[goals.userName.value],
+              total(goals.goalsConceded),
+              total(goals.goalsScored)
+            ] as [Player, number, number];
+          }).sort((a, b) => (b[2] / b[1]) - (a[2] / a[1]))
+        };
+
+        return playerGoals;
       });
   }
 

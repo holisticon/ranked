@@ -3,16 +3,18 @@ import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { Player } from '../../types/types';
 import { RankingChart } from '../components/ranking-chart';
-import { ChartData2D } from '../types';
+import { ChartData2D, ChartData3D } from '../types';
 import { EloAdapter } from '../services/elo-adapter';
 import { GoalsAdapter } from '../services/goals-adapter';
 import './score-board.css';
 import { Heading } from '../services/heading.service';
 import { HeadingComponent, HeadingConfig } from '../components/heading';
+import { TwoSideBarChart } from '../components/two-side-bar-chart';
 
 type ScoreBoardState = {
   playerEloData: ChartData2D<Player, number>,
   playerGoalRatio: ChartData2D<Player, string>,
+  playerGoalsData: ChartData3D<Player, number, number>,
   playerTimeToScore: ChartData2D<Player, number>,
 };
 
@@ -27,6 +29,7 @@ export class ScoreBoard extends React.Component<any, ScoreBoardState> {
     this.headings = [
       { title: 'Holisticon AllStars', iconPath: '/img/trophy.png' },
       { title: 'Torverhältnis', iconPath: '/img/goal.png' },
+      { title: 'Torverhältnis', iconPath: '/img/goal.png' },
       { title: '∅ Zeit zum Tor', iconPath: '/img/stopwatch.png' }
     ];
     this.updateList();
@@ -34,9 +37,15 @@ export class ScoreBoard extends React.Component<any, ScoreBoardState> {
   }
 
   private updateList(): void {
-    Promise.all([EloAdapter.getEloData(), GoalsAdapter.getTotalGoalsData(), GoalsAdapter.getPlayerAvgScoreTimeData()])
-      .then(([playerEloData, playerGoalRatio, playerTimeToScore]) => {
-        this.setState({ playerEloData, playerGoalRatio, playerTimeToScore });
+    Promise
+      .all([
+        EloAdapter.getEloData(),
+        GoalsAdapter.getTotalGoalsData(),
+        GoalsAdapter.getPlayerGoalsData(),
+        GoalsAdapter.getPlayerAvgScoreTimeData()
+      ])
+      .then(([playerEloData, playerGoalRatio, playerGoalsData, playerTimeToScore]) => {
+        this.setState({ playerEloData, playerGoalRatio, playerGoalsData, playerTimeToScore });
       });
   }
 
@@ -51,12 +60,13 @@ export class ScoreBoard extends React.Component<any, ScoreBoardState> {
         <Carousel
           swipeScrollTolerance={ 130 }
           onChange={ (index) => this.updateHeading(index) }
-          autoPlay={ true }
+          autoPlay={ false }
           showThumbs={ false }
           infiniteLoop={ true }
           interval={ 20000 }
           showStatus={ false }
           showArrows={ false }
+          selectedItem={ 2 }
         >
           <div className="chart-container">
             <div className="fading-top" />
@@ -65,6 +75,10 @@ export class ScoreBoard extends React.Component<any, ScoreBoardState> {
           <div className="chart-container">
             <div className="fading-top" />
             <RankingChart data={ !this.state ? undefined : this.state.playerGoalRatio } />
+          </div>
+          <div className="chart-container">
+            <div className="fading-top" />
+            <TwoSideBarChart data={ !this.state ? undefined : this.state.playerGoalsData } />
           </div>
           <div className="chart-container">
             <div className="fading-top" />
