@@ -4,6 +4,15 @@
   position: relative;
 }
 
+@media (orientation: landscape) {
+  .match {
+    height: 100vw;
+    width: 100vh;
+    transform: rotate(-90deg) translateX(-100%);
+    transform-origin: 0 0;
+  }
+}
+
 .match .team-blue, .match .team-red {
   height: 50%;
   width: 100%;
