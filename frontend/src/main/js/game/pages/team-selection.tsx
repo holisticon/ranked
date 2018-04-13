@@ -18,7 +18,10 @@ function renderTeamList(availableTeams: Array<Team>, selectTeam: (team: Team) =>
   return availableTeams.map( (team, index) => {
 
     return (
-      <div key={index} className={ 'team-entry' } onClick={ () => selectTeam(team) }> { team.name } </div>
+      <div key={index} className={ 'team-entry' } onClick={ () => selectTeam(team) }>
+        <i className="material-icons">&#xE7FB;</i>
+        <span className={ 'team-name' }>{ team.name }</span>
+      </div>
     )
   })
 }
