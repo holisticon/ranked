@@ -34,7 +34,7 @@ export function createEmptyPlayer(): Player {
   return new Player({ displayName: '', imageUrl: '', userName: { value: '' } });
 }
 
-function createEmptyTeam(): Team {
+export function createEmptyTeam(): Team {
   return {
     player1: createEmptyPlayer(),
     player2: createEmptyPlayer(),

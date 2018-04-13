@@ -1,5 +1,5 @@
 import * as Actions from './actions';
-import { RankedStore, defaultState, createEmptyPlayer } from './store.state';
+import { RankedStore, defaultState, createEmptyPlayer, createEmptyTeam } from './store.state';
 import { TeamColor, Team, Composition, TeamKey } from '../types/types';
 import { TimerService } from './services/timer.service';
 import { Config } from '../config';
@@ -52,6 +52,14 @@ function switchPlayerPositions(state: RankedStore, teamColor: TeamColor): Ranked
       });
     })
   };
+}
+
+function removeTeamIfPresent(teamId: string | undefined, team: Team): Team {
+  if(team.id === teamId) {
+    return createEmptyTeam();
+  }  else {
+    return team;
+  }
 }
 
 function removePlayerFromTeam(playerUsername: string, team: Team): Team {
@@ -151,7 +159,8 @@ export function ranked(state: RankedStore, rankedAction: Actions.RankedAction): 
       return copyAndSet(state, copyState => {
         copyState.selectFor = null;
 
-        // TODO remove team from other position
+        copyState.team1 = removeTeamIfPresent(setTeamAction.selected.id, copyState.team1);
+        copyState.team2 = removeTeamIfPresent(setTeamAction.selected.id, copyState.team2);
 
         // set selected team
         copyState[setTeamAction.team] = setTeamAction.selected;
