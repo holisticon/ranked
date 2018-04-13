@@ -2,7 +2,7 @@ import { Player, TeamColor, PlayerKey, TeamKey, Team } from '../types/types';
 
 export const INC_GOALS = 'INC_GOALS';
 export const DEC_GOALS = 'DEC_GOALS';
-export const SELECT_PLAYER = 'SELECT_PLAYER';
+export const SELECT_ENTITY = 'SELECT_ENTITY';
 export const SET_PLAYER = 'SET_PLAYER';
 export const SET_TEAM = 'SET_TEAM';
 export const SWITCH_PLAYER_POSITION = 'SWITCH_PLAYER_POSITION';
@@ -10,7 +10,7 @@ export const START_NEW_MATCH = 'START_NEW_MATCH';
 export const UPDATE_AVAILABLE_PLAYERS = 'UPDATE_AVAILABLE_PLAYERS';
 export const UPDATE_AVAILABLE_TEAMS = 'UPDATE_AVAILABLE_TEAMS';
 
-export type RankedAction = IncGoals | DecGoals | SelectPlayer | SetPlayer | SwitchPlayerPositions | StartNewMatch;
+export type RankedAction = IncGoals | DecGoals | SelectEntity | SetPlayer | SetTeam | SwitchPlayerPositions | StartNewMatch;
 
 export interface IncGoals {
   type: string;
@@ -22,10 +22,10 @@ export interface DecGoals {
   team: TeamColor;
 }
 
-export interface SelectPlayer {
+export interface SelectEntity {
   type: string;
   team: TeamKey;
-  player: PlayerKey;
+  player?: PlayerKey;
 }
 
 export interface SetPlayer {
@@ -74,9 +74,9 @@ export function decGoals(team: TeamColor): DecGoals {
   };
 }
 
-export function selectPlayer(team: TeamKey, player: PlayerKey): SelectPlayer {
+export function selectEntity(team: TeamKey, player?: PlayerKey): SelectEntity {
   return {
-    type: SELECT_PLAYER,
+    type: SELECT_ENTITY,
     team,
     player
   };

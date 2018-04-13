@@ -126,16 +126,16 @@ export function ranked(state: RankedStore, rankedAction: Actions.RankedAction): 
       action = rankedAction as Actions.SwitchPlayerPositions;
       return switchPlayerPositions(state, action.team);
 
-    case Actions.SELECT_PLAYER:
-      action = rankedAction as Actions.SelectPlayer;
+    case Actions.SELECT_ENTITY:
+      action = rankedAction as Actions.SelectEntity;
 
-      return {...state, selectPlayerFor: {team: action.team, player: action.player}};
+      return {...state, selectFor: {team: action.team, player: action.player}};
 
     case Actions.SET_PLAYER:
       const setPlayerAction = rankedAction as Actions.SetPlayer;
 
       return copyAndSet(state, copyState => {
-        copyState.selectPlayerFor = null;
+        copyState.selectFor = null;
 
         // remove selected player from everywhere if it was already selected
         copyState.team1 = removePlayerFromTeam(setPlayerAction.selected.id, copyState.team1);
@@ -149,16 +149,12 @@ export function ranked(state: RankedStore, rankedAction: Actions.RankedAction): 
       const setTeamAction = rankedAction as Actions.SetTeam;
 
       return copyAndSet(state, copyState => {
-        // TODO This!
-        /*
-        copyState.selectPlayerFor = null;
+        copyState.selectFor = null;
 
-        // remove selected player from everywhere if it was already selected
-        copyState.team1 = removePlayerFromTeam(setPlayerAction.selected.id, copyState.team1);
-        copyState.team2 = removePlayerFromTeam(setPlayerAction.selected.id, copyState.team2);
+        // TODO remove team from other position
 
-        // add selected player
-        copyState[setPlayerAction.team][setPlayerAction.player] = setPlayerAction.selected;*/
+        // set selected team
+        copyState[setTeamAction.team] = setTeamAction.selected;
       });
 
     case Actions.START_NEW_MATCH:

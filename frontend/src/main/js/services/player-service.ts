@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Player, PlayerData, Team } from '../types/types';
+import { Player, PlayerData, Team, TeamData } from '../types/types';
 
 export namespace PlayerService {
   export function getAllPlayers(): Promise<Array<Player>> {
@@ -7,17 +7,8 @@ export namespace PlayerService {
       .then(res => (res.data as Array<PlayerData>).map(data => new Player(data)));
   }
 
-  export function getAllTeams(): Array<Team> {
-    return [
-      { player1: {id: "player1", displayName: "player1", imageUrl: "_", userName: {value: "player1"}},
-        player2: {id: "player2", displayName: "player2", imageUrl: "_", userName: {value: "player2"}},
-        name: "Holis",
-        wonSets: 0 },
-
-      { player1: {id: "player1", displayName: "player1", imageUrl: "_", userName: {value: "player1"}},
-        player2: {id: "player2", displayName: "player2", imageUrl: "_", userName: {value: "player2"}},
-        name: "Könner",
-        wonSets: 0 }
-      ]
+  export function getAllTeams(): Promise<Array<Team>> {
+    return axios.get('/view/teams')
+      .then(res => (res.data as Array<TeamData>).map(data => new Team(data)));
   }
 }

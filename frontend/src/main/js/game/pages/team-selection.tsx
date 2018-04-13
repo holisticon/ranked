@@ -1,87 +1,48 @@
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import * as Actions from '../actions';
-import { Player, TeamKey, Team } from '../../types/types';
-import { Link } from 'react-router-dom';
-import { match as Match } from 'react-router';
+import { TeamKey, Team } from '../../types/types';
 import { push } from 'react-router-redux';
-import './player-selection.css';
+import './team-selection.css';
 import { PlayerService } from '../../services/player-service';
-
-const alphabet = 'abcdefghijklmnopqrstuvwxyz';
+import { PartialStoreState } from '../store.state';
 
 export interface TeamSelectionProps {
-  match?: Match<any>;
-  unavailableLetters: string;
   availableTeams: Array<Team>;
-  currentTeamId: any;
+  currentTeamKey: TeamKey;
   select: (team: TeamKey, selected: Team) => void;
   updateAvailableTeams: (teams: Array<Team>) => void;
 }
 
-function getLetters(unavailableLetters: string) {
-  return alphabet.split('').map((letter, index) => {
-
-    const available = !unavailableLetters.includes(letter);
+function renderTeamList(availableTeams: Array<Team>, selectTeam: (team: Team) => void) {
+  return availableTeams.map( (team, index) => {
 
     return (
-      <Link key={ index } to={'/select/team/' + letter}>
-        <div className={ available ? 'letter' : 'letter gray' }>
-          <div className="letter-content">
-            <div className="letter-absolute">{ letter.toUpperCase() }</div>
-          </div>
-        </div>
-      </Link>
-    );
-  });
+      <div key={index} className={ 'team-entry' } onClick={ () => selectTeam(team) }> { team.name } </div>
+    )
+  })
 }
 
-function getTeamList(availableTeams: Array<Team>, select: (team: Team) => void, selectedLetter?: string) {
-  const teams = !selectedLetter ? availableTeams :
-    availableTeams.filter(team => team.name!!.toLowerCase() === selectedLetter);
-
-  return teams.map((team, index) => {
-      return (
-        <div key={ index } onClick={ () => select(team) } className={ 'team-entry' }>{ team.name }</div>
-      );
-    });
-}
-
-function TeamSelection({ unavailableLetters, availableTeams,
-  currentTeamId, updateAvailableTeams, select, match }: TeamSelectionProps) {
+function TeamSelection({ availableTeams, currentTeamKey, updateAvailableTeams, select }: TeamSelectionProps) {
 
   if (availableTeams.length === 0) {
     // no player available -> try to load them from backend
-    // PlayerService.getAllTeams().then(updateAvailableTeams);
-    updateAvailableTeams(PlayerService.getAllTeams());
+    PlayerService.getAllTeams().then(updateAvailableTeams);
   }
 
-  let selectedLetter = '';
-  if (match && match.params) {
-    selectedLetter = match.params.letter;
-  }
-
-  const selectTeam = (team: Team) => select(currentTeamId.team, team);
+  const selectTeam = (team: Team) => select(currentTeamKey, team);
 
   return (
-    <div className={ 'player-selection' }>
-      { !selectedLetter ?
-        getLetters(unavailableLetters) :
-        getTeamList(availableTeams, selectTeam, selectedLetter ) }
+    <div className={ 'team-selection' }>
+      { renderTeamList(availableTeams, selectTeam) }
     </div>
   );
 }
 
-export function mapStateToProps({ ranked: { availableTeams, currentTeamId } }: any) {
-  let unavailableLetters = alphabet;
-  availableTeams.forEach((player: Player) => {
-    unavailableLetters = unavailableLetters.replace(player.displayName[0].toLowerCase(), '');
-  });
-
+export function mapStateToProps({ ranked: { availableTeams, selectFor } }: PartialStoreState) {
   return {
-    unavailableLetters,
     availableTeams,
-    currentTeamId
+    currentTeamKey: selectFor!!.team
   };
 }
 

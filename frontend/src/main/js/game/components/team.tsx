@@ -20,6 +20,7 @@ interface InternalTeamProps {
   incGoals: () => void;
   decGoals: () => void;
   selectPlayer: (team: TeamKey, player: PlayerKey) => void;
+  selectTeam: (team: TeamKey) => void;
   switchPlayerPositions: () => void;
 }
 
@@ -74,16 +75,18 @@ function renderPlayerIcons({ team, composition, showSwitchPlayerButtons, selectP
   );
 }
 
-function renderTeamIcon( team: Team ) {
+function renderTeamIcon( {team, composition, selectTeam }: InternalTeamProps ) {
   return(
-    <div className="add-team">
+    <div className="add-team"
+         onClick={ (e) => stopEvent(e) && selectTeam(composition.team) }
+    >
       <i className="material-icons">&#xE7FB;</i>
       <span className="team-name">{ team.name }</span>
     </div>
   );
 }
 
-function Team(props: InternalTeamProps) {
+function RenderTeam(props: InternalTeamProps) {
 
   return (
     <div className={ props.classes } onClick={ () => props.incGoals() }>
@@ -95,8 +98,7 @@ function Team(props: InternalTeamProps) {
         </Swipeable>
       </div>
 
-      { props.team.name ? renderTeamIcon(props.team) : renderPlayerIcons(props)}
-
+      { Config.teamMode ? renderTeamIcon(props) : renderPlayerIcons(props) }
     </div>
   );
 }
@@ -121,11 +123,15 @@ export function mapDispatchToProps(dispatch: Dispatch<Actions.RankedAction>, { c
     incGoals: () => dispatch(Actions.incGoals(color)),
     decGoals: () => dispatch(Actions.decGoals(color)),
     selectPlayer: (team: TeamKey, player: PlayerKey) => {
-      dispatch(Actions.selectPlayer(team, player));
+      dispatch(Actions.selectEntity(team, player));
       dispatch(push('/select'));
+    },
+    selectTeam: (team: TeamKey) => {
+      dispatch(Actions.selectEntity(team));
+      dispatch(push('/selectTeam'));
     },
     switchPlayerPositions: () => dispatch(Actions.switchPlayerPositions(color))
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Team);
+export default connect(mapStateToProps, mapDispatchToProps)(RenderTeam);

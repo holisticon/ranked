@@ -1,3 +1,9 @@
-.team-entry {
+.team-selection {
   width: 100%;
+}
+
+.team-entry {
+  padding: 1.5rem 0rem;
+  text-align: center;
+  border-bottom: 1px solid lightgray;
 }
