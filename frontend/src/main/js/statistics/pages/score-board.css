@@ -57,8 +57,8 @@
     column-count: 2;
     -webkit-column-count: 2;
     column-rule: 0.1rem solid rgba(0, 0, 0, 0.3);
-    padding-left: 5rem;
-    padding-right: 5rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
   }
 }
 
@@ -69,7 +69,7 @@
   }
 }
 
-@media (min-width: 1800px) {
+@media (min-width: 1600px) {
   .chart-container {
     column-count: 4;
     -webkit-column-count: 4;
