@@ -1,5 +1,5 @@
 import * as Actions from './actions';
-import { RankedStore, defaultState, createEmptyPlayer } from './store.state';
+import { RankedStore, defaultState, createEmptyPlayer, createEmptyTeam } from './store.state';
 import { TeamColor, Team, Composition, TeamKey } from '../types/types';
 import { TimerService } from './services/timer.service';
 import { Config } from '../config';
@@ -52,6 +52,14 @@ function switchPlayerPositions(state: RankedStore, teamColor: TeamColor): Ranked
       });
     })
   };
+}
+
+function removeTeamIfPresent(teamId: string | undefined, team: Team): Team {
+  if(team.id === teamId) {
+    return createEmptyTeam();
+  }  else {
+    return team;
+  }
 }
 
 function removePlayerFromTeam(playerUsername: string, team: Team): Team {
@@ -126,16 +134,16 @@ export function ranked(state: RankedStore, rankedAction: Actions.RankedAction): 
       action = rankedAction as Actions.SwitchPlayerPositions;
       return switchPlayerPositions(state, action.team);
 
-    case Actions.SELECT_PLAYER:
-      action = rankedAction as Actions.SelectPlayer;
+    case Actions.SELECT_ENTITY:
+      action = rankedAction as Actions.SelectEntity;
 
-      return {...state, selectPlayerFor: {team: action.team, player: action.player}};
+      return {...state, selectFor: {team: action.team, player: action.player}};
 
     case Actions.SET_PLAYER:
       const setPlayerAction = rankedAction as Actions.SetPlayer;
 
       return copyAndSet(state, copyState => {
-        copyState.selectPlayerFor = null;
+        copyState.selectFor = null;
 
         // remove selected player from everywhere if it was already selected
         copyState.team1 = removePlayerFromTeam(setPlayerAction.selected.id, copyState.team1);
@@ -145,6 +153,19 @@ export function ranked(state: RankedStore, rankedAction: Actions.RankedAction): 
         copyState[setPlayerAction.team][setPlayerAction.player] = setPlayerAction.selected;
       });
 
+    case Actions.SET_TEAM:
+      const setTeamAction = rankedAction as Actions.SetTeam;
+
+      return copyAndSet(state, copyState => {
+        copyState.selectFor = null;
+
+        copyState.team1 = removeTeamIfPresent(setTeamAction.selected.id, copyState.team1);
+        copyState.team2 = removeTeamIfPresent(setTeamAction.selected.id, copyState.team2);
+
+        // set selected team
+        copyState[setTeamAction.team] = setTeamAction.selected;
+      });
+
     case Actions.START_NEW_MATCH:
       return defaultState();
 
@@ -152,6 +173,11 @@ export function ranked(state: RankedStore, rankedAction: Actions.RankedAction): 
       action = rankedAction as Actions.UpdateAvailablePlayers;
 
       return {...state, availablePlayers: action.players};
+
+    case Actions.UPDATE_AVAILABLE_TEAMS:
+      action = rankedAction as Actions.UpdateAvailableTeams;
+
+      return {...state, availableTeams: action.teams};
 
     default:
       break;

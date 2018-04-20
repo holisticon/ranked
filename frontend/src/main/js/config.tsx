@@ -8,6 +8,7 @@ export namespace Config {
 
   export let pointsPerMatch: number;
   export let pointsPerSet: number;
+  export const teamMode = false;
   // const BACKEND_URL = 'http://localhost:8080';
 
   export function initConfig(): Promise<void> {

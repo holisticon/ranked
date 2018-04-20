@@ -20,6 +20,7 @@ interface InternalTeamProps {
   incGoals: () => void;
   decGoals: () => void;
   selectPlayer: (team: TeamKey, player: PlayerKey) => void;
+  selectTeam: (team: TeamKey) => void;
   switchPlayerPositions: () => void;
 }
 
@@ -29,19 +30,9 @@ function stopEvent(event: React.SyntheticEvent<Object>): boolean {
   return true;
 }
 
-function Team({ team, composition, showSwitchPlayerButtons, classes,
-  incGoals, decGoals, selectPlayer, switchPlayerPositions }: InternalTeamProps) {
-
+function renderPlayerIcons({ team, composition, showSwitchPlayerButtons, selectPlayer, switchPlayerPositions }: InternalTeamProps) {
   return (
-    <div className={ classes } onClick={ () => incGoals() }>
-      <div className="goal-counter-container">
-        <Swipeable onSwipeRight={ () => incGoals() } onSwipeLeft={ () => decGoals() }>
-          <div className="goal-counter">
-            <span className="current-goals">{ composition.goals.length }</span>
-          </div>
-        </Swipeable>
-      </div>
-
+    <div>
       <div
         className="add-defense"
         onClick={ (e) => stopEvent(e) && selectPlayer(composition.team, composition.defense) }
@@ -84,6 +75,34 @@ function Team({ team, composition, showSwitchPlayerButtons, classes,
   );
 }
 
+function renderTeamIcon( {team, composition, selectTeam }: InternalTeamProps ) {
+  return(
+    <div className="add-team"
+         onClick={ (e) => stopEvent(e) && selectTeam(composition.team) }
+    >
+      <i className="material-icons">&#xE7FB;</i>
+      <span className="team-name">{ team.name || 'Team' }</span>
+    </div>
+  );
+}
+
+function RenderTeam(props: InternalTeamProps) {
+
+  return (
+    <div className={ props.classes } onClick={ () => props.incGoals() }>
+      <div className="goal-counter-container">
+        <Swipeable onSwipeRight={ () => props.incGoals() } onSwipeLeft={ () => props.decGoals() }>
+          <div className="goal-counter">
+            <span className="current-goals">{ props.composition.goals.length }</span>
+          </div>
+        </Swipeable>
+      </div>
+
+      { Config.teamMode ? renderTeamIcon(props) : renderPlayerIcons(props) }
+    </div>
+  );
+}
+
 export function mapStateToProps({ranked: store}: PartialStoreState, { color }: TeamProps) {
   const currentSet: Set = store.sets[store.sets.length - 1];
   const composition: Composition = currentSet[color];
@@ -104,11 +123,15 @@ export function mapDispatchToProps(dispatch: Dispatch<Actions.RankedAction>, { c
     incGoals: () => dispatch(Actions.incGoals(color)),
     decGoals: () => dispatch(Actions.decGoals(color)),
     selectPlayer: (team: TeamKey, player: PlayerKey) => {
-      dispatch(Actions.selectPlayer(team, player));
+      dispatch(Actions.selectEntity(team, player));
       dispatch(push('/select'));
+    },
+    selectTeam: (team: TeamKey) => {
+      dispatch(Actions.selectEntity(team));
+      dispatch(push('/selectTeam'));
     },
     switchPlayerPositions: () => dispatch(Actions.switchPlayerPositions(color))
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Team);
+export default connect(mapStateToProps, mapDispatchToProps)(RenderTeam);

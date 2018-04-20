@@ -5,6 +5,7 @@ import { routerReducer, routerMiddleware, ConnectedRouter } from 'react-router-r
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import Match from './game/pages/match';
 import PlayerSelection from './game/pages/player-selection';
+import TeamSelection from './game/pages/team-selection';
 import registerServiceWorker from './registerServiceWorker';
 import createHistory from 'history/createBrowserHistory';
 import { Provider } from 'react-redux';
@@ -51,6 +52,7 @@ class Ranked extends React.Component<{}, { initialized: boolean }> {
           <Switch>
             <Route exact={true} path="/" component={ Match } />
             <Route path="/select/:letter?" component={ PlayerSelection } />
+            <Route path="/selectTeam" component={ TeamSelection } />
             <Route path="/board" component={ ScoreBoard } />
           </Switch>
         </ConnectedRouter>

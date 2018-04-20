@@ -147,7 +147,7 @@ function Match({ setNumber, winner, sets, team1, team2, startNewMatch }: MatchPr
   );
 }
 
-export function mapStateToProps({ ranked: { selectPlayerFor, team1, team2, sets } }: PartialStoreState) {
+export function mapStateToProps({ ranked: { selectFor, team1, team2, sets } }: PartialStoreState) {
   let winner: TeamKey | null = null;
   if (team1.wonSets === Config.pointsPerMatch) {
     winner = 'team1';
