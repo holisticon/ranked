@@ -31,12 +31,10 @@ export class ScoreBoard extends React.Component<any, ScoreBoardState> {
     this.headings = [
       { title: 'Holisticon AllStars', iconPath: '/img/trophy.png' },
       { title: 'Torverhältnis', iconPath: '/img/goal.png' },
-      { title: 'Torverhältnis', iconPath: '/img/goal.png' },
-      { title: 'Torverhältnis', iconPath: '/img/goal.png' },
       { title: '∅ Zeit zum Tor', iconPath: '/img/stopwatch.png' }
     ];
     this.updateList();
-    // setInterval(() => this.updateList(), 80 * 1000);
+    setInterval(() => this.updateList(), 80 * 1000);
   }
 
   private updateList(): void {
@@ -44,22 +42,16 @@ export class ScoreBoard extends React.Component<any, ScoreBoardState> {
       .all([
         EloAdapter.getEloData(),
         GoalsAdapter.getTotalGoalsData(),
-        GoalsAdapter.getConcededScoredGoalsData(),
-        GoalsAdapter.getPlayerPositionGoalsData(),
         GoalsAdapter.getPlayerAvgScoreTimeData()
       ])
       .then(([
         playerEloData,
         playerGoalRatio,
-        playerConcededScoredGoalsData,
-        playerPositionGoalsData,
         playerTimeToScore
       ]) => {
         this.setState({
           playerEloData,
           playerGoalRatio,
-          playerConcededScoredGoalsData,
-          playerPositionGoalsData,
           playerTimeToScore
         });
       });
@@ -76,13 +68,12 @@ export class ScoreBoard extends React.Component<any, ScoreBoardState> {
         <Carousel
           swipeScrollTolerance={ 130 }
           onChange={ (index) => this.updateHeading(index) }
-          autoPlay={ false }
+          autoPlay={ true }
           showThumbs={ false }
           infiniteLoop={ true }
           interval={ 20000 }
           showStatus={ false }
           showArrows={ false }
-          selectedItem={ 3 }
         >
           <div className="chart-container">
             <div className="fading-top" />
