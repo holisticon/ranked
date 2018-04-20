@@ -1,0 +1,88 @@
+.two-side-bar-entry {
+  margin: 0.8rem 0;
+  padding: 0 1rem;
+  width: 100%;
+  position: relative;
+  display: inline-block;
+  box-sizing: border-box;
+  max-width: 1200px;
+  text-align: left;
+}
+
+.two-side-bar-entry > .player-icon {
+  float: left;
+  width: 9%;
+  margin-right: 3%;
+  height: 3rem;
+}
+
+.two-side-bar-entry .name {
+  float: left;
+  width: 68%;
+}
+
+.two-side-bar-entry .negative-bar, .two-side-bar-entry .positive-bar {
+  float: left;
+  width: 44%;
+  height: 1rem;
+  position: relative;
+  margin-top: 0.5rem;
+  box-sizing: border-box;
+  line-height: 1rem;
+  vertical-align: middle;
+}
+
+.two-side-bar-entry .negative-bar {
+  border-right: 0.08rem solid white;
+  padding-left: 2.5rem;
+}
+
+.two-side-bar-entry .positive-bar {
+  border-left: 0.08rem solid white;
+  padding-right: 2.5rem;
+}
+
+.two-side-bar-entry .bar-inner {
+  height: 100%;
+}
+
+.two-side-bar-entry .negative-bar .bar-inner {
+  background-color: #FF2D55;
+  float: right;
+
+}
+
+.two-side-bar-entry .positive-bar .bar-inner {
+  background-color: #4EB4F9;
+  float: left;
+}
+
+.two-side-bar-entry .bar-value {
+  width: 2.5rem;
+  font-size: 0.8rem;
+  box-sizing: border-box;
+}
+
+.two-side-bar-entry .negative-bar .bar-value {
+  float: right;
+  margin-right: -2.5rem;
+  padding-right: 0.1rem;
+  text-align: right;
+  position: relative;
+  left: -2.5rem;
+}
+
+.two-side-bar-entry .positive-bar .bar-value {
+  float: left;
+  margin-left: -2.5rem;
+  padding-left: 0.1rem;
+  text-align: left;
+  position: relative;
+  right: -2.5rem;
+}
+
+.two-side-bar-entry .cumulation {
+  float: right;
+  width: 20%;
+  text-align: right;
+}
