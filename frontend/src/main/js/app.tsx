@@ -14,6 +14,7 @@ import './app.css';
 import { Switch } from 'react-router';
 import { ScoreBoard } from './statistics/pages/score-board';
 import { Config } from './config';
+import { TournamentTree } from './tournament/pages/tournament-tree';
 
 // Create a history of your choosing (we're using a browser history in this case)
 const history = createHistory();
@@ -54,6 +55,7 @@ class Ranked extends React.Component<{}, { initialized: boolean }> {
             <Route path="/select/:letter?" component={ PlayerSelection } />
             <Route path="/selectTeam" component={ TeamSelection } />
             <Route path="/board" component={ ScoreBoard } />
+            <Route path="/tournament" component={ TournamentTree } />
           </Switch>
         </ConnectedRouter>
       </div>
