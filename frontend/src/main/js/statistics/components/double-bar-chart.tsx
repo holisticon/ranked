@@ -52,14 +52,14 @@ export class DoubleBarChart extends React.Component<DoubleBarChartProps, any> {
               null
             }
             <div className="line">
-              <div className="icon">A</div>
+              <div className="icon"><img src="/img/attack.png" /></div>
               <div className="bar">
                 <div className="bar-inner" style={{ width: firstBarWidth + '%' }} />
                 <div className="bar-value" style={{ marginLeft: firstBarWidth + '%' }}>{ entry[1] + this.dim(1) }</div>
               </div>
             </div>
             <div className="line">
-              <div className="icon">D</div>
+              <div className="icon"><img src="/img/defense.png" /></div>
               <div className="bar">
                 <div className="bar-inner" style={{ width: secondBarWidth + '%' }} />
                 <div className="bar-value" style={{ marginLeft: secondBarWidth + '%' }}>{ entry[2] + this.dim(2) }</div>

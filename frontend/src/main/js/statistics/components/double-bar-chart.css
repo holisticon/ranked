@@ -31,9 +31,17 @@
 
 .double-bar-entry .line .icon {
   float: left;
-  color: grey;
   width: 10%;
   text-align: center;
+  height: 100%;
+}
+
+.double-bar-entry .line .icon img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  opacity: 0.3;
 }
 
 .double-bar-entry .bar {
