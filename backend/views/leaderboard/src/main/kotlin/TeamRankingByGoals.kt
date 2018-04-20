@@ -71,7 +71,7 @@ class TeamRankingByGoals() {
             }
           }
 
-          lastGoalTime = it.second;
+          lastGoalTime = it.second
         }
       }
 
@@ -104,7 +104,7 @@ class TeamStats(var name: String,
                 var matchesLost: Int = 0,
                 var totalGoalTime: Double = 0.0) {
 
-  fun meanGoalTime(): Double {
+  fun avgGoalTime(): Double {
     return if (goalsScored > 0) {
       totalGoalTime / goalsScored
     } else {
