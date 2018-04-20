@@ -25,7 +25,11 @@ import java.time.temporal.ChronoUnit
 @RequestMapping(value = ["/view/team/stats"])
 class TeamRankingByGoalsView(private val teamRankingByGoals: TeamRankingByGoals) {
   @GetMapping
-  fun teamStats(): Set<TeamStats> = teamRankingByGoals.teamStats.map { it.value }.sortedBy { it.name }.toSet()
+  fun teamStats(): Set<TeamStats> = teamRankingByGoals.teamStats
+                                      .map { it.value }
+                                      .filter{ (it.matchesLost + it.matchesWon) > 0}
+                                      .sortedBy { it.name }
+                                      .toSet()
 }
 
 
@@ -47,8 +51,8 @@ class TeamRankingByGoals() {
     val winner = e.team
     val looser = e.looser
 
-    teamStats[winner]?.matchesWon!!.inc()
-    teamStats[looser]?.matchesLost!!.inc()
+    teamStats[winner]?.matchesWon = teamStats[winner]?.matchesWon!!.inc()
+    teamStats[looser]?.matchesLost = teamStats[looser]?.matchesLost!!.inc()
 
     var goalsBlue = 0
     var goalsRed = 0
@@ -74,6 +78,9 @@ class TeamRankingByGoals() {
           lastGoalTime = it.second
         }
       }
+
+      teamStats[match.teamRed]!!.calcAvgGoalTime()
+      teamStats[match.teamBlue]!!.calcAvgGoalTime()
 
       teamStats[match.teamBlue]?.goalsScored = goalsBlue
       teamStats[match.teamBlue]?.goalsConceded = goalsRed
@@ -102,10 +109,11 @@ class TeamStats(var name: String,
                 var setsLost: Int = 0,
                 var matchesWon: Int = 0,
                 var matchesLost: Int = 0,
-                var totalGoalTime: Double = 0.0) {
+                var totalGoalTime: Double = 0.0,
+                var avgGoalTime: Double = 0.0) {
 
-  fun avgGoalTime(): Double {
-    return if (goalsScored > 0) {
+  fun calcAvgGoalTime() {
+    this.avgGoalTime = if (goalsScored > 0) {
       totalGoalTime / goalsScored
     } else {
       0.0
