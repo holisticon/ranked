@@ -1,0 +1,65 @@
+.double-bar-entry {
+  margin: 0.8rem 0;
+  padding: 0 1rem;
+  width: 100%;
+  position: relative;
+  display: inline-block;
+  box-sizing: border-box;
+  max-width: 1200px;
+  text-align: left;
+}
+
+.double-bar-entry > .player-icon {
+  float: left;
+  width: 12%;
+  margin: 0 3%;
+  height: 4rem;
+}
+
+.double-bar-entry .name {
+  float: left;
+  width: 80%;
+}
+
+.double-bar-entry .line {
+  width: 60%;
+  float: left;
+  font-size: 0.8rem;
+  height: 0.8rem;
+  margin: 0.1rem 0;
+}
+
+.double-bar-entry .line .icon {
+  float: left;
+  color: grey;
+  width: 10%;
+  text-align: center;
+}
+
+.double-bar-entry .bar {
+  position: relative;
+  float: left;
+  height: 100%;
+  width: 90%;
+}
+
+.double-bar-entry .bar-inner {
+  float: left;
+  height: 100%;
+  background-color: #4EB4F9;
+}
+
+.double-bar-entry .bar-value {
+  position: absolute;
+  left: 0;
+  line-height: 0.8rem;
+  padding-left: 0.3rem;
+}
+
+.double-bar-entry .cumulation {
+  float: right;
+  width: 20%;
+  text-align: right;
+  line-height: 2rem;
+  vertical-align: middle;
+}

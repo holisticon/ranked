@@ -17,28 +17,44 @@
 .two-side-bar-entry .negative-bar, .two-side-bar-entry .positive-bar {
   float: left;
   width: 40%;
-  height: 1.2rem;
+  height: 1rem;
+}
+
+.two-side-bar-entry .negative-bar, .two-side-bar-entry .positive-bar {
+  position: relative;
+}
+
+.two-side-bar-entry .bar-inner {
+  height: 100%;
 }
 
 .two-side-bar-entry .negative-bar .bar-inner {
-  height: 100%;
   background-color: #FF2D55;
   float: right;
 }
 
 .two-side-bar-entry .positive-bar .bar-inner {
-  height: 100%;
   background-color: #4EB4F9;
   float: left;
 }
 
 .two-side-bar-entry .bar-value {
-  width: 0;
-  height: 0;
+  position: absolute;
+  max-width: 100%;
+  box-sizing: border-box;
+  display: none; /* TODO: how to fix this styling issue? */
+}
+
+.two-side-bar-entry .negative-bar .bar-value {
+  right: 0;
+}
+
+.two-side-bar-entry .positive-bar .bar-value {
+  left: 0;
 }
 
 .two-side-bar-entry .cumulation {
-  float: left;
+  float: right;
   width: 20%;
+  text-align: right;
 }
-

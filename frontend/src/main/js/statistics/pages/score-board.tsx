@@ -9,12 +9,14 @@ import { GoalsAdapter } from '../services/goals-adapter';
 import './score-board.css';
 import { Heading } from '../services/heading.service';
 import { HeadingComponent, HeadingConfig } from '../components/heading';
+import { DoubleBarChart } from '../components/double-bar-chart';
 import { TwoSideBarChart } from '../components/two-side-bar-chart';
 
 type ScoreBoardState = {
   playerEloData: ChartData2D<Player, number>,
   playerGoalRatio: ChartData2D<Player, string>,
-  playerGoalsData: ChartData3D<Player, number, number>,
+  playerConcededScoredGoalsData: ChartData3D<Player, number, number>,
+  playerPositionGoalsData: ChartData3D<Player, number, number>,
   playerTimeToScore: ChartData2D<Player, number>,
 };
 
@@ -30,10 +32,11 @@ export class ScoreBoard extends React.Component<any, ScoreBoardState> {
       { title: 'Holisticon AllStars', iconPath: '/img/trophy.png' },
       { title: 'Torverhältnis', iconPath: '/img/goal.png' },
       { title: 'Torverhältnis', iconPath: '/img/goal.png' },
+      { title: 'Torverhältnis', iconPath: '/img/goal.png' },
       { title: '∅ Zeit zum Tor', iconPath: '/img/stopwatch.png' }
     ];
     this.updateList();
-    setInterval(() => this.updateList(), 80 * 1000);
+    // setInterval(() => this.updateList(), 80 * 1000);
   }
 
   private updateList(): void {
@@ -41,11 +44,24 @@ export class ScoreBoard extends React.Component<any, ScoreBoardState> {
       .all([
         EloAdapter.getEloData(),
         GoalsAdapter.getTotalGoalsData(),
-        GoalsAdapter.getPlayerGoalsData(),
+        GoalsAdapter.getConcededScoredGoalsData(),
+        GoalsAdapter.getPlayerPositionGoalsData(),
         GoalsAdapter.getPlayerAvgScoreTimeData()
       ])
-      .then(([playerEloData, playerGoalRatio, playerGoalsData, playerTimeToScore]) => {
-        this.setState({ playerEloData, playerGoalRatio, playerGoalsData, playerTimeToScore });
+      .then(([
+        playerEloData,
+        playerGoalRatio,
+        playerConcededScoredGoalsData,
+        playerPositionGoalsData,
+        playerTimeToScore
+      ]) => {
+        this.setState({
+          playerEloData,
+          playerGoalRatio,
+          playerConcededScoredGoalsData,
+          playerPositionGoalsData,
+          playerTimeToScore
+        });
       });
   }
 
@@ -78,7 +94,19 @@ export class ScoreBoard extends React.Component<any, ScoreBoardState> {
           </div>
           <div className="chart-container">
             <div className="fading-top" />
-            <TwoSideBarChart data={ !this.state ? undefined : this.state.playerGoalsData } />
+            <div className="scrollable-container">
+              <DoubleBarChart
+                data={ !this.state ? undefined : this.state.playerPositionGoalsData }
+              />
+            </div>
+          </div>
+          <div className="chart-container">
+            <div className="fading-top" />
+            <TwoSideBarChart
+              data={ !this.state ? undefined : this.state.playerConcededScoredGoalsData }
+              cumulationHeadline="Verhältnis"
+              cumulate={ (a, b) => (b / a).toFixed(2) }
+            />
           </div>
           <div className="chart-container">
             <div className="fading-top" />

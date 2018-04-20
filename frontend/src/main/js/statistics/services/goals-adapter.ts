@@ -56,7 +56,7 @@ export namespace GoalsAdapter {
       });
   }
 
-  export function getPlayerGoalsData(): Promise<ChartData3D<Player, number, number>> {
+  export function getConcededScoredGoalsData(): Promise<ChartData3D<Player, number, number>> {
     return Promise.all([getPlayerGoalsCount(), PlayersAdapter.getPlayersMap()])
       .then(([goalsData, playersMap]) => {
         const playerGoals: ChartData3D<Player, number, number> = {
@@ -68,6 +68,24 @@ export namespace GoalsAdapter {
               total(goals.goalsScored)
             ] as [Player, number, number];
           }).sort((a, b) => (b[2] / b[1]) - (a[2] / a[1]))
+        };
+
+        return playerGoals;
+      });
+  }
+
+  export function getPlayerPositionGoalsData(): Promise<ChartData3D<Player, number, number>> {
+    return Promise.all([getPlayerGoalsCount(), PlayersAdapter.getPlayersMap()])
+      .then(([goalsData, playersMap]) => {
+        const playerGoals: ChartData3D<Player, number, number> = {
+          dimensions: [{ description: 'Spieler' }, { description: 'In Angriff' }, { description: 'In Verteidigung' }],
+          entries: goalsData.map(goals => {
+            return [
+              playersMap[goals.userName.value],
+              goals.goalsScored.whenInOffense,
+              goals.goalsScored.whenInDefense
+            ] as [Player, number, number];
+          }).sort((a, b) => (b[1] + b[2]) - (a[1] + a[2]))
         };
 
         return playerGoals;

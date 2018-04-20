@@ -30,19 +30,19 @@ export class TwoSideBarChart extends React.Component<TwoSideBarChartProps, any> 
 
     return this.props.data.entries
       .map((entry, i) => {
-        let negBarWidth = this.calcPercentage(entry[1], minNegValue, maxNegValue) * 90 + 10;
-        let posBarWidth = this.calcPercentage(entry[2], minPosValue, maxPosValue) * 90 + 10;
+        const negBarWidth = this.calcPercentage(entry[1], minNegValue, maxNegValue) * 90 + 10;
+        const posBarWidth = this.calcPercentage(entry[2], minPosValue, maxPosValue) * 90 + 10;
 
         return (
           <div key="i" className="two-side-bar-entry">
             <div className="name">{ entry[0].displayName }</div>
             <div className="negative-bar">
-              <div className="bar-value">{ entry[1] }</div>
               <div className="bar-inner" style={{ width: negBarWidth + '%' }} />
+              <div className="bar-value" style={{ paddingRight: negBarWidth + '%' }}>{ entry[1] }</div>
             </div>
             <div className="positive-bar">
-              <div className="bar-value">{ entry[2] }</div>
               <div className="bar-inner" style={{ width: posBarWidth + '%' }} />
+              <div className="bar-value" style={{ marginLeft: posBarWidth + '%' }}>{ entry[2] }</div>
             </div>
             {
               this.props.cumulate ? 
