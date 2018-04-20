@@ -85,20 +85,6 @@ export class ScoreBoard extends React.Component<any, ScoreBoardState> {
           </div>
           <div className="chart-container">
             <div className="fading-top" />
-            <DoubleBarChart
-              data={ !this.state ? undefined : this.state.playerPositionGoalsData }
-            />
-          </div>
-          <div className="chart-container">
-            <div className="fading-top" />
-            <TwoSideBarChart
-              data={ !this.state ? undefined : this.state.playerConcededScoredGoalsData }
-              cumulationHeadline="Verhältnis"
-              cumulate={ (a, b) => (b / a).toFixed(2) }
-            />
-          </div>
-          <div className="chart-container">
-            <div className="fading-top" />
             <RankingChart data={ !this.state ? undefined : this.state.playerTimeToScore } />
           </div>
         </Carousel>
