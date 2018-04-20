@@ -12,8 +12,9 @@ import { Provider } from 'react-redux';
 import { ranked } from './game/reducer';
 import './app.css';
 import { Switch } from 'react-router';
-import { ScoreBoard } from './statistics/pages/score-board';
+import { ScoreBoard } from './statistics/pages/player-score-board';
 import { Config } from './config';
+import { TeamScoreBoard } from './statistics/pages/team-score-board';
 
 // Create a history of your choosing (we're using a browser history in this case)
 const history = createHistory();
@@ -54,6 +55,7 @@ class Ranked extends React.Component<{}, { initialized: boolean }> {
             <Route path="/select/:letter?" component={ PlayerSelection } />
             <Route path="/selectTeam" component={ TeamSelection } />
             <Route path="/board" component={ ScoreBoard } />
+            <Route path="/teamBoard" component={ TeamScoreBoard } />
           </Switch>
         </ConnectedRouter>
       </div>
