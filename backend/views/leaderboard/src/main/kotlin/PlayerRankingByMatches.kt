@@ -3,9 +3,8 @@
 package de.holisticon.ranked.view.leaderboard
 
 import de.holisticon.ranked.model.Team
-import de.holisticon.ranked.model.TeamColor
 import de.holisticon.ranked.model.UserName
-import de.holisticon.ranked.model.event.MatchCreated
+import de.holisticon.ranked.model.event.TeamWonMatch
 import org.axonframework.config.ProcessingGroup
 import org.axonframework.eventhandling.EventHandler
 import org.springframework.stereotype.Component
@@ -23,9 +22,6 @@ class PlayerRankingByMatchesView(
 ) {
   @GetMapping(path = ["/count"])
   fun userListByGoalSum(): Set<PlayerMatchCount> = playerRankingByMatches.getMatchCount()
-
-  /*@GetMapping(path = ["/player/{userName}"])
-  fun goalStatsByPlayer(@PathVariable("userName") userName: String): PlayerGoalStats = playerRankingByGoals.getGoalStatsForPlayer(userName)*/
 }
 
 @Component
@@ -35,19 +31,12 @@ class PlayerRankingByMatches {
   private val matchCount = mutableMapOf<UserName, PlayerMatchCount>()
 
   @EventHandler
-  fun on(e: MatchCreated) {
-    e.matchSets.forEach {
-      if (it.winner() === TeamColor.RED) {
-        incWonMatchesForPlayersOfTeam(e.teamRed, it.offenseRed)
-        incLostMacthesForPlayersOfTeam(e.teamBlue, it.offenseBlue)
-      } else {
-        incWonMatchesForPlayersOfTeam(e.teamBlue, it.offenseBlue)
-        incLostMacthesForPlayersOfTeam(e.teamRed, it.offenseRed)
-      }
-    }
+  fun on(e: TeamWonMatch) {
+    incWonMatchesForPlayersOfTeam(e.team)
+    incLostMatchesForPlayersOfTeam(e.looser)
   }
 
-  private fun incWonMatchesForPlayersOfTeam(team: Team, offense: UserName) {
+  private fun incWonMatchesForPlayersOfTeam(team: Team) {
     matchCount.putIfAbsent(team.player1, PlayerMatchCount(team.player1, 0, 0))
     matchCount.putIfAbsent(team.player2, PlayerMatchCount(team.player2, 0, 0))
 
@@ -55,7 +44,7 @@ class PlayerRankingByMatches {
     matchCount[team.player2]!!.wonMatches++
   }
 
-  private fun incLostMacthesForPlayersOfTeam(team: Team, offense: UserName) {
+  private fun incLostMatchesForPlayersOfTeam(team: Team) {
     matchCount.putIfAbsent(team.player1, PlayerMatchCount(team.player1, 0, 0))
     matchCount.putIfAbsent(team.player2, PlayerMatchCount(team.player2, 0, 0))
 
