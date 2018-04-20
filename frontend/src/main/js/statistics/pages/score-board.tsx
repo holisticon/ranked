@@ -9,8 +9,6 @@ import { GoalsAdapter } from '../services/goals-adapter';
 import './score-board.css';
 import { Heading } from '../services/heading.service';
 import { HeadingComponent, HeadingConfig } from '../components/heading';
-import { DoubleBarChart } from '../components/double-bar-chart';
-import { TwoSideBarChart } from '../components/two-side-bar-chart';
 
 type ScoreBoardState = {
   playerEloData: ChartData2D<Player, number>,
