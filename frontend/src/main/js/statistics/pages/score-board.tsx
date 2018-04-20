@@ -82,7 +82,7 @@ export class ScoreBoard extends React.Component<any, ScoreBoardState> {
           interval={ 20000 }
           showStatus={ false }
           showArrows={ false }
-          selectedItem={ 2 }
+          selectedItem={ 3 }
         >
           <div className="chart-container">
             <div className="fading-top" />
@@ -94,11 +94,9 @@ export class ScoreBoard extends React.Component<any, ScoreBoardState> {
           </div>
           <div className="chart-container">
             <div className="fading-top" />
-            <div className="scrollable-container">
-              <DoubleBarChart
-                data={ !this.state ? undefined : this.state.playerPositionGoalsData }
-              />
-            </div>
+            <DoubleBarChart
+              data={ !this.state ? undefined : this.state.playerPositionGoalsData }
+            />
           </div>
           <div className="chart-container">
             <div className="fading-top" />
