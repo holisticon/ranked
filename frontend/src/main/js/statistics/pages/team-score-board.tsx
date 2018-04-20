@@ -24,7 +24,7 @@ export class TeamScoreBoard extends React.Component<any, ScoreBoardState> {
     // init data
     this.headings = [
       { title: 'Torverhältnis', iconPath: '/img/goal.png' },
-      { title: 'Schießt Tore nach durchschnittlich', iconPath: '/img/stopwatch.png' },
+      { title: 'Schießt Tor nach', iconPath: '/img/stopwatch.png' },
     ];
 
     this.updateList();
