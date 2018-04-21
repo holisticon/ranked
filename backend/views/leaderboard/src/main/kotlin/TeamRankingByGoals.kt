@@ -78,22 +78,23 @@ class TeamRankingByGoals() {
           lastGoalTime = it.second
         }
       }
-
-      teamStats[match.teamRed]!!.calcAvgGoalTime()
-      teamStats[match.teamBlue]!!.calcAvgGoalTime()
-
-      teamStats[match.teamBlue]?.goalsScored = goalsBlue
-      teamStats[match.teamBlue]?.goalsConceded = goalsRed
-
-      teamStats[match.teamRed]?.goalsScored = goalsRed
-      teamStats[match.teamRed]?.goalsConceded = goalsBlue
     }
+
+    teamStats[match.teamBlue]?.goalsScored = teamStats[match.teamBlue]?.goalsScored!! + goalsBlue
+    teamStats[match.teamBlue]?.goalsConceded = teamStats[match.teamBlue]?.goalsConceded!! + goalsRed
+
+    teamStats[match.teamRed]?.goalsScored = teamStats[match.teamRed]?.goalsScored!! + goalsRed
+    teamStats[match.teamRed]?.goalsConceded = teamStats[match.teamRed]?.goalsConceded!! + goalsBlue
+
+    teamStats[match.teamRed]!!.calcAvgGoalTime()
+    teamStats[match.teamBlue]!!.calcAvgGoalTime()
+
   }
 
   @EventHandler
   fun on(e: TeamWonMatchSet) {
-    teamStats[e.team]?.setsWon!!.inc()
-    teamStats[e.looser]?.setsLost!!.inc()
+    teamStats[e.team]?.setsWon = teamStats[e.team]?.setsWon!! + 1
+    teamStats[e.looser]?.setsLost = teamStats[e.looser]?.setsLost!! + 1
   }
 
   @EventHandler
