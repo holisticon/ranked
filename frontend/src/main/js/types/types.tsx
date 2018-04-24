@@ -56,3 +56,9 @@ export interface Composition {
   team: TeamKey;
   goals: Array<number>;
 }
+
+export interface PlayedMatch {
+  team1: { player1: string, player2: string };
+  team2: { player1: string, player2: string };
+  winner: TeamKey;
+}
