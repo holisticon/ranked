@@ -131,12 +131,10 @@ export class TournamentTree extends React.Component<any, TournamentTreeState> {
       <div className={containerClasses}>
         {
           matches.map((match, i) => {
-            const relevantSibling = i % 2 === 0 ? i + 1 : i - 1;
-            const matchIsOld = !!match.winner && !!matches[relevantSibling].winner;
             const containsNextRoundWinner = this.playsInMatch(match, this.getNextRoundWinner(match.id));
 
             let classes = 'tournament-match';
-            classes += matchIsOld ? ' old' : '';
+            classes += !!match.winner ? ' decided' : '';
             classes += containsNextRoundWinner ? ' next-round-winner' : '';
 
             return (

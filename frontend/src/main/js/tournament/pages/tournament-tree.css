@@ -67,6 +67,7 @@
 
 .tournament-tree .top .tournament-match.next-round-winner::after {
   border-bottom-width: 3px;
+  width: calc(50% + 2px);
 }
 
 .tournament-tree .bottom .tournament-match::after {
@@ -84,7 +85,7 @@
 }
 
 .tournament-match.next-round-winner:nth-child(odd)::after {
-  left: calc(50% - 3px);
+  left: calc(50% - 2px);
   border-left-width: 3px;
 }
 
@@ -94,7 +95,7 @@
 }
 
 .tournament-match.next-round-winner:nth-child(even)::after {
-  right: calc(50% - 3px);
+  right: calc(50% - 2px);
   border-right-width: 3px;
 }
 
@@ -107,7 +108,7 @@
   position: absolute;
 }
 
-.tournament-match.old::before {
+.tournament-match.decided::before {
   width: 3px;
 }
 
