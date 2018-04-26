@@ -55,7 +55,7 @@ function switchPlayerPositions(state: RankedStore, teamColor: TeamColor): Ranked
 }
 
 function removeTeamIfPresent(teamId: string | undefined, team: Team): Team {
-  if(team.id === teamId) {
+  if (team.id === teamId) {
     return createEmptyTeam();
   }  else {
     return team;
@@ -76,7 +76,7 @@ function startNewSet(state: RankedStore): RankedStore {
   const currentSet = state.sets[state.sets.length - 1];
   let winnerTeam: TeamKey;
 
-  if (currentSet.red.goals.length === Config.pointsPerSet) {
+  if (currentSet.red.goals.length > currentSet.blue.goals.length) {
     winnerTeam = currentSet.red.team;
   } else {
     winnerTeam = currentSet.blue.team;
@@ -88,6 +88,7 @@ function startNewSet(state: RankedStore): RankedStore {
     if (refreshedWinnerTeam.wonSets < Config.pointsPerMatch) {
       // match not ended, add next set to match
       // switch teams and player positions
+      newState.suddenDeathMode = false;
       newState.sets.push({
         red: {
           attack: currentSet.blue.defense,
@@ -113,8 +114,14 @@ export function ranked(state: RankedStore, rankedAction: Actions.RankedAction): 
       action = rankedAction as Actions.IncGoals;
       const newState = changeGoals(state, action.team, 1);
 
-      if (newState.sets[newState.sets.length - 1][action.team].goals.length >= Config.pointsPerSet) {
-        return startNewSet(newState);
+      if (newState.suddenDeathMode ||
+          (!Config.timedMatchMode &&
+           newState.sets[newState.sets.length - 1][action.team].goals.length >= Config.pointsPerSet)
+         ) {
+           if (newState.suddenDeathMode) {
+             TimerService.reset();
+           }
+           return startNewSet(newState);
       }
 
       // Start timer whenever a goal is scored to be sure it's running ;)
@@ -178,6 +185,18 @@ export function ranked(state: RankedStore, rankedAction: Actions.RankedAction): 
       action = rankedAction as Actions.UpdateAvailableTeams;
 
       return {...state, availableTeams: action.teams};
+
+    case Actions.COUNTDOWN_EXPIRED:
+      // tslint:disable-next-line:no-console
+      console.log('Countdown was expired!');
+
+      const currenSet = state.sets[state.sets.length - 1];
+      if (currenSet.blue.goals.length !== currenSet.red.goals.length) {
+        TimerService.reset();
+        return startNewSet(state);
+      } else {
+        return { ...state, suddenDeathMode: true };
+      }
 
     default:
       break;
