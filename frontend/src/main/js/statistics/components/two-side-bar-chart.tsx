@@ -5,7 +5,7 @@ import './two-side-bar-chart.css';
 import { PlayerIcon } from '../../components/player-icon';
 
 type TwoSideBarChartProps = {
-  data?: ChartData3D<Player, number, number>,
+  data?: ChartData3D<Player | string, number, number>,
   cumulationHeadline?: string,
   cumulate?: (val1: number, val2: number) => number | string
 };
@@ -36,14 +36,24 @@ export class TwoSideBarChart extends React.Component<TwoSideBarChartProps, any> 
         const negBarWidth = this.calcPercentage(entry[1], minValue, maxValue) * 90 + 10;
         const posBarWidth = this.calcPercentage(entry[2], minValue, maxValue) * 90 + 10;
 
+        let imageUrl: string = '';
+        let displayName: string;
+
+        if (entry[0] instanceof Player) {
+          imageUrl = (entry[0] as Player).imageUrl;
+          displayName = (entry[0] as Player).displayName;
+        } else {
+          displayName = (entry[0] as string);
+        }
+
         return (
           <div key="i" className="two-side-bar-entry">
           <div className="player-icon">
-              <PlayerIcon img={ entry[0].imageUrl } click={() => { return; }} />
+              <PlayerIcon img={ imageUrl } click={() => { return; }} />
             </div>
-            <div className="name">{ entry[0].displayName }</div>
+            <div className="name">{ displayName }</div>
             {
-              this.props.cumulate ? 
+              this.props.cumulate ?
               <div className="cumulation">{ this.props.cumulate(entry[1], entry[2]) }</div> :
               null
             }
