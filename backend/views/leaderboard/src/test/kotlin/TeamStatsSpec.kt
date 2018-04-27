@@ -2,9 +2,9 @@ import de.holisticon.ranked.model.*
 import de.holisticon.ranked.model.event.MatchCreated
 import de.holisticon.ranked.model.event.TeamCreated
 import de.holisticon.ranked.model.event.TeamWonMatch
+import de.holisticon.ranked.model.event.TeamWonMatchSet
 import de.holisticon.ranked.view.leaderboard.TeamRankingByGoals
 import org.assertj.core.api.Assertions
-import org.assertj.core.api.Assertions.within
 import org.assertj.core.api.Assertions.withinPercentage
 import org.junit.Before
 import org.junit.Test
@@ -14,7 +14,11 @@ class TeamStatsSpec {
 
   private val ranking = TeamRankingByGoals()
 
-  private val teamHolis = Team(UserName("O3"), UserName("Timo"))
+  private val userO3 = UserName("O3")
+  private val userTimo = UserName("Timo")
+
+
+  private val teamHolis = Team(userO3, userTimo)
   private val teamMuppets = Team(UserName("fozzy"), UserName("gonzo"))
   private val teamMarvel = Team(UserName("ironman"), UserName("hulk"))
 
@@ -74,25 +78,20 @@ class TeamStatsSpec {
 
     ranking.on(MatchCreated("abc", teamHolis, teamMuppets, matchSets, matchStartTime, null))
     ranking.on(TeamWonMatch("abc", teamHolis, teamMuppets))
+    ranking.on(TeamWonMatchSet(teamHolis, teamMuppets, userTimo, "abc"))
+    ranking.on(TeamWonMatchSet(teamHolis, teamMuppets, userO3, "abc"))
 
     val teamStats = ranking.teamStats
 
-
-    val teamHolisGoalTime = teamStats.get(teamHolis)!!.avgGoalTime
-    val teamHolisGoalsScoredCount = teamStats.get(teamHolis)!!.goalsScored
-    val teamHolisMatchesWon = teamStats.get(teamHolis)!!.matchesWon
-
-    val teamMuppetsGoalTime = teamStats.get(teamMuppets)!!.avgGoalTime
-    val teamMuppetsGoalsScoredCount = teamStats.get(teamMuppets)!!.goalsScored
-    val teamMuppetsMatchesWon = teamStats.get(teamMuppets)!!.matchesWon
-
-    Assertions.assertThat(teamHolisGoalTime).isCloseTo((15.166667), withinPercentage(0.1))
-    Assertions.assertThat(teamHolisGoalsScoredCount).isEqualTo(12)
-    Assertions.assertThat(teamHolisMatchesWon).isEqualTo(1)
-    Assertions.assertThat(teamMuppetsGoalTime).isCloseTo((7.5), withinPercentage(0.1))
-    Assertions.assertThat(teamMuppetsGoalsScoredCount).isEqualTo(4)
-    Assertions.assertThat(teamMuppetsMatchesWon).isEqualTo(0)
-
+    Assertions.assertThat(teamStats.get(teamHolis)!!.avgGoalTime).isCloseTo((15.166667), withinPercentage(0.1))
+    Assertions.assertThat(teamStats.get(teamHolis)!!.goalsScored).isEqualTo(12)
+    Assertions.assertThat(teamStats.get(teamHolis)!!.matchesWon).isEqualTo(1)
+    Assertions.assertThat(teamStats.get(teamHolis)!!.setsWon).isEqualTo(2)
+    Assertions.assertThat(teamStats.get(teamMuppets)!!.avgGoalTime).isCloseTo((7.5), withinPercentage(0.1))
+    Assertions.assertThat(teamStats.get(teamMuppets)!!.goalsScored).isEqualTo(4)
+    Assertions.assertThat(teamStats.get(teamMuppets)!!.matchesWon).isEqualTo(0)
+    Assertions.assertThat(teamStats.get(teamMuppets)!!.setsWon).isEqualTo(0)
+    Assertions.assertThat(teamStats.get(teamMuppets)!!.setsLost).isEqualTo(2)
   }
 
 }
