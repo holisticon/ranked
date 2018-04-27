@@ -10,6 +10,7 @@ import { PartialStoreState } from '../store.state';
 import PanelComponent from '../components/panel';
 import { TimerService } from '../services/timer.service';
 import { Config } from '../../config';
+import { push } from 'react-router-redux';
 
 export interface MatchProps {
   sets: Sets;
@@ -18,6 +19,7 @@ export interface MatchProps {
   setNumber: number;
   winner: TeamKey | null;
   startNewMatch: () => void;
+  routeBack: () => void;
 }
 
 function getTeam(set: Set, team: TeamKey): Composition {
@@ -57,7 +59,7 @@ function mapGoalsForBackend(teamRedGoals: Array<number>, teamBlueGoals: Array<nu
   }
 }
 
-function sendResults(sets: Sets, team1: Team, team2: Team) {
+function sendResults(sets: Sets, team1: Team, team2: Team, afterSend: () => void) {
   const matchTime = TimerService.getTimeInSec();
   let startTime: Date | undefined = undefined;
 
@@ -84,7 +86,7 @@ function sendResults(sets: Sets, team1: Team, team2: Team) {
       };
     }),
     startTime
-  });
+  }).then(afterSend);
 }
 
 function getMatchWinnersAsString(team: Team): string | undefined {
@@ -111,7 +113,7 @@ function getDialogMessage(winner: TeamKey, team1: Team, team2: Team): string {
   }
 }
 
-function Match({ setNumber, winner, sets, team1, team2, startNewMatch }: MatchProps) {
+function Match({ setNumber, winner, sets, team1, team2, startNewMatch, routeBack }: MatchProps) {
 
   if (winner) {
     TimerService.pause();
@@ -127,7 +129,7 @@ function Match({ setNumber, winner, sets, team1, team2, startNewMatch }: MatchPr
           buttons={[
             {
               text: 'OK!', type: 'ok', click: () => {
-                sendResults(sets, team1, team2);
+                sendResults(sets, team1, team2, routeBack);
                 startNewMatch();
               }
             }
@@ -170,7 +172,8 @@ export function mapStateToProps({ ranked: { selectFor, team1, team2, sets } }: P
 
 export function mapDispatchToProps(dispatch: Dispatch<Actions.RankedAction>) {
   return {
-    startNewMatch: () => dispatch(Actions.startNewMatch())
+    startNewMatch: () => dispatch(Actions.startNewMatch()),
+    routeBack: () => dispatch(push('/selectMatch'))
   };
 }
 

@@ -80,21 +80,21 @@ export namespace TournamentService {
         .then(() => {
             numberOfTeams = 16;
             matchesSubject.next([
-              { id: 1, team1: getTeamForTeamName('foo1'), team2: getTeamForTeamName('bar1') },
-              { id: 2, team1: getTeamForTeamName('foo2'), team2: getTeamForTeamName('bar2') },
-              { id: 3, team1: getTeamForTeamName('foo3'), team2: getTeamForTeamName('bar3') },
-              { id: 4, team1: getTeamForTeamName('foo4'), team2: getTeamForTeamName('bar4') },
-              { id: 5, team1: getTeamForTeamName('foo5'), team2: getTeamForTeamName('bar5') },
-              { id: 6, team1: getTeamForTeamName('foo6'), team2: getTeamForTeamName('bar6') },
-              { id: 7, team1: getTeamForTeamName('foo7'), team2: getTeamForTeamName('bar7') },
-              { id: 8, team1: getTeamForTeamName('foo8'), team2: getTeamForTeamName('bar8') },
+              { id: 1, team1: getTeamForTeamName('Deutschland'), team2: getTeamForTeamName('Schweden') },
+              { id: 2, team1: getTeamForTeamName('Russland'), team2: getTeamForTeamName('Uruguay') },
+              { id: 3, team1: getTeamForTeamName('Portugal'), team2: getTeamForTeamName('Spanien') },
+              { id: 4, team1: getTeamForTeamName('Wallis und Futuna'), team2: getTeamForTeamName('Dänemark') },
+              { id: 5, team1: getTeamForTeamName('Argentinien'), team2: getTeamForTeamName('Island') },
+              { id: 6, team1: getTeamForTeamName('Brasilien'), team2: getTeamForTeamName('Schweiz') },
+              { id: 7, team1: getTeamForTeamName('Belgien'), team2: getTeamForTeamName('England') },
+              { id: 8, team1: getTeamForTeamName('Japan'), team2: getTeamForTeamName('Polen') },
               { id: 9 },
               { id: 10 },
               { id: 11 },
               { id: 12 },
               { id: 13 },
               { id: 14 },
-              { id: 15, team1: getTeamForTeamName('foo8'), team2: getTeamForTeamName('bar8') },
+              { id: 15 },
             ]);
           }
         );
