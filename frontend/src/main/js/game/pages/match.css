@@ -110,6 +110,10 @@
   font-size: 2rem;
 }
 
+.match .add-team img {
+  height: 5rem;
+}
+
 .match .add-team .team-name {
   font-size: 1.2rem;
   opacity: 0.4;

@@ -25,7 +25,8 @@ class PlayerCreatingSagaSpec {
       .publishes(TeamCreated(
         id = "team-alpha",
         name = "Team Alpha",
-        team = Team(username1, username2)
+        team = Team(username1, username2),
+        imageUrl = ""
       ))
       .expectActiveSagas(1)
       .expectDispatchedCommands(
