@@ -1,38 +1,26 @@
 import * as React from 'react';
 import './tournament-tree.css';
-import { Team, TorunamentMatch, PlayedMatch } from '../../types/types';
-import { WallService } from '../../services/wall.service';
-import { PlayerService } from '../../services/player-service';
+import { TorunamentMatch } from '../../types/types';
+import { TournamentService } from '../services/tournament.service';
 
 interface TournamentTreeState {
-  numberOfTeams: number;
   matches: Array<TorunamentMatch>;
 }
 
 export class TournamentTree extends React.Component<any, TournamentTreeState> {
-  private teams: Array<Team> = [];
-
   constructor(props: any) {
     super(props);
-    this.init();
-  }
+    this.state = { matches: [] };
 
-  // private createTeam(teamName: string): Team {
-  //   return { ...createEmptyTeam(), name: teamName, id: teamName };
-  // }
+    TournamentService.init();
 
-  private playsInMatch(match: TorunamentMatch, teamId: string): boolean {
-    const isTeam1 = match.team1 ? match.team1.id === teamId : false;
-    const isTeam2 = match.team2 ? match.team2.id === teamId : false;
-    return isTeam1 || isTeam2;
-  }
-
-  private getNextRoundIndex(matchId: number): number {
-    return Math.ceil(matchId / 2 + this.state.numberOfTeams / 2) - 1;
+    TournamentService.getAllMatches().subscribe(matches => {
+      this.setState({matches});
+    });
   }
 
   private getNextRoundWinner(matchId: number): string {
-    const nextRoundIndex = this.getNextRoundIndex(matchId);
+    const nextRoundIndex = TournamentService.getNextRoundIndex(matchId);
     const winner = nextRoundIndex < this.state.matches.length ? this.state.matches[nextRoundIndex].winner : null;
     return winner ? this.state.matches[nextRoundIndex][winner]!!.id!! : '';
   }
@@ -42,7 +30,8 @@ export class TournamentTree extends React.Component<any, TournamentTreeState> {
       <div className={containerClasses}>
         {
           matches.map((match, i) => {
-            const containsNextRoundWinner = this.playsInMatch(match, this.getNextRoundWinner(match.id));
+            const containsNextRoundWinner = TournamentService.playsInMatch(
+              match, this.getNextRoundWinner(match.id));
 
             let classes = 'tournament-match';
             classes += !!match.winner ? ' decided' : '';
