@@ -25,7 +25,7 @@ export namespace TeamStatsAdapter {
         entries: []
       };
       const teamTimeToScore: ChartData2D<string, number>  = {
-        dimensions: [{ description: 'Team' }, { description: 'Torverhältnis' }],
+        dimensions: [{ description: 'Team' }, { description: 'Schießt Tor nach' }],
         entries: []
       };
 
