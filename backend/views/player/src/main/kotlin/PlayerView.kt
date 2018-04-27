@@ -83,6 +83,7 @@ class PlayerViewService {
       teams.add(TeamFull(
         name = e.name,
         id = e.id,
+        imageUrl = e.imageUrl,
         player1 = player1,
         player2 = player2
       ))
@@ -98,6 +99,7 @@ class PlayerViewService {
 data class TeamFull(
   val name: String,
   val id: String,
+  val imageUrl: String,
   val player1 : Player,
   val player2 : Player
 )

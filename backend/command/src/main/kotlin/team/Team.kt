@@ -18,6 +18,7 @@ class TeamAggregate() {
   lateinit var id: String
   lateinit var name: String
   lateinit var team: Team
+  lateinit var imageUrl: String
 
   @CommandHandler
   constructor(c: CreateTeam): this() {
@@ -25,7 +26,8 @@ class TeamAggregate() {
     apply(TeamCreated(
       id = c.id,
       name = c.name,
-      team = c.team
+      team = c.team,
+      imageUrl = c.imageUrl
     ))
   }
 
@@ -44,6 +46,7 @@ class TeamAggregate() {
     id = e.id
     name = e.name
     team = e.team
+    imageUrl = e.imageUrl
   }
 
   @EventSourcingHandler

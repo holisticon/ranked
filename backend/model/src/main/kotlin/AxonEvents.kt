@@ -70,7 +70,8 @@ data class TeamWonMatch(
 data class TeamCreated(
   val id: String,
   val team: Team,
-  val name: String
+  val name: String,
+  val imageUrl: String
 )
 
 data class TeamRenamed(
