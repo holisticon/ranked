@@ -187,7 +187,7 @@
   box-sizing: border-box;
   position: absolute;
   top: 15vh;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
 }
 
 .quarter-finals .tournament-match {
@@ -206,7 +206,7 @@
   box-sizing: border-box;
   position: absolute;
   top: 30vh;
-  font-size: 1.4rem;
+  font-size: 1.2rem;
 }
 
 .semi-finals .tournament-match {
@@ -228,7 +228,7 @@
   box-sizing: border-box;
   position: absolute;
   top: 40vh;
-  font-size: 1.6rem;
+  font-size: 1.3rem;
 }
 
 .final .final-match {
@@ -245,8 +245,9 @@
   width: 100%;
   height: 100%;
   box-sizing: border-box;
-  border-radius: 50%;
-  border: 3px solid gold;
+  background-image: url('/img/baywreath.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
 }
 
 .final .tournament-match::before, .final .tournament-match::after {

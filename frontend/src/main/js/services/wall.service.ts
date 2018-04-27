@@ -19,7 +19,7 @@ export namespace WallService {
               }
             });
         },
-        10000);
+        1000);
       observer.next([]);
     });
 

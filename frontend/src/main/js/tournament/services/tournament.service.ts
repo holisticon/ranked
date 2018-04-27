@@ -4,6 +4,7 @@ import { WallService } from '../../services/wall.service';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 export namespace TournamentService {
+  let initialized: boolean = false;
   let matchesSubject: BehaviorSubject<Array<TorunamentMatch>> = new BehaviorSubject([]);
   let numberOfTeams: number = 0;
   let allTeams: Array<Team> = [];
@@ -13,7 +14,7 @@ export namespace TournamentService {
   }
 
   export function getOpenMatches(): Observable<Array<TorunamentMatch>> {
-    return matchesSubject.map(matches => matches.filter(match => !match.winner));
+    return matchesSubject.map(matches => matches.filter(match => !!match.team1 && !!match.team2 && !match.winner));
   }
 
   function getTeamForId(teamId: string): Team | undefined {
@@ -71,32 +72,42 @@ export namespace TournamentService {
   }
 
   export function init(): void {
-    PlayerService.getAllTeams()
-      .then(teams => allTeams = teams)
-      .then(() => {
-          numberOfTeams = 16;
-          matchesSubject.next([
-            { id: 1, team1: getTeamForTeamName('foo1'), team2: getTeamForTeamName('bar1') },
-            { id: 2, team1: getTeamForTeamName('foo2'), team2: getTeamForTeamName('bar2') },
-            { id: 3, team1: getTeamForTeamName('foo3'), team2: getTeamForTeamName('bar3') },
-            { id: 4, team1: getTeamForTeamName('foo4'), team2: getTeamForTeamName('bar4') },
-            { id: 5, team1: getTeamForTeamName('foo5'), team2: getTeamForTeamName('bar5') },
-            { id: 6, team1: getTeamForTeamName('foo6'), team2: getTeamForTeamName('bar6') },
-            { id: 7, team1: getTeamForTeamName('foo7'), team2: getTeamForTeamName('bar7') },
-            { id: 8, team1: getTeamForTeamName('foo8'), team2: getTeamForTeamName('bar8') },
-            { id: 9 },
-            { id: 10 },
-            { id: 11 },
-            { id: 12 },
-            { id: 13 },
-            { id: 14 },
-            { id: 15 },
-          ]);
-        }
-      );
+    if (!initialized) {
+      initialized = true;
 
-    WallService.playedMatches().subscribe(newMatches => {
-      newMatches.forEach(match => setWinnerForMatch(getWinnerTeamId(match), getLooserTeamId(match)));
-    });
+      PlayerService.getAllTeams()
+        .then(teams => allTeams = teams)
+        .then(() => {
+            numberOfTeams = 16;
+            matchesSubject.next([
+              { id: 1, team1: getTeamForTeamName('foo1'), team2: getTeamForTeamName('bar1') },
+              { id: 2, team1: getTeamForTeamName('foo2'), team2: getTeamForTeamName('bar2') },
+              { id: 3, team1: getTeamForTeamName('foo3'), team2: getTeamForTeamName('bar3') },
+              { id: 4, team1: getTeamForTeamName('foo4'), team2: getTeamForTeamName('bar4') },
+              { id: 5, team1: getTeamForTeamName('foo5'), team2: getTeamForTeamName('bar5') },
+              { id: 6, team1: getTeamForTeamName('foo6'), team2: getTeamForTeamName('bar6') },
+              { id: 7, team1: getTeamForTeamName('foo7'), team2: getTeamForTeamName('bar7') },
+              { id: 8, team1: getTeamForTeamName('foo8'), team2: getTeamForTeamName('bar8') },
+              { id: 9 },
+              { id: 10 },
+              { id: 11 },
+              { id: 12 },
+              { id: 13 },
+              { id: 14 },
+              { id: 15, team1: getTeamForTeamName('foo8'), team2: getTeamForTeamName('bar8') },
+            ]);
+          }
+        );
+
+      WallService.playedMatches().subscribe(newMatches => {
+        newMatches.forEach(match => setWinnerForMatch(getWinnerTeamId(match), getLooserTeamId(match)));
+      });
+    }
+  }
+
+  export function getTournamentWinner(): string | undefined {
+    const matches = matchesSubject.value;
+    const winner = matches.length > 0 ? matches[matches.length - 1].winner : undefined;
+    return !winner ? undefined : matches[matches.length - 1][winner]!!.name;
   }
 }
