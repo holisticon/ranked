@@ -6,6 +6,7 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 import Match from './game/pages/match';
 import PlayerSelection from './game/pages/player-selection';
 import TeamSelection from './game/pages/team-selection';
+import MatchSelection from './game/pages/match-selection';
 import registerServiceWorker from './registerServiceWorker';
 import createHistory from 'history/createBrowserHistory';
 import { Provider } from 'react-redux';
@@ -14,6 +15,7 @@ import './app.css';
 import { Switch } from 'react-router';
 import { ScoreBoard } from './statistics/pages/player-score-board';
 import { Config } from './config';
+import { TournamentTree } from './tournament/pages/tournament-tree';
 import { TeamScoreBoard } from './statistics/pages/team-score-board';
 
 // Create a history of your choosing (we're using a browser history in this case)
@@ -55,6 +57,8 @@ class Ranked extends React.Component<{}, { initialized: boolean }> {
             <Route path="/select/:letter?" component={ PlayerSelection } />
             <Route path="/selectTeam" component={ TeamSelection } />
             <Route path="/board" component={ ScoreBoard } />
+            <Route path="/tournament" component={ TournamentTree } />
+            <Route path="/selectMatch" component={ MatchSelection } />
             <Route path="/teamBoard" component={ TeamScoreBoard } />
           </Switch>
         </ConnectedRouter>

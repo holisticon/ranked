@@ -1,0 +1,51 @@
+.match-selection .open-match {
+  padding: 1rem 2rem;
+  border-bottom: 1px solid #CDCDCD;
+  text-align: center;
+}
+
+.match-selection .open-match:last-child {
+  border-bottom: none;
+}
+
+.match-selection .separator {
+  position: relative;
+  padding: 0 2.2rem;
+  display: inline-block;
+  font-size: 0.8rem;
+  margin: 0.1rem 0;
+}
+
+.match-selection .separator::before, .match-selection .separator::after {
+  content: "";
+  width: 2rem;
+  height: 1px;
+  background-color: black;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.match-selection .separator::before {
+  left: 0;
+}
+
+.match-selection .separator::after {
+  right: 0;
+}
+
+.match-selection .tournament-finished .text {
+  text-align: justify;
+  margin: 2rem;
+  font-size: 1.3rem;
+}
+
+.match-selection .tournament-finished .link {
+  border-radius: 0.5rem;
+  background-color: #43A843;
+  margin: 2rem;
+  text-align: center;
+  padding: 0.5rem 0;
+  color: #F8F8F8;
+  display: block;
+}

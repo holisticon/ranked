@@ -20,7 +20,7 @@ fun main(args: Array<String>) = runApplicationExpr<FrontendApplication>(*args)
 class FrontendApplication
 
 object FrontendMetadata {
-  val FRONTEND_ROUTES: Array<String> = arrayOf("/", "select", "/select/**", "/board", "/teamBoard", "/selectTeam")
+  val FRONTEND_ROUTES: Array<String> = arrayOf("/", "select", "/select/**", "/board", "tournament", "selectMatch", "/teamBoard", "/selectTeam")
 }
 
 @Configuration
