@@ -38,7 +38,8 @@ export function createEmptyTeam(): Team {
   return {
     player1: createEmptyPlayer(),
     player2: createEmptyPlayer(),
-    wonSets: 0
+    wonSets: 0,
+    imageUrl: ''
   };
 }
 

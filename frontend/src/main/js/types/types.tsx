@@ -30,6 +30,7 @@ export class Team extends TeamData {
   player1: Player;
   player2: Player;
   wonSets: number;
+  imageUrl: string;
 
   public constructor(data: TeamData) {
     super();
