@@ -29,7 +29,7 @@ export class ScoreBoard extends React.Component<any, ScoreBoardState> {
     this.headings = [
       { title: 'Holisticon AllStars', iconPath: '/img/trophy.png' },
       { title: 'Torverhältnis', iconPath: '/img/goal.png' },
-      { title: '∅ Zeit zum Tor', iconPath: '/img/stopwatch.png' }
+      { title: 'Schießt Tor nach', iconPath: '/img/stopwatch.png' }
     ];
     this.updateList();
     setInterval(() => this.updateList(), 80 * 1000);
