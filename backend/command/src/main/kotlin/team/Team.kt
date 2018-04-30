@@ -1,3 +1,4 @@
+@file:Suppress("UNUSED")
 package de.holisticon.ranked.command.aggregate
 
 import de.holisticon.ranked.command.api.CreateTeam

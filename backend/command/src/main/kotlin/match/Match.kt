@@ -1,3 +1,5 @@
+@file:Suppress("PackageDirectoryMismatch", "unused")
+
 package de.holisticon.ranked.command.aggregate
 
 import de.holisticon.ranked.command.api.CreateMatch
@@ -17,7 +19,6 @@ import org.axonframework.spring.stereotype.Aggregate
 import org.springframework.beans.factory.annotation.Autowired
 
 @Aggregate
-@Suppress("UNUSED")
 class Match() {
 
   companion object : KLogging()

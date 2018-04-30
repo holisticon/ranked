@@ -1,3 +1,5 @@
+@file:Suppress("PackageDirectoryMismatch")
+
 package de.holisticon.ranked.extension
 
 import javax.validation.Validation

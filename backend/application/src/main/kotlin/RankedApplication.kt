@@ -1,3 +1,5 @@
+@file:Suppress("PackageDirectoryMismatch")
+
 package de.holisticon.ranked
 
 import de.holisticon.ranked.extension.runApplicationExpr

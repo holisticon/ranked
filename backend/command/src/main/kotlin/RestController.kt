@@ -1,4 +1,4 @@
-@file:Suppress("UNUSED")
+@file:Suppress("UNUSED", "PackageDirectoryMismatch")
 
 package de.holisticon.ranked.command.rest
 
