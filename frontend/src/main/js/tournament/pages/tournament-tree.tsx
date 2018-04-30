@@ -20,26 +20,13 @@ export class TournamentTree extends React.Component<any, TournamentTreeState> {
     });
   }
 
-  private getNextRoundWinner(matchId: number): string {
-    const nextRoundIndex = TournamentService.getNextRoundIndex(matchId);
-    const winner = nextRoundIndex < this.state.matches.length ? this.state.matches[nextRoundIndex].winner : null;
-    return winner ? this.state.matches[nextRoundIndex][winner]!!.id!! : '';
-  }
-
   private renderMatches(matches: Array<TorunamentMatch>, containerClasses: string) {
     return (
       <div className={containerClasses}>
         {
           matches.map((match, i) => {
-            const containsNextRoundWinner = TournamentService.playsInMatch(
-              match, this.getNextRoundWinner(match.id));
-
-            let classes = 'tournament-match';
-            classes += !!match.winner ? ' decided' : '';
-            classes += containsNextRoundWinner ? ' next-round-winner' : '';
-
             return (
-              <div key="i" className={classes}>
+              <div key="i" className="tournament-match">
                 {
                   !match.team1 && !match.team2 ?
                     <div className="default">tbd</div> :
