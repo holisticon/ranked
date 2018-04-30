@@ -43,11 +43,3 @@
   max-height: 100%;
   margin: auto;
 }
-
-.player-icon .player-image .material-icons {
-  font-size: 3rem;
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-}

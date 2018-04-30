@@ -2,6 +2,7 @@ import * as React from 'react';
 import './tournament-tree.css';
 import { TorunamentMatch } from '../../types/types';
 import { TournamentService } from '../services/tournament.service';
+import { PlayerIcon } from '../../components/player-icon';
 
 interface TournamentTreeState {
   matches: Array<TorunamentMatch>;
@@ -44,11 +45,23 @@ export class TournamentTree extends React.Component<any, TournamentTreeState> {
                     <div className="default">tbd</div> :
                     <div className="opponents">
                       <div className={'team-name ' + (match.winner === 'team1' ? 'winner' : '')}>
-                        {match.team1 ? match.team1.name : ''}
+                        <div className="image-container">
+                          { match.team1 ?
+                            <PlayerIcon click={ () => { } } img={match.team1.imageUrl} />
+                            : null
+                          }
+                        </div>
+                        <div className="name-container">{ match.team1 ? match.team1.name : '' }</div>
                       </div>
-                      <div className="separator">vs</div>
+                      <div><div className="separator">vs</div></div>
                       <div className={'team-name ' + (match.winner === 'team2' ? 'winner' : '')}>
-                        {match.team2 ? match.team2.name : ''}
+                        <div className="image-container">
+                          { match.team2 ?
+                            <PlayerIcon click={ () => { } } img={match.team2.imageUrl} />
+                            : null
+                          }
+                        </div>
+                        <div className="name-container">{ match.team2 ? match.team2.name : '' }</div>
                       </div>
                     </div>
                 }
