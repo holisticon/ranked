@@ -5,7 +5,7 @@ import { PlayerIcon } from '../../components/player-icon';
 import './ranking-chart.css';
 
 type RankingChartProps = {
-  data?: ChartData2D<Player, number | string>
+  data?: ChartData2D<Player | string, number | string>
 };
 
 export class RankingChart extends React.Component<RankingChartProps, any> {
@@ -31,12 +31,22 @@ export class RankingChart extends React.Component<RankingChartProps, any> {
       .map((entry, i) => {
         const barWidth = this.calcPercentage(+entry[1], minValue, maxValue) * 70 + 30;
 
+        let imageUrl: string = '';
+        let displayName: string;
+
+        if (entry[0] instanceof Player) {
+          imageUrl = (entry[0] as Player).imageUrl;
+          displayName = (entry[0] as Player).displayName;
+        } else {
+          displayName = (entry[0] as string);
+        }
+
         return (
           <div key="i" className="ranking-entry">
             <div className="icon">
-              <PlayerIcon img={ entry[0].imageUrl } click={() => { return; }} />
+              <PlayerIcon img={ imageUrl } click={() => { return; }} />
             </div>
-            <div className="name">{ entry[0].displayName }</div>
+            <div className="name">{ displayName }</div>
             <div className="bar">
               <div className="bar-inner" style={{ width: barWidth + '%' }} />
             </div>

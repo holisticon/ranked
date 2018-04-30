@@ -1,0 +1,13 @@
+.team-selection {
+  width: 100%;
+}
+
+.team-entry {
+  font-size: 1.5rem;
+  padding: 2rem 0rem 2rem 1rem;
+  text-align: left;
+}
+
+.team-entry .team-name {
+  margin-left: 1rem;
+}

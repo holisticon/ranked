@@ -31,6 +31,8 @@ axon:
         mode: tracking
       Player:
         mode: tracking
+      Team:
+        mode: tracking
       PlayerLeaderBoard:
         mode: tracking
       Logging:

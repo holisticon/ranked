@@ -4,6 +4,15 @@
   position: relative;
 }
 
+@media (orientation: landscape) {
+  .match {
+    height: 100vw;
+    width: 100vh;
+    transform: rotate(-90deg) translateX(-100%);
+    transform-origin: 0 0;
+  }
+}
+
 .match .team-blue, .match .team-red {
   height: 50%;
   width: 100%;
@@ -85,6 +94,28 @@
 }
 
 .match .add-defense .name, .match .add-attack .name {
+  opacity: 0.4;
+  display: block;
+}
+
+.match .add-team {
+  width: 100%;
+  position: absolute;
+  bottom: 0.4rem;
+  text-align: center;
+}
+
+.match .add-team .material-icons {
+  opacity: 0.33;
+  font-size: 2rem;
+}
+
+.match .add-team img {
+  height: 5rem;
+}
+
+.match .add-team .team-name {
+  font-size: 1.2rem;
   opacity: 0.4;
   display: block;
 }

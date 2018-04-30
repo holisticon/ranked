@@ -4,6 +4,7 @@ html, body {
   padding: 0;
   margin: 0;
   font-size: 18px;
+  font-family: 'Roboto', sans-serif;
 }
 
 ul {
@@ -18,8 +19,7 @@ a {
 
 .ranked {
   height: 100vh;
-  width: 100%;
-  font-family: 'Roboto', sans-serif;
+  width: 100vw;
 }
 
 .hidden {

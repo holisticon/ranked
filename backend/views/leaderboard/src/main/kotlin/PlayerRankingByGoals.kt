@@ -137,33 +137,33 @@ class PlayerRankingByGoals {
       UserName(userName).let { PlayerGoalStats(goalTimeAverage[it], goalCount[it]?.goalsScored, goalCount[it]?.goalsConceded) }
 }
 
-data class GoalCount(var whenInOffense: Int, var whenInDefense: Int)
+data class InPosition<T>(var whenInOffense: T, var whenInDefense: T)
 
 /**
  * Return value for the total goal count provides a username (string) and the sum of goals (int).
  */
-data class PlayerGoalCount(val userName: UserName, val goalsScored: GoalCount, val goalsConceded: GoalCount) {
+data class PlayerGoalCount(val userName: UserName, val goalsScored: InPosition<Int>, val goalsConceded: InPosition<Int>) {
 
   constructor(userName: UserName, goalsScoredInOffense: Int, goalsScoredInDefense: Int,
               goalsConcededInOffense: Int, goalsConcededInDefense: Int) :
       this(userName,
-          GoalCount(goalsScoredInOffense, goalsScoredInDefense),
-          GoalCount(goalsConcededInOffense, goalsConcededInDefense))
+          InPosition(goalsScoredInOffense, goalsScoredInDefense),
+          InPosition(goalsConcededInOffense, goalsConcededInDefense))
 
   fun addGoalsScoredInOffense(goals: Int) {
-    goalsScored.whenInOffense += goals;
+    goalsScored.whenInOffense += goals
   }
 
   fun addGoalsScoredInDefense(goals: Int) {
-    goalsScored.whenInDefense += goals;
+    goalsScored.whenInDefense += goals
   }
 
   fun addGoalsConcededInOffense(goals: Int) {
-    goalsConceded.whenInOffense += goals;
+    goalsConceded.whenInOffense += goals
   }
 
   fun addGoalsConcededInDefense(goals: Int) {
-    goalsConceded.whenInDefense += goals;
+    goalsConceded.whenInDefense += goals
   }
 }
 
@@ -180,4 +180,4 @@ data class PlayerGoalTimeAverage(val userName: UserName, val goalTime: Int) : Co
 /**
  * Carries various stats for a player on goal level.
  */
-data class PlayerGoalStats(val goalTimeAverage: Int?, val goalsScored: GoalCount?, val goalsConceded: GoalCount?)
+data class PlayerGoalStats(val goalTimeAverage: Int?, val goalsScored: InPosition<Int>?, val goalsConceded: InPosition<Int>?)

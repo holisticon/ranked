@@ -8,6 +8,7 @@ import { match as Match } from 'react-router';
 import { push } from 'react-router-redux';
 import './player-selection.css';
 import { PlayerService } from '../../services/player-service';
+import { PartialStoreState } from '../store.state';
 
 const alphabet = 'abcdefghijklmnopqrstuvwxyz';
 
@@ -15,7 +16,7 @@ export interface PlayerSelectionProps {
   match?: Match<any>;
   unavailableLetters: string;
   availablePlayers: Array<Player>;
-  selectPlayerFor: any;
+  selectFor: any;
   select: (team: TeamKey, player: PlayerKey, selected: Player) => void;
   updateAvailablePlayers: (players: Array<Player>) => void;
 }
@@ -49,7 +50,7 @@ function getPlayerIcons(availablePlayers: Array<Player>, select: (player: Player
 }
 
 function PlayerSelection({ unavailableLetters, availablePlayers,
-  selectPlayerFor, updateAvailablePlayers, select, match }: PlayerSelectionProps) {
+                           selectFor, updateAvailablePlayers, select, match }: PlayerSelectionProps) {
 
   if (availablePlayers.length === 0) {
     // no player avaiable -> try to load them from backend
@@ -61,7 +62,7 @@ function PlayerSelection({ unavailableLetters, availablePlayers,
     selectedLetter = match.params.letter;
   }
 
-  const selectPlayer = (player: Player) => select(selectPlayerFor.team, selectPlayerFor.player, player);
+  const selectPlayer = (player: Player) => select(selectFor.team, selectFor.player, player);
 
   return (
     <div className={ 'player-selection' }>
@@ -72,7 +73,7 @@ function PlayerSelection({ unavailableLetters, availablePlayers,
   );
 }
 
-export function mapStateToProps({ ranked: { availablePlayers, selectPlayerFor } }: any) {
+export function mapStateToProps({ ranked: { availablePlayers, selectFor } }: PartialStoreState) {
   let unavailableLetters = alphabet;
   availablePlayers.forEach((player: Player) => {
     unavailableLetters = unavailableLetters.replace(player.displayName[0].toLowerCase(), '');
@@ -81,7 +82,7 @@ export function mapStateToProps({ ranked: { availablePlayers, selectPlayerFor } 
   return {
     unavailableLetters,
     availablePlayers,
-    selectPlayerFor
+    selectFor
   };
 }
 

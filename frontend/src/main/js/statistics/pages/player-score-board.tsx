@@ -3,7 +3,7 @@ import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { Player } from '../../types/types';
 import { RankingChart } from '../components/ranking-chart';
-import { ChartData2D } from '../types';
+import { ChartData2D, ChartData3D } from '../types';
 import { EloAdapter } from '../services/elo-adapter';
 import { GoalsAdapter } from '../services/goals-adapter';
 import './score-board.css';
@@ -13,6 +13,8 @@ import { HeadingComponent, HeadingConfig } from '../components/heading';
 type ScoreBoardState = {
   playerEloData: ChartData2D<Player, number>,
   playerGoalRatio: ChartData2D<Player, string>,
+  playerConcededScoredGoalsData: ChartData3D<Player, number, number>,
+  playerPositionGoalsData: ChartData3D<Player, number, number>,
   playerTimeToScore: ChartData2D<Player, number>,
 };
 
@@ -27,16 +29,29 @@ export class ScoreBoard extends React.Component<any, ScoreBoardState> {
     this.headings = [
       { title: 'Holisticon AllStars', iconPath: '/img/trophy.png' },
       { title: 'Torverhältnis', iconPath: '/img/goal.png' },
-      { title: '∅ Zeit zum Tor', iconPath: '/img/stopwatch.png' }
+      { title: 'Schießt Tor nach', iconPath: '/img/stopwatch.png' }
     ];
     this.updateList();
     setInterval(() => this.updateList(), 80 * 1000);
   }
 
   private updateList(): void {
-    Promise.all([EloAdapter.getEloData(), GoalsAdapter.getTotalGoalsData(), GoalsAdapter.getPlayerAvgScoreTimeData()])
-      .then(([playerEloData, playerGoalRatio, playerTimeToScore]) => {
-        this.setState({ playerEloData, playerGoalRatio, playerTimeToScore });
+    Promise
+      .all([
+        EloAdapter.getEloData(),
+        GoalsAdapter.getTotalGoalsData(),
+        GoalsAdapter.getPlayerAvgScoreTimeData()
+      ])
+      .then(([
+        playerEloData,
+        playerGoalRatio,
+        playerTimeToScore
+      ]) => {
+        this.setState({
+          playerEloData,
+          playerGoalRatio,
+          playerTimeToScore
+        });
       });
   }
 

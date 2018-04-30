@@ -87,9 +87,13 @@ function sendResults(sets: Sets, team1: Team, team2: Team) {
   });
 }
 
-function getWinningPlayersAsString(team: Team): string {
+function getMatchWinnersAsString(team: Team): string | undefined {
   if (team) {
-    return `${team.player1.displayName} und ${team.player2.displayName}`;
+    if (Config.teamMode) {
+      return `Team ${team.name}`;
+    } else {
+      return `${team.player1.displayName} und ${team.player2.displayName}`;
+    }
   } else {
     return '';
   }
@@ -101,7 +105,7 @@ function allPlayersSet(team1: Team, team2: Team): boolean {
 
 function getDialogMessage(winner: TeamKey, team1: Team, team2: Team): string {
   if (allPlayersSet(team1, team2)) {
-    return 'Ganz großes Kino, ' + getWinningPlayersAsString(winner === 'team1' ? team1 : team2) + '!';
+      return 'Ganz großes Kino, ' + getMatchWinnersAsString(winner === 'team1' ? team1 : team2) + '!';
   } else {
     return 'Tolles Spiel! Zum Übermitteln der Ergebnisse müssen die Spieler vorab festgelegt werden.';
   }
@@ -122,7 +126,7 @@ function Match({ setNumber, winner, sets, team1, team2, startNewMatch }: MatchPr
           text={getDialogMessage(winner, team1, team2)}
           buttons={[
             {
-              text: 'OKBÄM!', type: 'ok', click: () => {
+              text: 'OK!', type: 'ok', click: () => {
                 sendResults(sets, team1, team2);
                 startNewMatch();
               }
@@ -147,7 +151,7 @@ function Match({ setNumber, winner, sets, team1, team2, startNewMatch }: MatchPr
   );
 }
 
-export function mapStateToProps({ ranked: { selectPlayerFor, team1, team2, sets } }: PartialStoreState) {
+export function mapStateToProps({ ranked: { selectFor, team1, team2, sets } }: PartialStoreState) {
   let winner: TeamKey | null = null;
   if (team1.wonSets === Config.pointsPerMatch) {
     winner = 'team1';
