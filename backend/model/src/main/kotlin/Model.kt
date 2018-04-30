@@ -137,7 +137,7 @@ data class TimedMatchSet(
 private fun goalsByTeamColor(goals: List<Pair<TeamColor, LocalDateTime>>, tc: TeamColor): Int {
   val groupedGoals = goals.groupBy { it.first }.filter { it.key == tc }.map { it.value.count() }
   return if (groupedGoals.isEmpty()) {
-    -1
+    0
   } else {
     groupedGoals.first()
   }

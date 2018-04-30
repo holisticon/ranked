@@ -19,6 +19,7 @@
     "react-scripts-ts": "2.10.0",
     "react-touch": "^0.4.3",
     "redux": "^3.7.2",
+    "rxjs": "^5.5.10",
     "tslint": "^5.8.0",
     "webpack": "^3.10.0"
   },

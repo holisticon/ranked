@@ -1,0 +1,259 @@
+.tournament-tree {
+  width: 50%;
+  height: 100vh;
+  position: relative;
+  font-weight: 300;
+}
+
+.tournament-tree .background {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  z-index: -1;
+}
+
+.tournament-tree .background > div {
+  height: 50%;
+  width: 100%;
+  border: 0 solid white;
+  box-sizing: border-box;
+  opacity: 0.4;
+}
+
+.tournament-tree .background .top {
+ background-color: #ffbdb8;
+ border-bottom-width: 0.1rem;
+}
+
+.tournament-tree .background .bottom {
+ background-color: #d7eeff;
+ border-top-width: 0.1rem;
+}
+
+.tournament-tree .top, .tournament-tree .bottom, .tournament-tree .final-match {
+  position: absolute;
+  width: 100%;
+  display: inline-block;
+}
+
+.tournament-tree .top {
+  top: 0;
+}
+
+.tournament-tree .bottom {
+  bottom: 0;
+}
+
+.tournament-match {
+  display: inline-block;
+  text-align: center;
+  position: relative;
+  height: 10vh;
+}
+
+.tournament-match::after {
+  content: "";
+  display: inline-block;
+  width: 50%;
+  height: 1rem;
+  position: absolute;
+  border: 0 solid black;
+}
+
+.tournament-tree .top .tournament-match::after {
+  bottom: -2.5vh;
+  border-bottom-width: 1px;
+}
+
+.tournament-tree .top .tournament-match.next-round-winner::after {
+  border-bottom-width: 3px;
+  width: calc(50% + 2px);
+}
+
+.tournament-tree .bottom .tournament-match::after {
+  top: -2.5vh;
+  border-top-width: 1px;
+}
+
+.tournament-tree .bottom .tournament-match.next-round-winner::after {
+  border-top-width: 3px;
+}
+
+.tournament-match:nth-child(odd)::after {
+  left: calc(50% - 1px);
+  border-left-width: 1px;
+}
+
+.tournament-match.next-round-winner:nth-child(odd)::after {
+  left: calc(50% - 2px);
+  border-left-width: 3px;
+}
+
+.tournament-match:nth-child(even)::after {
+  right: calc(50% - 1px);
+  border-right-width: 1px;
+}
+
+.tournament-match.next-round-winner:nth-child(even)::after {
+  right: calc(50% - 2px);
+  border-right-width: 3px;
+}
+
+.tournament-match::before {
+  content: "";
+  background-color: black;
+  width: 1px;
+  height: 1rem;
+  display: inline-block;
+  position: absolute;
+}
+
+.tournament-match.decided::before {
+  width: 3px;
+}
+
+.tournament-tree .top .tournament-match::before {
+  top: -2.5vh;
+}
+
+.tournament-tree .bottom .tournament-match::before {
+  bottom: -2.5vh;
+}
+
+.tournament-match .default {
+  color: #CCCCCC;
+  font-size: 2.5rem;
+  font-style: italic;
+  font-weight: 100;
+}
+
+.tournament-match .default, .tournament-match .opponents {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.tournament-match .team-name.winner {
+  font-weight: 700;
+}
+
+.tournament-match .separator {
+  position: relative;
+  padding: 0 2.2rem;
+  display: inline-block;
+  font-size: 0.8rem;
+  margin: 0.1rem 0;
+}
+
+.tournament-match .separator::before, .tournament-match .separator::after {
+  content: "";
+  width: 2rem;
+  height: 1px;
+  background-color: black;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.tournament-match .separator::before {
+  left: 0;
+}
+
+.tournament-match .separator::after {
+  right: 0;
+}
+
+/* last sixteen */
+.last-16 {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+}
+
+.last-16 .tournament-match {
+  width: 19%;
+  padding: 0 3%;
+}
+
+.last-16 .tournament-match::before {
+  content: none;
+}
+
+/* quarter finals */
+.quarter-finals {
+  width: 100%;
+  height: 70%;
+  box-sizing: border-box;
+  position: absolute;
+  top: 15vh;
+  font-size: 1.1rem;
+}
+
+.quarter-finals .tournament-match {
+  width: 40%;
+  padding: 0 5%;
+}
+
+.semi-finals .tournament-match .separator {
+  margin: 0.2rem 0;
+}
+
+/* semi finals */
+.semi-finals {
+  width: 100%;
+  height: 40%;
+  box-sizing: border-box;
+  position: absolute;
+  top: 30vh;
+  font-size: 1.2rem;
+}
+
+.semi-finals .tournament-match {
+  width: 100%;
+}
+
+.semi-finals .tournament-match::after {
+  content: none;
+}
+
+.semi-finals .tournament-match .separator {
+  margin: 0.3rem 0;
+}
+
+/* final match */
+.final {
+  width: 100%;
+  height: 20%;
+  box-sizing: border-box;
+  position: absolute;
+  top: 40vh;
+  font-size: 1.3rem;
+}
+
+.final .final-match {
+  height: 15vh;
+  width: 15vh;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle closest-side, white 80%, transparent);
+}
+
+.final .tournament-match {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  background-image: url('/img/baywreath.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+.final .tournament-match::before, .final .tournament-match::after {
+  content: none;
+}
+
+.semi-finals .tournament-match .separator {
+  margin: 0.4rem 0;
+}
