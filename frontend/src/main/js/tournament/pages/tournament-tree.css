@@ -65,18 +65,9 @@
   border-bottom-width: 1px;
 }
 
-.tournament-tree .top .tournament-match.next-round-winner::after {
-  border-bottom-width: 3px;
-  width: calc(50% + 2px);
-}
-
 .tournament-tree .bottom .tournament-match::after {
   top: -2.5vh;
   border-top-width: 1px;
-}
-
-.tournament-tree .bottom .tournament-match.next-round-winner::after {
-  border-top-width: 3px;
 }
 
 .tournament-match:nth-child(odd)::after {
@@ -84,19 +75,9 @@
   border-left-width: 1px;
 }
 
-.tournament-match.next-round-winner:nth-child(odd)::after {
-  left: calc(50% - 2px);
-  border-left-width: 3px;
-}
-
 .tournament-match:nth-child(even)::after {
   right: calc(50% - 1px);
   border-right-width: 1px;
-}
-
-.tournament-match.next-round-winner:nth-child(even)::after {
-  right: calc(50% - 2px);
-  border-right-width: 3px;
 }
 
 .tournament-match::before {
@@ -106,10 +87,6 @@
   height: 1rem;
   display: inline-block;
   position: absolute;
-}
-
-.tournament-match.decided::before {
-  width: 3px;
 }
 
 .tournament-tree .top .tournament-match::before {
@@ -132,10 +109,35 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  width: 85%;
+  text-align: center;
+  max-height: 100%;
+}
+
+.tournament-match .team-name {
+  max-width: 100%;
+  position: relative;
+  height: 40%;
+  padding-left: 2rem;
+  display: inline-block;
 }
 
 .tournament-match .team-name.winner {
   font-weight: 700;
+}
+
+
+.tournament-match .team-name .image-container {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 2rem;
+  height: 1.7rem;
+  transform: translateY(-50%);
+}
+
+.tournament-match .team-name .name-container {
+  word-wrap: break-word;
 }
 
 .tournament-match .separator {
@@ -144,6 +146,7 @@
   display: inline-block;
   font-size: 0.8rem;
   margin: 0.1rem 0;
+  height: 20%;
 }
 
 .tournament-match .separator::before, .tournament-match .separator::after {
@@ -172,8 +175,7 @@
 }
 
 .last-16 .tournament-match {
-  width: 19%;
-  padding: 0 3%;
+  width: 25%;
 }
 
 .last-16 .tournament-match::before {
@@ -191,11 +193,10 @@
 }
 
 .quarter-finals .tournament-match {
-  width: 40%;
-  padding: 0 5%;
+  width: 50%;
 }
 
-.semi-finals .tournament-match .separator {
+.quarter-finals .tournament-match .separator {
   margin: 0.2rem 0;
 }
 
@@ -232,20 +233,50 @@
 }
 
 .final .final-match {
-  height: 15vh;
-  width: 15vh;
+  height: 18vh;
+  width: 45vh;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: radial-gradient(circle closest-side, white 80%, transparent);
+  background: radial-gradient(ellipse closest-side, white 80%, transparent);
 }
 
 .final .tournament-match {
-  width: 100%;
-  height: 100%;
+  width: 80%;
+  height: 80%;
   box-sizing: border-box;
-  background-image: url('/img/baywreath.png');
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.final .tournament-match .opponents {
+  width: 65%;
+}
+
+.final .final-match::before {
+  content: "";
+  display: inline-block;
+  position: absolute;
+  left: 0;
+  top: 5%;
+  height: 80%;
+  width: 5rem;
+  background-image: url('/img/baywreath_left.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+.final .final-match::after {
+  content: "";
+  display: inline-block;
+  position: absolute;
+  right: 0;
+  top: 5%;
+  height: 80%;
+  width: 5rem;
+  background-image: url('/img/baywreath_right.png');
   background-size: 100% 100%;
   background-repeat: no-repeat;
 }
@@ -254,6 +285,6 @@
   content: none;
 }
 
-.semi-finals .tournament-match .separator {
+.final .tournament-match .separator {
   margin: 0.4rem 0;
 }
