@@ -119,7 +119,8 @@ export function ranked(state: RankedStore, rankedAction: Actions.RankedAction): 
            newState.sets[newState.sets.length - 1][action.team].goals.length >= Config.pointsPerSet)
          ) {
            if (newState.suddenDeathMode) {
-             TimerService.reset();
+            TimerService.pause();
+            TimerService.resetCountdown();
            }
            return startNewSet(newState);
       }
@@ -187,12 +188,10 @@ export function ranked(state: RankedStore, rankedAction: Actions.RankedAction): 
       return {...state, availableTeams: action.teams};
 
     case Actions.COUNTDOWN_EXPIRED:
-      // tslint:disable-next-line:no-console
-      console.log('Countdown was expired!');
-
       const currenSet = state.sets[state.sets.length - 1];
       if (currenSet.blue.goals.length !== currenSet.red.goals.length) {
-        TimerService.reset();
+        TimerService.pause();
+        TimerService.resetCountdown();
         return startNewSet(state);
       } else {
         return { ...state, suddenDeathMode: true };

@@ -15,9 +15,10 @@ export interface TimerProps {
 interface TimerState {
   interval: number;
   time: number;
+  countdownTime: number;
   intervalId: any;
   status: 'STOPPED' | 'STARTED' | 'PAUSED';
-  isExpired: boolean;
+  countdownExpired: boolean;
 }
 
 export class TimerComponent extends React.Component<TimerProps, TimerState> {
@@ -25,11 +26,12 @@ export class TimerComponent extends React.Component<TimerProps, TimerState> {
   constructor(props: TimerProps) {
     super(props);
     this.state = {
-      interval: props.countdown ? -1 : 1,
-      time: props.startTime || -1,
+      interval: 1,
+      time: -1,
+      countdownTime: props.startTime || 0,
       intervalId: null,
       status: 'STOPPED',
-      isExpired: false
+      countdownExpired: false
     };
 
     TimerService.register(this);
@@ -37,7 +39,7 @@ export class TimerComponent extends React.Component<TimerProps, TimerState> {
 
   public start(): void {
     if (this.state.status !== 'STARTED') {
-      const id = setInterval(() => this.tick(), Math.abs(this.state.interval) * 1000);
+      const id = setInterval(() => this.tick(), this.state.interval * 1000);
       this.setState({ time: Math.max(0, this.state.time), intervalId: id, status: 'STARTED' });
     }
   }
@@ -46,7 +48,19 @@ export class TimerComponent extends React.Component<TimerProps, TimerState> {
     if (this.state.intervalId) {
       clearInterval(this.state.intervalId);
     }
-    this.setState({ time: this.props.startTime || -1, intervalId: null, status: 'STOPPED', isExpired: false });
+    this.setState({
+      time: -1,
+      countdownTime: this.props.startTime || 0,
+      intervalId: null,
+      status: 'STOPPED',
+      countdownExpired: false
+    });
+  }
+
+  public resetCountdown(): void {
+    if (this.props.countdown) {
+      this.setState({ countdownTime: this.props.startTime || 0, countdownExpired: false });
+    }
   }
 
   public pause(): void {
@@ -59,11 +73,8 @@ export class TimerComponent extends React.Component<TimerProps, TimerState> {
   }
 
   private stopCountdownIfExpired(): void {
-    if (this.state.status !== 'STOPPED' && this.props.countdown && this.state.time === 0) {
-      if (this.state.intervalId) {
-        clearInterval(this.state.intervalId);
-      }
-      this.setState({ intervalId: null, status: 'STOPPED', isExpired: true });
+    if (this.props.countdown && !this.state.countdownExpired && this.state.countdownTime === 0) {
+      this.setState({ countdownExpired: true });
 
       if (typeof this.props.expired === 'function') {
         // the timeout let the action be fired in the next tick
@@ -78,12 +89,14 @@ export class TimerComponent extends React.Component<TimerProps, TimerState> {
   }
 
   private tick() {
-    this.setState({ time: this.state.time + this.state.interval });
+    const diff = this.state.interval;
+    this.setState({ time: this.state.time + diff, countdownTime: this.state.countdownTime - diff });
   }
 
   private formatTime(): string {
-    const minutes = Math.floor(this.state.time / 60);
-    const seconds = this.state.time % 60;
+    const time = this.props.countdown ? this.state.countdownTime : this.state.time;
+    const minutes = Math.floor(time / 60);
+    const seconds = time % 60;
 
     return (minutes < 10 ? '0' : '') + minutes + ' : ' + (seconds < 10 ? '0' : '') + seconds;
   }
@@ -94,7 +107,7 @@ export class TimerComponent extends React.Component<TimerProps, TimerState> {
 
   private getStoppedText(): string {
     let text = 'START';
-    if (this.props.countdown && this.state.isExpired) {
+    if (this.props.countdown && this.state.countdownExpired) {
       text = this.props.draw ? 'SUDDEN DEATH' : 'ENDE';
     }
     return text;
@@ -103,10 +116,14 @@ export class TimerComponent extends React.Component<TimerProps, TimerState> {
   public render() {
     this.stopCountdownIfExpired();
 
+    const countdownReset = this.state.status === 'PAUSED' && this.state.countdownTime === this.props.startTime;
+    const stopped = this.state.status === 'STOPPED' ||
+                    this.props.countdown && (this.state.countdownExpired || countdownReset);
+
     return (
       <div className="timer">
         <span onClick={(e) => this.togglePause()}>
-          {this.state.status === 'STOPPED' ? this.getStoppedText() : this.formatTime()}
+          { stopped ? this.getStoppedText() : this.formatTime() }
         </span>
       </div>
     );
