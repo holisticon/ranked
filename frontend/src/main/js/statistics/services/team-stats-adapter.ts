@@ -7,7 +7,8 @@ export namespace TeamStatsAdapter {
     name: string
     goalsScored: number,
     goalsConceded: number,
-    avgGoalTime: number
+    avgGoalTime: number,
+    avgGoalsPerSet: number
   }
 
   function getTeamStats(): Promise<Array<TeamStats>> {
@@ -15,21 +16,30 @@ export namespace TeamStatsAdapter {
   }
 
   export function getTeamStatsChartData(): Promise<{
+    teamAvgGoalsPerSet: ChartData2D<string, number>,
     teamGoalRatio: ChartData3D<string, number, number>,
     teamTimeToScore: ChartData2D<string, number> }>
   {
     return getTeamStats().then( teamStats => {
+      const teamAvgGoalsPerSet: ChartData2D<string, number>  = {
+        dimensions: [{ description: 'Team' }, { description: 'Schießt Tor nach'}],
+        entries: [],
+      };
 
       const teamGoalRatio: ChartData3D<string, number, number> = {
         dimensions: [{ description: 'Team' }, { description: 'Kassiert' }, { description: 'Geschossen' }],
         entries: []
       };
       const teamTimeToScore: ChartData2D<string, number>  = {
-        dimensions: [{ description: 'Team' }, { description: 'Schießt Tor nach' }],
-        entries: []
+        dimensions: [{ description: 'Team' }, { description: 'Schießt Tor nach' , unit: 's'}],
+        entries: [],
       };
 
       teamStats.forEach(teamStat => {
+        teamAvgGoalsPerSet.entries.push(
+          [teamStat.name, +teamStat.avgGoalsPerSet.toFixed(2)]
+        )
+
         teamGoalRatio.entries.push(
           [teamStat.name, teamStat.goalsConceded, teamStat.goalsScored]
         )
@@ -48,10 +58,11 @@ export namespace TeamStatsAdapter {
           return val[2] / val[1]
       }
 
+      teamAvgGoalsPerSet.entries.sort((a, b) => b[1] - a[1]);
       teamGoalRatio.entries.sort( (a, b) => ratio(b) - ratio(a));
       teamTimeToScore.entries.sort((a, b) => a[1] - b[1]);
 
-      return {teamGoalRatio, teamTimeToScore}
+      return {teamAvgGoalsPerSet, teamGoalRatio, teamTimeToScore}
       }
     )
   }

@@ -8,6 +8,7 @@ import { TeamStatsAdapter } from '../services/team-stats-adapter';
 import { TwoSideBarChart } from '../components/two-side-bar-chart';
 
 type ScoreBoardState = {
+  teamAvgGoalsPerSet: ChartData2D<string, number>
   teamGoalRatio: ChartData3D<string, number, number>,
   teamTimeToScore: ChartData2D<string, number>
 };
@@ -23,6 +24,7 @@ export class TeamScoreBoard extends React.Component<any, ScoreBoardState> {
 
     // init data
     this.headings = [
+      { title: '⌀ Anzahl Tore pro Satz', iconPath: '/img/goal.png' },
       { title: 'Torverhältnis', iconPath: '/img/goal.png' },
       { title: 'Schießt Tor nach', iconPath: '/img/stopwatch.png' },
     ];
@@ -32,8 +34,8 @@ export class TeamScoreBoard extends React.Component<any, ScoreBoardState> {
 
   private updateList(): void {
     TeamStatsAdapter.getTeamStatsChartData().then(
-      ({teamGoalRatio, teamTimeToScore}) =>
-      this.setState({teamGoalRatio, teamTimeToScore})
+      ({teamAvgGoalsPerSet, teamGoalRatio, teamTimeToScore}) =>
+      this.setState({teamAvgGoalsPerSet, teamGoalRatio, teamTimeToScore})
     );
   }
 
@@ -60,10 +62,15 @@ export class TeamScoreBoard extends React.Component<any, ScoreBoardState> {
           autoPlay={ true }
           showThumbs={ false }
           infiniteLoop={ true }
-          interval={ 20000 }
+          interval={ 10000 }
           showStatus={ false }
           showArrows={ false }
         >
+          <div className="chart-container">
+            <div className="fading-top" />
+            <RankingChart data={ !this.state ? undefined : this.state.teamAvgGoalsPerSet } />
+          </div>
+
           <div className="chart-container">
             <div className="fading-top" />
             <TwoSideBarChart
@@ -72,6 +79,7 @@ export class TeamScoreBoard extends React.Component<any, ScoreBoardState> {
               cumulate = { this.calculateGoalRatio }
             />
           </div>
+
           <div className="chart-container">
             <div className="fading-top" />
             <RankingChart data={ !this.state ? undefined : this.state.teamTimeToScore } />
