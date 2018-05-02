@@ -41,6 +41,15 @@ export class TeamScoreBoard extends React.Component<any, ScoreBoardState> {
     Heading.Service.update(this.headings[index]);
   }
 
+  private calculateGoalRatio(a: number,b: number): number {
+      if (a === 0 && b !== 0)
+        return b
+      else if (a === 0)
+        return 0
+      else
+        return +(b / a).toFixed(2)
+  }
+
   public render() {
     return (
       <div className="score-board">
@@ -60,7 +69,7 @@ export class TeamScoreBoard extends React.Component<any, ScoreBoardState> {
             <TwoSideBarChart
               data = { !this.state ? undefined : this.state.teamGoalRatio }
               cumulationHeadline = "Torverhältnis"
-              cumulate = { (a: number, b: number) => (a === 0 ? 0 : b/a).toFixed(2) }
+              cumulate = { this.calculateGoalRatio }
             />
           </div>
           <div className="chart-container">
