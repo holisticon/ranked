@@ -63,6 +63,8 @@ class TeamRankingByGoals() {
       goalsRed += it.goalsRed
 
       if (it is TimedMatchSet) {
+
+        // calc goal times
         var goalTime: Long
         it.goals.forEach {
           goalTime = ChronoUnit.SECONDS.between(lastGoalTime.toLocalTime(), it.second.toLocalTime())
@@ -89,12 +91,18 @@ class TeamRankingByGoals() {
     teamStats[match.teamRed]!!.calcAvgGoalTime()
     teamStats[match.teamBlue]!!.calcAvgGoalTime()
 
+    teamStats[match.teamRed]!!.calcAvgGoalsPerSet()
+    teamStats[match.teamBlue]!!.calcAvgGoalsPerSet()
   }
 
   @EventHandler
   fun on(e: TeamWonMatchSet) {
     teamStats[e.team]?.setsWon = teamStats[e.team]?.setsWon!! + 1
     teamStats[e.looser]?.setsLost = teamStats[e.looser]?.setsLost!! + 1
+
+    // FIXME: This calculation depends on two separate events, which's order cannot be predicted. Thus, it is executed two times (idempotent)...
+    teamStats[e.team]!!.calcAvgGoalsPerSet()
+    teamStats[e.looser]!!.calcAvgGoalsPerSet()
   }
 
   @EventHandler
@@ -110,12 +118,22 @@ class TeamStats(var name: String,
                 var setsLost: Int = 0,
                 var matchesWon: Int = 0,
                 var matchesLost: Int = 0,
+                var avgGoalsPerSet: Double = 0.0,
                 var totalGoalTime: Double = 0.0,
                 var avgGoalTime: Double = 0.0) {
 
   fun calcAvgGoalTime() {
     this.avgGoalTime = if (goalsScored > 0) {
       totalGoalTime / goalsScored
+    } else {
+      0.0
+    }
+  }
+
+  fun calcAvgGoalsPerSet() {
+    val setsPlayed = this.setsLost + this.setsWon
+    this.avgGoalsPerSet = if (setsPlayed > 0) {
+      goalsScored.toDouble() / setsPlayed.toDouble()
     } else {
       0.0
     }
