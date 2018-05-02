@@ -1,3 +1,5 @@
+@file:Suppress("PackageDirectoryMismatch", "unused")
+
 package de.holisticon.ranked.command.team
 
 import de.holisticon.ranked.command.api.CheckPlayer

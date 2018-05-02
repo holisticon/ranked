@@ -11,6 +11,7 @@ export interface RankedStore {
   team1: Team;
   team2: Team;
   sets: Sets;
+  suddenDeathMode: boolean;
 }
 
 export function createFirstSet(): Set {
@@ -38,7 +39,8 @@ export function createEmptyTeam(): Team {
   return {
     player1: createEmptyPlayer(),
     player2: createEmptyPlayer(),
-    wonSets: 0
+    wonSets: 0,
+    imageUrl: ''
   };
 }
 
@@ -49,6 +51,7 @@ export function defaultState(): RankedStore {
     selectFor: null,
     team1: createEmptyTeam(),
     team2: createEmptyTeam(),
-    sets: [createFirstSet()]
+    sets: [createFirstSet()],
+    suddenDeathMode: false
   };
 }

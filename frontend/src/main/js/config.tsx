@@ -11,6 +11,9 @@ export namespace Config {
   export const teamMode = true;
   // const BACKEND_URL = 'http://localhost:8080';
 
+  export const timedMatchMode = false;
+  export const timePerSet = 5;
+
   export function initConfig(): Promise<void> {
     return axios.get('/view/configuration')
       .then(res => res.data)

@@ -3,7 +3,7 @@ import { connect, Dispatch } from 'react-redux';
 import * as Actions from '../actions';
 import { PartialStoreState } from '../store.state';
 import './panel.css';
-import { TimerComponent } from './timer';
+import TimerComponent from './timer';
 
 export interface PanelProps {
 }

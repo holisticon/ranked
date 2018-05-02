@@ -39,7 +39,14 @@ export namespace TeamStatsAdapter {
         )
       });
 
-      const ratio = (val: Array<any>) => val[1] === 0 ? 0 : val[2]/val[1]
+      const ratio = (val: Array<any>): number => {
+        if (val[1] === 0 && val[2] !== 0)
+          return val[2]
+        else if (val[1] === 0)
+          return 0
+        else
+          return val[2] / val[1]
+      }
 
       teamGoalRatio.entries.sort( (a, b) => ratio(b) - ratio(a));
       teamTimeToScore.entries.sort((a, b) => a[1] - b[1]);

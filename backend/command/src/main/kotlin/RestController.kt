@@ -1,4 +1,4 @@
-@file:Suppress("UNUSED")
+@file:Suppress("UNUSED", "PackageDirectoryMismatch")
 
 package de.holisticon.ranked.command.rest
 
@@ -84,7 +84,7 @@ class CommandApi(val commandGateway: CommandGateway) {
     var response: ResponseEntity<String> = ResponseEntity.noContent().build()
 
     commandGateway.send(
-      command = CreateTeam(teamInfo.name),
+      command = CreateTeam(teamInfo.name, teamInfo.imageUrl),
       success = { _, _: Any -> logger.debug { "Successfully created a team ${teamInfo.name}" } },
       failure = { _, cause: Throwable ->
         logger.error { "Failure by submitting a team: ${cause.localizedMessage}" }
@@ -96,6 +96,7 @@ class CommandApi(val commandGateway: CommandGateway) {
 
 
   data class TeamInfo(
-    val name: String
+    val name: String,
+    val imageUrl: String
   )
 }

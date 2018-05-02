@@ -27,9 +27,9 @@ class TeamStatsSpec {
     // for each test, make sure no players are present
     Assertions.assertThat(ranking.matches).isEmpty()
     Assertions.assertThat(ranking.teamStats).isEmpty()
-    val teamCreatedEvent1 = TeamCreated("1", teamHolis, "Holis")
-    val teamCreatedEvent2 = TeamCreated("2", teamMuppets, "Muppets")
-    val teamCreatedEvent3 = TeamCreated("3", teamMarvel, "Marvels")
+    val teamCreatedEvent1 = TeamCreated("1", teamHolis, "Holis", "")
+    val teamCreatedEvent2 = TeamCreated("2", teamMuppets, "Muppets", "")
+    val teamCreatedEvent3 = TeamCreated("3", teamMarvel, "Marvels", "")
 
     ranking.on(teamCreatedEvent1)
     ranking.on(teamCreatedEvent2)

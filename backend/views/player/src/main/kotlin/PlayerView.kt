@@ -1,7 +1,6 @@
 @file:Suppress("UNUSED")
 package de.holisticon.ranked.view.player
 
-import com.sun.org.apache.xpath.internal.operations.Bool
 import de.holisticon.ranked.model.Player
 import de.holisticon.ranked.model.UserName
 import de.holisticon.ranked.model.event.PlayerCreated
@@ -11,7 +10,6 @@ import io.swagger.annotations.ApiOperation
 import mu.KLogging
 import org.axonframework.config.ProcessingGroup
 import org.axonframework.eventhandling.EventHandler
-import org.springframework.stereotype.Component
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
@@ -83,6 +81,7 @@ class PlayerViewService {
       teams.add(TeamFull(
         name = e.name,
         id = e.id,
+        imageUrl = e.imageUrl,
         player1 = player1,
         player2 = player2
       ))
@@ -98,6 +97,7 @@ class PlayerViewService {
 data class TeamFull(
   val name: String,
   val id: String,
+  val imageUrl: String,
   val player1 : Player,
   val player2 : Player
 )

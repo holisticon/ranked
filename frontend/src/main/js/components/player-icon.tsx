@@ -1,5 +1,6 @@
 import * as React from 'react';
 import './player-icon.css';
+import { Config } from '../config';
 
 export interface PlayerIconProps {
   click: () => void;
@@ -39,9 +40,21 @@ export class PlayerIcon extends React.Component<PlayerIconProps, PlayerIconState
       <div className="player-icon" onClick={ this.props.click }>
         <div className="player-image">
           {
-            showAltImage ?
+            showAltImage && !Config.teamMode ?
             <div className="placeholder"><span>{ this.getInitials() }</span></div> :
-            <img src={ this.props.img } onError={ () => this.showAltImage() } />
+            null
+          }
+
+          {
+            showAltImage && Config.teamMode ?
+            <i className="material-icons">&#xE7FB;</i> :
+            null
+          }
+
+          {
+            !showAltImage ?
+            <img src={ this.props.img } onError={ () => this.showAltImage() } /> :
+            null
           }
         </div>
       </div>

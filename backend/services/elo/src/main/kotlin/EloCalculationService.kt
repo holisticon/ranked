@@ -1,4 +1,5 @@
-@file:SuppressWarnings("UNUSED")
+@file:Suppress("PackageDirectoryMismatch","unused")
+
 package de.holisticon.ranked.service.elo
 
 import de.holisticon.ranked.properties.RankedProperties
