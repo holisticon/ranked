@@ -26,7 +26,7 @@ export namespace TournamentService {
   }
 
   function getTeamForPlayers(players: {player1: string, player2: string}): Team | undefined {
-    return allTeams.find(team => 
+    return allTeams.find(team =>
       team.player1.id === players.player1 && team.player2.id === players.player2 ||
       team.player1.id === players.player2 && team.player2.id === players.player1);
   }
@@ -59,12 +59,14 @@ export namespace TournamentService {
 
     if (playedMatch && !playedMatch.winner) {
       playedMatch.winner = playedMatch.team1!!.id === winnerTeamId ? 'team1' : 'team2';
-      
+
       const nextRoundIndex = getNextRoundIndex(playedMatch.id);
-      if (!matches[nextRoundIndex].team1) {
-        matches[nextRoundIndex].team1 = getTeamForId(winnerTeamId);
-      } else {
-        matches[nextRoundIndex].team2 = getTeamForId(winnerTeamId);
+      if (nextRoundIndex < matches.length) {
+        if (!matches[nextRoundIndex].team1) {
+          matches[nextRoundIndex].team1 = getTeamForId(winnerTeamId);
+        } else {
+          matches[nextRoundIndex].team2 = getTeamForId(winnerTeamId);
+        }
       }
 
       matchesSubject.next(matches);
