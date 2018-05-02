@@ -9,8 +9,10 @@ export const SWITCH_PLAYER_POSITION = 'SWITCH_PLAYER_POSITION';
 export const START_NEW_MATCH = 'START_NEW_MATCH';
 export const UPDATE_AVAILABLE_PLAYERS = 'UPDATE_AVAILABLE_PLAYERS';
 export const UPDATE_AVAILABLE_TEAMS = 'UPDATE_AVAILABLE_TEAMS';
+export const COUNTDOWN_EXPIRED = 'COUNTDOWN_EXPIRED';
 
-export type RankedAction = IncGoals | DecGoals | SelectEntity | SetPlayer | SetTeam | SwitchPlayerPositions | StartNewMatch;
+export type RankedAction = 
+  IncGoals | DecGoals | SelectEntity | SetPlayer | SetTeam | SwitchPlayerPositions | StartNewMatch | CountdownExpired;
 
 export interface IncGoals {
   type: string;
@@ -58,6 +60,10 @@ export interface UpdateAvailablePlayers {
 export interface UpdateAvailableTeams {
   type: string;
   teams: Array<Team>;
+}
+
+export interface CountdownExpired {
+  type: string;
 }
 
 export function incGoals(team: TeamColor): IncGoals {
@@ -123,5 +129,11 @@ export function updateAvailableTeams(teams: Array<Team>): UpdateAvailableTeams {
   return {
     type: UPDATE_AVAILABLE_TEAMS,
     teams
+  };
+}
+
+export function countdownExpired(): CountdownExpired {
+  return {
+    type: COUNTDOWN_EXPIRED
   };
 }

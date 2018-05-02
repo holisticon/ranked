@@ -19,6 +19,10 @@ export namespace TimerService {
     timerComponent.reset();
   }
 
+  export function resetCountdown(): void {
+    timerComponent.resetCountdown();
+  }
+
   export function getTimeInSec(): number {
     return timerComponent == null ? 0 : timerComponent.getTime();
   }
