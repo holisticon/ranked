@@ -3,5 +3,5 @@ ranked:
     default: 1000
     maxDifference: 400
     factor: 20
-  scoreToWinSet: 6
-  setsToWinMatch: 2
+  scoreToWinSet: 999
+  setsToWinMatch: 1

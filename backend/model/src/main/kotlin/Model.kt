@@ -88,13 +88,13 @@ sealed class AbstractMatchSet {
   abstract val offenseRed: UserName
   abstract val offenseBlue: UserName
 
-  fun winner() = if (goalsRed == AbstractMatchSet.SCORE_TO_WIN.toInt()) TeamColor.RED else TeamColor.BLUE
+  fun winner() = if (goalsRed > goalsBlue) TeamColor.RED else TeamColor.BLUE
 
   // TODO fix this and replace by the property!
   // this implies to move validation logic to somewhere else (e.G. a service) -> problem with dependencies....
   // could be executed by SpELAssert, but the properties needs to be available here...
   companion object {
-    const val SCORE_TO_WIN: Long = 6
+    const val SCORE_TO_WIN: Long = 999
   }
 
 }
@@ -107,7 +107,7 @@ sealed class AbstractMatchSet {
  * @property offenseRed the UserName of the player who played offense for red
  * @property offenseBlue the UserName of the player who played offense for blue
  */
-@SpELAssert(value = "goalsBlue != goalsRed && (goalsRed == SCORE_TO_WIN || goalsBlue == SCORE_TO_WIN)", message = "{ranked.model.matchSet.ended}")
+@SpELAssert(value = "goalsBlue != goalsRed", message = "{ranked.model.matchSet.ended}")
 data class MatchSet(
   @field: Range(min = 0, max = AbstractMatchSet.SCORE_TO_WIN, message = "{ranked.model.matchSet.goals}")
   override val goalsRed: Int,
@@ -120,7 +120,7 @@ data class MatchSet(
 ) : AbstractMatchSet()
 
 
-@SpELAssert(value = "goalsBlue != goalsRed && (goalsRed == SCORE_TO_WIN || goalsBlue == SCORE_TO_WIN)", message = "{ranked.model.matchSet.ended}")
+@SpELAssert(value = "goalsBlue != goalsRed", message = "{ranked.model.matchSet.ended}")
 data class TimedMatchSet(
   @field: NotEmpty(message = "{ranked.model.matchSet.empty}")
   val goals: List<Pair<TeamColor, LocalDateTime>>,

@@ -15,6 +15,6 @@ class MatchService(val properties: RankedProperties) {
     matchSets.size >= properties.setsToWinMatch && matchSets.size <= properties.setsToWinMatch.times(2).minus(1)
 
   fun winsMatch(numberOfWins: Int) = numberOfWins == properties.setsToWinMatch
-  fun winsMatchSet(matchSet: AbstractMatchSet) = if (matchSet.goalsRed == properties.scoreToWinSet) TeamColor.RED else TeamColor.BLUE
+  fun winsMatchSet(matchSet: AbstractMatchSet) = if (matchSet.goalsRed > matchSet.goalsBlue) TeamColor.RED else TeamColor.BLUE
 
 }

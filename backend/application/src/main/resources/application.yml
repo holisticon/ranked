@@ -17,8 +17,8 @@ spring:
     show-sql: false
 
 ranked:
-  scoreToWinSet: 6
-  setsToWinMatch: 2
+  scoreToWinSet: 999
+  setsToWinMatch: 1
   elo:
     default: 1000
     maxDifference: 400

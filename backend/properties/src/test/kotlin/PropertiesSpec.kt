@@ -18,8 +18,8 @@ class PropertiesSpec {
   @Test
   fun `initialize properties with default values`() {
     assertThat(properties.elo.default).isEqualTo(1000)
-    assertThat(properties.scoreToWinSet).isEqualTo(6)
-    assertThat(properties.setsToWinMatch).isEqualTo(2)
+    assertThat(properties.scoreToWinSet).isEqualTo(999)
+    assertThat(properties.setsToWinMatch).isEqualTo(1)
 
   }
 }

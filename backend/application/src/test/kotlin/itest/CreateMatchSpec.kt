@@ -8,6 +8,7 @@ import de.holisticon.ranked.model.UserName
 import org.assertj.core.api.Assertions.assertThat
 import org.axonframework.commandhandling.gateway.CommandGateway
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -60,8 +61,7 @@ class CreateMatchSpec {
       teamBlue = Team(kermit, piggy),
       teamRed = Team(fozzy, gonzo),
       matchSets = listOf(
-        MatchSet(goalsRed = 6, goalsBlue = 1, offenseRed = fozzy, offenseBlue = kermit),
-        MatchSet(goalsRed = 6, goalsBlue = 1, offenseRed = gonzo, offenseBlue = piggy)
+        MatchSet(goalsRed = 6, goalsBlue = 1, offenseRed = fozzy, offenseBlue = kermit)
       )
     )
     val httpResult = rest.postForEntity("/command/match", body, Void::class.java)
@@ -69,6 +69,7 @@ class CreateMatchSpec {
 
   }
 
+  @Ignore
   @Test
   fun `match with no winner results in bad request error`() {
     val body = CreateMatch(
@@ -77,8 +78,7 @@ class CreateMatchSpec {
       teamBlue = Team(kermit, piggy),
       teamRed = Team(fozzy, gonzo),
       matchSets = listOf(
-        MatchSet(goalsRed = 6, goalsBlue = 1, offenseRed = fozzy, offenseBlue = kermit),
-        MatchSet(goalsRed = 1, goalsBlue = 6, offenseRed = gonzo, offenseBlue = piggy)
+        MatchSet(goalsRed = 4, goalsBlue = 4, offenseRed = fozzy, offenseBlue = kermit)
       )
     )
     val httpResult = rest.postForEntity("/command/match", body, Void::class.java)
