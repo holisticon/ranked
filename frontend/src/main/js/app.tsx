@@ -17,6 +17,7 @@ import { ScoreBoard } from './statistics/pages/player-score-board';
 import { Config } from './config';
 import { TournamentTree } from './tournament/pages/tournament-tree';
 import { TeamScoreBoard } from './statistics/pages/team-score-board';
+import { Seacon } from './seacon';
 
 // Create a history of your choosing (we're using a browser history in this case)
 const history = createHistory();
@@ -60,6 +61,7 @@ class Ranked extends React.Component<{}, { initialized: boolean }> {
             <Route path="/tournament" component={ TournamentTree } />
             <Route path="/selectMatch" component={ MatchSelection } />
             <Route path="/teamBoard" component={ TeamScoreBoard } />
+            <Route path="/seacon" component={ Seacon } />
           </Switch>
         </ConnectedRouter>
       </div>

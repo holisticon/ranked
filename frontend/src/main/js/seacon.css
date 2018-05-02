@@ -1,0 +1,29 @@
+.seacon {
+  width: 100vw;
+  height: 100vh;
+}
+
+.seacon .container {
+  width: 50%;
+  height: 100%;
+  float: left;
+  position: relative;
+}
+
+@media (min-width: 800px) {
+  .seacon .chart-container {
+    column-count: 1;
+  }
+}
+
+@media (min-width: 1300px) {
+  .seacon .chart-container {
+    column-count: 1;
+  }
+}
+
+@media (min-width: 1600px) {
+  .seacon .chart-container {
+    column-count: 2;
+  }
+}
