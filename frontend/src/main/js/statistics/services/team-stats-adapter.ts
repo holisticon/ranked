@@ -44,9 +44,11 @@ export namespace TeamStatsAdapter {
           [teamStat.name, teamStat.goalsConceded, teamStat.goalsScored]
         );
 
-        teamTimeToScore.entries.push(
-          [teamStat.name, +teamStat.avgGoalTime.toFixed(2)]
-        );
+        if (teamStat.goalsScored > 0) {
+          teamTimeToScore.entries.push(
+            [teamStat.name, +teamStat.avgGoalTime.toFixed(2)]
+          );
+        }
       });
 
       const ratio = (val: Array<any>): number => {

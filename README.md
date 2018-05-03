@@ -26,7 +26,7 @@ Depending on your OS, you might have to replace `localhost` with your `DOCKER_IP
 We use the maven-wrapper extension, to build everything, just run `./mvnw`,
 which will default to `mvn clean install` using the maven version configured in `.mvn/wrapper/maven-wrapper.properties`.
 
-If you want to produce docker images run `/mvnw dockerfile:build` after the regular maven install ( extend with `-f <DIR>` if you need to rebuild a particular image).
+If you want to produce docker images run `./mvnw dockerfile:build` after the regular maven install ( extend with `-f <DIR>` if you need to rebuild a particular image).
 Docker builds produce images of the components 
 
 * backend
