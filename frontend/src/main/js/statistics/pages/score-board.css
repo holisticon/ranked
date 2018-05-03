@@ -9,7 +9,7 @@
   width: 100%;
   padding-top: 1rem;
   box-sizing: border-box;
-  position: fixed;
+  position: absolute;
   overflow: hidden;
   z-index: 10;
 }
