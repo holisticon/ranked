@@ -26,7 +26,7 @@ export class TournamentTree extends React.Component<any, TournamentTreeState> {
         {
           matches.map((match, i) => {
             return (
-              <div key="i" className="tournament-match">
+              <div key="i" className={'tournament-match' + (!match.winner ? '' : ' decided')}>
                 {
                   !match.team1 && !match.team2 ?
                     <div className="default">tbd</div> :
@@ -34,21 +34,25 @@ export class TournamentTree extends React.Component<any, TournamentTreeState> {
                       <div className={'team-name ' + (match.winner === 'team1' ? 'winner' : '')}>
                         <div className="image-container">
                           { match.team1 ?
-                            <PlayerIcon click={ () => { } } img={match.team1.imageUrl} />
+                            <PlayerIcon click={ () => { return; } } img={match.team1.imageUrl} />
                             : null
                           }
                         </div>
-                        <div className="name-container">{ match.team1 ? match.team1.name : '' }</div>
+                        <div className="name-container">
+                          { match.team1 ? `${match.team1.name} (${match.team1Goals})` : '' }
+                        </div>
                       </div>
                       <div><div className="separator">vs</div></div>
                       <div className={'team-name ' + (match.winner === 'team2' ? 'winner' : '')}>
                         <div className="image-container">
                           { match.team2 ?
-                            <PlayerIcon click={ () => { } } img={match.team2.imageUrl} />
+                            <PlayerIcon click={ () => { return; } } img={match.team2.imageUrl} />
                             : null
                           }
                         </div>
-                        <div className="name-container">{ match.team2 ? match.team2.name : '' }</div>
+                        <div className="name-container">
+                          { match.team2 ? `${match.team2.name} (${match.team2Goals})` : '' }
+                        </div>
                       </div>
                     </div>
                 }
