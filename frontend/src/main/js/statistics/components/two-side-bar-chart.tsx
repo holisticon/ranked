@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { ChartData3D } from '../types';
-import { Player } from '../../types/types';
+import { Player, Team } from '../../types/types';
 import './two-side-bar-chart.css';
 import { PlayerIcon } from '../../components/player-icon';
 
 type TwoSideBarChartProps = {
-  data?: ChartData3D<Player | string, number, number>,
+  data?: ChartData3D<Player | Team | string, number, number>,
   cumulationHeadline?: string,
   cumulate?: (val1: number, val2: number) => number | string
 };
@@ -42,13 +42,16 @@ export class TwoSideBarChart extends React.Component<TwoSideBarChartProps, any> 
         if (entry[0] instanceof Player) {
           imageUrl = (entry[0] as Player).imageUrl;
           displayName = (entry[0] as Player).displayName;
+        } else if (entry[0] instanceof Team) {
+          imageUrl = (entry[0] as Team).imageUrl;
+          displayName = (entry[0] as Team).name || '';
         } else {
           displayName = (entry[0] as string);
         }
 
         return (
           <div key="i" className="two-side-bar-entry">
-          <div className="player-icon">
+            <div className="player-icon">
               <PlayerIcon img={ imageUrl } click={() => { return; }} />
             </div>
             <div className="name">{ displayName }</div>
