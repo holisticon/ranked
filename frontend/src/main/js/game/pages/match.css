@@ -7,7 +7,7 @@
 @media (orientation: landscape) {
   .match {
     height: 100vw;
-    width: 100vh;
+    width: calc(100vh - 20px);
     transform: rotate(-90deg) translateX(-100%);
     transform-origin: 0 0;
   }
