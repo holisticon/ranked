@@ -20,7 +20,7 @@ export class TournamentTree extends React.Component<any, TournamentTreeState> {
     });
   }
 
-  private renderMatches(matches: Array<TorunamentMatch>, containerClasses: string) {
+  private renderMatches(matches: Array<TorunamentMatch>, containerClasses: string, showGoals: boolean = true) {
     return (
       <div className={containerClasses}>
         {
@@ -39,7 +39,10 @@ export class TournamentTree extends React.Component<any, TournamentTreeState> {
                           }
                         </div>
                         <div className="name-container">
-                          { match.team1 ? `${match.team1.name} (${match.team1Goals})` : '' }
+                          { showGoals ?
+                            (match.team1 ? `${match.team1.name} (${match.team1Goals})` : '') :
+                            (match.team1 ? match.team1.name : '')
+                          }
                         </div>
                       </div>
                       <div><div className="separator">vs</div></div>
@@ -51,7 +54,10 @@ export class TournamentTree extends React.Component<any, TournamentTreeState> {
                           }
                         </div>
                         <div className="name-container">
-                          { match.team2 ? `${match.team2.name} (${match.team2Goals})` : '' }
+                          { showGoals ?
+                            (match.team2 ? `${match.team2.name} (${match.team2Goals})` : '') :
+                            (match.team2 ? match.team2.name : '')
+                          }
                         </div>
                       </div>
                     </div>
@@ -88,7 +94,7 @@ export class TournamentTree extends React.Component<any, TournamentTreeState> {
         {this.renderTopAndBottomMatches(this.state.matches.slice(8, 12), 'quarter-finals')}
         {this.renderTopAndBottomMatches(this.state.matches.slice(12, 14), 'semi-finals')}
         <div className="final">
-          {this.renderMatches(this.state.matches.slice(-1), 'final-match')}
+          {this.renderMatches(this.state.matches.slice(-1), 'final-match', false)}
         </div>
       </div>
     );
