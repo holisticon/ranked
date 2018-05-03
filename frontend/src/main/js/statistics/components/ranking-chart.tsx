@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { ChartData2D } from '../types';
-import { Player } from '../../types/types';
+import { Player, Team } from '../../types/types';
 import { PlayerIcon } from '../../components/player-icon';
 import './ranking-chart.css';
 
 type RankingChartProps = {
-  data?: ChartData2D<Player | string, number | string>
+  data?: ChartData2D<Player | Team | string, number | string>
 };
 
 export class RankingChart extends React.Component<RankingChartProps, any> {
@@ -37,6 +37,9 @@ export class RankingChart extends React.Component<RankingChartProps, any> {
         if (entry[0] instanceof Player) {
           imageUrl = (entry[0] as Player).imageUrl;
           displayName = (entry[0] as Player).displayName;
+        } else if (entry[0] instanceof Team) {
+          imageUrl = (entry[0] as Team).imageUrl;
+          displayName = (entry[0] as Team).name || '';
         } else {
           displayName = (entry[0] as string);
         }

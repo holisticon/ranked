@@ -1,11 +1,11 @@
-import { Player } from '../types/types';
+import { Player, Team } from '../types/types';
 
 interface Dimension {
   description: string;
   unit?: string;
 }
 
-type DimensionValue = number | string | Player;
+type DimensionValue = number | string | Player | Team;
 
 export interface ChartData2D<T extends DimensionValue, S extends DimensionValue> {
   dimensions: [Dimension, Dimension];
