@@ -11,6 +11,13 @@
     transform: rotate(-90deg) translateX(-100%);
     transform-origin: 0 0;
   }
+
+  .match .dialog-container {
+    height: 100vh;
+    width: 100vw;
+    transform: rotate(90deg) translateY(-100%);
+    transform-origin: 0 0;
+  }
 }
 
 .match .team-blue, .match .team-red {
@@ -111,7 +118,7 @@
 }
 
 .match .add-team img {
-  height: 5rem;
+  height: 3rem;
 }
 
 .match .add-team .team-name {
