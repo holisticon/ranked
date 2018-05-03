@@ -78,7 +78,7 @@ function renderPlayerIcons({ team, composition, showSwitchPlayerButtons, selectP
 function renderTeamIcon( {team, composition, selectTeam }: InternalTeamProps ) {
   return(
     <div className="add-team"
-         onClick={ (e) => stopEvent(e) && selectTeam(composition.team) }
+         onClick={ (e) => { return; } }
     >
       { team.imageUrl ?
         <img src={ team.imageUrl } /> :

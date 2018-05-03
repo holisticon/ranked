@@ -21,8 +21,8 @@ export namespace TournamentService {
     return allTeams.find(team => team.id === teamId);
   }
 
-  function getTeamForTeamName(teamName: string): Team | undefined {
-    return allTeams.find(team => team.name === teamName);
+  function getTeamForImageName(imageName: string): Team | undefined {
+    return allTeams.find(team => team.imageUrl.endsWith(imageName));
   }
 
   function getTeamForPlayers(players: {player1: string, player2: string}): Team | undefined {
@@ -86,14 +86,14 @@ export namespace TournamentService {
         .then(() => {
             numberOfTeams = 16;
             matchesSubject.next([
-              { id: 1, team1: getTeamForTeamName('Deutschland'), team2: getTeamForTeamName('Schweden') },
-              { id: 2, team1: getTeamForTeamName('Russland'), team2: getTeamForTeamName('Uruguay') },
-              { id: 3, team1: getTeamForTeamName('Portugal'), team2: getTeamForTeamName('Spanien') },
-              { id: 4, team1: getTeamForTeamName('Wallis und Futuna'), team2: getTeamForTeamName('Dänemark') },
-              { id: 5, team1: getTeamForTeamName('Argentinien'), team2: getTeamForTeamName('Island') },
-              { id: 6, team1: getTeamForTeamName('Brasilien'), team2: getTeamForTeamName('Schweiz') },
-              { id: 7, team1: getTeamForTeamName('Belgien'), team2: getTeamForTeamName('England') },
-              { id: 8, team1: getTeamForTeamName('Japan'), team2: getTeamForTeamName('Polen') },
+              { id: 1, team1: getTeamForImageName('germany.png'), team2: getTeamForImageName('sweden.png') },
+              { id: 2, team1: getTeamForImageName('russia.png'), team2: getTeamForImageName('uruguay.png') },
+              { id: 3, team1: getTeamForImageName('portugal.png'), team2: getTeamForImageName('spain.png') },
+              { id: 4, team1: getTeamForImageName('wallis_and_futuna.png'), team2: getTeamForImageName('denmark.png') },
+              { id: 5, team1: getTeamForImageName('argentina.png'), team2: getTeamForImageName('iceland.png') },
+              { id: 6, team1: getTeamForImageName('brazil.png'), team2: getTeamForImageName('switzerland.png') },
+              { id: 7, team1: getTeamForImageName('belgium.png'), team2: getTeamForImageName('england.png') },
+              { id: 8, team1: getTeamForImageName('japan.png'), team2: getTeamForImageName('poland.png') },
               { id: 9 },
               { id: 10 },
               { id: 11 },
