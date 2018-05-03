@@ -111,9 +111,9 @@ export namespace TournamentService {
     }
   }
 
-  export function getTournamentWinner(): string | undefined {
+  export function getTournamentWinner(): Team | undefined {
     const matches = matchesSubject.value;
     const winner = matches.length > 0 ? matches[matches.length - 1].winner : undefined;
-    return !winner ? undefined : matches[matches.length - 1][winner]!!.name;
+    return !winner ? undefined : matches[matches.length - 1][winner];
   }
 }

@@ -7,6 +7,7 @@ import './player-selection.css';
 import { PartialStoreState } from '../store.state';
 import { TournamentService } from '../../tournament/services/tournament.service';
 import './match-selection.css';
+import { PlayerIcon } from '../../components/player-icon';
 
 export interface MatchSelectionProps {
   startMatch: (team1: Team, team2: Team) => void;
@@ -56,12 +57,14 @@ class MatchSelection extends React.Component<MatchSelectionProps, MatchSelection
           !tournamentWinner ?
           this.renderOpenMatches() :
           <div className="tournament-finished">
-            <div className="text">
-              Team { tournamentWinner } hat das Turnier gewonnen! Bugs und Feedback gerne an O3 und Timo, danke 🙂.
+            <div className="winner-container">
+              <div className="winner">
+                <div className="image-container">
+                  <PlayerIcon img={tournamentWinner.imageUrl} click={() => { return; } } />
+                </div>
+                <div className="name-container">{tournamentWinner.name}</div>
+              </div>
             </div>
-            <a className="link" href="http://docker.holisticon.local:11080">
-              Zurück zum normalen Modus
-            </a>
           </div>
         }
       </div>
