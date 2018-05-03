@@ -8,10 +8,10 @@ import { TeamStatsAdapter } from '../services/team-stats-adapter';
 import { TwoSideBarChart } from '../components/two-side-bar-chart';
 import { Team } from '../../types/types';
 import { PlayerService } from '../../services/player-service';
-import { WallService } from '../../services/wall.service';
+import { TournamentService } from '../../tournament/services/tournament.service';
 
 type TeamScoreBoardState = {
-  teamAvgGoalsPerSet: ChartData2D<string, number>
+  avgGoalsPerSet: ChartData2D<Team, number>
   goalRatio: ChartData3D<Team, number, number>,
   timeToScore: ChartData2D<Team, number>
 };
@@ -31,7 +31,10 @@ export class TeamScoreBoard extends React.Component<any, TeamScoreBoardState> {
       { title: 'Schießt Tor nach', iconPath: '/img/stopwatch.png' },
     ];
 
-    WallService.playedMatches().subscribe(_ => this.updateList());
+    // FIXME
+    TournamentService.getAllMatches().subscribe(matches => {
+      this.updateList();
+    });
   }
 
   private findByName(teams: Array<Team>, name: string): Team {
@@ -49,7 +52,11 @@ export class TeamScoreBoard extends React.Component<any, TeamScoreBoardState> {
           dimensions: teamTimeToScore.dimensions,
           entries: teamTimeToScore.entries.map(entry => [this.findByName(teams, entry[0]), entry[1]])
         } as ChartData2D<Team, number>;
-        this.setState({teamAvgGoalsPerSet, goalRatio, timeToScore});
+        const avgGoalsPerSet = {
+          dimensions: teamAvgGoalsPerSet.dimensions,
+          entries: teamAvgGoalsPerSet.entries.map(entry => [this.findByName(teams, entry[0]), entry[1]])
+        } as ChartData2D<Team, number>;
+        this.setState({avgGoalsPerSet, goalRatio, timeToScore});
       }
     );
   }
@@ -84,7 +91,7 @@ export class TeamScoreBoard extends React.Component<any, TeamScoreBoardState> {
         >
           <div className="chart-container">
             <div className="fading-top" />
-            <RankingChart data={ !this.state ? undefined : this.state.teamAvgGoalsPerSet } />
+            <RankingChart data={ !this.state ? undefined : this.state.avgGoalsPerSet } />
           </div>
 
           <div className="chart-container">

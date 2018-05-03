@@ -39,7 +39,7 @@ export class TournamentTree extends React.Component<any, TournamentTreeState> {
                           }
                         </div>
                         <div className="name-container">
-                          { showGoals ?
+                          { showGoals && match.team1Goals !== undefined ?
                             (match.team1 ? `${match.team1.name} (${match.team1Goals})` : '') :
                             (match.team1 ? match.team1.name : '')
                           }
@@ -54,7 +54,7 @@ export class TournamentTree extends React.Component<any, TournamentTreeState> {
                           }
                         </div>
                         <div className="name-container">
-                          { showGoals ?
+                          { showGoals && match.team2Goals !== undefined ?
                             (match.team2 ? `${match.team2.name} (${match.team2Goals})` : '') :
                             (match.team2 ? match.team2.name : '')
                           }
