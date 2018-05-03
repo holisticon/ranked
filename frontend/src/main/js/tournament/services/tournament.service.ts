@@ -52,13 +52,17 @@ export namespace TournamentService {
     return Math.ceil(matchId / 2 + numberOfTeams / 2) - 1;
   }
 
-  function setWinnerForMatch(winnerTeamId: string, looserTeamId: string): void {
+  function setWinnerForMatch(newMatch: PlayedMatch): void {
+    const winnerTeamId = getWinnerTeamId(newMatch);
+    const looserTeamId = getLooserTeamId(newMatch);
     const matches = matchesSubject.value;
     const playedMatch = matches.find(match =>
       playsInMatch(match, winnerTeamId) && playsInMatch(match, looserTeamId));
 
     if (playedMatch && !playedMatch.winner) {
       playedMatch.winner = playedMatch.team1!!.id === winnerTeamId ? 'team1' : 'team2';
+      playedMatch.team1Goals = newMatch.team1.goals;
+      playedMatch.team2Goals = newMatch.team2.goals;
 
       const nextRoundIndex = getNextRoundIndex(playedMatch.id);
       if (nextRoundIndex < matches.length) {
@@ -102,7 +106,7 @@ export namespace TournamentService {
         );
 
       WallService.playedMatches().subscribe(newMatches => {
-        newMatches.forEach(match => setWinnerForMatch(getWinnerTeamId(match), getLooserTeamId(match)));
+        newMatches.forEach(match => setWinnerForMatch(match));
       });
     }
   }

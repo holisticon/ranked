@@ -33,14 +33,16 @@ export namespace WallService {
 
         return {
           team1: {
-            player1: match.teamBlue.player1.value,
-            player2: match.teamBlue.player2.value
+            player1: match.teamRed.player1.value,
+            player2: match.teamRed.player2.value,
+            goals: match.matchSets.map(set => set.goalsRed).reduce((a, b) => a + b, 0)
           },
           team2: {
-            player1: match.teamRed.player1.value,
-            player2: match.teamRed.player2.value
+            player1: match.teamBlue.player1.value,
+            player2: match.teamBlue.player2.value,
+            goals: match.matchSets.map(set => set.goalsBlue).reduce((a, b) => a + b, 0)
           },
-          winner: wonSetsBlue > wonSetsRed ? 'team1' : 'team2'
+          winner: wonSetsBlue > wonSetsRed ? 'team2' : 'team1'
         } as PlayedMatch;
       })
     );
