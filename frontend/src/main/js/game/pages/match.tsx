@@ -137,7 +137,7 @@ function Match({ setNumber, winner, sets, team1, team2, startNewMatch }: MatchPr
 
       <TeamComponent color={'red'} />
 
-      <div className="setcounter">
+      <div className={'setcounter' + (Config.pointsPerMatch > 1 ? '' : ' hidden')}>
         <div>
           <span>{setNumber}</span>
         </div>

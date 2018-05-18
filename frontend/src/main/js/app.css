@@ -22,6 +22,12 @@ a {
   width: 100vw;
 }
 
+@media (orientation: landscape) {
+  .ranked {
+    height: calc(100vh - 20px); 
+  }
+}
+
 .hidden {
   visibility: hidden !important;
   display: none !important;

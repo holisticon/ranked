@@ -6,14 +6,17 @@ import { Carousel } from 'react-responsive-carousel';
 import { RankingChart } from '../components/ranking-chart';
 import { TeamStatsAdapter } from '../services/team-stats-adapter';
 import { TwoSideBarChart } from '../components/two-side-bar-chart';
+import { Team } from '../../types/types';
+import { PlayerService } from '../../services/player-service';
+import { TournamentService } from '../../tournament/services/tournament.service';
 
-type ScoreBoardState = {
-  teamGoalRatio: ChartData3D<string, number, number>,
-  teamTimeToScore: ChartData2D<string, number>
+type TeamScoreBoardState = {
+  avgGoalsPerSet: ChartData2D<Team, number>
+  goalRatio: ChartData3D<Team, number, number>,
+  timeToScore: ChartData2D<Team, number>
 };
 
-
-export class TeamScoreBoard extends React.Component<any, ScoreBoardState> {
+export class TeamScoreBoard extends React.Component<any, TeamScoreBoardState> {
 
   private headings: Array<HeadingConfig>;
 
@@ -23,17 +26,38 @@ export class TeamScoreBoard extends React.Component<any, ScoreBoardState> {
 
     // init data
     this.headings = [
+      { title: '⌀ Anzahl Tore pro Satz', iconPath: '/img/goal.png' },
       { title: 'Torverhältnis', iconPath: '/img/goal.png' },
       { title: 'Schießt Tor nach', iconPath: '/img/stopwatch.png' },
     ];
 
-    this.updateList();
+    // FIXME
+    TournamentService.getAllMatches().subscribe(matches => {
+      this.updateList();
+    });
+  }
+
+  private findByName(teams: Array<Team>, name: string): Team {
+    return teams.find(t => name === t.name)!!;
   }
 
   private updateList(): void {
-    TeamStatsAdapter.getTeamStatsChartData().then(
-      ({teamGoalRatio, teamTimeToScore}) =>
-      this.setState({teamGoalRatio, teamTimeToScore})
+    Promise.all([TeamStatsAdapter.getTeamStatsChartData(), PlayerService.getAllTeams()]).then(
+      ([{teamAvgGoalsPerSet, teamGoalRatio, teamTimeToScore}, teams]) => {
+        const goalRatio = {
+          dimensions: teamGoalRatio.dimensions,
+          entries: teamGoalRatio.entries.map(entry => [this.findByName(teams, entry[0]), entry[1], entry[2]])
+        } as ChartData3D<Team, number, number>;
+        const timeToScore = {
+          dimensions: teamTimeToScore.dimensions,
+          entries: teamTimeToScore.entries.map(entry => [this.findByName(teams, entry[0]), entry[1]])
+        } as ChartData2D<Team, number>;
+        const avgGoalsPerSet = {
+          dimensions: teamAvgGoalsPerSet.dimensions,
+          entries: teamAvgGoalsPerSet.entries.map(entry => [this.findByName(teams, entry[0]), entry[1]])
+        } as ChartData2D<Team, number>;
+        this.setState({avgGoalsPerSet, goalRatio, timeToScore});
+      }
     );
   }
 
@@ -41,13 +65,14 @@ export class TeamScoreBoard extends React.Component<any, ScoreBoardState> {
     Heading.Service.update(this.headings[index]);
   }
 
-  private calculateGoalRatio(a: number,b: number): number {
-      if (a === 0 && b !== 0)
-        return b
-      else if (a === 0)
-        return 0
-      else
-        return +(b / a).toFixed(2)
+  private calculateGoalRatio(a: number, b: number): number {
+      if (a === 0 && b !== 0) {
+        return b;
+      } else if (a === 0) {
+        return 0;
+      } else {
+        return +(b / a).toFixed(2);
+      }
   }
 
   public render() {
@@ -60,21 +85,27 @@ export class TeamScoreBoard extends React.Component<any, ScoreBoardState> {
           autoPlay={ true }
           showThumbs={ false }
           infiniteLoop={ true }
-          interval={ 20000 }
+          interval={ 10000 }
           showStatus={ false }
           showArrows={ false }
         >
           <div className="chart-container">
             <div className="fading-top" />
-            <TwoSideBarChart
-              data = { !this.state ? undefined : this.state.teamGoalRatio }
-              cumulationHeadline = "Torverhältnis"
-              cumulate = { this.calculateGoalRatio }
-            />
+            <RankingChart data={ !this.state ? undefined : this.state.avgGoalsPerSet } />
           </div>
+
           <div className="chart-container">
             <div className="fading-top" />
-            <RankingChart data={ !this.state ? undefined : this.state.teamTimeToScore } />
+            <TwoSideBarChart
+              data={ !this.state ? undefined : this.state.goalRatio }
+              cumulationHeadline="Torverhältnis"
+              cumulate={ this.calculateGoalRatio }
+            />
+          </div>
+
+          <div className="chart-container">
+            <div className="fading-top" />
+            <RankingChart data={ !this.state ? undefined : this.state.timeToScore } />
           </div>
         </Carousel>
       </div>

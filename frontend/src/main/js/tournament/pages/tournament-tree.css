@@ -288,3 +288,14 @@
 .final .tournament-match .separator {
   margin: 0.4rem 0;
 }
+
+.final .final-match .tournament-match.decided .team-name, .final .final-match .tournament-match.decided .separator {
+  display: none;
+  visibility: hidden;
+}
+
+.final .final-match .tournament-match.decided .team-name.winner {
+  display: inline-block;
+  visibility: visible;
+  font-size: 150%;
+}

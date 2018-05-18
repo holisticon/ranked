@@ -1,6 +1,7 @@
 {
   "short_name": "Ranked",
   "name": "Holisticon Kicker Application",
+  "display": "standalone",
   "icons": [
     {
       "src": "img/icon.png",

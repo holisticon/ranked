@@ -59,8 +59,8 @@ export interface Composition {
 }
 
 export interface PlayedMatch {
-  team1: { player1: string, player2: string };
-  team2: { player1: string, player2: string };
+  team1: { player1: string, player2: string, goals: number };
+  team2: { player1: string, player2: string, goals: number };
   winner: TeamKey;
 }
 
@@ -68,5 +68,7 @@ export type TorunamentMatch = {
   id: number,
   team1?: Team,
   team2?: Team,
-  winner?: TeamKey
+  winner?: TeamKey,
+  team1Goals?: number,
+  team2Goals?: number
 };

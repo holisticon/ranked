@@ -20,13 +20,13 @@ export class TournamentTree extends React.Component<any, TournamentTreeState> {
     });
   }
 
-  private renderMatches(matches: Array<TorunamentMatch>, containerClasses: string) {
+  private renderMatches(matches: Array<TorunamentMatch>, containerClasses: string, showGoals: boolean = true) {
     return (
       <div className={containerClasses}>
         {
           matches.map((match, i) => {
             return (
-              <div key="i" className="tournament-match">
+              <div key="i" className={'tournament-match' + (!match.winner ? '' : ' decided')}>
                 {
                   !match.team1 && !match.team2 ?
                     <div className="default">tbd</div> :
@@ -34,21 +34,31 @@ export class TournamentTree extends React.Component<any, TournamentTreeState> {
                       <div className={'team-name ' + (match.winner === 'team1' ? 'winner' : '')}>
                         <div className="image-container">
                           { match.team1 ?
-                            <PlayerIcon click={ () => { } } img={match.team1.imageUrl} />
+                            <PlayerIcon click={ () => { return; } } img={match.team1.imageUrl} />
                             : null
                           }
                         </div>
-                        <div className="name-container">{ match.team1 ? match.team1.name : '' }</div>
+                        <div className="name-container">
+                          { showGoals && match.team1Goals !== undefined ?
+                            (match.team1 ? `${match.team1.name} (${match.team1Goals})` : '') :
+                            (match.team1 ? match.team1.name : '')
+                          }
+                        </div>
                       </div>
                       <div><div className="separator">vs</div></div>
                       <div className={'team-name ' + (match.winner === 'team2' ? 'winner' : '')}>
                         <div className="image-container">
                           { match.team2 ?
-                            <PlayerIcon click={ () => { } } img={match.team2.imageUrl} />
+                            <PlayerIcon click={ () => { return; } } img={match.team2.imageUrl} />
                             : null
                           }
                         </div>
-                        <div className="name-container">{ match.team2 ? match.team2.name : '' }</div>
+                        <div className="name-container">
+                          { showGoals && match.team2Goals !== undefined ?
+                            (match.team2 ? `${match.team2.name} (${match.team2Goals})` : '') :
+                            (match.team2 ? match.team2.name : '')
+                          }
+                        </div>
                       </div>
                     </div>
                 }
@@ -84,7 +94,7 @@ export class TournamentTree extends React.Component<any, TournamentTreeState> {
         {this.renderTopAndBottomMatches(this.state.matches.slice(8, 12), 'quarter-finals')}
         {this.renderTopAndBottomMatches(this.state.matches.slice(12, 14), 'semi-finals')}
         <div className="final">
-          {this.renderMatches(this.state.matches.slice(-1), 'final-match')}
+          {this.renderMatches(this.state.matches.slice(-1), 'final-match', false)}
         </div>
       </div>
     );

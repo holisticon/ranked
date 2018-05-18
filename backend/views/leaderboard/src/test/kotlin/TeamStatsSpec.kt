@@ -87,11 +87,14 @@ class TeamStatsSpec {
     Assertions.assertThat(teamStats.get(teamHolis)!!.goalsScored).isEqualTo(12)
     Assertions.assertThat(teamStats.get(teamHolis)!!.matchesWon).isEqualTo(1)
     Assertions.assertThat(teamStats.get(teamHolis)!!.setsWon).isEqualTo(2)
+    Assertions.assertThat(teamStats.get(teamHolis)!!.avgGoalsPerSet).isEqualTo(6.0)
+
     Assertions.assertThat(teamStats.get(teamMuppets)!!.avgGoalTime).isCloseTo((7.5), withinPercentage(0.1))
     Assertions.assertThat(teamStats.get(teamMuppets)!!.goalsScored).isEqualTo(4)
     Assertions.assertThat(teamStats.get(teamMuppets)!!.matchesWon).isEqualTo(0)
     Assertions.assertThat(teamStats.get(teamMuppets)!!.setsWon).isEqualTo(0)
     Assertions.assertThat(teamStats.get(teamMuppets)!!.setsLost).isEqualTo(2)
+    Assertions.assertThat(teamStats.get(teamMuppets)!!.avgGoalsPerSet).isEqualTo(2.0)
   }
 
 }
