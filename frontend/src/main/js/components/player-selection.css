@@ -17,6 +17,41 @@
   }
 }
 
+.player-selection .player.marked .player-icon {
+  box-sizing: border-box;
+  border: 1vw solid #4EB4F9;
+}
+
+.player-selection .player .marked-container {
+  display: none;
+  height: 10vw;
+  width: 10vw;
+  margin: 0 0 -10vw -10vw;
+  float: left;
+  position: relative;
+}
+
+.player-selection .player.marked .marked-container {
+  display: block;
+}
+
+.player-selection .player .marked-container .corner {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-top: 10vw solid #4EB4F9;
+  border-left: 10vw solid transparent;
+}
+
+.player-selection .player .marked-container .material-icons {
+  position: absolute;
+  top: 30%;
+  right: 30%;
+  transform: translate(50%, -50%);
+  color: white;
+  font-size: 1.3rem;
+}
+
 .player-selection .player-icon, .player-selection .letter {
   width: 24%;
   height: auto;
