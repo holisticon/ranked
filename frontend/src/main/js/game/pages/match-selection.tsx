@@ -3,7 +3,6 @@ import { connect, Dispatch } from 'react-redux';
 import * as Actions from '../actions';
 import { TorunamentMatch, Team } from '../../types/types';
 import { push } from 'react-router-redux';
-import './player-selection.css';
 import { PartialStoreState } from '../store.state';
 import { TournamentService } from '../../tournament/services/tournament.service';
 import './match-selection.css';

@@ -2,62 +2,30 @@ import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import * as Actions from '../actions';
 import { Player, PlayerKey, TeamKey } from '../../types/types';
-import { PlayerIcon } from '../../components/player-icon';
-import { Link } from 'react-router-dom';
 import { match as Match } from 'react-router';
 import { push } from 'react-router-redux';
-import './player-selection.css';
 import { PlayerService } from '../../services/player-service';
 import { PartialStoreState } from '../store.state';
-
-const alphabet = 'abcdefghijklmnopqrstuvwxyz';
+import { PlayerSelectionComponent } from '../../components/player-selection';
 
 export interface PlayerSelectionProps {
   match?: Match<any>;
-  unavailableLetters: string;
   availablePlayers: Array<Player>;
   selectFor: any;
+  alreadySelectedPlayers: Array<Player>;
   select: (team: TeamKey, player: PlayerKey, selected: Player) => void;
   updateAvailablePlayers: (players: Array<Player>) => void;
 }
 
-function getLetters(unavailableLetters: string) {
-  return alphabet.split('').map((letter, index) => {
-
-    const available = !unavailableLetters.includes(letter);
-
-    return (
-      <Link key={ index } to={'/select/' + letter}>
-        <div className={ available ? 'letter' : 'letter gray' }>
-          <div className="letter-content">
-            <div className="letter-absolute">{ letter.toUpperCase() }</div>
-          </div>
-        </div>
-      </Link>
-    );
-  });
-}
-
-function getPlayerIcons(availablePlayers: Array<Player>, select: (player: Player) => void, selectedLetter?: string) {
-  const players = !selectedLetter ? availablePlayers :
-    availablePlayers.filter(player => player.displayName[0].toLowerCase() === selectedLetter);
-
-  return players.map((player, index) => {
-      return (
-        <PlayerIcon key={ index } img={ player.imageUrl } name={ player.displayName } click={ () => select(player) } />
-      );
-    });
-}
-
-function PlayerSelection({ unavailableLetters, availablePlayers,
-                           selectFor, updateAvailablePlayers, select, match }: PlayerSelectionProps) {
+function PlayerSelection({
+  availablePlayers, selectFor, updateAvailablePlayers, alreadySelectedPlayers, select, match }: PlayerSelectionProps) {
 
   if (availablePlayers.length === 0) {
     // no player avaiable -> try to load them from backend
     PlayerService.getAllPlayers().then(updateAvailablePlayers);
   }
 
-  let selectedLetter = '';
+  let selectedLetter;
   if (match && match.params) {
     selectedLetter = match.params.letter;
   }
@@ -66,23 +34,23 @@ function PlayerSelection({ unavailableLetters, availablePlayers,
 
   return (
     <div className={ 'player-selection' }>
-      { !selectedLetter ?
-        getLetters(unavailableLetters) :
-        getPlayerIcons(availablePlayers, selectPlayer, selectedLetter ) }
+      <PlayerSelectionComponent
+        selectedLetter={ selectedLetter }
+        availablePlayers={ availablePlayers }
+        markedPlayerIds={ alreadySelectedPlayers.map(player => player.id) }
+        select={ (player) => selectPlayer(player) }
+      />
     </div>
   );
 }
 
-export function mapStateToProps({ ranked: { availablePlayers, selectFor } }: PartialStoreState) {
-  let unavailableLetters = alphabet;
-  availablePlayers.forEach((player: Player) => {
-    unavailableLetters = unavailableLetters.replace(player.displayName[0].toLowerCase(), '');
-  });
-
+export function mapStateToProps({ ranked: { availablePlayers, selectFor, team1, team2 } }: PartialStoreState) {
+  const teamPlayers = [ team1.player1, team1.player2, team2.player1, team2.player2 ];
+  
   return {
-    unavailableLetters,
     availablePlayers,
-    selectFor
+    selectFor,
+    alreadySelectedPlayers: teamPlayers.filter(player => !!player.id)
   };
 }
 
