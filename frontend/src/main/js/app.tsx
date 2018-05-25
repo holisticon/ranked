@@ -18,6 +18,9 @@ import { Config } from './config';
 import { TournamentTree } from './tournament/pages/tournament-tree';
 import { TeamScoreBoard } from './statistics/pages/team-score-board';
 import { Seacon } from './seacon';
+import TournamentAdminPage from './tournament/pages/tournament-administration';
+import { tournament } from './tournament/reducer';
+import TournamentPlayerSelection from './tournament/pages/tournament-player-selection';
 
 // Create a history of your choosing (we're using a browser history in this case)
 const history = createHistory();
@@ -30,6 +33,7 @@ const middleware = routerMiddleware(history);
 const store = createStore(
   combineReducers({
     ranked,
+    tournament,
     router: routerReducer
   }),
   applyMiddleware(middleware)
@@ -54,11 +58,13 @@ class Ranked extends React.Component<{}, { initialized: boolean }> {
       <div className="ranked">
         <ConnectedRouter history={history}>
           <Switch>
-            <Route exact={true} path="/" component={ Match } />
+            <Route exact={ true } path="/" component={ Match } />
             <Route path="/select/:letter?" component={ PlayerSelection } />
             <Route path="/selectTeam" component={ TeamSelection } />
             <Route path="/board" component={ ScoreBoard } />
             <Route path="/tournament" component={ TournamentTree } />
+            <Route exact={ true } path="/tournamentAdmin" component={ TournamentAdminPage } />
+            <Route path="/tournamentAdmin/select/:letter?" component={ TournamentPlayerSelection } />
             <Route path="/selectMatch" component={ MatchSelection } />
             <Route path="/teamBoard" component={ TeamScoreBoard } />
             <Route path="/seacon" component={ Seacon } />
