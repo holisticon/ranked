@@ -17,11 +17,11 @@ interface MatchSelectionState {
 }
 
 class MatchSelection extends React.Component<MatchSelectionProps, MatchSelectionState> {
-  
+
   constructor(props: MatchSelectionProps) {
     super(props);
     this.state = { openMatches: [] };
-    
+
     TournamentService.init();
     TournamentService.getOpenMatches()
       .subscribe(openMatches => this.setState({ openMatches }));
@@ -78,9 +78,7 @@ export function mapStateToProps({ ranked: { } }: PartialStoreState) {
 export function mapDispatchToProps(dispatch: Dispatch<Actions.RankedAction>) {
   return {
     startMatch: (team1: Team, team2: Team) => {
-      dispatch(Actions.selectEntity('team1'));
       dispatch(Actions.setTeam('team1', team1));
-      dispatch(Actions.selectEntity('team2'));
       dispatch(Actions.setTeam('team2', team2));
       dispatch(push('/'));
     },
