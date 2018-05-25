@@ -46,7 +46,7 @@ function renderPlayerIcons({ team, composition, showSwitchPlayerButtons, selectP
               name={ team[composition.defense].displayName }
             />
         }
-        <span className="name">Tor</span>
+        <span className="name">{ !team[composition.defense].displayName ? 'Tor' : '' }</span>
       </div>
 
       <div
@@ -69,7 +69,13 @@ function renderPlayerIcons({ team, composition, showSwitchPlayerButtons, selectP
               name={ team[composition.attack].displayName }
             />
         }
-        <span className="name">Angriff</span>
+        <span className="name">{ !team[composition.attack].displayName ? 'Angriff' : '' }</span>
+      </div>
+      <div>
+        { Config.showTeamName ?
+          <span className="team-name">{team.name || ''}</span> :
+          <span> </span>
+        }
       </div>
     </div>
   );
@@ -84,7 +90,10 @@ function renderTeamIcon( {team, composition, selectTeam }: InternalTeamProps ) {
         <img src={ team.imageUrl } /> :
         <i className="material-icons">&#xE7FB;</i>
       }
-      <span className="team-name">{ team.name || 'Team' }</span>
+      { Config.showTeamName ?
+        <span className="team-name">{team.name || 'Team'}</span> :
+        <span> </span>
+      }
     </div>
   );
 }
