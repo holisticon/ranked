@@ -8,7 +8,8 @@ export namespace Config {
 
   export let pointsPerMatch: number;
   export let pointsPerSet: number;
-  export const teamMode = false;
+  export const teamMode: boolean = false;
+  export const showTeamName: boolean = true;
   // const BACKEND_URL = 'http://localhost:8080';
 
   export const timedMatchMode = false;

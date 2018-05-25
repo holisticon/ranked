@@ -103,6 +103,7 @@
 .match .add-defense .name, .match .add-attack .name {
   opacity: 0.4;
   display: block;
+  min-height: 1.2rem;
 }
 
 .match .add-team {
@@ -125,6 +126,14 @@
   font-size: 1.2rem;
   opacity: 0.4;
   display: block;
+}
+
+.match .team-name {
+  width: 100%;
+  position: absolute;
+  bottom: 0.4rem;
+  opacity: 0.4;
+  text-align: center;
 }
 
 .match .change-positions {
