@@ -41,7 +41,25 @@ function renderPlayerIcons(players: Array<Player>, removePlayer: (player: Player
 }
 
 function createTeamName(player1Name: string, player2Name: string): string {
-  return player1Name.substr(0, 3) + player2Name.substr(0, 3);
+  return player1Name.substr(0, 3).trim() + player2Name.substr(0, 3).trim();
+}
+
+function groupPlayerBasedOnElos(players: Array<Player>, elos: {[playerId: string]: number}): Array<Array<Player>> {
+  const sorted = players.sort((p1, p2) => elos[p2.id] - elos[p1.id]);
+
+  return sorted.reduce(
+    (groups, player, index) => {
+      let i = Math.floor(index / 4);
+      groups[i] = groups[i] || [];
+      groups[i].push(player);
+      return groups;
+    },
+    [] as Array<Array<Player>>
+  );
+}
+
+function rnd(max: number): number {
+  return Math.floor(Math.random() * max);
 }
 
 function buildTeams(players: Array<Player>): Array<Team> {
@@ -49,16 +67,22 @@ function buildTeams(players: Array<Player>): Array<Team> {
 
   if (players.length === 32) {
     // for now we just support a tournament with 16 teams
-    for (let i = 0; i < players.length; i += 2) {
-      let p1 = players[i];
-      let p2 = players[i + 1];
 
-      teams.push({
-        name: createTeamName(p1.displayName, p2.displayName),
-        player1: p1,
-        player2: p2,
-        wonSets: 0,
-        imageUrl: ''
+    const playerGroups = groupPlayerBasedOnElos(players, PlayerService.getCurrentEloRanking());
+
+    for (let index = 0; index < playerGroups.length / 2; index++) {
+      let group = playerGroups[index];
+      let reverseGroup = playerGroups[playerGroups.length - index - 1];
+      group.forEach(p1 => {
+        let p2 = reverseGroup[rnd(reverseGroup.length)];
+
+        teams.push({
+          name: createTeamName(p1.displayName, p2.displayName),
+          player1: p1,
+          player2: p2,
+          wonSets: 0,
+          imageUrl: ''
+        });
       });
     }
   }
@@ -66,17 +90,24 @@ function buildTeams(players: Array<Player>): Array<Team> {
   return teams;
 }
 
+function createTeamsRecursive(teams: Array<Team>, index: number = 0): void {
+  if (index >= teams.length) {
+    return;
+  }
+
+  PlayerService.createTeam(teams[index])
+    .then(() => createTeamsRecursive(teams, index + 1))
+    .catch(err => {
+      alert('Unerwarteter Fehler!/n' + err.json());
+    });
+}
+
 function tournamentAdmin({ participants, addPlayer, removePlayer, startTournament }: InternalTournamentAdminProps) {
   const tournamentReady = participants.length === 32;
 
   const buildTeamsAndStartTournament = () => {
     if (tournamentReady) {
-      const createTeamPromises = buildTeams(participants).map(PlayerService.createTeam);
-      Promise.all(createTeamPromises).then(() => {
-        startTournament();
-      }).catch(err => {
-        alert('Unerwarteter Fehler!/n' + JSON.stringify(err));
-      });
+      createTeamsRecursive(buildTeams(participants));
     }
   };
 
