@@ -19,7 +19,7 @@
 
 .player-selection .player.marked .player-icon {
   box-sizing: border-box;
-  padding: 1%;
+  padding: 0.4rem;
   background-color: #4EB4F9;
 }
 

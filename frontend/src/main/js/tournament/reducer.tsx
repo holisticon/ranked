@@ -15,6 +15,11 @@ export function tournament(
   switch (tournamentAction.type) {
     case Actions.ADD_PARTICIPANT:
       let addAction = tournamentAction as Actions.AddParticipant;
+      if (state.tournamentParticipants.some(player => player.id === addAction.player.id)) {
+        // player was already selected
+        return state;
+      }
+
       return copyAndSet(state, ((copyState: TournamentStoreState)  => {
         copyState.tournamentParticipants.push(addAction.player);
       }));
