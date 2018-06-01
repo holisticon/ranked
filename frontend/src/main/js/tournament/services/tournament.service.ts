@@ -21,10 +21,6 @@ export namespace TournamentService {
     return allTeams.find(team => team.id === teamId);
   }
 
-  function getTeamForImageName(imageName: string): Team | undefined {
-    return allTeams.find(team => team.imageUrl.endsWith(imageName));
-  }
-
   function getTeamForPlayers(players: {player1: string, player2: string}): Team | undefined {
     return allTeams.find(team =>
       team.player1.id === players.player1 && team.player2.id === players.player2 ||
