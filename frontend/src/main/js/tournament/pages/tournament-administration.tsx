@@ -11,6 +11,7 @@ interface InternalTournamentAdminProps {
   participants: Array<Player>;
   addPlayer: () => void;
   removePlayer: (player: Player) => void;
+  startTournament: () => void;
 }
 
 /*function stopEvent(event: React.SyntheticEvent<Object>): boolean {
@@ -38,7 +39,7 @@ function renderPlayerIcons(players: Array<Player>, removePlayer: (player: Player
   });
 }
 
-function tournamentAdmin({ participants, addPlayer, removePlayer }: InternalTournamentAdminProps) {
+function tournamentAdmin({ participants, addPlayer, removePlayer, startTournament }: InternalTournamentAdminProps) {
   const tournamentReady = participants.length === 32;
 
   return (
@@ -56,7 +57,12 @@ function tournamentAdmin({ participants, addPlayer, removePlayer }: InternalTour
         { renderPlayerIcons(participants, removePlayer) }
       </div>
 
-      {/* <input type="button" className="button" value="Teams erstellen" /> */}
+      <div
+        className={'button' + (tournamentReady ? '' : ' disabled')}
+        onClick={ () => tournamentReady && startTournament() }
+      >
+        <span>Turnier starten</span>
+      </div>
 
       <div className="footer">
         <div className="dome" />
@@ -79,6 +85,9 @@ export function mapDispatchToProps(dispatch: Dispatch<Actions.TournamentAction>)
     },
     removePlayer: (player: Player) => {
       dispatch(Actions.removeParticipant(player));
+    },
+    startTournament: () => {
+      return;
     }
   };
 }
