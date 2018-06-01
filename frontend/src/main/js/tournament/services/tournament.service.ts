@@ -86,14 +86,14 @@ export namespace TournamentService {
         .then(() => {
             numberOfTeams = 16;
             matchesSubject.next([
-              { id: 1, team1: getTeamForImageName('germany.png'), team2: getTeamForImageName('sweden.png') },
-              { id: 2, team1: getTeamForImageName('russia.png'), team2: getTeamForImageName('uruguay.png') },
-              { id: 3, team1: getTeamForImageName('portugal.png'), team2: getTeamForImageName('spain.png') },
-              { id: 4, team1: getTeamForImageName('wallis_and_futuna.png'), team2: getTeamForImageName('denmark.png') },
-              { id: 5, team1: getTeamForImageName('argentina.png'), team2: getTeamForImageName('iceland.png') },
-              { id: 6, team1: getTeamForImageName('brazil.png'), team2: getTeamForImageName('switzerland.png') },
-              { id: 7, team1: getTeamForImageName('belgium.png'), team2: getTeamForImageName('england.png') },
-              { id: 8, team1: getTeamForImageName('japan.png'), team2: getTeamForImageName('poland.png') },
+              { id: 1, team1: allTeams[12], team2: allTeams[4] },
+              { id: 2, team1: allTeams[14], team2: allTeams[5] },
+              { id: 3, team1: allTeams[8], team2: allTeams[9] },
+              { id: 4, team1: allTeams[0], team2: allTeams[10] },
+              { id: 5, team1: allTeams[7], team2: allTeams[6] },
+              { id: 6, team1: allTeams[1], team2: allTeams[2] },
+              { id: 7, team1: allTeams[11], team2: allTeams[15] },
+              { id: 8, team1: allTeams[3], team2: allTeams[13] },
               { id: 9 },
               { id: 10 },
               { id: 11 },

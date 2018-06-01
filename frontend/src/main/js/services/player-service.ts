@@ -11,4 +11,13 @@ export namespace PlayerService {
     return axios.get('/view/teams')
       .then(res => (res.data as Array<TeamData>).map(data => new Team(data)));
   }
+
+  export function createTeam(team: Team): Promise<any> {
+    return axios.post('/command/team', {
+      name: team.name,
+      imageUrl: team.imageUrl,
+      player1Name: team.player1.userName.value,
+      player2Name: team.player2.userName.value
+    });
+  }
 }
