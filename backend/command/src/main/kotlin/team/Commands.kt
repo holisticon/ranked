@@ -21,11 +21,11 @@ data class CreateTeam(
    * @param id id visible to be able to test the eventing, defaults to UUID
    * @param imageUrl url where an icon for the team is located
    */
-  constructor(name: String, imageUrl: String, id: String = UUID.randomUUID().toString()) : this(
+  constructor(name: String, imageUrl: String, id: String = UUID.randomUUID().toString(), player1Name: String? = null, player2Name: String? = null) : this(
     name = name,
     team = Team(
-      player1 = UserName(name + "_player1"),
-      player2 = UserName(name + "_player2")
+      player1 = UserName(if(player1Name != null) player1Name else name + "_player1"),
+      player2 = UserName(if(player2Name != null) player2Name else name + "_player2")
     ),
     id = id,
     imageUrl = imageUrl

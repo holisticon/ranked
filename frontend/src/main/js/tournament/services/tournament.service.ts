@@ -86,14 +86,14 @@ export namespace TournamentService {
         .then(() => {
             numberOfTeams = 16;
             matchesSubject.next([
-              { id: 1, team1: getTeamForTeamName('foo1'), team2: getTeamForTeamName('bar1') },
-              { id: 2, team1: getTeamForTeamName('foo2'), team2: getTeamForTeamName('bar2') },
-              { id: 3, team1: getTeamForTeamName('foo3'), team2: getTeamForTeamName('bar3') },
-              { id: 4, team1: getTeamForTeamName('foo4'), team2: getTeamForTeamName('bar4') },
-              { id: 5, team1: getTeamForTeamName('foo5'), team2: getTeamForTeamName('bar5') },
-              { id: 6, team1: getTeamForTeamName('foo6'), team2: getTeamForTeamName('bar6') },
-              { id: 7, team1: getTeamForTeamName('foo7'), team2: getTeamForTeamName('bar7') },
-              { id: 8, team1: getTeamForTeamName('foo8'), team2: getTeamForTeamName('bar8') },
+              { id: 1, team1: allTeams[12], team2: allTeams[4] },
+              { id: 2, team1: allTeams[14], team2: allTeams[5] },
+              { id: 3, team1: allTeams[8], team2: allTeams[9] },
+              { id: 4, team1: allTeams[0], team2: allTeams[10] },
+              { id: 5, team1: allTeams[7], team2: allTeams[6] },
+              { id: 6, team1: allTeams[1], team2: allTeams[2] },
+              { id: 7, team1: allTeams[11], team2: allTeams[15] },
+              { id: 8, team1: allTeams[3], team2: allTeams[13] },
               { id: 9 },
               { id: 10 },
               { id: 11 },

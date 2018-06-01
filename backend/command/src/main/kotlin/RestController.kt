@@ -84,7 +84,7 @@ class CommandApi(val commandGateway: CommandGateway) {
     var response: ResponseEntity<String> = ResponseEntity.noContent().build()
 
     commandGateway.send(
-      command = CreateTeam(teamInfo.name, teamInfo.imageUrl),
+      command = CreateTeam(name = teamInfo.name, imageUrl = teamInfo.imageUrl, player1Name = teamInfo.player1Name, player2Name = teamInfo.player2Name),
       success = { _, _: Any -> logger.debug { "Successfully created a team ${teamInfo.name}" } },
       failure = { _, cause: Throwable ->
         logger.error { "Failure by submitting a team: ${cause.localizedMessage}" }
@@ -97,6 +97,8 @@ class CommandApi(val commandGateway: CommandGateway) {
 
   data class TeamInfo(
     val name: String,
-    val imageUrl: String
+    val imageUrl: String,
+    val player1Name: String?,
+    val player2Name: String?
   )
 }
