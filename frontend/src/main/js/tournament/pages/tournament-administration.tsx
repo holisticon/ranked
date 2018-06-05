@@ -74,7 +74,9 @@ function buildTeams(players: Array<Player>): Array<Team> {
       let group = playerGroups[index];
       let reverseGroup = playerGroups[playerGroups.length - index - 1];
       group.forEach(p1 => {
-        let p2 = reverseGroup[rnd(reverseGroup.length)];
+        let p2Index = rnd(reverseGroup.length);
+        let p2 = reverseGroup[p2Index];
+        reverseGroup.splice(p2Index, 1);
 
         teams.push({
           name: createTeamName(p1.displayName, p2.displayName),
@@ -90,12 +92,12 @@ function buildTeams(players: Array<Player>): Array<Team> {
   return teams;
 }
 
-function createTeamsRecursive(teams: Array<Team>, index: number = 0): void {
+function createTeamsRecursive(teams: Array<Team>, index: number = 0): Promise<void> {
   if (index >= teams.length) {
-    return;
+    return Promise.resolve();
   }
 
-  PlayerService.createTeam(teams[index])
+  return PlayerService.createTeam(teams[index])
     .then(() => createTeamsRecursive(teams, index + 1))
     .catch(err => {
       alert('Unerwarteter Fehler!/n' + err.json());
@@ -107,7 +109,8 @@ function tournamentAdmin({ participants, addPlayer, removePlayer, startTournamen
 
   const buildTeamsAndStartTournament = () => {
     if (tournamentReady) {
-      createTeamsRecursive(buildTeams(participants));
+      createTeamsRecursive(buildTeams(participants))
+        .then(() => startTournament());
     }
   };
 
