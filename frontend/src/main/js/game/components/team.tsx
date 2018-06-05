@@ -30,7 +30,9 @@ function stopEvent(event: React.SyntheticEvent<Object>): boolean {
   return true;
 }
 
-function renderPlayerIcons({ team, composition, showSwitchPlayerButtons, selectPlayer, switchPlayerPositions }: InternalTeamProps) {
+function renderPlayerIcons(
+  { team, composition, showSwitchPlayerButtons, selectPlayer, switchPlayerPositions }: InternalTeamProps
+) {
   return (
     <div>
       <div
@@ -74,7 +76,7 @@ function renderPlayerIcons({ team, composition, showSwitchPlayerButtons, selectP
       <div>
         { Config.showTeamName ?
           <span className="team-name">{team.name || ''}</span> :
-          <span> </span>
+          <span />
         }
       </div>
     </div>
@@ -83,8 +85,9 @@ function renderPlayerIcons({ team, composition, showSwitchPlayerButtons, selectP
 
 function renderTeamIcon( {team, composition, selectTeam }: InternalTeamProps ) {
   return(
-    <div className="add-team"
-         onClick={ (e) => stopEvent(e) && selectTeam(composition.team) }
+    <div 
+      className="add-team"
+      onClick={ (e) => stopEvent(e) && selectTeam(composition.team) }
     >
       { team.imageUrl ?
         <img src={ team.imageUrl } /> :
@@ -92,7 +95,7 @@ function renderTeamIcon( {team, composition, selectTeam }: InternalTeamProps ) {
       }
       { Config.showTeamName ?
         <span className="team-name">{team.name || 'Team'}</span> :
-        <span> </span>
+        <span />
       }
     </div>
   );
