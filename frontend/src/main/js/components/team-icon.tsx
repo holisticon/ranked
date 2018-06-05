@@ -20,14 +20,12 @@ export class TeamIcon extends React.Component<TeamIconProps, any> {
             <PlayerIcon
               click={() => { return; } }
               img={ this.props.team.player1.imageUrl }
-              name={ this.props.team.player1.displayName }
             />
           </div>
           <div className="half">
             <PlayerIcon
               click={() => { return; } }
               img={ this.props.team.player2.imageUrl }
-              name={ this.props.team.player2.displayName }
             />
           </div>
         </div>
