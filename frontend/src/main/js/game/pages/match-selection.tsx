@@ -6,7 +6,7 @@ import { push } from 'react-router-redux';
 import { PartialStoreState } from '../store.state';
 import { TournamentService } from '../../tournament/services/tournament.service';
 import './match-selection.css';
-import { PlayerIcon } from '../../components/player-icon';
+import { TeamIcon } from '../../components/team-icon';
 
 export interface MatchSelectionProps {
   startMatch: (team1: Team, team2: Team) => void;
@@ -59,7 +59,7 @@ class MatchSelection extends React.Component<MatchSelectionProps, MatchSelection
             <div className="winner-container">
               <div className="winner">
                 <div className="image-container">
-                  <PlayerIcon img={tournamentWinner.imageUrl} click={() => { return; } } />
+                  <TeamIcon team={ tournamentWinner } />
                 </div>
                 <div className="name-container">{tournamentWinner.name}</div>
               </div>
