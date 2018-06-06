@@ -21,12 +21,16 @@ import { Seacon } from './seacon';
 import TournamentAdminPage from './tournament/pages/tournament-administration';
 import { tournament } from './tournament/reducer';
 import TournamentPlayerSelection from './tournament/pages/tournament-player-selection';
+import { AutosaveService } from './game/services/autosave.service';
 
 // Create a history of your choosing (we're using a browser history in this case)
 const history = createHistory();
 
 // Build the middleware for intercepting and dispatching navigation actions
 const middleware = routerMiddleware(history);
+
+// build the middleware for autosaving the ranked store state
+const autosaveMiddleware = AutosaveService.autosaveMiddleware();
 
 // Add the reducer to your store on the `router` key
 // Also apply our middleware for navigating
@@ -36,7 +40,7 @@ const store = createStore(
     tournament,
     router: routerReducer
   }),
-  applyMiddleware(middleware)
+  applyMiddleware(middleware, autosaveMiddleware)
 );
 
 class Ranked extends React.Component<{}, { initialized: boolean }> {
