@@ -1,4 +1,5 @@
 import { Player } from '../types/types';
+import { AutosaveService } from '../game/services/autosave.service';
 
 export interface PartialStoreState {
   tournament: TournamentStoreState;
@@ -10,7 +11,10 @@ export interface TournamentStoreState {
 }
 
 export function defaultState(): TournamentStoreState {
-  return {
+  const saved = AutosaveService.loadStateFromLocalStorage('tournament');
+
+  // just use the saved participants, not the saved players
+  return saved || {
     tournamentParticipants: [],
     availablePlayers: []
   };
