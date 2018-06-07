@@ -1,6 +1,6 @@
 import * as React from 'react';
 import './tournament-tree.css';
-import { TorunamentMatch } from '../../types/types';
+import { TorunamentMatch, NonPlayingTeamId } from '../../types/types';
 import { TournamentService } from '../services/tournament.service';
 import { TeamIcon } from '../../components/team-icon';
 
@@ -25,8 +25,10 @@ export class TournamentTree extends React.Component<any, TournamentTreeState> {
       <div className={containerClasses}>
         {
           matches.map((match, i) => {
+            let spare = !!match.team1 && match.team1!!.id === NonPlayingTeamId ||
+                        !!match.team2 && match.team2!!.id === NonPlayingTeamId;
             return (
-              <div key="i" className={'tournament-match' + (!match.winner ? '' : ' decided')}>
+              <div key="i" className={'tournament-match' + (!match.winner ? '' : ' decided') + (spare ? ' spare' : '')}>
                 {
                   !match.team1 && !match.team2 ?
                     <div className="default">tbd</div> :

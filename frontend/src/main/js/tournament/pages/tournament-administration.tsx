@@ -46,16 +46,23 @@ function createTeamName(player1Name: string, player2Name: string): string {
 
 function groupPlayerBasedOnElos(players: Array<Player>, elos: {[playerId: string]: number}): Array<Array<Player>> {
   const sorted = players.sort((p1, p2) => elos[p2.id] - elos[p1.id]);
+  const firstAndLastTeamSize = (Math.floor(players.length / 4) % 2 === 0 ? 0 : 2) + (players.length % 4 === 0 ? 0 : 1);
 
-  return sorted.reduce(
-    (groups, player, index) => {
-      let i = Math.floor(index / 4);
-      groups[i] = groups[i] || [];
-      groups[i].push(player);
-      return groups;
-    },
-    [] as Array<Array<Player>>
-  );
+  const groups = [] as Array<Array<Player>>;
+
+  if (firstAndLastTeamSize > 0) {
+    groups.push(sorted.slice(0, firstAndLastTeamSize));
+  }
+
+  for (let i = firstAndLastTeamSize; i < sorted.length - firstAndLastTeamSize; i += 4) {
+    groups.push(sorted.slice(i, i + 4));
+  }
+
+  if (firstAndLastTeamSize > 0) {
+    groups.push(sorted.slice(-firstAndLastTeamSize));
+  }
+
+  return groups;
 }
 
 function rnd(max: number): number {
@@ -65,9 +72,7 @@ function rnd(max: number): number {
 function buildTeams(players: Array<Player>): Array<Team> {
   const teams: Array<Team> = [];
 
-  if (players.length === 32) {
-    // for now we just support a tournament with 16 teams
-
+  if (players.length % 2 === 0) {
     const playerGroups = groupPlayerBasedOnElos(players, PlayerService.getCurrentEloRanking());
 
     for (let index = 0; index < playerGroups.length / 2; index++) {
@@ -105,20 +110,18 @@ function createTeamsRecursive(teams: Array<Team>, index: number = 0): Promise<vo
 }
 
 function tournamentAdmin({ participants, addPlayer, removePlayer, startTournament }: InternalTournamentAdminProps) {
-  const tournamentReady = participants.length === 32;
+  const tournamentFull = participants.length === 32;
 
   const buildTeamsAndStartTournament = () => {
-    if (tournamentReady) {
-      createTeamsRecursive(buildTeams(participants))
-        .then(() => startTournament());
-    }
+    createTeamsRecursive(buildTeams(participants))
+      .then(() => startTournament());
   };
 
   return (
     <div className="tournament-admin-panel">
       <div className="participants">
         {
-          tournamentReady ?
+          tournamentFull ?
           null :
           <div className="add-player" onClick={ () => addPlayer() }>
             <div className="icon-container">
@@ -130,7 +133,7 @@ function tournamentAdmin({ participants, addPlayer, removePlayer, startTournamen
       </div>
 
       <div
-        className={'button' + (tournamentReady ? '' : ' disabled')}
+        className={'button'}
         onClick={ () => buildTeamsAndStartTournament() }
       >
         <span>Turnier starten</span>
