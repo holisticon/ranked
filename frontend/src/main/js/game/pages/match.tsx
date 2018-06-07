@@ -138,7 +138,7 @@ function Match({ setNumber, winner, sets, team1, team2, startNewMatch, routeBack
             },
             {
               text: 'Korrektur', type: 'warn', click: () => {
-                loadState(AutosaveService.getLastState());
+                loadState(AutosaveService.getLastState('ranked'));
               }
             }
           ]}
