@@ -109,8 +109,34 @@ function createTeamsRecursive(teams: Array<Team>, index: number = 0): Promise<vo
     });
 }
 
+let showButton = false;
+function handleKeyDown(event: KeyboardEvent): void {
+  if (event.ctrlKey && event.key === 'k') {
+    showButton = true;
+    removeKeyDownHandler();
+  }
+}
+
+let handlerAdded: boolean = false;
+
+function addKeyDownHandler(): void {
+  if (!handlerAdded) {
+    document.addEventListener('keydown', handleKeyDown);
+    handlerAdded = true;
+  }
+}
+
+function removeKeyDownHandler(): void {
+  if (handlerAdded) {
+    document.removeEventListener('keydown', handleKeyDown);
+    handlerAdded = false;
+  }
+}
+
 function tournamentAdmin({ participants, addPlayer, removePlayer, startTournament }: InternalTournamentAdminProps) {
   const tournamentFull = participants.length === 32;
+
+  addKeyDownHandler();
 
   const buildTeamsAndStartTournament = () => {
     createTeamsRecursive(buildTeams(participants))
@@ -132,12 +158,15 @@ function tournamentAdmin({ participants, addPlayer, removePlayer, startTournamen
         { renderPlayerIcons(participants, removePlayer) }
       </div>
 
-      <div
-        className={'button'}
-        onClick={ () => buildTeamsAndStartTournament() }
-      >
-        <span>Turnier starten</span>
-      </div>
+      {
+        (showButton || tournamentFull) &&
+        <div
+          className={'button'}
+          onClick={ () => buildTeamsAndStartTournament() }
+        >
+          <span>Turnier starten</span>
+        </div>
+      }
 
       <div className="footer">
         <div className="dome" />
