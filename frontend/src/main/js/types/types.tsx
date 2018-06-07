@@ -72,3 +72,5 @@ export type TorunamentMatch = {
   team1Goals?: number,
   team2Goals?: number
 };
+
+export const NonPlayingTeamId = 'NPT';
