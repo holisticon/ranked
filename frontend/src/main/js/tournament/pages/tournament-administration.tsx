@@ -44,8 +44,12 @@ function createTeamName(player1Name: string, player2Name: string): string {
   return player1Name.substr(0, 3).trim() + player2Name.substr(0, 3).trim();
 }
 
+function elo(knownElos: {[playerId: string]: number}, id: string): number {
+  return knownElos[id] || 1000;
+}
+
 function groupPlayerBasedOnElos(players: Array<Player>, elos: {[playerId: string]: number}): Array<Array<Player>> {
-  const sorted = players.sort((p1, p2) => elos[p2.id] - elos[p1.id]);
+  const sorted = players.sort((p1, p2) => elo(elos, p2.id) - elo(elos, p1.id));
   const firstAndLastTeamSize = (Math.floor(players.length / 4) % 2 === 0 ? 0 : 2) + (players.length % 4 === 0 ? 0 : 1);
 
   const groups = [] as Array<Array<Player>>;
