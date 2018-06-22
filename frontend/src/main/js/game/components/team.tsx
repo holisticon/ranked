@@ -30,7 +30,9 @@ function stopEvent(event: React.SyntheticEvent<Object>): boolean {
   return true;
 }
 
-function renderPlayerIcons({ team, composition, showSwitchPlayerButtons, selectPlayer, switchPlayerPositions }: InternalTeamProps) {
+function renderPlayerIcons(
+  { team, composition, showSwitchPlayerButtons, selectPlayer, switchPlayerPositions }: InternalTeamProps
+) {
   return (
     <div>
       <div
@@ -46,7 +48,7 @@ function renderPlayerIcons({ team, composition, showSwitchPlayerButtons, selectP
               name={ team[composition.defense].displayName }
             />
         }
-        <span className="name">Tor</span>
+        <span className="name">{ !team[composition.defense].displayName ? 'Tor' : '' }</span>
       </div>
 
       <div
@@ -69,7 +71,13 @@ function renderPlayerIcons({ team, composition, showSwitchPlayerButtons, selectP
               name={ team[composition.attack].displayName }
             />
         }
-        <span className="name">Angriff</span>
+        <span className="name">{ !team[composition.attack].displayName ? 'Angriff' : '' }</span>
+      </div>
+      <div>
+        { Config.showTeamName ?
+          <span className="team-name">{team.name || ''}</span> :
+          <span />
+        }
       </div>
     </div>
   );
@@ -77,14 +85,18 @@ function renderPlayerIcons({ team, composition, showSwitchPlayerButtons, selectP
 
 function renderTeamIcon( {team, composition, selectTeam }: InternalTeamProps ) {
   return(
-    <div className="add-team"
-         onClick={ (e) => stopEvent(e) && selectTeam(composition.team) }
+    <div 
+      className="add-team"
+      onClick={ (e) => stopEvent(e) && selectTeam(composition.team) }
     >
       { team.imageUrl ?
         <img src={ team.imageUrl } /> :
         <i className="material-icons">&#xE7FB;</i>
       }
-      <span className="team-name">{ team.name || 'Team' }</span>
+      { Config.showTeamName ?
+        <span className="team-name">{team.name || 'Team'}</span> :
+        <span />
+      }
     </div>
   );
 }

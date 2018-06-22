@@ -1,4 +1,5 @@
 import { Player, TeamColor, PlayerKey, TeamKey, Team } from '../types/types';
+import { RankedStore } from './store.state';
 
 export const INC_GOALS = 'INC_GOALS';
 export const DEC_GOALS = 'DEC_GOALS';
@@ -10,6 +11,7 @@ export const START_NEW_MATCH = 'START_NEW_MATCH';
 export const UPDATE_AVAILABLE_PLAYERS = 'UPDATE_AVAILABLE_PLAYERS';
 export const UPDATE_AVAILABLE_TEAMS = 'UPDATE_AVAILABLE_TEAMS';
 export const COUNTDOWN_EXPIRED = 'COUNTDOWN_EXPIRED';
+export const LOAD_STATE = 'LOAD_STATE';
 
 export type RankedAction = 
   IncGoals | DecGoals | SelectEntity | SetPlayer | SetTeam | SwitchPlayerPositions | StartNewMatch | CountdownExpired;
@@ -64,6 +66,11 @@ export interface UpdateAvailableTeams {
 
 export interface CountdownExpired {
   type: string;
+}
+
+export interface LoadState {
+  type: string;
+  state: RankedStore;
 }
 
 export function incGoals(team: TeamColor): IncGoals {
@@ -135,5 +142,12 @@ export function updateAvailableTeams(teams: Array<Team>): UpdateAvailableTeams {
 export function countdownExpired(): CountdownExpired {
   return {
     type: COUNTDOWN_EXPIRED
+  };
+}
+
+export function loadState(state: RankedStore): LoadState {
+  return {
+    type: LOAD_STATE,
+    state
   };
 }

@@ -5,13 +5,13 @@ export abstract class PlayerData {
 }
 
 export class Player extends PlayerData {
+  public id: string;
+
   public constructor(data: PlayerData) {
     super();
     Object.assign(this, data);
-  }
 
-  public get id(): string {
-    return this.userName ? this.userName.value : '';
+    this.id = this.userName ? this.userName.value : '';
   }
 }
 
@@ -72,3 +72,5 @@ export type TorunamentMatch = {
   team1Goals?: number,
   team2Goals?: number
 };
+
+export const NonPlayingTeamId = 'NPT';

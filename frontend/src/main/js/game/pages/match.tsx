@@ -6,10 +6,12 @@ import * as Actions from '../actions';
 import axios from 'axios';
 import { Dialog } from '../../components/dialog';
 import './match.css';
-import { PartialStoreState } from '../store.state';
+import { PartialStoreState, RankedStore } from '../store.state';
 import PanelComponent from '../components/panel';
 import { TimerService } from '../services/timer.service';
 import { Config } from '../../config';
+import { push } from 'react-router-redux';
+import { AutosaveService } from '../services/autosave.service';
 
 export interface MatchProps {
   sets: Sets;
@@ -18,6 +20,8 @@ export interface MatchProps {
   setNumber: number;
   winner: TeamKey | null;
   startNewMatch: () => void;
+  routeBack: () => void;
+  loadState: (state: RankedStore) => void;
 }
 
 function getTeam(set: Set, team: TeamKey): Composition {
@@ -105,13 +109,24 @@ function allPlayersSet(team1: Team, team2: Team): boolean {
 
 function getDialogMessage(winner: TeamKey, team1: Team, team2: Team): string {
   if (allPlayersSet(team1, team2)) {
-      return 'Ganz großes Kino, ' + getMatchWinnersAsString(winner === 'team1' ? team1 : team2) + '!';
+      return 'Ganz großes Kino, ' + getMatchWinnersAsString(winner === 'team1' ? team1 : team2) + '!' + 
+             ' Das Spielergebnis wird jetzt übermittelt.';
   } else {
     return 'Tolles Spiel! Zum Übermitteln der Ergebnisse müssen die Spieler vorab festgelegt werden.';
   }
 }
 
-function Match({ setNumber, winner, sets, team1, team2, startNewMatch }: MatchProps) {
+function correctResults(loadState: (state: RankedStore) => void): void {
+  if (Config.timedMatchMode) {
+    // give the user 10 second to correct the results
+    TimerService.resetCountdown(10);
+    TimerService.start();
+  }
+
+  loadState(AutosaveService.getLastState('ranked'));
+}
+
+function Match({ setNumber, winner, sets, team1, team2, startNewMatch, routeBack, loadState }: MatchProps) {
 
   if (winner) {
     TimerService.pause();
@@ -123,12 +138,17 @@ function Match({ setNumber, winner, sets, team1, team2, startNewMatch }: MatchPr
         winner &&
         <Dialog
           headline="Spiel beendet"
-          text={getDialogMessage(winner, team1, team2)}
+          text={ getDialogMessage(winner, team1, team2) }
           buttons={[
             {
               text: 'OK!', type: 'ok', click: () => {
                 sendResults(sets, team1, team2);
                 startNewMatch();
+              }
+            },
+            {
+              text: 'Korrektur', type: 'warn', click: () => {
+                correctResults(loadState);
               }
             }
           ]}
@@ -170,7 +190,9 @@ export function mapStateToProps({ ranked: { selectFor, team1, team2, sets } }: P
 
 export function mapDispatchToProps(dispatch: Dispatch<Actions.RankedAction>) {
   return {
-    startNewMatch: () => dispatch(Actions.startNewMatch())
+    startNewMatch: () => dispatch(Actions.startNewMatch()),
+    routeBack: () => dispatch(push('/selectMatch')),
+    loadState: (state: RankedStore) => dispatch(Actions.loadState(state))
   };
 }
 

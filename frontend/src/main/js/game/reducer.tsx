@@ -110,6 +110,9 @@ function startNewSet(state: RankedStore): RankedStore {
 export function ranked(state: RankedStore, rankedAction: Actions.RankedAction): RankedStore {
   let action;
   switch (rankedAction.type) {
+    case Actions.LOAD_STATE:
+      return (rankedAction as Actions.LoadState).state;
+
     case Actions.INC_GOALS:
       action = rankedAction as Actions.IncGoals;
       const newState = changeGoals(state, action.team, 1);

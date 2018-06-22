@@ -1,0 +1,135 @@
+.tournament-admin-panel {
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  position: absolute;
+  padding: 2rem 1rem 0 1rem;
+  box-sizing: border-box;
+}
+
+.tournament-admin-panel .participants {
+  display: inline-block;
+  width: 100%;
+  height: auto;
+  padding-bottom: 6rem;
+}
+
+.tournament-admin-panel .add-player .material-icons {
+  font-size: 6rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: bold;
+  opacity: 0.6;
+}
+
+.tournament-admin-panel .participant, .tournament-admin-panel .add-player {
+  width: 10.5%;
+  height: auto;
+  float: left;
+  position: relative;
+  margin: 0 0 2% 2%;
+  border: 0.4rem solid transparent;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.tournament-admin-panel .player-icon {
+  width: 100%;
+  height: auto;
+  position: relative;
+}
+
+.tournament-admin-panel .player-icon .player-image, .tournament-admin-panel .add-player .icon-container {
+  height: 0;
+  padding: 50% 0;
+  position: relative;
+}
+
+.tournament-admin-panel .participant:hover {
+  border-color: #FF2D55;
+}
+
+.tournament-admin-panel .participant:hover .remove-player {
+  display: block;
+}
+
+.tournament-admin-panel .participant .remove-player {
+  display: none;
+  box-sizing: border-box;
+  position: absolute;
+  top: -0.05rem; /* to avoid gaps because of rounding */
+  right: -0.05rem;
+  width: 40%;
+  height: auto;
+}
+
+.tournament-admin-panel .participant .remove-player .corner {
+  width: 100%;
+  height: 0;
+  padding: 50% 0;
+  background: linear-gradient(to top right, rgba(0,0,0,0.01) 0%, rgba(0,0,0,0.01) 50%, #FF2D55 50%, #FF2D55 100%);
+}
+
+.tournament-admin-panel .participant .remove-player .material-icons {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: white;
+  position: absolute;
+  top: 30%;
+  right: 30%;
+  transform: translate(50%, -50%);
+}
+
+.tournament-admin-panel .button {
+  position: fixed;
+  bottom: 8%;
+  left: 50%;
+  font-size: 1.6rem;
+  letter-spacing: 0.1rem;
+  transform: translateX(-50%);
+  border-radius: 0.7rem;
+  padding: 0.5rem 3.5rem;
+  z-index: 5;
+  cursor: pointer;
+  color: #F9F9F9;
+  background-color: #4EB4F9;
+  border: 0.1rem solid rgba(0, 0, 0, 0.4);
+}
+
+.tournament-admin-panel .button.disabled {
+  color: #A8A8A8;
+  background-color: #F0F0F0;
+  border-color: #E2E2E2;
+  cursor: not-allowed;
+}
+
+.tournament-admin-panel .footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 6rem;
+  background-color: #FF2D55;
+  overflow: hidden;
+}
+
+.tournament-admin-panel .footer .dome {
+  position: absolute;
+  left: -10%;
+  top: -230%;
+  height: 300%;
+  width: 120%;
+  border-radius: 0 0 50% 50%;
+  background-color: white;
+}
+
+.tournament-admin-panel .footer .tag {
+  color: white;
+  font-size: 0.8rem;
+  font-weight: 300;
+  position: absolute;
+  right: 0.5rem;
+  bottom: 0.3rem;
+}

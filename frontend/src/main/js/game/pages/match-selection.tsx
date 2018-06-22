@@ -3,11 +3,10 @@ import { connect, Dispatch } from 'react-redux';
 import * as Actions from '../actions';
 import { TorunamentMatch, Team } from '../../types/types';
 import { push } from 'react-router-redux';
-import './player-selection.css';
 import { PartialStoreState } from '../store.state';
 import { TournamentService } from '../../tournament/services/tournament.service';
 import './match-selection.css';
-import { PlayerIcon } from '../../components/player-icon';
+import { TeamIcon } from '../../components/team-icon';
 
 export interface MatchSelectionProps {
   startMatch: (team1: Team, team2: Team) => void;
@@ -18,11 +17,11 @@ interface MatchSelectionState {
 }
 
 class MatchSelection extends React.Component<MatchSelectionProps, MatchSelectionState> {
-  
+
   constructor(props: MatchSelectionProps) {
     super(props);
     this.state = { openMatches: [] };
-    
+
     TournamentService.init();
     TournamentService.getOpenMatches()
       .subscribe(openMatches => this.setState({ openMatches }));
@@ -60,7 +59,7 @@ class MatchSelection extends React.Component<MatchSelectionProps, MatchSelection
             <div className="winner-container">
               <div className="winner">
                 <div className="image-container">
-                  <PlayerIcon img={tournamentWinner.imageUrl} click={() => { return; } } />
+                  <TeamIcon team={ tournamentWinner } />
                 </div>
                 <div className="name-container">{tournamentWinner.name}</div>
               </div>
@@ -79,9 +78,7 @@ export function mapStateToProps({ ranked: { } }: PartialStoreState) {
 export function mapDispatchToProps(dispatch: Dispatch<Actions.RankedAction>) {
   return {
     startMatch: (team1: Team, team2: Team) => {
-      dispatch(Actions.selectEntity('team1'));
       dispatch(Actions.setTeam('team1', team1));
-      dispatch(Actions.selectEntity('team2'));
       dispatch(Actions.setTeam('team2', team2));
       dispatch(push('/'));
     },

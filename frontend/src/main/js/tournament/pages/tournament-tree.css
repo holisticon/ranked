@@ -1,3 +1,7 @@
+.ranked {
+  height: 100vh !important;
+}
+
 .tournament-tree {
   width: 50%;
   height: 100vh;
@@ -49,6 +53,10 @@
   text-align: center;
   position: relative;
   height: 10vh;
+}
+
+.tournament-match.spare {
+  visibility: hidden;
 }
 
 .tournament-match::after {
@@ -118,7 +126,7 @@
   max-width: 100%;
   position: relative;
   height: 40%;
-  padding-left: 2rem;
+  padding-left: 2.3em;
   display: inline-block;
 }
 
@@ -126,13 +134,12 @@
   font-weight: 700;
 }
 
-
 .tournament-match .team-name .image-container {
   position: absolute;
   left: 0;
   top: 50%;
-  width: 2rem;
-  height: 1.7rem;
+  width: 2em;
+  height: 1.7em;
   transform: translateY(-50%);
 }
 

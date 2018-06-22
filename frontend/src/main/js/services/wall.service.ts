@@ -24,7 +24,7 @@ export namespace WallService {
     });
 
   export function playedMatches(): Observable<Array<PlayedMatch>> {
-    return matchWall.map(matches => 
+    let m = matchWall.map(matches => 
       matches.map(match => {
         let wonSetsBlue = 0;
         let wonSetsRed = 0;
@@ -42,9 +42,12 @@ export namespace WallService {
             player2: match.teamBlue.player2.value,
             goals: match.matchSets.map(set => set.goalsBlue).reduce((a, b) => a + b, 0)
           },
-          winner: wonSetsBlue > wonSetsRed ? 'team2' : 'team1'
+          winner: wonSetsBlue > wonSetsRed ? 'team2' : 'team1',
+          date: new Date(match.date)
         } as PlayedMatch;
       })
     );
+
+    return m;
   }
 }
