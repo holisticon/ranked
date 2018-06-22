@@ -15,18 +15,8 @@ export namespace PlayerService {
    * JSON.stringify(elos);
    */
   export function getCurrentEloRanking(): { [playerId: string]: number } {
-    return {
-      'romanschloemmer': 1080, 'dierkharbeck': 1073, 'carstensahling': 1062, 'oliverniebsch': 1050, 'jangalinski': 1036,
-      'oliverihns': 1033, 'ennothieleke': 1024, 'tobiasbehr': 1022, 'nilsernsting': 1017, 'christianweinert': 1012,
-      'patrickschalk': 1007, 'stefanzilske': 1005, 'joehm': 1005, 'martinguenther': 1005, 'julianwrastil': 1005,
-      'oliverochs': 1004, 'robinpommerenke': 1004, 'mechtildkniesburges': 1004, 'stefanmerkl': 1004,
-      'simonspruenker': 1002, 'pauldeuster': 1001, 'franziskaknorr': 1001, 'maltesoerensen': 996,
-      'christianneuenstadt': 996, 'inagalinsky': 996, 'klausobst': 996, 'catherinecolombo': 995, 'jochenmeyer': 995,
-      'michaelfritsch': 993, 'timogroeger': 992, 'stefanheldt': 992, 'erikhogrefe': 992, 'jessicakampmann': 992,
-      'leonfausten': 985, 'ferhatayaz': 984, 'christophwolff': 981, 'christophgerkens': 976, 'danielsteinhoefer': 970,
-      'simonzambrovski': 970, 'tobiasstamann': 969, 'detlefvonderthuesen': 964, 'lukastaake': 960, 'wiebkedahl': 959,
-      'thorstenrahlf': 950, 'simonnehls': 946
-    };
+    // tslint:disable-next-line:max-line-length
+    return { 'romanschloemmer': 1084, 'dierkharbeck': 1073, 'carstensahling': 1067, 'oliverniebsch': 1041, 'jangalinski': 1036, 'oliverihns': 1033, 'ennothieleke': 1024, 'tobiasbehr': 1022, 'nilsernsting': 1017, 'patrickschalk': 1016, 'christianweinert': 1012, 'stefanzilske': 1005, 'joehm': 1005, 'martinguenther': 1005, 'julianwrastil': 1005, 'oliverochs': 1004, 'robinpommerenke': 1004, 'mechtildkniesburges': 1004, 'stefanmerkl': 1004, 'simonspruenker': 1002, 'pauldeuster': 1001, 'franziskaknorr': 1001, 'maltesoerensen': 996, 'christianneuenstadt': 996, 'inagalinsky': 996, 'klausobst': 996, 'catherinecolombo': 995, 'jochenmeyer': 995, 'timogroeger': 992, 'erikhogrefe': 992, 'jessicakampmann': 992, 'stefanheldt': 987, 'leonfausten': 985, 'ferhatayaz': 984, 'christophwolff': 981, 'michaelfritsch': 979, 'christophgerkens': 976, 'lukastaake': 970, 'danielsteinhoefer': 970, 'simonzambrovski': 970, 'tobiasstamann': 969, 'detlefvonderthuesen': 964, 'wiebkedahl': 959, 'thorstenrahlf': 950, 'simonnehls': 946 };
   }
 
   export function getAllTeams(): Promise<Array<Team>> {

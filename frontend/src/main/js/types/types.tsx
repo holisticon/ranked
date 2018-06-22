@@ -11,6 +11,9 @@ export class Player extends PlayerData {
     super();
     Object.assign(this, data);
 
+    const i = this.imageUrl.lastIndexOf('/');
+    this.imageUrl = '/img/player/' + this.imageUrl.substr(i + 1);
+
     this.id = this.userName ? this.userName.value : '';
   }
 }

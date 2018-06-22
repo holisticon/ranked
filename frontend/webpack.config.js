@@ -59,7 +59,7 @@ module.exports = {
         contentBase: path.join(__dirname, 'src/main/resources/static'),
         proxy: [{
             context: ["/command", "/view"],
-            target: "http://docker.holisticon.local:11080"
+            target: "http://192.168.43.232:8081"
         }]
     },
 
