@@ -62,7 +62,6 @@ export interface PlayedMatch {
   team1: { player1: string, player2: string, goals: number };
   team2: { player1: string, player2: string, goals: number };
   winner: TeamKey;
-  date: Date;
 }
 
 export type TorunamentMatch = {

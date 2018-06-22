@@ -23,7 +23,7 @@ export namespace WallService {
       observer.next([]);
     });
 
-  export function playedMatches(day?: Date): Observable<Array<PlayedMatch>> {
+  export function playedMatches(): Observable<Array<PlayedMatch>> {
     let m = matchWall.map(matches => 
       matches.map(match => {
         let wonSetsBlue = 0;
@@ -47,12 +47,6 @@ export namespace WallService {
         } as PlayedMatch;
       })
     );
-
-    if (day) {
-      m = m.filter(match => {
-        return match.date === day;
-      });
-    }
 
     return m;
   }
