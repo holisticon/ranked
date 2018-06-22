@@ -116,6 +116,16 @@ function getDialogMessage(winner: TeamKey, team1: Team, team2: Team): string {
   }
 }
 
+function correctResults(loadState: (state: RankedStore) => void): void {
+  if (Config.timedMatchMode) {
+    // give the user 10 second to correct the results
+    TimerService.resetCountdown(10);
+    TimerService.start();
+  }
+
+  loadState(AutosaveService.getLastState('ranked'));
+}
+
 function Match({ setNumber, winner, sets, team1, team2, startNewMatch, routeBack, loadState }: MatchProps) {
 
   if (winner) {
@@ -138,7 +148,7 @@ function Match({ setNumber, winner, sets, team1, team2, startNewMatch, routeBack
             },
             {
               text: 'Korrektur', type: 'warn', click: () => {
-                loadState(AutosaveService.getLastState('ranked'));
+                correctResults(loadState);
               }
             }
           ]}
