@@ -1,4 +1,5 @@
 import * as React from 'react';
+import './heading.css';
 import { Heading } from '../services/heading.service';
 
 export interface HeadingConfig {

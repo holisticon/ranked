@@ -1,0 +1,39 @@
+.header {
+  height: 8rem;
+  width: 100%;
+  padding-top: 1rem;
+  box-sizing: border-box;
+  position: fixed;
+  overflow: hidden;
+  z-index: 10;
+}
+
+.header .background {
+  background-color: #FF2D55;
+  border-radius: 0 0 50% 50%;
+  position: absolute;
+  top: -2rem;
+  left: -1rem;
+  width: calc(100% + 2rem);
+  height: calc(100% + 1rem);
+  z-index: -1;
+  box-shadow: 0px 0.2rem 0.2rem 0px rgba(0,0,0,0.50);
+}
+
+.header .icon {
+  height: 3rem;
+  width: 100%;
+  background-position: top center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.header .title {
+  width: 100%;
+  text-align: center;
+  font-size: 1.3rem;
+  font-weight: bolder;
+  letter-spacing: 0.03rem;
+  padding-top: 0.3rem;
+  color: white;
+}
