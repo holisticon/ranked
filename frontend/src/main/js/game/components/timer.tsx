@@ -57,9 +57,9 @@ export class TimerComponent extends React.Component<TimerProps, TimerState> {
     });
   }
 
-  public resetCountdown(): void {
+  public resetCountdown(countdownTime?: number): void {
     if (this.props.countdown) {
-      this.setState({ countdownTime: this.props.startTime || 0, countdownExpired: false });
+      this.setState({ countdownTime: countdownTime || this.props.startTime || 0, countdownExpired: false });
     }
   }
 

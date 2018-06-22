@@ -1,5 +1,4 @@
 import { Middleware, Action } from 'redux';
-import { COUNTDOWN_EXPIRED } from '../actions';
 
 export namespace AutosaveService {
   let lastState: { [stateKey: string]: any } = {};
@@ -20,10 +19,7 @@ export namespace AutosaveService {
   }
 
   export function getLastState(stateKey: string): any {
-    if (getLastAction(stateKey).type === COUNTDOWN_EXPIRED) {
-      lastState = { ...lastState, suddenDeathMode: true };
-    }
-    return lastState;
+    return lastState[stateKey];
   }
 
   export function getLastAction(stateKey: string): Action {
