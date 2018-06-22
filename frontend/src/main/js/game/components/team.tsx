@@ -7,6 +7,7 @@ import { PlayerIcon } from '../../components/player-icon';
 import { push } from 'react-router-redux';
 import { PartialStoreState } from '../store.state';
 import { Config } from '../../config';
+import { SoundService } from '../../services/sound-service';
 
 export interface TeamProps {
   color: TeamColor;
@@ -104,7 +105,7 @@ function renderTeamIcon( {team, composition, selectTeam }: InternalTeamProps ) {
 function RenderTeam(props: InternalTeamProps) {
 
   return (
-    <div className={ props.classes } onClick={ () => props.incGoals() }>
+    <div className={ props.classes } onClick={ () => { SoundService.playGoalSound(); props.incGoals(); } }>
       <div className="goal-counter-container">
         <Swipeable onSwipeRight={ () => props.incGoals() } onSwipeLeft={ () => props.decGoals() }>
           <div className="goal-counter">
