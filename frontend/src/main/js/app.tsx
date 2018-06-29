@@ -12,6 +12,7 @@ import createHistory from 'history/createBrowserHistory';
 import { Provider } from 'react-redux';
 import { ranked } from './game/reducer';
 import './app.css';
+import 'react-vis/dist/style.css';
 import { Switch } from 'react-router';
 import { ScoreBoard } from './statistics/pages/player-score-board';
 import { Config } from './config';

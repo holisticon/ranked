@@ -18,7 +18,7 @@
 }
 
 .group {
-  margin-bottom: 4rem;
+  margin-bottom: 3rem;
   width: 100%;
   display: inline-block;
   box-sizing: border-box;
@@ -41,4 +41,11 @@
 
 .metric .label {
   font-size: 0.8rem;
+}
+
+.chart {
+  width: 100%;
+  padding-left: 2rem;
+  display: inline-block;
+  box-sizing: border-box;
 }

@@ -6,6 +6,7 @@ import { Player } from '../../types/types';
 import { match as Match } from 'react-router';
 import { HeadingComponent } from '../components/heading';
 import { PlayerService } from '../../services/player-service';
+import { TrendChart } from '../components/trend-chart';
 
 type ProfileState = {
   player: Player;
@@ -53,6 +54,7 @@ export class Profile extends React.Component<any, ProfileState> {
           [new Date('2018-06-10T14:15:24'), 1005],
           [new Date('2018-06-12T09:34:11'), 1008],
           [new Date('2018-06-16T16:17:01'), 1011],
+          // [new Date(), 1009],
         ]
       }
     };
@@ -118,6 +120,12 @@ export class Profile extends React.Component<any, ProfileState> {
             { this.getMetric('Torverhältnis', this.state.playerProfileData.goalStatistics.ratio) }
             { this.getMetric('Durchschnittliche Zeit zum Tor',
                              this.state.playerProfileData.goalStatistics.avgTimeToScore, 'time') }
+          </div>
+          <div className="group">
+            <div className="heading">Elo-Trend</div>
+            <div className="chart">
+              <TrendChart data={ this.state.playerProfileData.eloData } />
+            </div>
           </div>
         </div>
       </div>
