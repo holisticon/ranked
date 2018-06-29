@@ -5,10 +5,10 @@ import { PlayerProfileData } from '../types';
 import { Player } from '../../types/types';
 import { match as Match } from 'react-router';
 import { HeadingComponent } from '../components/heading';
+import { PlayerService } from '../../services/player-service';
 
 type ProfileState = {
   player: Player;
-  playerName: string;
   playerProfileData: PlayerProfileData;
 };
 
@@ -17,13 +17,15 @@ export class Profile extends React.Component<any, ProfileState> {
   constructor(props: any, match: Match<any>) {
     super(props);
 
-    let playerName = '';
+    let playerId = 'romanschloemmer';
 
     if (match && match.params) {
-      playerName = match.params.playerName;
+      playerId = match.params.playerName;
     }
 
-    this.state = { playerName, playerProfileData: this.getPlayerProfileData() } as ProfileState;
+    this.state = { playerProfileData: this.getPlayerProfileData() } as ProfileState;
+
+    PlayerService.getPlayer(playerId).then(player => this.setState({ player }));
   }
 
   private getPlayerProfileData(): PlayerProfileData {
@@ -80,12 +82,20 @@ export class Profile extends React.Component<any, ProfileState> {
     );
   }
 
+  private getPlayersFirstName(): string {
+    return this.state.player.displayName.split(' ')[0];
+  }
+
   public render() {
+    if (!this.state.player) {
+      return null;
+    }
+
     return (
       <div className="profile-page">
         <HeadingComponent
-          title={ this.state.playerName }
-          iconPath={ this.state.player ? this.state.player.imageUrl : '' }
+          title={ this.getPlayersFirstName() }
+          iconPath={ this.state.player.imageUrl }
         />
         <div className="profile">
           <div className="group">

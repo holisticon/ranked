@@ -1,3 +1,7 @@
+.profile-page .header .title {
+  font-weight: 300;
+}
+
 .profile {
   padding-top: 8rem;
   --box-count: 3;
