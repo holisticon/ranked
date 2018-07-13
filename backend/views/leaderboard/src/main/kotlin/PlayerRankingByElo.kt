@@ -34,7 +34,7 @@ class PlayerLeaderBoardView(
   fun userListByEloRank() : List<PlayerElo> = playerRankingByElo.get()
 
   @GetMapping(path = ["/player/{userName}"])
-  fun eloHistoryByPlayer(@PathVariable("userName") userName: String): MutableList<Pair<LocalDateTime, Elo>>? = playerRankingByElo.getHistory(userName)
+  fun eloHistoryByPlayer(@PathVariable("userName") userName: String): MutableList<Pair<LocalDateTime, Elo>> = playerRankingByElo.getHistory(userName)
 
 
 
@@ -79,7 +79,7 @@ class PlayerRankingByEloHandler : Supplier<List<PlayerElo>> {
 
   override fun get() = cache.get()!!
 
-  fun getHistory(userName: String) = rankingHistory[UserName(userName)]
+  fun getHistory(userName: String) = rankingHistory[UserName(userName)] ?: mutableListOf()
 }
 
 /**

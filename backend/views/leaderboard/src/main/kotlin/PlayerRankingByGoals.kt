@@ -134,7 +134,7 @@ class PlayerRankingByGoals {
   fun getGoalCount() = goalCount.values.toSet()
   fun getGoalTimeAverage() = goalTimeAverageCache.get()!!
   fun getGoalStatsForPlayer(userName: String) =
-      UserName(userName).let { PlayerGoalStats(goalTimeAverage[it], goalCount[it]?.goalsScored, goalCount[it]?.goalsConceded) }
+      UserName(userName).let { PlayerGoalStats(goalTimeAverage[it] ?: 0, goalCount[it]?.goalsScored ?: InPosition(0, 0), goalCount[it]?.goalsConceded ?:InPosition(0, 0))}
 }
 
 data class InPosition<T>(var whenInOffense: T, var whenInDefense: T)

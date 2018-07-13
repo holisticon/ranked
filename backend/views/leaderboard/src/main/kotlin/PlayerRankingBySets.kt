@@ -25,7 +25,7 @@ class PlayerRankingBySetsView(
     private val playerRankingBySets: PlayerRankingBySets
 ) {
   @GetMapping(path = ["/player/{userName}"])
-  fun setStatsByPlayer(@PathVariable("userName") userName: String): PlayerSetStats? = playerRankingBySets.getSetStatsForPlayer(userName)
+  fun setStatsByPlayer(@PathVariable("userName") userName: String): PlayerSetStats = playerRankingBySets.getSetStatsForPlayer(userName)
 }
 
 @Component
@@ -100,7 +100,7 @@ class PlayerRankingBySets {
     return (averageSetTime * setCount + setTime) / (setCount + 1);
   }
 
-  fun getSetStatsForPlayer(playerName: String) = setStats[UserName(playerName)]
+  fun getSetStatsForPlayer(playerName: String) = setStats[UserName(playerName)] ?: PlayerSetStats(UserName(playerName), 0, 0, 0, 0, 0.0)
 }
 
 data class PlayerSetStats(val userName: UserName, val wonSets: InPosition<Int>, val lostSets: InPosition<Int>, var averageSetTime: Double) {

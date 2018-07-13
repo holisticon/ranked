@@ -25,7 +25,7 @@ class PlayerRankingByMatchesView(
     private val playerRankingByMatches: PlayerRankingByMatches
 ) {
   @GetMapping(path = ["/player/{userName}"])
-  fun matchStatsByPlayer(@PathVariable("userName") userName: String): PlayerMatchStats? = playerRankingByMatches.getMatchStatsForPlayer(userName)
+  fun matchStatsByPlayer(@PathVariable("userName") userName: String): PlayerMatchStats = playerRankingByMatches.getMatchStatsForPlayer(userName)
 }
 
 @Component
@@ -86,7 +86,7 @@ class PlayerRankingByMatches {
     matchStats[team.player2]!!.lostMatches++
   }
 
-  fun getMatchStatsForPlayer(playerName: String) = matchStats[UserName(playerName)]
+  fun getMatchStatsForPlayer(playerName: String) = matchStats[UserName(playerName)] ?: PlayerMatchStats(UserName(playerName), 0, 0, 0.0)
 }
 
 data class PlayerMatchStats(val userName: UserName, var wonMatches: Int, var lostMatches: Int, var averageMatchTime: Double)
