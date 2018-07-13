@@ -17,21 +17,27 @@ export interface ChartData3D<T extends DimensionValue, S extends DimensionValue,
   entries: Array<[T, S, R]>;
 }
 
+export interface GameStatistics {
+  wonPercent: number;
+  played: number;
+  avgTime: number;
+}
+
+export interface SetStatistics {
+  wonPercent: number;
+  played: number;
+  avgTime: number;
+}
+
+export interface GoalStatistics {
+  scored: number;
+  ratio: number;
+  avgTimeToScore: number;
+}
+
 export interface PlayerProfileData {
-  gameStatistics: {
-    wonPercent: number,
-    played: number,
-    avgTime: number
-  };
-  setStatistics: {
-    wonPercent: number,
-    played: number,
-    avgTime: number
-  };
-  goalStatistics: {
-    scored: number,
-    ratio: number,
-    avgTimeToScore: number
-  };
+  gameStatistics: GameStatistics;
+  setStatistics: SetStatistics;
+  goalStatistics: GoalStatistics;
   eloData: ChartData2D<Date, number>;
 }

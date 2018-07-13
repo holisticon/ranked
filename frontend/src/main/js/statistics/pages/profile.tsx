@@ -7,6 +7,10 @@ import { match as Match } from 'react-router';
 import { HeadingComponent } from '../components/heading';
 import { PlayerService } from '../../services/player-service';
 import { TrendChart } from '../components/trend-chart';
+import { MatchAdapter } from '../services/match-adapter';
+import { SetAdapter } from '../services/set-adapter';
+import { EloAdapter } from '../services/elo-adapter';
+import { GoalsAdapter } from '../services/goals-adapter';
 
 type ProfileState = {
   player: Player;
@@ -18,46 +22,36 @@ export class Profile extends React.Component<any, ProfileState> {
   constructor(props: any, match: Match<any>) {
     super(props);
 
-    let playerId = 'romanschloemmer';
+    let playerId = 'oliverniebsch';
 
     if (match && match.params) {
       playerId = match.params.playerName;
     }
 
-    this.state = { playerProfileData: this.getPlayerProfileData() } as ProfileState;
+    this.state = {} as ProfileState;
 
     PlayerService.getPlayer(playerId).then(player => this.setState({ player }));
+    this.getPlayerProfileData(playerId).then(playerProfileData => this.setState({ playerProfileData }));
   }
 
-  private getPlayerProfileData(): PlayerProfileData {
+  private getPlayerProfileData(playerId: string): Promise<PlayerProfileData> {
     // TODO: add backend call to gets the needed data
-    return {
-      gameStatistics: {
-        wonPercent: 63.3,
-        played: 108,
-        avgTime: 513
-      },
-      setStatistics: {
-        wonPercent: 59,
-        played: 221,
-        avgTime: 197,
-      },
-      goalStatistics: {
-        scored: 678,
-        ratio: 2.64,
-        avgTimeToScore: 22.4
-      },
-      eloData: {
-        dimensions: [{description: 'Datum'}, {description: 'Elo'}],
-        entries: [
-          [new Date('2018-06-04T11:45:14'), 1000],
-          [new Date('2018-06-10T14:15:24'), 1005],
-          [new Date('2018-06-12T09:34:11'), 1008],
-          [new Date('2018-06-16T16:17:01'), 1011],
-          // [new Date(), 1009],
-        ]
-      }
-    };
+    return Promise.all([
+      MatchAdapter.getMatchStatsForPlayer(playerId),
+      SetAdapter.getSetStatsForPlayer(playerId),
+      GoalsAdapter.getGoalStatsForPlayer(playerId),
+      EloAdapter.getEloHistoryForPlayer(playerId)
+    ]).then(([matchStats, setStats, goalStats, eloHistory]) => {
+      // tslint:disable-next-line:no-console
+      console.log('Got stats!');
+
+      return {
+        gameStatistics: matchStats,
+        setStatistics: setStats,
+        goalStatistics: goalStats,
+        eloData: eloHistory
+      };
+    });
   }
 
   private calcTime(timeInSec: number): string {
@@ -68,7 +62,7 @@ export class Profile extends React.Component<any, ProfileState> {
   }
 
   private getMetric (name: string, value: number, unit?: string) {
-    let displayValue = value + (unit ? (' ' + unit) : '');
+    let displayValue = (Number.isInteger(value) ? value : value.toFixed(2)) + (unit ? (' ' + unit) : '');
 
     if (unit === 'time') {
       displayValue = this.calcTime(value);
@@ -89,7 +83,7 @@ export class Profile extends React.Component<any, ProfileState> {
   }
 
   public render() {
-    if (!this.state.player) {
+    if (!this.state.player || !this.state.playerProfileData) {
       return null;
     }
 
