@@ -1,0 +1,51 @@
+.profile-page .header .title {
+  font-weight: 300;
+}
+
+.profile {
+  padding-top: 8rem;
+  --box-count: 3;
+  --box-margin: 2rem;
+  --box-width: calc((80vw - (var(--box-margin) * (var(--box-count) * 2))) / var(--box-count));
+}
+
+.box {
+  width: var(--box-width);
+  margin: 0 var(--box-margin);
+  display: inline-block;
+  text-align: center;
+  vertical-align: top;
+}
+
+.group {
+  margin-bottom: 3rem;
+  width: 100%;
+  display: inline-block;
+  box-sizing: border-box;
+}
+
+.heading {
+  font-size: 1.6rem;
+  font-weight: 200;
+  margin: 0 0 0.6rem var(--box-margin);
+}
+
+.metric {
+  text-align: center;
+  display: inline-block;
+}
+
+.metric .value {
+  font-size: 1.4rem;
+}
+
+.metric .label {
+  font-size: 0.8rem;
+}
+
+.chart {
+  width: 100%;
+  padding-left: 2rem;
+  display: inline-block;
+  box-sizing: border-box;
+}

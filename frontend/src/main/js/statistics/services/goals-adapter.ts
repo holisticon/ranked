@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { ChartData2D, ChartData3D } from '../types';
+import { ChartData2D, ChartData3D, GoalStatistics } from '../types';
 import { Player } from '../../types/types';
 import { PlayersAdapter } from './players-adapter';
 
@@ -8,6 +8,12 @@ export namespace GoalsAdapter {
   type GoalsCount = {
     whenInOffense: number,
     whenInDefense: number
+  };
+
+  type GoalStats = {
+    goalTimeAverage: number,
+    goalsScored: GoalsCount,
+    goalsConceded: GoalsCount
   };
 
   type PlayerGoals = {
@@ -106,6 +112,18 @@ export namespace GoalsAdapter {
         };
 
         return playerAvgScoreTime;
+      });
+  }
+
+  export function getGoalStatsForPlayer(playerName: string): Promise<GoalStatistics> {
+    return axios.get('/view/goals/player/' + playerName)
+      .then(res => res.data)
+      .then((data: GoalStats) => {
+        return {
+          scored: total(data.goalsScored),
+          ratio: total(data.goalsScored) / total(data.goalsConceded),
+          avgTimeToScore: data.goalTimeAverage
+        } as GoalStatistics;
       });
   }
 }

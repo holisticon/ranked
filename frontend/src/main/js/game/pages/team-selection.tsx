@@ -22,8 +22,8 @@ function renderTeamList(availableTeams: Array<Team>, selectTeam: (team: Team) =>
         <i className="material-icons">&#xE7FB;</i>
         <span className={ 'team-name' }>{ team.name }</span>
       </div>
-    )
-  })
+    );
+  });
 }
 
 function TeamSelection({ availableTeams, currentTeamKey, updateAvailableTeams, select }: TeamSelectionProps) {

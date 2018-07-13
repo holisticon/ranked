@@ -33,4 +33,24 @@ export namespace EloAdapter {
         return playerElos;
       });
   }
+
+  type EloEntry = {
+    first: string,
+    second: number
+  };
+
+  export function getEloHistoryForPlayer(playerName: string): Promise<ChartData2D<Date, number>> {
+    return axios.get('/view/elo/player/' + playerName)
+      .then(res => res.data)
+      .then((eloHistoryData: Array<EloEntry>) => {
+        const eloHistory: ChartData2D<Date, number> = {
+          dimensions: [{ description: 'Timestamp' }, { description: 'Elo' }],
+          entries: eloHistoryData.map(entry => {
+            return [new Date(entry.first), entry.second] as [Date, number];
+          })
+        };
+
+        return eloHistory;
+      });
+  }
 }

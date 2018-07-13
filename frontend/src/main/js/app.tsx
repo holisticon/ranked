@@ -12,6 +12,7 @@ import createHistory from 'history/createBrowserHistory';
 import { Provider } from 'react-redux';
 import { ranked } from './game/reducer';
 import './app.css';
+import 'react-vis/dist/style.css';
 import { Switch } from 'react-router';
 import { ScoreBoard } from './statistics/pages/player-score-board';
 import { Config } from './config';
@@ -21,6 +22,8 @@ import TournamentAdminPage from './tournament/pages/tournament-administration';
 import { tournament } from './tournament/reducer';
 import TournamentPlayerSelection from './tournament/pages/tournament-player-selection';
 import { AutosaveService } from './game/services/autosave.service';
+import { ProfileSelection } from './statistics/pages/profile-selection';
+import { Profile } from './statistics/pages/profile';
 
 // Create a history of your choosing (we're using a browser history in this case)
 const history = createHistory();
@@ -71,6 +74,8 @@ class Ranked extends React.Component<{}, { initialized: boolean }> {
             <Route path="/tournamentAdmin/select/:letter?" component={ TournamentPlayerSelection } />
             <Route path="/selectMatch" component={ MatchSelection } />
             <Route path="/teamBoard" component={ TeamScoreBoard } />
+            <Route path="/profile/player/:playerName" component={ Profile } />
+            <Route path="/profile" component={ ProfileSelection } />
           </Switch>
         </ConnectedRouter>
       </div>

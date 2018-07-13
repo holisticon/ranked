@@ -7,6 +7,11 @@ export namespace PlayerService {
       .then(res => (res.data as Array<PlayerData>).map(data => new Player(data)));
   }
 
+  export function getPlayer(playerId: string): Promise<Player> {
+    return axios.get('/view/player/' + playerId)
+      .then(res => new Player(res.data));
+  }
+
   /**
    * Nur für das Turnier beim Werkstättchen
    * 
