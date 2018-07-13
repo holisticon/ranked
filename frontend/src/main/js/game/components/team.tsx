@@ -86,7 +86,7 @@ function renderPlayerIcons(
 
 function renderTeamIcon( {team, composition, selectTeam }: InternalTeamProps ) {
   return(
-    <div 
+    <div
       className="add-team"
       onClick={ (e) => stopEvent(e) && selectTeam(composition.team) }
     >
@@ -102,10 +102,17 @@ function renderTeamIcon( {team, composition, selectTeam }: InternalTeamProps ) {
   );
 }
 
+function renderWonSetDots(wonSets: number) {
+  return( <div className="won-sets-count">{ "\u2022".repeat(wonSets) }</div> );
+}
+
 function RenderTeam(props: InternalTeamProps) {
 
   return (
     <div className={ props.classes } onClick={ () => { SoundService.playGoalSound(); props.incGoals(); } }>
+
+      { renderWonSetDots(props.team.wonSets) }
+
       <div className="goal-counter-container">
         <Swipeable onSwipeRight={ () => props.incGoals() } onSwipeLeft={ () => props.decGoals() }>
           <div className="goal-counter">
@@ -115,6 +122,7 @@ function RenderTeam(props: InternalTeamProps) {
       </div>
 
       { Config.teamMode ? renderTeamIcon(props) : renderPlayerIcons(props) }
+
     </div>
   );
 }
