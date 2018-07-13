@@ -18,7 +18,7 @@
 }
 
 .group {
-  margin-bottom: 3rem;
+  margin-bottom: 2.2rem;
   width: 100%;
   display: inline-block;
   box-sizing: border-box;
@@ -45,7 +45,7 @@
 
 .chart {
   width: 100%;
-  padding-left: 2rem;
+  padding: 0 4rem 0 2rem;
   display: inline-block;
   box-sizing: border-box;
 }

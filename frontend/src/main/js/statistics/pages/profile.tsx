@@ -53,7 +53,7 @@ export class Profile extends React.Component<any, ProfileState> {
     const seconds = timeInSec % 60;
     const minutes = Math.floor(timeInSec / 60);
 
-    return (minutes > 0 ? minutes + 'm ' : '') + seconds + 's';
+    return (minutes > 0 ? minutes + 'm ' : '') + seconds.toFixed(0) + 's';
   }
 
   private getMetric (name: string, value: number, unit?: string) {
@@ -87,7 +87,7 @@ export class Profile extends React.Component<any, ProfileState> {
         <HeadingComponent
           title={ this.getPlayersFirstName() }
           iconPath={ this.state.player.imageUrl }
-          showBackButton= { true }
+          showBackButton={ true }
         />
         <div className="profile">
           <div className="group">

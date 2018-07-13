@@ -18,7 +18,7 @@ export namespace MatchAdapter {
       .then((data: MatchStats) => {
         const totalMatches = data.wonMatches + data.lostMatches;
         return {
-          wonPercent: data.wonMatches * 100 / totalMatches,
+          wonPercent: totalMatches > 0 ? (data.wonMatches * 100 / totalMatches) : 0,
           played: totalMatches,
           avgTime: data.averageMatchTime
         } as GameStatistics;

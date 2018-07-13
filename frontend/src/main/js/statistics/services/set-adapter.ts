@@ -25,7 +25,7 @@ export namespace SetAdapter {
         const totalSets = data.wonSets.whenInDefense + data.wonSets.whenInOffense +
                           data.lostSets.whenInDefense + data.lostSets.whenInOffense;
         return {
-          wonPercent: (data.wonSets.whenInDefense + data.wonSets.whenInOffense) * 100 / totalSets,
+          wonPercent: totalSets > 0 ? ((data.wonSets.whenInDefense + data.wonSets.whenInOffense) * 100 / totalSets) : 0,
           played: totalSets,
           avgTime: data.averageSetTime
         } as SetStatistics;

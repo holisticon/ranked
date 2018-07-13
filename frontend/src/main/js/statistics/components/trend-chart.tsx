@@ -52,7 +52,7 @@ export class TrendChart extends React.Component<TrendChartProps, TrendChartState
         }
 
         return (
-            <RV.XYPlot className="trend-chart" width={500} height={300} xType="time">
+            <RV.FlexibleWidthXYPlot className="trend-chart" height={300} xType="time">
                 <RV.LineMarkSeries data={this.state.data} size="0" color="#4b93e2" />
                 <RV.YAxis
                     tickValues={this.state.firstLastPoint.slice(0, 1).map(p => p.y)}
@@ -73,7 +73,7 @@ export class TrendChart extends React.Component<TrendChartProps, TrendChartState
                     tickSize={0}
                     tickPadding={12}
                 />
-            </RV.XYPlot>
+            </RV.FlexibleWidthXYPlot>
         );
     }
 }
