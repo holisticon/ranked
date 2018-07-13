@@ -1,0 +1,30 @@
+.header .title {
+  font-weight: normal;
+}
+
+.player-list {
+  padding: 8rem 0 2rem 0;
+  width: 100%;
+  text-align: center;
+}
+
+.player {
+  width: 100%;
+  display: inline-block;
+}
+
+.player .name {
+  display: inline-block;
+  width: 50%;
+  /* margin: 0 1.2rem; */
+  font-size: 1.3rem;
+  padding: 1.5rem 0 1.2rem;
+  font-weight: 300;
+}
+
+.underline {
+  display: inline-block;
+  width: 80%;
+  height: 0.1rem;
+  background: linear-gradient(90deg, rgba(255,255,255,0.01), #D4D4D4 40%, #D4D4D4 60%, rgba(255,255,255,0.01));
+}

@@ -3,7 +3,6 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import './profile.css';
 import { PlayerProfileData } from '../types';
 import { Player } from '../../types/types';
-import { match as Match } from 'react-router';
 import { HeadingComponent } from '../components/heading';
 import { PlayerService } from '../../services/player-service';
 import { TrendChart } from '../components/trend-chart';
@@ -19,13 +18,13 @@ type ProfileState = {
 
 export class Profile extends React.Component<any, ProfileState> {
 
-  constructor(props: any, match: Match<any>) {
+  constructor(props: any) {
     super(props);
 
-    let playerId = 'oliverniebsch';
+    let playerId = '';
 
-    if (match && match.params) {
-      playerId = match.params.playerName;
+    if (this.props.match && this.props.match.params) {
+      playerId = this.props.match.params.playerName;
     }
 
     this.state = {} as ProfileState;
@@ -35,16 +34,12 @@ export class Profile extends React.Component<any, ProfileState> {
   }
 
   private getPlayerProfileData(playerId: string): Promise<PlayerProfileData> {
-    // TODO: add backend call to gets the needed data
     return Promise.all([
       MatchAdapter.getMatchStatsForPlayer(playerId),
       SetAdapter.getSetStatsForPlayer(playerId),
       GoalsAdapter.getGoalStatsForPlayer(playerId),
       EloAdapter.getEloHistoryForPlayer(playerId)
     ]).then(([matchStats, setStats, goalStats, eloHistory]) => {
-      // tslint:disable-next-line:no-console
-      console.log('Got stats!');
-
       return {
         gameStatistics: matchStats,
         setStatistics: setStats,
