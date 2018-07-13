@@ -5,6 +5,7 @@ import de.holisticon.ranked.model.event.PlayerRankingChanged
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
+import java.time.Instant
 import java.util.*
 
 class PlayerRankingByEloHandlerSpec {
@@ -21,7 +22,7 @@ class PlayerRankingByEloHandlerSpec {
 
   @Test
   fun `a new player ranking is added`() {
-    handler.on(PlayerRankingChanged(UserName("kermit"), 1000))
+    handler.on(PlayerRankingChanged(UserName("kermit"), 1000), Instant.now())
 
     val userByEloRank = handler.get()
 
@@ -31,8 +32,8 @@ class PlayerRankingByEloHandlerSpec {
 
   @Test
   fun `a player ranking is updated`() {
-    handler.on(PlayerRankingChanged(UserName("kermit"), 1000))
-    handler.on(PlayerRankingChanged(UserName("kermit"), 2000))
+    handler.on(PlayerRankingChanged(UserName("kermit"), 1000), Instant.now())
+    handler.on(PlayerRankingChanged(UserName("kermit"), 2000), Instant.now())
 
     val userByEloRank = handler.get()
 
@@ -42,8 +43,8 @@ class PlayerRankingByEloHandlerSpec {
 
   @Test
   fun `two players are sorted by rank`() {
-    handler.on(PlayerRankingChanged(UserName("kermit"), 1000))
-    handler.on(PlayerRankingChanged(UserName("piggy"), 2000))
+    handler.on(PlayerRankingChanged(UserName("kermit"), 1000), Instant.now())
+    handler.on(PlayerRankingChanged(UserName("piggy"), 2000), Instant.now())
 
     val userByEloRank = handler.get()
 
