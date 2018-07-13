@@ -20,6 +20,14 @@
   box-shadow: 0px 0.2rem 0.2rem 0px rgba(0,0,0,0.50);
 }
 
+.header .back-button {
+  position: absolute;
+  font-size: 2rem;
+  color: white;
+  padding: 2rem 1.8rem;
+  margin-top: -1.7rem;
+}
+
 .header .icon {
   height: 3rem;
   width: 100%;

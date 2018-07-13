@@ -92,6 +92,7 @@ export class Profile extends React.Component<any, ProfileState> {
         <HeadingComponent
           title={ this.getPlayersFirstName() }
           iconPath={ this.state.player.imageUrl }
+          showBackButton= { true }
         />
         <div className="profile">
           <div className="group">
