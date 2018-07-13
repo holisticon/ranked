@@ -51,6 +51,11 @@ class TeamRankingByGoals() {
     val winner = e.team
     val looser = e.looser
 
+    // TODO: what about team statistics for implicit created teams?
+    //  ensure both teams were created before calculating statistics
+    if (teamStats[winner] == null || teamStats[looser] == null)
+      return;
+
     teamStats[winner]?.matchesWon = teamStats[winner]?.matchesWon!!.inc()
     teamStats[looser]?.matchesLost = teamStats[looser]?.matchesLost!!.inc()
 
@@ -97,6 +102,11 @@ class TeamRankingByGoals() {
 
   @EventHandler
   fun on(e: TeamWonMatchSet) {
+    // TODO: what about team statistics for implicit created teams?
+    //  ensure both teams were created before calculating statistics
+    if (teamStats[e.team] == null || teamStats[e.looser] == null)
+      return;
+    
     teamStats[e.team]?.setsWon = teamStats[e.team]?.setsWon!! + 1
     teamStats[e.looser]?.setsLost = teamStats[e.looser]?.setsLost!! + 1
 
