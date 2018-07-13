@@ -93,7 +93,7 @@ class PlayerRankingBySets {
   private fun setAvgSetTimeForPlayer(player: UserName, setTime: Long) {
     val stats = setStats[player]!!;
     val totalSets = stats.lostSets.whenInOffense + stats.lostSets.whenInDefense + stats.wonSets.whenInOffense + stats.wonSets.whenInDefense;
-    stats.averageMatchTime = calcAvgSetTime(totalSets, stats.averageMatchTime, setTime);
+    stats.averageSetTime = calcAvgSetTime(totalSets, stats.averageSetTime, setTime);
   }
 
   private fun calcAvgSetTime(setCount: Int, averageSetTime: Double, setTime: Long): Double {
@@ -103,14 +103,14 @@ class PlayerRankingBySets {
   fun getSetStatsForPlayer(playerName: String) = setStats[UserName(playerName)]
 }
 
-data class PlayerSetStats(val userName: UserName, val wonSets: InPosition<Int>, val lostSets: InPosition<Int>, var averageMatchTime: Double) {
+data class PlayerSetStats(val userName: UserName, val wonSets: InPosition<Int>, val lostSets: InPosition<Int>, var averageSetTime: Double) {
 
   constructor(userName: UserName, wonSetsInOffense: Int, wonSetsInDefense: Int,
-              lostSetsInOffense: Int, lostSetsInDefense: Int, averageMatchTime: Double) :
+              lostSetsInOffense: Int, lostSetsInDefense: Int, averageSetTime: Double) :
       this(userName,
           InPosition(wonSetsInOffense, wonSetsInDefense),
           InPosition(lostSetsInOffense, lostSetsInDefense),
-          averageMatchTime)
+          averageSetTime)
 
   fun incWonSetsInOffense() {
     wonSets.whenInOffense++
