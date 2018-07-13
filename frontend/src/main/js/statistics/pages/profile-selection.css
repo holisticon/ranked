@@ -1,19 +1,19 @@
-.header .title {
+.profile-selection .header .title {
   font-weight: normal;
 }
 
-.player-list {
+.profile-selection .player-list {
   padding: 8rem 0 2rem 0;
   width: 100%;
   text-align: center;
 }
 
-.player {
+.profile-selection .player {
   width: 100%;
   display: inline-block;
 }
 
-.player .name {
+.profile-selection .player .name {
   display: inline-block;
   width: 50%;
   /* margin: 0 1.2rem; */
@@ -22,7 +22,7 @@
   font-weight: 300;
 }
 
-.underline {
+.profile-selection .player .underline {
   display: inline-block;
   width: 80%;
   height: 0.1rem;
