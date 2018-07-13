@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import java.time.Instant
 import java.time.LocalDateTime
+import java.time.ZoneId
 import java.util.concurrent.atomic.AtomicReference
 import java.util.function.Supplier
 
@@ -71,7 +72,7 @@ class PlayerRankingByEloHandler : Supplier<List<PlayerElo>> {
     ranking[e.player] = e.eloRanking
 
     rankingHistory.putIfAbsent(e.player, mutableListOf())
-    rankingHistory[e.player]!!.add(Pair(LocalDateTime.from(t), e.eloRanking))
+    rankingHistory[e.player]!!.add(Pair(LocalDateTime.ofInstant(t, ZoneId.of("Europe/Berlin")), e.eloRanking))
 
     cache.set(ranking.map { it.toPair() }.map { PlayerElo(it.first, it.second) }.sorted())
   }
