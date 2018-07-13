@@ -38,6 +38,22 @@
   transform: rotate(180deg);
 }
 
+.match .won-sets-count {
+  position: absolute;
+  width: 100%;
+  top: 3rem;
+  text-align: center;
+  font-size: 2rem;
+}
+
+.match .team-blue .won-sets-count {
+  color: #4b93e2;
+}
+
+.match .team-red .won-sets-count {
+  color: #cf0017;
+}
+
 .match .goal-counter-container {
   position: absolute;
   width: 100%;
