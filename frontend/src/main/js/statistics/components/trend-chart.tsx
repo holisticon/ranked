@@ -6,11 +6,12 @@ const RV = require('react-vis');
 
 type Point = {
     x: number | string | Date,
-    y: number | string | Date
+    y: number
 };
 
 type TrendChartProps = {
-    data: ChartData2D<Date, number>
+    data: ChartData2D<Date, number>,
+    referenceValue?: number
 };
 
 type TrendChartState = {
@@ -51,19 +52,50 @@ export class TrendChart extends React.Component<TrendChartProps, TrendChartState
             return null;
         }
 
+        let minYValue = Math.min(...this.state.data.map(p => p.y));
+        let maxYValue = Math.max(...this.state.data.map(p => p.y));
+
+        let referenceData: Array<Point> = [];
+        if (this.props.referenceValue !== undefined) {
+            referenceData = [
+                {
+                    x: this.state.data[0].x,
+                    y: this.props.referenceValue
+                },
+                {
+                    x: this.state.data[this.state.data.length - 1].x,
+                    y: this.props.referenceValue
+                },
+            ];
+
+            minYValue = Math.min(minYValue, this.props.referenceValue);
+            maxYValue = Math.max(maxYValue, this.props.referenceValue);
+        }
+
+        const yPaddingBottom = minYValue - ((maxYValue - minYValue) * 0.05);
         return (
             <RV.FlexibleWidthXYPlot className="trend-chart" height={300} xType="time">
-                <RV.LineMarkSeries data={this.state.data} size="0" color="#4b93e2" />
+                <RV.LineMarkSeries data={[{ x: this.state.data[0].x, y: yPaddingBottom }]} size="0" />
+                <RV.LineMarkSeries
+                    data={this.state.data}
+                    size={ this.state.data.length > 1 ? '0' : '2' }
+                    color="#4b93e2"
+                />
+                {
+                    referenceData.length > 0 ?
+                        <RV.LineMarkSeries data={referenceData} size="0" strokeStyle="dashed" color="#bbd3ed" /> :
+                        null
+                }
                 <RV.YAxis
                     tickValues={this.state.firstLastPoint.slice(0, 1).map(p => p.y)}
                     tickFormat={(v: number) => `${v}`}
-                    style={{ line: {stroke: 'transparent'} }}
+                    style={{ line: { stroke: 'transparent' } }}
                     tickSize={0}
                 />
                 <RV.YAxis
                     tickValues={this.state.firstLastPoint.slice(-1).map(p => p.y)}
                     tickFormat={(v: number) => `${v}`}
-                    style={{ line: {stroke: 'transparent'} }}
+                    style={{ line: { stroke: 'transparent' } }}
                     orientation="right"
                     tickSize={0}
                 />

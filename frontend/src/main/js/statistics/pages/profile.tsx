@@ -114,7 +114,7 @@ export class Profile extends React.Component<any, ProfileState> {
           <div className="group">
             <div className="heading">Elo-Trend</div>
             <div className="chart">
-              <TrendChart data={ this.state.playerProfileData.eloData } />
+              <TrendChart data={ this.state.playerProfileData.eloData } referenceValue={ 1000 } />
             </div>
           </div>
         </div>
