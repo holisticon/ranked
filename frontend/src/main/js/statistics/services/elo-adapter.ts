@@ -39,6 +39,16 @@ export namespace EloAdapter {
     second: number
   };
 
+  function sameDay(date: Date | null, other: Date | null): boolean {
+    if (!date || !other) {
+      return false;
+    }
+
+    return date.getDate() === other.getDate() &&
+            date.getMonth() === other.getMonth() &&
+            date.getFullYear() === other.getFullYear();
+  }
+
   export function getEloHistoryForPlayer(playerName: string): Promise<ChartData2D<Date, number>> {
     return axios.get('/view/elo/player/' + playerName)
       .then(res => res.data)
@@ -47,6 +57,9 @@ export namespace EloAdapter {
           dimensions: [{ description: 'Timestamp' }, { description: 'Elo' }],
           entries: eloHistoryData.map(entry => {
             return [new Date(entry.first), entry.second] as [Date, number];
+          }).filter(([entryDate, _], i, history) => {
+            let nextDate = (i + 1) < history.length ? history[i + 1][0] : null;
+            return !sameDay(entryDate, nextDate);
           })
         };
 
