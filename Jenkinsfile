@@ -8,7 +8,7 @@ def maven = new de.holisticon.ci.jenkins.Maven()
 def utils = new de.holisticon.ci.jenkins.Utils()
 
 timeout(30) {
-  node('master') {
+  node('docker-office') {
 
     def buildNumber = env.BUILD_NUMBER
     def workspace = env.WORKSPACE
