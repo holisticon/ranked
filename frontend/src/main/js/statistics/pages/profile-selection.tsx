@@ -44,7 +44,7 @@ export class ProfileSelection extends React.Component<any, ProfileSelectionState
       <div className="profile-selection">
         <HeadingComponent
           title="Steckbrief"
-          iconPath="/img/wanted_poster.png"
+          iconPath="/img/profile.png"
         />
         <div className="player-list">
           { this.renderPlayers() }
