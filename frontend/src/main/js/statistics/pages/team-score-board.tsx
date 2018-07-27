@@ -89,12 +89,12 @@ export class TeamScoreBoard extends React.Component<any, TeamScoreBoardState> {
           showStatus={ false }
           showArrows={ false }
         >
-          <div className="chart-container">
+          <div className="container">
             <div className="fading-top" />
             <RankingChart data={ !this.state ? undefined : this.state.avgGoalsPerSet } />
           </div>
 
-          <div className="chart-container">
+          <div className="container">
             <div className="fading-top" />
             <TwoSideBarChart
               data={ !this.state ? undefined : this.state.goalRatio }
@@ -103,7 +103,7 @@ export class TeamScoreBoard extends React.Component<any, TeamScoreBoardState> {
             />
           </div>
 
-          <div className="chart-container">
+          <div className="container">
             <div className="fading-top" />
             <RankingChart data={ !this.state ? undefined : this.state.timeToScore } />
           </div>

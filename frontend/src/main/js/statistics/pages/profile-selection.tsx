@@ -5,15 +5,20 @@ import { Player } from '../../types/types';
 import { PlayerService } from '../../services/player-service';
 import { Link } from 'react-router-dom';
 
-type ProfileSelectionState = {
-  players: Array<Player>
+type ProfileSelectionProps = {
+  embedded?: boolean;
 };
 
-export class ProfileSelection extends React.Component<any, ProfileSelectionState> {
+type ProfileSelectionState = {
+  players: Array<Player>
+  standalone: boolean;
+};
+
+export class ProfileSelection extends React.Component<ProfileSelectionProps, ProfileSelectionState> {
   constructor(props: any) {
     super(props);
 
-    this.state = {} as ProfileSelectionState;
+    this.state = { standalone: !this.props.embedded } as ProfileSelectionState;
     this.initPlayers();
   }
 
@@ -41,11 +46,14 @@ export class ProfileSelection extends React.Component<any, ProfileSelectionState
 
   render() {
     return (
-      <div className="profile-selection">
-        <HeadingComponent
-          title="Steckbrief"
-          iconPath="/img/profile.png"
-        />
+      <div className={ 'profile-selection' + (this.state.standalone ? ' standalone' : '') }>
+        { this.state.standalone ?
+          <HeadingComponent
+            title="Steckbrief"
+            iconPath="/img/profile.png"
+          /> :
+          null
+        }
         <div className="player-list">
           { this.renderPlayers() }
         </div>

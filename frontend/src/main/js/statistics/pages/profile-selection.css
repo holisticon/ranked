@@ -3,9 +3,12 @@
 }
 
 .profile-selection .player-list {
-  padding: 8rem 0 2rem 0;
   width: 100%;
   text-align: center;
+}
+
+.profile-selection.standalone .player-list {
+  padding: 8rem 0 2rem 0;
 }
 
 .profile-selection .player {

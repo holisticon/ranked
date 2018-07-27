@@ -9,6 +9,8 @@ import { GoalsAdapter } from '../services/goals-adapter';
 import './score-board.css';
 import { Heading } from '../services/heading.service';
 import { HeadingComponent, HeadingConfig } from '../components/heading';
+import * as qs from 'query-string';
+import { ProfileSelection } from './profile-selection';
 
 type ScoreBoardState = {
   playerEloData: ChartData2D<Player, number>,
@@ -18,15 +20,30 @@ type ScoreBoardState = {
   playerTimeToScore: ChartData2D<Player, number>,
 };
 
+type Container = {
+  type: string,
+  data: any
+};
+
 export class ScoreBoard extends React.Component<any, ScoreBoardState> {
+  private isInteractive: boolean = false;
   private headings: Array<HeadingConfig>;
 
   constructor(props: any) {
     super(props);
     this.state = { ...this.state };
 
+    if (this.props.location && this.props.location.search) {
+      this.isInteractive = 'true' === qs.parse(this.props.location.search).interactive.toLowerCase();
+    }
+
     // init data
+    const interactivePages = this.isInteractive ? [
+      { title: 'Steckbrief', iconPath: '/img/profile.png' }
+    ] : [];
+
     this.headings = [
+      ...interactivePages,
       { title: 'Holisticon AllStars', iconPath: '/img/trophy.png' },
       { title: 'Torverhältnis', iconPath: '/img/goal.png' },
       { title: 'Schießt Tor nach', iconPath: '/img/stopwatch.png' }
@@ -59,32 +76,46 @@ export class ScoreBoard extends React.Component<any, ScoreBoardState> {
     Heading.Service.update(this.headings[index]);
   }
 
+  private renderContainers(containers: Array<Container>): any {
+    return containers.map((con, index) => {
+      return (
+        <div key={ index } className="container">
+          <div className="fading-top" />
+          <div className="container-inner">
+            { con.type === 'chart' ? <RankingChart data={con.data} /> : null }
+            { con.type === 'profile' ? <ProfileSelection embedded={true} /> : null }
+          </div>
+          <div className="fading-bottom" />
+        </div>
+      );
+    });
+  }
+
   public render() {
+    const rankings: Array<Container> = !this.state ? [] : [
+      { type: 'chart', data: this.state.playerEloData },
+      { type: 'chart', data: this.state.playerGoalRatio },
+      { type: 'chart', data: this.state.playerTimeToScore }
+    ];
+
+    const interactivePages: Array<Container> = !this.isInteractive ? [] : [
+      { type: 'profile', data: null }
+    ];
+
     return (
-      <div className="score-board">
-        <HeadingComponent title={ this.headings[0].title } iconPath={ this.headings[0].iconPath } />
+      <div className={ 'score-board' + (this.isInteractive ? ' interactive' : ' display' ) }>
+        <HeadingComponent title={this.headings[0].title} iconPath={this.headings[0].iconPath} />
         <Carousel
-          swipeScrollTolerance={ 130 }
-          onChange={ (index) => this.updateHeading(index) }
-          autoPlay={ true }
-          showThumbs={ false }
-          infiniteLoop={ true }
-          interval={ 20000 }
-          showStatus={ false }
-          showArrows={ false }
+          swipeScrollTolerance={130}
+          onChange={(index) => this.updateHeading(index)}
+          autoPlay={!this.isInteractive}
+          showThumbs={false}
+          infiniteLoop={true}
+          interval={20000}
+          showStatus={false}
+          showArrows={false}
         >
-          <div className="chart-container">
-            <div className="fading-top" />
-            <RankingChart data={ !this.state ? undefined : this.state.playerEloData } />
-          </div>
-          <div className="chart-container">
-            <div className="fading-top" />
-            <RankingChart data={ !this.state ? undefined : this.state.playerGoalRatio } />
-          </div>
-          <div className="chart-container">
-            <div className="fading-top" />
-            <RankingChart data={ !this.state ? undefined : this.state.playerTimeToScore } />
-          </div>
+          { this.renderContainers([...interactivePages, ...rankings]) }
         </Carousel>
       </div>
     );

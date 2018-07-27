@@ -4,17 +4,38 @@
   background-color: white;
 }
 
-.chart-container {
-  padding: 8rem 0 2rem 0;
+.container {
   position: relative;
   display: inline-block;
   text-align: center;
-  min-height: 100vh;
   width: 100%;
 }
 
+.score-board.display .container {
+  padding-top: 8rem;
+  min-height: 100vh;
+}
+
+.score-board.interactive .container {
+  padding-top: 4rem;
+  box-sizing: border-box;
+  height: calc(100vh - 3rem);
+  margin-bottom: 2.5rem;
+  max-width: 1000px;
+}
+
+.score-board.interactive .container-inner {
+  padding: 4rem 0 2rem 0;
+}
+
+.score-board.interactive .container-inner {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+}
+
 @media (min-width: 800px) {
-  .chart-container {
+  .score-board.display .container {
     column-count: 2;
     -webkit-column-count: 2;
     column-rule: 0.1rem solid rgba(0, 0, 0, 0.3);
@@ -24,25 +45,34 @@
 }
 
 @media (min-width: 1300px) {
-  .chart-container {
+  .score-board.display .container {
     column-count: 3;
     -webkit-column-count: 3;
   }
 }
 
 @media (min-width: 1600px) {
-  .chart-container {
+  .score-board.display .container {
     column-count: 4;
     -webkit-column-count: 4;
   }
 }
 
-.chart-container .fading-top {
-  height: 5rem;
+.container .fading-top {
+  height: 6rem;
   width: 100%;
-  position: fixed;
-  top: 4rem;
-  background: linear-gradient(0deg, rgba(255, 255, 255, 0.01) 0%, white 50%);
+  position: absolute;
+  top: 3rem;
+  background: linear-gradient(0deg, rgba(255, 255, 255, 0.01) 0%, white 40%);
+  z-index: 2;
+}
+
+.container .fading-bottom {
+  height: 6rem;
+  width: 100%;
+  position: absolute;
+  bottom: -3rem;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.01) 0%, white 40%);
   z-index: 2;
 }
 
