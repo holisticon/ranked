@@ -1,9 +1,10 @@
 import * as React from 'react';
+import { connect, Dispatch } from 'react-redux';
+
+import { Config } from '../../config';
+import * as Actions from '../actions';
 import { TimerService } from '../services/timer.service';
 import { PartialStoreState } from '../store.state';
-import { connect, Dispatch } from 'react-redux';
-import * as Actions from '../actions';
-import { Config } from '../../config';
 
 export interface TimerProps {
   startTime?: number;
@@ -13,7 +14,6 @@ export interface TimerProps {
 }
 
 interface TimerState {
-  interval: number;
   time: number;
   countdownTime: number;
   intervalId: any;
@@ -22,54 +22,20 @@ interface TimerState {
 }
 
 export class TimerComponent extends React.Component<TimerProps, TimerState> {
+  private readonly interval = 500;
 
   constructor(props: TimerProps) {
     super(props);
+
+    const id = setInterval(() => this.tick(), this.interval);
+    
     this.state = {
-      interval: 1,
-      time: -1,
-      countdownTime: props.startTime || 0,
-      intervalId: null,
-      status: 'STOPPED',
+      time: TimerService.getTimeInSec(),
+      countdownTime: (this.props.startTime || 0) - TimerService.getCountdownTimeInSec(),
+      intervalId: id,
+      status: TimerService.getStatus(),
       countdownExpired: false
     };
-
-    TimerService.register(this);
-  }
-
-  public start(): void {
-    if (this.state.status !== 'STARTED') {
-      const id = setInterval(() => this.tick(), this.state.interval * 1000);
-      this.setState({ time: Math.max(0, this.state.time), intervalId: id, status: 'STARTED' });
-    }
-  }
-
-  public reset(): void {
-    if (this.state.intervalId) {
-      clearInterval(this.state.intervalId);
-    }
-    this.setState({
-      time: -1,
-      countdownTime: this.props.startTime || 0,
-      intervalId: null,
-      status: 'STOPPED',
-      countdownExpired: false
-    });
-  }
-
-  public resetCountdown(countdownTime?: number): void {
-    if (this.props.countdown) {
-      this.setState({ countdownTime: countdownTime || this.props.startTime || 0, countdownExpired: false });
-    }
-  }
-
-  public pause(): void {
-    if (this.state.status === 'STARTED') {
-      if (this.state.intervalId) {
-        clearInterval(this.state.intervalId);
-      }
-      this.setState({ intervalId: null, status: 'PAUSED' });
-    }
   }
 
   private stopCountdownIfExpired(): void {
@@ -85,12 +51,36 @@ export class TimerComponent extends React.Component<TimerProps, TimerState> {
   }
 
   private togglePause(): void {
-    this.state.status === 'STARTED' ? this.pause() : this.start();
+    this.state.status === 'STARTED' ? TimerService.pause() : TimerService.start();
   }
 
   private tick() {
-    const diff = this.state.interval;
-    this.setState({ time: this.state.time + diff, countdownTime: this.state.countdownTime - diff });
+    const nextStatus = TimerService.getStatus();
+    
+    if (nextStatus === 'STOPPED') {
+      if (this.state.status !== 'STOPPED' ) {
+        this.setState({
+          time: -1,
+          countdownTime: this.props.startTime || 0,
+          status: 'STOPPED',
+          countdownExpired: false
+        });
+      }
+    } else {
+      const timerTime = TimerService.getTimeInSec();
+      const countdownTime = TimerService.getCountdownTimeInSec();
+      const countdownReset = countdownTime === 0;
+
+      // tslint:disable-next-line:no-console
+      console.log('time: ' + timerTime);
+
+      this.setState({
+        time: timerTime,
+        countdownTime: (this.props.startTime || 0) - countdownTime,
+        countdownExpired: !countdownReset && this.state.countdownExpired,
+        status: nextStatus
+      });
+    }
   }
 
   private formatTime(): string {
@@ -101,16 +91,18 @@ export class TimerComponent extends React.Component<TimerProps, TimerState> {
     return (minutes < 10 ? '0' : '') + minutes + ' : ' + (seconds < 10 ? '0' : '') + seconds;
   }
 
-  public getTime(): number {
-    return Math.max(this.state.time, 0);
-  }
-
   private getStoppedText(): string {
     let text = 'START';
     if (this.props.countdown && this.state.countdownExpired) {
       text = this.props.draw ? 'SUDDEN DEATH' : 'ENDE';
     }
     return text;
+  }
+
+  public componentWillUnmount(): void {
+    if (this.state.intervalId) {
+      clearInterval(this.state.intervalId);
+    }
   }
 
   public render() {

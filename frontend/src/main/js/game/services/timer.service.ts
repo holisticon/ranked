@@ -1,29 +1,52 @@
-import { TimerComponent } from '../components/timer';
-
 export namespace TimerService {
-  let timerComponent: TimerComponent;
+  let intervalId: any;
+  let status: 'STOPPED' | 'STARTED' | 'PAUSED' = 'STOPPED';
+  let timeInSec: number = 0;
+  let countdownTimeInSec: number = 0;
 
-  export function register(component: TimerComponent): void {
-    timerComponent = component;
+  function clear(): void {
+    if (intervalId) {
+      clearInterval(intervalId);
+      intervalId = null;
+    }
   }
 
   export function start(): void {
-    timerComponent.start();
+    if (!intervalId) {
+      intervalId = setInterval(
+        () => {
+          timeInSec++;
+          countdownTimeInSec++;
+        },
+        1000);
+      status = 'STARTED';
+    }
   }
 
   export function pause(): void {
-    timerComponent.pause();
+    status = 'PAUSED';
+    clear();
   }
 
   export function reset(): void {
-    timerComponent.reset();
+    clear();
+    timeInSec = 0;
+    status = 'STOPPED';
   }
 
   export function resetCountdown(countdownTime?: number): void {
-    timerComponent.resetCountdown(countdownTime);
+    countdownTimeInSec = countdownTime || 0;
+  }
+
+  export function getStatus(): 'STOPPED' | 'STARTED' | 'PAUSED' {
+    return status;
   }
 
   export function getTimeInSec(): number {
-    return timerComponent == null ? 0 : timerComponent.getTime();
+    return Math.max(timeInSec, 0);
+  }
+
+  export function getCountdownTimeInSec(): number {
+    return Math.max(countdownTimeInSec, 0);
   }
 }
