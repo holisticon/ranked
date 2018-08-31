@@ -1,29 +1,32 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import { Route } from 'react-router-dom';
-import { routerReducer, routerMiddleware, ConnectedRouter } from 'react-router-redux';
-import { createStore, combineReducers, applyMiddleware } from 'redux';
-import Match from './game/pages/match';
-import PlayerSelection from './game/pages/player-selection';
-import TeamSelection from './game/pages/team-selection';
-import MatchSelection from './game/pages/match-selection';
-import registerServiceWorker from './registerServiceWorker';
-import createHistory from 'history/createBrowserHistory';
-import { Provider } from 'react-redux';
-import { ranked } from './game/reducer';
 import './app.css';
 import 'react-vis/dist/style.css';
+
+import createHistory from 'history/createBrowserHistory';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
 import { Switch } from 'react-router';
+import { Route } from 'react-router-dom';
+import { ConnectedRouter, routerMiddleware, routerReducer } from 'react-router-redux';
+import { applyMiddleware, combineReducers, createStore } from 'redux';
+
+import Match from './game/pages/match';
+import MatchSelection from './game/pages/match-selection';
+import PlayerSelection from './game/pages/player-selection';
+import TeamSelection from './game/pages/team-selection';
+import { TestPage } from './game/pages/test';
+import { ranked } from './game/reducer';
+import { AutosaveService } from './game/services/autosave.service';
+import { WebSocketMiddleware } from './game/services/websocket.middleware';
+import registerServiceWorker from './registerServiceWorker';
 import { ScoreBoard } from './statistics/pages/player-score-board';
-import { Config } from './config';
-import { TournamentTree } from './tournament/pages/tournament-tree';
+import { Profile } from './statistics/pages/profile';
+import { ProfileSelection } from './statistics/pages/profile-selection';
 import { TeamScoreBoard } from './statistics/pages/team-score-board';
 import TournamentAdminPage from './tournament/pages/tournament-administration';
-import { tournament } from './tournament/reducer';
 import TournamentPlayerSelection from './tournament/pages/tournament-player-selection';
-import { AutosaveService } from './game/services/autosave.service';
-import { ProfileSelection } from './statistics/pages/profile-selection';
-import { Profile } from './statistics/pages/profile';
+import { TournamentTree } from './tournament/pages/tournament-tree';
+import { tournament } from './tournament/reducer';
 
 // Create a history of your choosing (we're using a browser history in this case)
 const history = createHistory();
@@ -35,6 +38,9 @@ const middleware = routerMiddleware(history);
 const rankedAutosaveMiddleware = AutosaveService.autosaveMiddleware('ranked');
 const tournamentAutosaveMiddleware = AutosaveService.autosaveMiddleware('tournament', true);
 
+// build the middleware for websocket connection and synchronize
+const webSocketMiddleware = WebSocketMiddleware.create();
+
 // Add the reducer to your store on the `router` key
 // Also apply our middleware for navigating
 const store = createStore(
@@ -43,17 +49,19 @@ const store = createStore(
     tournament,
     router: routerReducer
   }),
-  applyMiddleware(middleware, rankedAutosaveMiddleware, tournamentAutosaveMiddleware)
+  applyMiddleware(middleware, rankedAutosaveMiddleware, tournamentAutosaveMiddleware, webSocketMiddleware)
 );
+
+WebSocketMiddleware.init(store);
 
 class Ranked extends React.Component<{}, { initialized: boolean }> {
   constructor(props: any) {
     super(props);
-    this.state = { initialized: false };
+    this.state = { initialized: true };
   }
 
   componentWillMount(): void {
-    Config.initConfig().then(() => this.setState({ initialized: true }));
+    // Config.initConfig().then(() => this.setState({ initialized: true }));
   }
 
   render() {
@@ -66,6 +74,7 @@ class Ranked extends React.Component<{}, { initialized: boolean }> {
         <ConnectedRouter history={history}>
           <Switch>
             <Route exact={ true } path="/" component={ Match } />
+            <Route path="/test" component={ TestPage } />
             <Route path="/select/:letter?" component={ PlayerSelection } />
             <Route path="/selectTeam" component={ TeamSelection } />
             <Route path="/board" component={ ScoreBoard } />

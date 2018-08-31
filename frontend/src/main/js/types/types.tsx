@@ -16,7 +16,7 @@ export class Player extends PlayerData {
 }
 
 export type PlayerKey = 'player1' | 'player2';
-export type TeamColor= 'red' | 'blue';
+export type TeamColor = 'red' | 'blue';
 export type TeamKey = 'team1' | 'team2';
 
 export abstract class TeamData {
@@ -74,3 +74,18 @@ export type TorunamentMatch = {
 };
 
 export const NonPlayingTeamId = 'NPT';
+
+export type ScoredGoal = {
+  team: TeamColor,
+  player: string,
+  manikin: string,
+  time: number
+};
+
+export type GoalMessage = {
+  team: TeamColor
+};
+
+export type MatchStartMessage = {
+  timestamp: number
+};
