@@ -1,6 +1,6 @@
 import * as React from 'react';
 import TeamComponent from '../components/team';
-import { Sets, Team, TeamKey, Set, Composition } from '../../types/types';
+import { Sets, Team, TeamKey, Set, Composition, TeamColor } from '../../types/types';
 import { connect, Dispatch } from 'react-redux';
 import * as Actions from '../actions';
 import axios from 'axios';
@@ -12,10 +12,9 @@ import { TimerService } from '../services/timer.service';
 import { Config } from '../../config';
 import { push } from 'react-router-redux';
 import { AutosaveService } from '../services/autosave.service';
-import { match as Match } from 'react-router';
 
 export interface MatchProps {
-  match?: Match<any>;
+  devicePosition: TeamColor | null;
   sets: Sets;
   team1: Team;
   team2: Team;
@@ -128,13 +127,7 @@ function correctResults(loadState: (state: RankedStore) => void): void {
   loadState(AutosaveService.getLastState('ranked'));
 }
 
-function Match({ match, setNumber, winner, sets, team1, team2, startNewMatch, routeBack, loadState }: MatchProps) {
-
-  let devicePosition = null;
-
-  if(match && match.params) {
-    devicePosition = match.params.devicePosition;
-  }
+function Match({ devicePosition, setNumber, winner, sets, team1, team2, startNewMatch, routeBack, loadState }: MatchProps) {
 
   if (winner) {
     TimerService.pause();
@@ -179,7 +172,7 @@ function Match({ match, setNumber, winner, sets, team1, team2, startNewMatch, ro
   );
 }
 
-export function mapStateToProps({ ranked: { selectFor, team1, team2, sets } }: PartialStoreState) {
+export function mapStateToProps({ ranked: { devicePosition, team1, team2, sets } }: PartialStoreState) {
   let winner: TeamKey | null = null;
   if (team1.wonSets === Config.pointsPerMatch) {
     winner = 'team1';
@@ -188,6 +181,8 @@ export function mapStateToProps({ ranked: { selectFor, team1, team2, sets } }: P
   }
 
   return {
+    // TODO Put StoreStare here!
+    devicePosition: 'blue' as TeamColor,
     sets,
     team1,
     team2,

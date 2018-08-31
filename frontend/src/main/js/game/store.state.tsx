@@ -1,4 +1,4 @@
-import { Player, PlayerKey, Sets, Set, Team, TeamKey } from '../types/types';
+import { Player, PlayerKey, Sets, Set, Team, TeamKey, TeamColor } from '../types/types';
 
 export interface PartialStoreState {
   ranked: RankedStore;
@@ -12,6 +12,7 @@ export interface RankedStore {
   team2: Team;
   sets: Sets;
   suddenDeathMode: boolean;
+  devicePosition: TeamColor | null;
 }
 
 export function createFirstSet(): Set {
@@ -52,6 +53,7 @@ export function defaultState(): RankedStore {
     team1: createEmptyTeam(),
     team2: createEmptyTeam(),
     sets: [createFirstSet()],
-    suddenDeathMode: false
+    suddenDeathMode: false,
+    devicePosition: null
   };
 }

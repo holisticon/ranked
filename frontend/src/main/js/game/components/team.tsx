@@ -6,17 +6,17 @@ import { Swipeable } from 'react-touch';
 import { PlayerIcon } from '../../components/player-icon';
 import { Config } from '../../config';
 import { SoundService } from '../../services/sound-service';
-import { Composition, PlayerKey, Set, Team, TeamColor, TeamKey } from '../../types/types';
+import { Composition, Player, PlayerKey, Set, Team, TeamColor, TeamKey } from '../../types/types';
 import * as Actions from '../actions';
 import { PartialStoreState } from '../store.state';
 
 export interface TeamProps {
-  devicePosition: TeamColor;
+  devicePosition: TeamColor | null;
   color: TeamColor;
 }
 
 interface InternalTeamProps {
-  devicePosition: TeamColor;
+  devicePosition: TeamColor | null;
   isDefense: boolean;
   team: Team;
   composition: Composition;
@@ -35,77 +35,53 @@ function stopEvent(event: React.SyntheticEvent<Object>): boolean {
   return true;
 }
 
-function renderPlayerIcons(
+function renderOnePlayerUI(props: InternalTeamProps, player: Player, selectPlayer: () => void) {
+
+  return (
+    <div>
+      { renderPlayerIcon(player, props.isDefense, selectPlayer) }
+
+      { props.showSwitchPlayerButtons ? renderSwitchPlayerButtons(props.switchPlayerPositions) : ''}
+    </div>
+  )
+}
+
+function renderTwoPlayerUI(
   { team, composition, showSwitchPlayerButtons, selectPlayer, switchPlayerPositions }: InternalTeamProps
 ) {
   return (
     <div>
-      <div
-        className="add-defense"
-        onClick={ (e) => stopEvent(e) && selectPlayer(composition.team, composition.defense) }
-      >
-        {
-          !team[composition.defense].id ?
-            <i className="material-icons">&#xE853;</i> :
-            <PlayerIcon
-              click={ () => { return; } }
-              img={ team[composition.defense].imageUrl }
-              name={ team[composition.defense].displayName }
-            />
-        }
-        <span className="name">{ !team[composition.defense].displayName ? 'Tor' : '' }</span>
-      </div>
+      { renderPlayerIcon(team[composition.defense], true, () => { selectPlayer(composition.team, composition.defense) } )}
 
-      <div
-        className={ showSwitchPlayerButtons ? 'change-positions' : 'hidden' }
-        onClick={ (e) => stopEvent(e) && switchPlayerPositions() }
-      >
-        <i className="material-icons">&#xE0C3;</i>
-      </div>
+      { showSwitchPlayerButtons ? renderSwitchPlayerButtons(switchPlayerPositions) : ''}
 
-      <div
-        className="add-attack"
-        onClick={ (e) => stopEvent(e) && selectPlayer(composition.team, composition.attack) }
-      >
-        {
-          !team[composition.attack].id ?
-            <i className="material-icons">&#xE853;</i> :
-            <PlayerIcon
-              click={ () => { return; } }
-              img={ team[composition.attack].imageUrl }
-              name={ team[composition.attack].displayName }
-            />
-        }
-        <span className="name">{ !team[composition.attack].displayName ? 'Angriff' : '' }</span>
-      </div>
-      <div>
-        { Config.showTeamName ?
-          <span className="team-name">{team.name || ''}</span> :
-          <span />
-        }
-      </div>
+      { renderPlayerIcon(team[composition.attack], false, () => { selectPlayer(composition.team, composition.attack) } )}
     </div>
   );
 }
 
-function renderPlayerIcon(
-  { isDefense, team, composition, showSwitchPlayerButtons, selectPlayer, switchPlayerPositions }: InternalTeamProps
-) {
+function renderSwitchPlayerButtons(switchPlayerPositions: () => void) {
+  return (
+    <div
+    className={ 'change-positions' }
+    onClick={ (e) => stopEvent(e) && switchPlayerPositions() }
+    >
+      <i className="material-icons">&#xE0C3;</i>
+    </div>
+  );
+}
 
-  const player: Player = isDefense ? team[composition.defense] : team[composition.attack];
+function renderPlayerIcon(player: Player, isDefense: boolean, selectPlayer: () => void) {
 
   return (
-    <div>
       <div
-        className={'add-' + isDefense ? 'defense' : 'attack'}
-        onClick={ (e) => stopEvent(e) && selectPlayer(composition.team, isDefense ? composition.defense : composition.attack) }
+        className={ 'add-' + (isDefense ? 'defense' : 'attack') }
+        onClick={ (e) => stopEvent(e) && selectPlayer() }
       >
 
         {
-          !team[composition.defense].id ?
-
+          !player.id ?
             <i className="material-icons">&#xE853;</i> :
-
             <PlayerIcon
               click={ () => { return; } }
               img={ player.imageUrl }
@@ -114,19 +90,12 @@ function renderPlayerIcon(
         }
 
         <span className="name">{ !player.displayName ? (isDefense ? 'Tor' : 'Angriff') : '' }</span>
-      </div>
 
-      <div
-        className={ showSwitchPlayerButtons ? 'change-positions' : 'hidden' }
-        onClick={ (e) => stopEvent(e) && switchPlayerPositions() }
-      >
-        <i className="material-icons">&#xE0C3;</i>
       </div>
-    </div>
   );
 }
 
-function renderTeamIcon( {team, composition, selectTeam }: InternalTeamProps ) {
+function renderTeamIcon( { team, composition, selectTeam }: InternalTeamProps ) {
   return(
     <div
       className="add-team"
@@ -149,6 +118,9 @@ function renderWonSetDots(wonSets: number) {
 }
 
 function RenderTeam(props: InternalTeamProps) {
+
+  const displayPlayer: Player = props.isDefense ? props.team[props.composition.defense] : props.team[props.composition.attack];
+
   return (
     <div className={ props.classes } onClick={ () => { SoundService.playGoalSound(); props.goalScored(); } }>
 
@@ -164,7 +136,9 @@ function RenderTeam(props: InternalTeamProps) {
 
       { Config.teamMode
         ? renderTeamIcon(props)
-        : (props.devicePosition ? renderPlayerIcon(props) : renderPlayerIcons(props) )
+        : (props.devicePosition
+          ? renderOnePlayerUI(props, displayPlayer,() => { props.selectPlayer(props.composition.team, props.composition.attack) })
+          : renderTwoPlayerUI(props) )
       }
 
     </div>
