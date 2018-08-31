@@ -12,8 +12,10 @@ import { TimerService } from '../services/timer.service';
 import { Config } from '../../config';
 import { push } from 'react-router-redux';
 import { AutosaveService } from '../services/autosave.service';
+import { match as Match } from 'react-router';
 
 export interface MatchProps {
+  match?: Match<any>;
   sets: Sets;
   team1: Team;
   team2: Team;
@@ -109,7 +111,7 @@ function allPlayersSet(team1: Team, team2: Team): boolean {
 
 function getDialogMessage(winner: TeamKey, team1: Team, team2: Team): string {
   if (allPlayersSet(team1, team2)) {
-      return 'Ganz großes Kino, ' + getMatchWinnersAsString(winner === 'team1' ? team1 : team2) + '!' + 
+      return 'Ganz großes Kino, ' + getMatchWinnersAsString(winner === 'team1' ? team1 : team2) + '!' +
              ' Das Spielergebnis wird jetzt übermittelt.';
   } else {
     return 'Tolles Spiel! Zum Übermitteln der Ergebnisse müssen die Spieler vorab festgelegt werden.';
@@ -126,7 +128,13 @@ function correctResults(loadState: (state: RankedStore) => void): void {
   loadState(AutosaveService.getLastState('ranked'));
 }
 
-function Match({ setNumber, winner, sets, team1, team2, startNewMatch, routeBack, loadState }: MatchProps) {
+function Match({ match, setNumber, winner, sets, team1, team2, startNewMatch, routeBack, loadState }: MatchProps) {
+
+  let devicePosition = null;
+
+  if(match && match.params) {
+    devicePosition = match.params.devicePosition;
+  }
 
   if (winner) {
     TimerService.pause();
@@ -155,7 +163,7 @@ function Match({ setNumber, winner, sets, team1, team2, startNewMatch, routeBack
         />
       }
 
-      <TeamComponent color={'red'} />
+      <TeamComponent color={'red'} devicePosition={devicePosition}/>
 
       <div className={'setcounter' + (Config.pointsPerMatch > 1 ? '' : ' hidden')}>
         <div>
@@ -163,7 +171,7 @@ function Match({ setNumber, winner, sets, team1, team2, startNewMatch, routeBack
         </div>
       </div>
 
-      <TeamComponent color={'blue'} />
+      <TeamComponent color={'blue'} devicePosition={devicePosition} />
 
       <PanelComponent />
 

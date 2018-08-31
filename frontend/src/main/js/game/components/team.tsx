@@ -11,10 +11,13 @@ import * as Actions from '../actions';
 import { PartialStoreState } from '../store.state';
 
 export interface TeamProps {
+  devicePosition: TeamColor;
   color: TeamColor;
 }
 
 interface InternalTeamProps {
+  devicePosition: TeamColor;
+  isDefense: boolean;
   team: Team;
   composition: Composition;
   showSwitchPlayerButtons: boolean;
@@ -85,6 +88,44 @@ function renderPlayerIcons(
   );
 }
 
+function renderPlayerIcon(
+  { isDefense, team, composition, showSwitchPlayerButtons, selectPlayer, switchPlayerPositions }: InternalTeamProps
+) {
+
+  const player: Player = isDefense ? team[composition.defense] : team[composition.attack];
+
+  return (
+    <div>
+      <div
+        className={'add-' + isDefense ? 'defense' : 'attack'}
+        onClick={ (e) => stopEvent(e) && selectPlayer(composition.team, isDefense ? composition.defense : composition.attack) }
+      >
+
+        {
+          !team[composition.defense].id ?
+
+            <i className="material-icons">&#xE853;</i> :
+
+            <PlayerIcon
+              click={ () => { return; } }
+              img={ player.imageUrl }
+              name={ player.displayName }
+            />
+        }
+
+        <span className="name">{ !player.displayName ? (isDefense ? 'Tor' : 'Angriff') : '' }</span>
+      </div>
+
+      <div
+        className={ showSwitchPlayerButtons ? 'change-positions' : 'hidden' }
+        onClick={ (e) => stopEvent(e) && switchPlayerPositions() }
+      >
+        <i className="material-icons">&#xE0C3;</i>
+      </div>
+    </div>
+  );
+}
+
 function renderTeamIcon( {team, composition, selectTeam }: InternalTeamProps ) {
   return(
     <div
@@ -121,24 +162,28 @@ function RenderTeam(props: InternalTeamProps) {
         </Swipeable>
       </div>
 
-      { Config.teamMode ? renderTeamIcon(props) : renderPlayerIcons(props) }
+      { Config.teamMode
+        ? renderTeamIcon(props)
+        : (props.devicePosition ? renderPlayerIcon(props) : renderPlayerIcons(props) )
+      }
 
     </div>
   );
 }
 
-export function mapStateToProps({ranked: store}: PartialStoreState, { color }: TeamProps) {
+export function mapStateToProps({ranked: store}: PartialStoreState, { color, devicePosition }: TeamProps) {
   const currentSet: Set = store.sets[store.sets.length - 1];
   const composition: Composition = currentSet[color];
   const isCurrentSetStarted = (currentSet.blue.goals.length > 0) || (currentSet.red.goals.length > 0);
   const isFirstOrLastSet =  (store.sets.length === 1) || (store.sets.length === Config.pointsPerMatch * 2 - 1);
 
   return {
+    devicePosition,
+    isDefense: color === devicePosition,
     team: store[composition.team],
     composition,
     classes: 'team-' + color,
     showSwitchPlayerButtons: !isCurrentSetStarted && isFirstOrLastSet
-
   };
 }
 

@@ -74,7 +74,7 @@ class Ranked extends React.Component<{}, { initialized: boolean }> {
       <div className="ranked">
         <ConnectedRouter history={ history }>
           <Switch>
-            <Route exact={ true } path="/" component={ Match } />
+            <Route exact={ true } path="/:devicePosition?" component={ Match } />
             <Route path="/select/:letter?" component={ PlayerSelection } />
             <Route path="/selectTeam" component={ TeamSelection } />
             <Route path="/selectManikin/:team/:position" component={ ManikinSelection } />
