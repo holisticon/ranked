@@ -1,4 +1,4 @@
-import { Player, TeamColor, PlayerKey, TeamKey, Team } from '../types/types';
+import { Player, PlayerKey, Team, TeamColor, TeamKey } from '../types/types';
 import { RankedStore } from './store.state';
 
 export const INC_GOALS = 'INC_GOALS';
@@ -19,6 +19,9 @@ export type RankedAction =
 export interface IncGoals {
   type: string;
   team: TeamColor;
+  player: string;
+  manikin: string;
+  time: number;
 }
 
 export interface DecGoals {
@@ -73,10 +76,13 @@ export interface LoadState {
   state: RankedStore;
 }
 
-export function incGoals(team: TeamColor): IncGoals {
+export function incGoals(team: TeamColor, player: string, manikin: string, time: number): IncGoals {
   return {
       type: INC_GOALS,
-      team
+      team,
+      player,
+      manikin,
+      time
   };
 }
 
