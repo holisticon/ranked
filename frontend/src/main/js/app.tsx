@@ -10,11 +10,12 @@ import { Route } from 'react-router-dom';
 import { ConnectedRouter, routerMiddleware, routerReducer } from 'react-router-redux';
 import { applyMiddleware, combineReducers, createStore } from 'redux';
 
+import { Config } from './config';
+import { ManikinSelectionComponent } from './game/components/manikin-selection';
 import Match from './game/pages/match';
 import MatchSelection from './game/pages/match-selection';
 import PlayerSelection from './game/pages/player-selection';
 import TeamSelection from './game/pages/team-selection';
-import { TestPage } from './game/pages/test';
 import { ranked } from './game/reducer';
 import { AutosaveService } from './game/services/autosave.service';
 import { WebSocketMiddleware } from './game/services/websocket.middleware';
@@ -61,7 +62,7 @@ class Ranked extends React.Component<{}, { initialized: boolean }> {
   }
 
   componentWillMount(): void {
-    // Config.initConfig().then(() => this.setState({ initialized: true }));
+    Config.initConfig().then(() => this.setState({ initialized: true }));
   }
 
   render() {
@@ -71,12 +72,12 @@ class Ranked extends React.Component<{}, { initialized: boolean }> {
 
     return (
       <div className="ranked">
-        <ConnectedRouter history={history}>
+        <ConnectedRouter history={ history }>
           <Switch>
             <Route exact={ true } path="/" component={ Match } />
-            <Route path="/test" component={ TestPage } />
             <Route path="/select/:letter?" component={ PlayerSelection } />
             <Route path="/selectTeam" component={ TeamSelection } />
+            <Route path="/selectManikin/:team/:position" component={ ManikinSelectionComponent } />
             <Route path="/board" component={ ScoreBoard } />
             <Route path="/tournament" component={ TournamentTree } />
             <Route exact={ true } path="/tournamentAdmin" component={ TournamentAdminPage } />

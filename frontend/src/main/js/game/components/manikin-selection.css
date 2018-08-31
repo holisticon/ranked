@@ -1,0 +1,23 @@
+.manikins {
+    height: 100%;
+    width: 100%;
+}
+
+.manikins .row {
+    height: 100%;
+    width: 60px;
+    float: left;
+}
+
+.manikins .manikin {
+    width: 40px;
+    height: 40px;
+}
+
+.manikins .manikin.blue {
+    background-color: blue;
+}
+
+.manikins .manikin.red {
+    background-color: red;
+}

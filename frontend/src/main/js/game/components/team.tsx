@@ -1,13 +1,14 @@
 import * as React from 'react';
-import { Swipeable } from 'react-touch';
 import { connect, Dispatch } from 'react-redux';
-import * as Actions from '../actions';
-import { Composition, TeamColor, PlayerKey, Team, TeamKey, Set } from '../../types/types';
-import { PlayerIcon } from '../../components/player-icon';
 import { push } from 'react-router-redux';
-import { PartialStoreState } from '../store.state';
+import { Swipeable } from 'react-touch';
+
+import { PlayerIcon } from '../../components/player-icon';
 import { Config } from '../../config';
 import { SoundService } from '../../services/sound-service';
+import { Composition, PlayerKey, Set, Team, TeamColor, TeamKey } from '../../types/types';
+import * as Actions from '../actions';
+import { PartialStoreState } from '../store.state';
 
 export interface TeamProps {
   color: TeamColor;
@@ -18,7 +19,7 @@ interface InternalTeamProps {
   composition: Composition;
   showSwitchPlayerButtons: boolean;
   classes: string;
-  incGoals: () => void;
+  goalScored: () => void;
   decGoals: () => void;
   selectPlayer: (team: TeamKey, player: PlayerKey) => void;
   selectTeam: (team: TeamKey) => void;
@@ -103,18 +104,17 @@ function renderTeamIcon( {team, composition, selectTeam }: InternalTeamProps ) {
 }
 
 function renderWonSetDots(wonSets: number) {
-  return( <div className="won-sets-count">{ "\u2022".repeat(wonSets) }</div> );
+  return( <div className="won-sets-count">{ '\u2022'.repeat(wonSets) }</div> );
 }
 
 function RenderTeam(props: InternalTeamProps) {
-
   return (
-    <div className={ props.classes } onClick={ () => { SoundService.playGoalSound(); props.incGoals(); } }>
+    <div className={ props.classes } onClick={ () => { SoundService.playGoalSound(); props.goalScored(); } }>
 
       { renderWonSetDots(props.team.wonSets) }
 
       <div className="goal-counter-container">
-        <Swipeable onSwipeRight={ () => props.incGoals() } onSwipeLeft={ () => props.decGoals() }>
+        <Swipeable onSwipeRight={ () => props.goalScored() } onSwipeLeft={ () => props.decGoals() }>
           <div className="goal-counter">
             <span className="current-goals">{ props.composition.goals.length }</span>
           </div>
@@ -144,7 +144,8 @@ export function mapStateToProps({ranked: store}: PartialStoreState, { color }: T
 
 export function mapDispatchToProps(dispatch: Dispatch<Actions.RankedAction>, { color }: TeamProps) {
   return {
-    incGoals: () => dispatch(Actions.incGoals(color)),
+    // TODO: fill second route parameter correctly
+    goalScored: () => dispatch(push('/selectManikin/' + color + '/attack')),
     decGoals: () => dispatch(Actions.decGoals(color)),
     selectPlayer: (team: TeamKey, player: PlayerKey) => {
       dispatch(Actions.selectEntity(team, player));
