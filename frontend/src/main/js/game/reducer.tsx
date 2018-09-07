@@ -1,8 +1,8 @@
-import * as Actions from './actions';
-import { RankedStore, defaultState, createEmptyPlayer, createEmptyTeam } from './store.state';
-import { TeamColor, Team, Composition, TeamKey } from '../types/types';
-import { TimerService } from './services/timer.service';
 import { Config } from '../config';
+import { Composition, Team, TeamColor, TeamKey } from '../types/types';
+import * as Actions from './actions';
+import { TimerService } from './services/timer.service';
+import { createEmptyPlayer, createEmptyTeam, defaultState, RankedStore } from './store.state';
 
 function copyAndSet<T>(item: any, setter: (itemCopy: T) => void): T {
   const copy: T = {...item};
@@ -199,6 +199,16 @@ export function ranked(state: RankedStore, rankedAction: Actions.RankedAction): 
       } else {
         return { ...state, suddenDeathMode: true };
       }
+
+    case Actions.RESUME_MATCH:
+      TimerService.setTime((rankedAction as Actions.StartTimer).currentTimerTime);
+      TimerService.start();
+      break;
+
+    case Actions.PAUSE_MATCH:
+      TimerService.setTime((rankedAction as Actions.PauseTimer).currentTimerTime);
+      TimerService.pause();
+      break;
 
     default:
       break;

@@ -11,6 +11,12 @@ export namespace TimerService {
     }
   }
 
+  export function setTime(time: number): void {
+    if (status !== 'STARTED') {
+      timeInSec = time;
+    }
+  }
+
   export function start(): void {
     if (!intervalId) {
       intervalId = setInterval(

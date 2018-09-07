@@ -6,11 +6,18 @@ import * as Actions from '../actions';
 import { TimerService } from '../services/timer.service';
 import { PartialStoreState } from '../store.state';
 
-export interface TimerProps {
+export type TimerProps = TimerPropValues & TimerPropActions;
+
+interface TimerPropValues {
   startTime?: number;
   countdown?: boolean;
+  draw: boolean;
+}
+
+interface TimerPropActions {
   expired?: () => void;
-  draw?: boolean;
+  start: (currentTime: number) => void;
+  pause: (currentTime: number) => void;
 }
 
 interface TimerState {
@@ -51,7 +58,7 @@ export class TimerComponent extends React.Component<TimerProps, TimerState> {
   }
 
   private togglePause(): void {
-    this.state.status === 'STARTED' ? TimerService.pause() : TimerService.start();
+    this.state.status === 'STARTED' ? this.props.pause(this.state.time) : this.props.start(this.state.time);
   }
 
   private tick() {
@@ -70,9 +77,6 @@ export class TimerComponent extends React.Component<TimerProps, TimerState> {
       const timerTime = TimerService.getTimeInSec();
       const countdownTime = TimerService.getCountdownTimeInSec();
       const countdownReset = countdownTime === 0;
-
-      // tslint:disable-next-line:no-console
-      console.log('time: ' + timerTime);
 
       this.setState({
         time: timerTime,
@@ -124,7 +128,7 @@ export class TimerComponent extends React.Component<TimerProps, TimerState> {
 
 export function mapStateToProps({ ranked: { sets } }: PartialStoreState) {
   const currentSet = sets[sets.length - 1];
-  const props: TimerProps = { draw: currentSet.blue.goals.length === currentSet.red.goals.length };
+  const props: TimerPropValues = { draw: currentSet.blue.goals.length === currentSet.red.goals.length };
   
   if (Config.timedMatchMode) {
     props.countdown = true;
@@ -135,10 +139,16 @@ export function mapStateToProps({ ranked: { sets } }: PartialStoreState) {
 }
 
 export function mapDispatchToProps(dispatch: Dispatch<Actions.RankedAction>) {
+  const actions = {
+    start: (currentTime: number) => dispatch(Actions.startTimer(currentTime)),
+    pause: (currentTime: number) => dispatch(Actions.pauseTimer(currentTime))
+  } as TimerPropActions;
+  
   if (Config.timedMatchMode) {
-    return { expired: () => dispatch(Actions.countdownExpired()) } as TimerProps;
+    actions.expired = () => dispatch(Actions.countdownExpired());
   }
-  return {};
+
+  return actions;
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(TimerComponent);

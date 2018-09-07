@@ -12,9 +12,12 @@ export const UPDATE_AVAILABLE_PLAYERS = 'UPDATE_AVAILABLE_PLAYERS';
 export const UPDATE_AVAILABLE_TEAMS = 'UPDATE_AVAILABLE_TEAMS';
 export const COUNTDOWN_EXPIRED = 'COUNTDOWN_EXPIRED';
 export const LOAD_STATE = 'LOAD_STATE';
+export const RESUME_MATCH = 'RESUME_MATCH';
+export const PAUSE_MATCH = 'PAUSE_MATCH';
 
-export type RankedAction = 
-  IncGoals | DecGoals | SelectEntity | SetPlayer | SetTeam | SwitchPlayerPositions | StartNewMatch | CountdownExpired;
+export type RankedAction =
+  IncGoals | DecGoals | SelectEntity | SetPlayer | SetTeam | SwitchPlayerPositions | StartNewMatch |
+  CountdownExpired | StartTimer | PauseTimer;
 
 export interface IncGoals {
   type: string;
@@ -76,20 +79,30 @@ export interface LoadState {
   state: RankedStore;
 }
 
+export interface StartTimer {
+  type: string;
+  currentTimerTime: number;
+}
+
+export interface PauseTimer {
+  type: string;
+  currentTimerTime: number;
+}
+
 export function incGoals(team: TeamColor, player: string, manikin: string, time: number): IncGoals {
   return {
-      type: INC_GOALS,
-      team,
-      player,
-      manikin,
-      time
+    type: INC_GOALS,
+    team,
+    player,
+    manikin,
+    time
   };
 }
 
 export function decGoals(team: TeamColor): DecGoals {
   return {
-      type: DEC_GOALS,
-      team
+    type: DEC_GOALS,
+    team
   };
 }
 
@@ -148,6 +161,20 @@ export function updateAvailableTeams(teams: Array<Team>): UpdateAvailableTeams {
 export function countdownExpired(): CountdownExpired {
   return {
     type: COUNTDOWN_EXPIRED
+  };
+}
+
+export function startTimer(currentTimerTime: number): StartTimer {
+  return {
+    type: RESUME_MATCH,
+    currentTimerTime
+  };
+}
+
+export function pauseTimer(currentTimerTime: number): PauseTimer {
+  return {
+    type: PAUSE_MATCH,
+    currentTimerTime
   };
 }
 

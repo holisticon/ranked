@@ -1,15 +1,24 @@
 import { Store } from 'react-redux';
 import { Middleware } from 'redux';
 
-import { DEC_GOALS, INC_GOALS, RankedAction, SET_PLAYER, START_NEW_MATCH, SWITCH_PLAYER_POSITION } from '../actions';
+import * as Actions from '../actions';
 import { WebSocketService } from './websocket.service';
 
-type Event = RankedAction & {
+type Event = Actions.RankedAction & {
     sender?: string;
 };
 
 export namespace WebSocketMiddleware {
-    const actionsForSync = [ INC_GOALS, DEC_GOALS, SET_PLAYER, SWITCH_PLAYER_POSITION, START_NEW_MATCH ];
+    const actionsForSync = [
+        Actions.INC_GOALS,
+        Actions.DEC_GOALS,
+        Actions.SET_PLAYER, 
+        Actions.SWITCH_PLAYER_POSITION, 
+        Actions.START_NEW_MATCH, 
+        Actions.RESUME_MATCH, 
+        Actions.PAUSE_MATCH
+    ];
+
     const senderId = '' + Math.ceil(Math.random() * 1000);
     let client: WebSocketService;
 
@@ -22,7 +31,7 @@ export namespace WebSocketMiddleware {
             }
 
             return next(action);
-          };
+        };
     }
 
     export function init<S>(store: Store<S>): void {
@@ -33,8 +42,6 @@ export namespace WebSocketMiddleware {
             _ => alert('Cannot connect to backend!')
         );
         client.listenTo<Event>('/topic/event').subscribe(event => {
-            // tslint:disable-next-line:no-console
-            console.log(`Receive some ${event.type} event from '${event.sender}'`);
             // ignore own events
             if (event.sender !== senderId) {
                 store.dispatch(event);
