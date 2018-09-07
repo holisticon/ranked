@@ -5,7 +5,10 @@ import { connect, Dispatch } from 'react-redux';
 import { match } from 'react-router';
 import { push } from 'react-router-redux';
 
-import { TeamColor } from '../../types/types';
+import { PlayerIcon } from '../../components/player-icon';
+import { Config } from '../../config';
+import { PlayerService } from '../../services/player-service';
+import { Player, TeamColor } from '../../types/types';
 import * as Actions from '../actions';
 import { TimerService } from '../services/timer.service';
 import { PartialStoreState } from '../store.state';
@@ -18,27 +21,50 @@ export interface ManikinSelectionProps {
 interface ManikinSelectionState {
     manikins: Array<Array<string>>;
     team: TeamColor;
-    player: string;
+    player?: Player;
     position: string;
     goalTime: number;
+    timerPercent: number;
 }
 
 export class ManikinSelectionComponent extends React.Component<ManikinSelectionProps, ManikinSelectionState> {
+    private timer: any;
+
     constructor(props: ManikinSelectionProps) {
         super(props);
 
         let team = null;
         let position = null;
-        let player = ''; // TODO: extend route parameters
         if (props.match && props.match.params) {
             team = props.match.params.team;
             position = props.match.params.position;
+
+            let playerId = props.match.params.player;
+            if (playerId) {
+                PlayerService.getPlayer(playerId).then(player => this.setState({ player }));
+            }
         }
 
         const teamPrefix = team === 'red' ? 'r' : 'b';
         const manikins = position === 'defense' ?
             this.createDefenseRows(teamPrefix) : this.createAttackRows(teamPrefix);
-        this.state = { manikins, team, player, position, goalTime: TimerService.getTimeInSec() };
+        this.state = { manikins, team, position, goalTime: TimerService.getTimeInSec(), timerPercent: 100 };
+
+        this.startTimer();
+    }
+
+    private startTimer(): void {
+        const decrease = 0.1;
+        this.timer = setInterval(
+            () => {
+                let timerPercent = this.state.timerPercent - decrease;
+                if (timerPercent <= 0) {
+                    timerPercent = 0;
+                }
+                this.setState({ timerPercent });
+            },
+            Config.timeForManikinSelection * 10 * decrease
+        );
     }
 
     private createManikinsData(prefix: string, rows: Array<number>): Array<Array<string>> {
@@ -60,9 +86,12 @@ export class ManikinSelectionComponent extends React.Component<ManikinSelectionP
     }
 
     private selectManikin(manikin: string): void {
-        // tslint:disable-next-line:no-console
-        console.log('Selecting ' + manikin);
-        this.props.select(this.state.team, this.state.player, manikin, this.state.goalTime);
+        if (this.timer) {
+            // always clear the interval before routing back
+            clearInterval(this.timer);
+        }
+
+        this.props.select(this.state.team, this.state.player ? this.state.player.id : '', manikin, this.state.goalTime);
     }
 
     private renderManikinRow(row: Array<string>) {
@@ -73,7 +102,9 @@ export class ManikinSelectionComponent extends React.Component<ManikinSelectionP
                     className={ `manikin ${ this.state.team }` }
                     onClick={ () => this.selectManikin(manikin) }
                 >
-                    { manikin }
+                    <div className="manikin-inner">
+                        <span className="manikin-icon" />
+                    </div>
                 </div>
             );
         });
@@ -82,11 +113,24 @@ export class ManikinSelectionComponent extends React.Component<ManikinSelectionP
     private renderManikins() {
         return this.state.manikins.map((row, index) => {
             return (
-                <div key={ index } className="row">
+                <div key={ index } className="column">
                     { this.renderManikinRow(row) }
                 </div>
             );
         });
+    }
+
+    private renderPlayer() {
+        if (!this.state.player) {
+            return null;
+        }
+
+        return (
+            <div className="player">
+                <PlayerIcon img={ this.state.player.imageUrl } click={ () => { return; } } />
+                <span className="player-name">{ this.state.player.displayName }</span>
+            </div>
+        );
     }
 
     public render() {
@@ -94,9 +138,20 @@ export class ManikinSelectionComponent extends React.Component<ManikinSelectionP
             return null;
         }
 
+        if (this.state.timerPercent === 0) {
+            // let the render update completely before redirect
+            setTimeout(() => this.selectManikin(''));
+        }
+
         return (
-            <div className="manikins">
-                { this.renderManikins() }
+            <div className="manikin-selection">
+                <div className="manikins">
+                    { this.renderManikins() }
+                </div>
+                { this.renderPlayer() }
+                <div className={`timer ${ this.state.team }`}>
+                    <div className="timer-bar" style={ { width: this.state.timerPercent + '%' } } />
+                </div>
             </div>
         );
     }

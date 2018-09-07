@@ -1,23 +1,104 @@
-.manikins {
-    height: 100%;
+.manikin-selection {
     width: 100%;
+    height: 100%;
+    position: relative;
 }
 
-.manikins .row {
+.manikins {
     height: 100%;
-    width: 60px;
     float: left;
+    position: relative;
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%);
+}
+
+.manikins .column {
+    display: table;
+    table-layout: fixed;
+    height: 86%;
+    padding-bottom: 4rem;
+    float: left;
+    position: relative;
+    top: 43%;
+    transform: translateY(-50%);
+    margin: 0 3rem;
+    width: 3rem;
+    background: linear-gradient(to right, 
+        rgba(0,0,0,0) 39%,
+        rgba(160,160,160,1) 40%,
+        rgba(203,203,203,1) 45%,
+        rgba(203,203,203,1) 55%,
+        rgba(160,160,160,1) 60%,
+        rgba(0,0,0,0) 61%);
 }
 
 .manikins .manikin {
-    width: 40px;
-    height: 40px;
+    display: table-row;
+    width: 100%;
 }
 
-.manikins .manikin.blue {
-    background-color: blue;
+.manikins .manikin .manikin-inner {
+    display: table-cell;
+    vertical-align: middle;
 }
 
-.manikins .manikin.red {
-    background-color: red;
+.manikins .manikin .manikin-inner .manikin-icon {
+    display: inline-block;
+    width: 100%;
+    height: 0;
+    padding: 50% 0;
+    border-radius: 50%;
+    border-width: 0.1rem;
+    border-style: solid;
+    margin: 0 -0.1rem;
+}
+
+.manikins .manikin.blue .manikin-icon {
+    background-color: #d7eeff;
+    border-color: #4b93e2;
+}
+
+.manikins .manikin.red .manikin-icon {
+    background-color: #ffbdb8;
+    border-color: #cf0017;
+}
+
+/**** Player icon and name *****/
+.manikin-selection .player {
+    position: absolute;
+    left: 50%;
+    bottom: 2rem;
+    transform: translateX(-50%);
+}
+
+.manikin-selection .player .player-icon {
+    height: 4rem;
+}
+
+.manikin-selection .player .player-name {
+    display: inline-block;
+    margin-top: 0.2rem;
+    opacity: 0.4;
+}
+
+/**** Timer *****/
+.manikin-selection .timer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 0.8rem;
+    margin: 0.1rem 0;
+}
+
+.manikin-selection .timer .timer-bar {
+    height: 100%;
+}
+
+.manikin-selection .timer.red .timer-bar {
+    background-color: #cf0017;
+}
+
+.manikin-selection .timer.blue .timer-bar {
+    background-color: #4b93e2;
 }

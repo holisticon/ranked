@@ -22,7 +22,7 @@ interface InternalTeamProps {
   composition: Composition;
   showSwitchPlayerButtons: boolean;
   classes: string;
-  goalScored: () => void;
+  goalScored: (playerId?: string) => void;
   decGoals: () => void;
   selectPlayer: (team: TeamKey, player: PlayerKey) => void;
   selectTeam: (team: TeamKey) => void;
@@ -46,7 +46,7 @@ function renderOnePlayerUI(props: InternalTeamProps, player: Player, selectPlaye
 
       { props.isDefense && props.showSwitchPlayerButtons ? renderSwitchPlayerButtons(props.switchPlayerPositions, true) : '' }
     </div>
-  )
+  );
 }
 
 function renderTwoPlayerUI(
@@ -54,11 +54,11 @@ function renderTwoPlayerUI(
 ) {
   return (
     <div className={ 'two-player-ui' }>
-      { renderPlayerIcon(team[composition.defense], true, () => { selectPlayer(composition.team, composition.defense) } )}
+      { renderPlayerIcon(team[composition.defense], true, () => { selectPlayer(composition.team, composition.defense); } )}
 
       { showSwitchPlayerButtons ? renderSwitchPlayerButtons(switchPlayerPositions) : ''}
 
-      { renderPlayerIcon(team[composition.attack], false, () => { selectPlayer(composition.team, composition.attack) } )}
+      { renderPlayerIcon(team[composition.attack], false, () => { selectPlayer(composition.team, composition.attack); } )}
     </div>
   );
 }
@@ -67,8 +67,8 @@ function renderSwitchPlayerButtons(switchPlayerPositions: () => void, isDefense?
   // TODO two-players: button centered (no class suffix)
   return (
     <div
-    className={ 'change-positions-' + (isDefense ? 'defense' : 'offense') }
-    onClick={ (e) => stopEvent(e) && switchPlayerPositions() }
+      className={ 'change-positions-' + (isDefense ? 'defense' : 'offense') }
+      onClick={ (e) => stopEvent(e) && switchPlayerPositions() }
     >
       <i className="material-icons">&#xE0C3;</i>
     </div>
@@ -124,14 +124,15 @@ function renderWonSetDots(wonSets: number) {
 function RenderTeam(props: InternalTeamProps) {
 
   const displayPlayer: Player = props.isDefense ? props.team[props.composition.defense] : props.team[props.composition.attack];
+  const displayPlayerId = props.devicePosition ? displayPlayer.id : undefined;
 
   return (
-    <div className={ props.classes } onClick={ () => { SoundService.playGoalSound(); props.goalScored(); } }>
+    <div className={ props.classes } onClick={ () => { SoundService.playGoalSound(); props.goalScored(displayPlayerId); } }>
 
       { renderWonSetDots(props.team.wonSets) }
 
       <div className="goal-counter-container">
-        <Swipeable onSwipeRight={ () => props.goalScored() } onSwipeLeft={ () => props.decGoals() }>
+        <Swipeable onSwipeRight={ () => props.goalScored(displayPlayerId) } onSwipeLeft={ () => props.decGoals() }>
           <div className="goal-counter">
             <span className="current-goals">{ props.composition.goals.length }</span>
           </div>
@@ -141,7 +142,7 @@ function RenderTeam(props: InternalTeamProps) {
       { Config.teamMode
         ? renderTeamIcon(props)
         : (props.devicePosition
-          ? renderOnePlayerUI(props, displayPlayer,() => { props.selectPlayer(props.composition.team, props.isDefense ? props.composition.defense : props.composition.attack) })
+          ? renderOnePlayerUI(props, displayPlayer, () => { props.selectPlayer(props.composition.team, props.isDefense ? props.composition.defense : props.composition.attack); })
           : renderTwoPlayerUI(props) )
       }
 
@@ -165,10 +166,13 @@ export function mapStateToProps({ranked: store}: PartialStoreState, { color, dev
   };
 }
 
-export function mapDispatchToProps(dispatch: Dispatch<Actions.RankedAction>, { color }: TeamProps) {
+export function mapDispatchToProps(dispatch: Dispatch<Actions.RankedAction>, { color, devicePosition }: TeamProps) {
+  const isDefense = color === devicePosition;
+
   return {
-    // TODO: fill second route parameter correctly
-    goalScored: () => dispatch(push('/selectManikin/' + color + '/attack')),
+    goalScored: (playerId?: string) => {
+      dispatch(push(`/selectManikin/${ color }/${ isDefense ? 'defense' : 'attack'}${ playerId ? ('/' + playerId) : '' }`));
+    },
     decGoals: () => dispatch(Actions.decGoals(color)),
     selectPlayer: (team: TeamKey, player: PlayerKey) => {
       dispatch(Actions.selectEntity(team, player));
