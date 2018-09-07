@@ -98,20 +98,20 @@
   position: absolute;
   bottom: 0.4rem;
   text-align: center;
-  left: calc(50% - 1.5rem);
+  left: calc(50% - 2rem);
 }
 
 /* anonymous avatar */
 .match .one-player-ui .add-defense .material-icons, .match .one-player-ui .add-attack .material-icons {
   opacity: 0.4;
-  font-size: 3rem;
+  font-size: 4rem;
 }
 
 /* player image */
 .match .one-player-ui .add-defense .player-icon, .match .one-player-ui .add-attack .player-icon {
   width: 100%;
-  min-width: 4.5rem;
-  height: 4.5rem;
+  min-width: 4rem;
+  height: 4rem;
 }
 
 /* player-name or position */
