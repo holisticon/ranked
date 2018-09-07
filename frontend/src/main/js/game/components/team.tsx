@@ -38,10 +38,13 @@ function stopEvent(event: React.SyntheticEvent<Object>): boolean {
 function renderOnePlayerUI(props: InternalTeamProps, player: Player, selectPlayer: () => void) {
 
   return (
-    <div>
+    <div className={ 'one-player-ui' }>
+
+      { !props.isDefense && props.showSwitchPlayerButtons ? renderSwitchPlayerButtons(props.switchPlayerPositions, false) : '' }
+
       { renderPlayerIcon(player, props.isDefense, selectPlayer) }
 
-      { props.showSwitchPlayerButtons ? renderSwitchPlayerButtons(props.switchPlayerPositions) : ''}
+      { props.isDefense && props.showSwitchPlayerButtons ? renderSwitchPlayerButtons(props.switchPlayerPositions, true) : '' }
     </div>
   )
 }
@@ -50,7 +53,7 @@ function renderTwoPlayerUI(
   { team, composition, showSwitchPlayerButtons, selectPlayer, switchPlayerPositions }: InternalTeamProps
 ) {
   return (
-    <div>
+    <div className={ 'two-player-ui' }>
       { renderPlayerIcon(team[composition.defense], true, () => { selectPlayer(composition.team, composition.defense) } )}
 
       { showSwitchPlayerButtons ? renderSwitchPlayerButtons(switchPlayerPositions) : ''}
@@ -60,10 +63,11 @@ function renderTwoPlayerUI(
   );
 }
 
-function renderSwitchPlayerButtons(switchPlayerPositions: () => void) {
+function renderSwitchPlayerButtons(switchPlayerPositions: () => void, isDefense?: boolean) {
+  // TODO two-players: button centered (no class suffix)
   return (
     <div
-    className={ 'change-positions' }
+    className={ 'change-positions-' + (isDefense ? 'defense' : 'offense') }
     onClick={ (e) => stopEvent(e) && switchPlayerPositions() }
     >
       <i className="material-icons">&#xE0C3;</i>
@@ -89,7 +93,7 @@ function renderPlayerIcon(player: Player, isDefense: boolean, selectPlayer: () =
             />
         }
 
-        <span className="name">{ !player.displayName ? (isDefense ? 'Tor' : 'Angriff') : '' }</span>
+        <span className="name">{ isDefense ? 'Tor' : 'Angriff' }</span>
 
       </div>
   );
@@ -137,7 +141,7 @@ function RenderTeam(props: InternalTeamProps) {
       { Config.teamMode
         ? renderTeamIcon(props)
         : (props.devicePosition
-          ? renderOnePlayerUI(props, displayPlayer,() => { props.selectPlayer(props.composition.team, props.composition.attack) })
+          ? renderOnePlayerUI(props, displayPlayer,() => { props.selectPlayer(props.composition.team, props.isDefense ? props.composition.defense : props.composition.attack) })
           : renderTwoPlayerUI(props) )
       }
 

@@ -91,36 +91,99 @@
   transform: rotate(-90deg);
 }
 
-.match .add-defense, .match .add-attack {
+/** one player ui **/
+
+/* positioning of footer */
+.match .one-player-ui .add-defense, .match .one-player-ui .add-attack {
   position: absolute;
   bottom: 0.4rem;
   text-align: center;
+  left: calc(50% - 1.5rem);
 }
 
-.match .add-defense {
-  left: 10%;
-}
-
-.match .add-attack {
-  right: 10%;
-}
-
-.match .add-defense .material-icons, .match .add-attack .material-icons {
+/* anonymous avatar */
+.match .one-player-ui .add-defense .material-icons, .match .one-player-ui .add-attack .material-icons {
   opacity: 0.4;
   font-size: 3rem;
 }
 
-.match .add-defense .player-icon, .match .add-attack .player-icon {
+/* player image */
+.match .one-player-ui .add-defense .player-icon, .match .one-player-ui .add-attack .player-icon {
   width: 100%;
   min-width: 4.5rem;
   height: 4.5rem;
 }
 
-.match .add-defense .name, .match .add-attack .name {
+/* player-name or position */
+.match .one-player-ui .add-defense .name, .match .one-player-ui .add-attack .name {
   opacity: 0.4;
   display: block;
   min-height: 1.2rem;
 }
+
+.match .one-player-ui .change-positions-defense {
+  position: absolute;
+  bottom: 2rem;
+  left: calc(75% - 1rem);
+}
+
+.match .one-player-ui .change-positions-offense {
+  position: absolute;
+  bottom: 2rem;
+  left: calc(25% - 1rem);
+}
+
+.match .one-player-ui .change-positions i {
+  transform: rotate(90deg);
+  font-size: 2rem;
+  opacity: 0.2;
+}
+
+/* two player ui */
+
+.match .two-player-ui .add-defense, .match .two-player-ui .add-attack {
+  position: absolute;
+  bottom: 0.4rem;
+  text-align: center;
+}
+
+.match .two-player-ui .add-defense {
+  left: 10%;
+}
+
+.match .two-player-ui .add-attack {
+  right: 10%;
+}
+
+.match .two-player-ui .add-defense .material-icons, .match .two-player-ui .add-attack .material-icons {
+  opacity: 0.4;
+  font-size: 3rem;
+}
+
+.match .two-player-ui .add-defense .player-icon, .match .two-player-ui .add-attack .player-icon {
+  width: 100%;
+  min-width: 4.5rem;
+  height: 4.5rem;
+}
+
+.match .two-player-ui .add-defense .name, .match .two-player-ui .add-attack .name {
+  opacity: 0.4;
+  display: block;
+  min-height: 1.2rem;
+}
+
+.match .two-player-ui .change-positions {
+  position: absolute;
+  bottom: 2rem;
+  left: calc(50% - 1rem);
+}
+
+.match .two-player-ui .change-positions i {
+  transform: rotate(90deg);
+  font-size: 2rem;
+  opacity: 0.2;
+}
+
 
 .match .add-team {
   width: 100%;
@@ -150,18 +213,6 @@
   bottom: 0.4rem;
   opacity: 0.4;
   text-align: center;
-}
-
-.match .change-positions {
-  position: absolute;
-  bottom: 2rem;
-  left: calc(50% - 1rem);
-}
-
-.match .change-positions i {
-  transform: rotate(90deg);
-  font-size: 2rem;
-  opacity: 0.2;
 }
 
 .setcounter {
