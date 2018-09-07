@@ -133,7 +133,7 @@
   left: calc(25% - 1rem);
 }
 
-.match .one-player-ui .change-positions i {
+.match .one-player-ui .change-positions-offense i , .match .one-player-ui .change-positions-defense i {
   transform: rotate(90deg);
   font-size: 2rem;
   opacity: 0.2;
