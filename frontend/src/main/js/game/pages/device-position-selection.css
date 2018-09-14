@@ -1,0 +1,29 @@
+.device-position-selection {
+    position: absolute;
+    left: 10%;
+    width: 80%;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.device-position-selection .ranked-button {
+    width: 100%;
+    box-sizing: border-box;
+    margin: 1.5rem 0;
+    text-align: center;
+}
+
+.device-position-selection .position-blue {
+    background-color: #d7eeff;
+    color: #4b93e2;
+}
+
+.device-position-selection .position-red {
+    background-color: #ffbdb8;
+    color: #cf0017;
+}
+
+.device-position-selection .single-mode {
+    background-color: #535353;
+    color: #ffffff;
+}

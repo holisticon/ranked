@@ -1,17 +1,19 @@
-import * as React from 'react';
-import TeamComponent from '../components/team';
-import { Sets, Team, TeamKey, Set, Composition, TeamColor } from '../../types/types';
-import { connect, Dispatch } from 'react-redux';
-import * as Actions from '../actions';
-import axios from 'axios';
-import { Dialog } from '../../components/dialog';
 import './match.css';
-import { PartialStoreState, RankedStore } from '../store.state';
-import PanelComponent from '../components/panel';
-import { TimerService } from '../services/timer.service';
-import { Config } from '../../config';
+
+import axios from 'axios';
+import * as React from 'react';
+import { connect, Dispatch } from 'react-redux';
 import { push } from 'react-router-redux';
+
+import { Dialog } from '../../components/dialog';
+import { Config } from '../../config';
+import { Composition, Set, Sets, Team, TeamColor, TeamKey } from '../../types/types';
+import * as Actions from '../actions';
+import PanelComponent from '../components/panel';
+import TeamComponent from '../components/team';
 import { AutosaveService } from '../services/autosave.service';
+import { TimerService } from '../services/timer.service';
+import { PartialStoreState, RankedStore } from '../store.state';
 
 export interface MatchProps {
   devicePosition: TeamColor | null;
@@ -95,9 +97,9 @@ function sendResults(sets: Sets, team1: Team, team2: Team) {
 function getMatchWinnersAsString(team: Team): string | undefined {
   if (team) {
     if (Config.teamMode) {
-      return `Team ${team.name}`;
+      return `Team ${ team.name }`;
     } else {
-      return `${team.player1.displayName} und ${team.player2.displayName}`;
+      return `${ team.player1.displayName } und ${ team.player2.displayName }`;
     }
   } else {
     return '';
@@ -110,8 +112,8 @@ function allPlayersSet(team1: Team, team2: Team): boolean {
 
 function getDialogMessage(winner: TeamKey, team1: Team, team2: Team): string {
   if (allPlayersSet(team1, team2)) {
-      return 'Ganz großes Kino, ' + getMatchWinnersAsString(winner === 'team1' ? team1 : team2) + '!' +
-             ' Das Spielergebnis wird jetzt übermittelt.';
+    return 'Ganz großes Kino, ' + getMatchWinnersAsString(winner === 'team1' ? team1 : team2) + '!' +
+      ' Das Spielergebnis wird jetzt übermittelt.';
   } else {
     return 'Tolles Spiel! Zum Übermitteln der Ergebnisse müssen die Spieler vorab festgelegt werden.';
   }
@@ -140,7 +142,7 @@ function Match({ devicePosition, setNumber, winner, sets, team1, team2, startNew
         <Dialog
           headline="Spiel beendet"
           text={ getDialogMessage(winner, team1, team2) }
-          buttons={[
+          buttons={ [
             {
               text: 'OK!', type: 'ok', click: () => {
                 sendResults(sets, team1, team2);
@@ -152,19 +154,19 @@ function Match({ devicePosition, setNumber, winner, sets, team1, team2, startNew
                 correctResults(loadState);
               }
             }
-          ]}
+          ] }
         />
       }
 
-      <TeamComponent color={'red'} devicePosition={devicePosition}/>
+      <TeamComponent color={ 'red' } devicePosition={ devicePosition } />
 
-      <div className={'setcounter' + (Config.pointsPerMatch > 1 ? '' : ' hidden')}>
+      <div className={ 'setcounter' + (Config.pointsPerMatch > 1 ? '' : ' hidden') }>
         <div>
-          <span>{setNumber}</span>
+          <span>{ setNumber }</span>
         </div>
       </div>
 
-      <TeamComponent color={'blue'} devicePosition={devicePosition} />
+      <TeamComponent color={ 'blue' } devicePosition={ devicePosition } />
 
       <PanelComponent />
 
@@ -181,8 +183,7 @@ export function mapStateToProps({ ranked: { devicePosition, team1, team2, sets }
   }
 
   return {
-    // TODO Put StoreStare here!
-    devicePosition: 'blue' as TeamColor,
+    devicePosition,
     sets,
     team1,
     team2,

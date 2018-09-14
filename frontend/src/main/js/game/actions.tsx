@@ -14,10 +14,11 @@ export const COUNTDOWN_EXPIRED = 'COUNTDOWN_EXPIRED';
 export const LOAD_STATE = 'LOAD_STATE';
 export const RESUME_MATCH = 'RESUME_MATCH';
 export const PAUSE_MATCH = 'PAUSE_MATCH';
+export const SET_DEVICE_POSITION = 'SET_DEVICE_POSITION';
 
 export type RankedAction =
   IncGoals | DecGoals | SelectEntity | SetPlayer | SetTeam | SwitchPlayerPositions | StartNewMatch |
-  CountdownExpired | StartTimer | PauseTimer;
+  CountdownExpired | StartTimer | PauseTimer | SetDevicePosition;
 
 export interface IncGoals {
   type: string;
@@ -87,6 +88,11 @@ export interface StartTimer {
 export interface PauseTimer {
   type: string;
   currentTimerTime: number;
+}
+
+export interface SetDevicePosition {
+  type: string;
+  position: TeamColor | null;
 }
 
 export function incGoals(team: TeamColor, player: string, manikin: string, time: number): IncGoals {
@@ -182,5 +188,12 @@ export function loadState(state: RankedStore): LoadState {
   return {
     type: LOAD_STATE,
     state
+  };
+}
+
+export function setDevicePosition(position: TeamColor | null): SetDevicePosition {
+  return {
+    type: SET_DEVICE_POSITION,
+    position
   };
 }

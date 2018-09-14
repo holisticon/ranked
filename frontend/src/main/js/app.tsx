@@ -12,6 +12,7 @@ import { applyMiddleware, combineReducers, createStore } from 'redux';
 
 import { Config } from './config';
 import ManikinSelection from './game/components/manikin-selection';
+import DevicePositionSelection from './game/pages/device-position-selection';
 import Match from './game/pages/match';
 import MatchSelection from './game/pages/match-selection';
 import PlayerSelection from './game/pages/player-selection';
@@ -75,6 +76,7 @@ class Ranked extends React.Component<{}, { initialized: boolean }> {
         <ConnectedRouter history={ history }>
           <Switch>
             <Route exact={ true } path="/" component={ Match } />
+            <Route path="/devicePosition" component={ DevicePositionSelection } />
             <Route path="/select/:letter?" component={ PlayerSelection } />
             <Route path="/selectTeam" component={ TeamSelection } />
             <Route path="/selectManikin/:team/:position/:player?" component={ ManikinSelection } />

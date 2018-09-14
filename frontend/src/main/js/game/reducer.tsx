@@ -5,7 +5,7 @@ import { TimerService } from './services/timer.service';
 import { createEmptyPlayer, createEmptyTeam, defaultState, RankedStore } from './store.state';
 
 function copyAndSet<T>(item: any, setter: (itemCopy: T) => void): T {
-  const copy: T = {...item};
+  const copy: T = { ...item };
   setter(copy);
 
   return copy;
@@ -57,7 +57,7 @@ function switchPlayerPositions(state: RankedStore, teamColor: TeamColor): Ranked
 function removeTeamIfPresent(teamId: string | undefined, team: Team): Team {
   if (team.id === teamId) {
     return createEmptyTeam();
-  }  else {
+  } else {
     return team;
   }
 }
@@ -118,14 +118,14 @@ export function ranked(state: RankedStore, rankedAction: Actions.RankedAction): 
       const newState = changeGoals(state, action.team, 1);
 
       if (newState.suddenDeathMode ||
-          (!Config.timedMatchMode &&
-           newState.sets[newState.sets.length - 1][action.team].goals.length >= Config.pointsPerSet)
-         ) {
-           if (newState.suddenDeathMode) {
-            TimerService.pause();
-            TimerService.resetCountdown();
-           }
-           return startNewSet(newState);
+        (!Config.timedMatchMode &&
+          newState.sets[newState.sets.length - 1][action.team].goals.length >= Config.pointsPerSet)
+      ) {
+        if (newState.suddenDeathMode) {
+          TimerService.pause();
+          TimerService.resetCountdown();
+        }
+        return startNewSet(newState);
       }
 
       // Start timer whenever a goal is scored to be sure it's running ;)
@@ -148,7 +148,7 @@ export function ranked(state: RankedStore, rankedAction: Actions.RankedAction): 
     case Actions.SELECT_ENTITY:
       action = rankedAction as Actions.SelectEntity;
 
-      return {...state, selectFor: {team: action.team, player: action.player}};
+      return { ...state, selectFor: { team: action.team, player: action.player } };
 
     case Actions.SET_PLAYER:
       const setPlayerAction = rankedAction as Actions.SetPlayer;
@@ -184,12 +184,12 @@ export function ranked(state: RankedStore, rankedAction: Actions.RankedAction): 
     case Actions.UPDATE_AVAILABLE_PLAYERS:
       action = rankedAction as Actions.UpdateAvailablePlayers;
 
-      return {...state, availablePlayers: action.players};
+      return { ...state, availablePlayers: action.players };
 
     case Actions.UPDATE_AVAILABLE_TEAMS:
       action = rankedAction as Actions.UpdateAvailableTeams;
 
-      return {...state, availableTeams: action.teams};
+      return { ...state, availableTeams: action.teams };
 
     case Actions.COUNTDOWN_EXPIRED:
       const currenSet = state.sets[state.sets.length - 1];
@@ -210,6 +210,11 @@ export function ranked(state: RankedStore, rankedAction: Actions.RankedAction): 
       TimerService.setTime((rankedAction as Actions.PauseTimer).currentTimerTime);
       TimerService.pause();
       break;
+
+    case Actions.SET_DEVICE_POSITION:
+      action = rankedAction as Actions.SetDevicePosition;
+
+      return { ...state, devicePosition: action.position };
 
     default:
       break;
