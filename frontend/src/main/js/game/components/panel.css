@@ -41,3 +41,9 @@
   right: -3.7rem;
   background-color: #cf0017;
 }
+
+.position-null .panel .display {
+  transform: rotate(90deg);
+  right: -3.7rem;
+  background-color: #535353;
+}

@@ -64,10 +64,15 @@ function renderTwoPlayerUI(
 }
 
 function renderSwitchPlayerButtons(switchPlayerPositions: () => void, isDefense?: boolean) {
-  // TODO two-players: button centered (no class suffix)
+  let cssClass = 'change-positions';
+
+  if (isDefense !== undefined) {
+    cssClass += isDefense ? '-defense' : '-offense';
+  }
+
   return (
     <div
-      className={ 'change-positions-' + (isDefense ? 'defense' : 'offense') }
+      className={ cssClass }
       onClick={ (e) => stopEvent(e) && switchPlayerPositions() }
     >
       <i className="material-icons">&#xE0C3;</i>
