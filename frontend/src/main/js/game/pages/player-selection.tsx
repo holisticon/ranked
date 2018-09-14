@@ -1,12 +1,15 @@
+import './player-selection.css';
+
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
-import * as Actions from '../actions';
-import { Player, PlayerKey, TeamKey } from '../../types/types';
 import { match as Match } from 'react-router';
 import { push } from 'react-router-redux';
-import { PlayerService } from '../../services/player-service';
-import { PartialStoreState } from '../store.state';
+
 import { PlayerSelectionComponent } from '../../components/player-selection';
+import { PlayerService } from '../../services/player-service';
+import { Player, PlayerKey, TeamKey } from '../../types/types';
+import * as Actions from '../actions';
+import { PartialStoreState } from '../store.state';
 
 export interface PlayerSelectionProps {
   match?: Match<any>;
@@ -33,7 +36,7 @@ function PlayerSelection({
   const selectPlayer = (player: Player) => select(selectFor.team, selectFor.player, player);
 
   return (
-    <div className={ 'player-selection' }>
+    <div className={ 'player-for-game' + ( selectFor.team === 'team1' ? ' rotate-180' : '' ) }>
       <PlayerSelectionComponent
         selectedLetter={ selectedLetter }
         availablePlayers={ availablePlayers }

@@ -58,3 +58,7 @@ a {
 .ranked-button-gray {
   background: #707070;
 }
+
+.rotate-180 {
+  transform: rotate(180deg);
+}

@@ -139,7 +139,7 @@ export class ManikinSelectionComponent extends React.Component<ManikinSelectionP
         }
 
         return (
-            <div className="manikin-selection">
+            <div className={ 'manikin-selection' + ( this.state.team === 'red' ? ' rotate-180' : '' ) }>
                 <div className="manikins">
                     { this.renderManikins() }
                 </div>

@@ -8,6 +8,7 @@ import { Config } from '../../config';
 import { SoundService } from '../../services/sound-service';
 import { Composition, Player, PlayerKey, Set, Team, TeamColor, TeamKey } from '../../types/types';
 import * as Actions from '../actions';
+import { TimerService } from '../services/timer.service';
 import { PartialStoreState } from '../store.state';
 
 export interface TeamProps {
@@ -172,11 +173,16 @@ export function mapStateToProps({ranked: store}: PartialStoreState, { color, dev
 }
 
 export function mapDispatchToProps(dispatch: Dispatch<Actions.RankedAction>, { color, devicePosition }: TeamProps) {
+  const twoPlayerMode = devicePosition === null || devicePosition === undefined;
   const isDefense = color === devicePosition;
 
   return {
     goalScored: (playerId?: string) => {
-      dispatch(push(`/selectManikin/${ color }/${ isDefense ? 'defense' : 'attack'}${ playerId ? ('/' + playerId) : '' }`));
+      if (twoPlayerMode) {
+        dispatch(Actions.incGoals(color, playerId || '', '', TimerService.getTimeInSec()));
+      } else {
+        dispatch(push(`/selectManikin/${ color }/${ isDefense ? 'defense' : 'attack'}${ playerId ? ('/' + playerId) : '' }`));
+      }
     },
     decGoals: () => dispatch(Actions.decGoals(color)),
     selectPlayer: (team: TeamKey, player: PlayerKey) => {

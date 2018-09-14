@@ -1,9 +1,11 @@
-import * as React from 'react';
 import './dialog.css';
+
+import * as React from 'react';
 
 export type ButtonType = 'ok' | 'error' | 'warn' | 'gray';
 
 export interface DialogProps {
+  class?: string;
   headline: string;
   text: string;
   buttons: Array<{
@@ -30,7 +32,7 @@ export class Dialog extends React.Component<DialogProps> {
 
   render() {
     return (
-      <div className="dialog-container">
+      <div className={ 'dialog-container ' + (this.props.class || '') }>
         <div className="dialog-content">
           <div className="dialog-headline">{ this.props.headline }</div>
           <div className="dialog-text">{ this.props.text }</div>

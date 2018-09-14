@@ -131,8 +131,10 @@ function correctResults(loadState: (state: RankedStore) => void): void {
 
 function Match({ devicePosition, setNumber, winner, sets, team1, team2, startNewMatch, routeBack, loadState }: MatchProps) {
 
+  let winnerTeamColor: string = '';
   if (winner) {
     TimerService.pause();
+    winnerTeamColor = sets[setNumber - 1].blue.goals.length === Config.pointsPerSet ? 'blue' : 'red';
   }
 
   return (
@@ -140,6 +142,7 @@ function Match({ devicePosition, setNumber, winner, sets, team1, team2, startNew
       {
         winner &&
         <Dialog
+          class={ winnerTeamColor === 'red' ? 'rotate-180' : '' }
           headline="Spiel beendet"
           text={ getDialogMessage(winner, team1, team2) }
           buttons={ [
