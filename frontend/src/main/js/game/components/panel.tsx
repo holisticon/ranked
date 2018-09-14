@@ -11,6 +11,7 @@ export interface PanelProps {
 function Panel({ }: PanelProps) {
   return (
     <div className="panel">
+      <div className="edge" />
       <div className="display">
         <TimerComponent />
       </div>

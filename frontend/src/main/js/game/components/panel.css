@@ -2,25 +2,42 @@
     z-index: 10;
 }
 
+.panel .edge {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 0.2rem;
+}
+
+.position-blue .panel .edge {
+  background-color: #4b93e2;
+}
+
+.position-red .panel .edge {
+   background-color: #cf0017;
+   right: 0;
+ }
+
 .panel .display {
-    position: absolute;
-    height: 1.6rem;
-    width: 9rem;
-    top: calc(50% - 0.8rem);
-    background-color: #535353;
-    border-radius: 0 0 1.2rem 1.2rem;
-    color: #ffffff;
-    text-align: center;
-    line-height: 1.6rem;
-    vertical-align: middle;
+  position: absolute;
+  height: 1.6rem;
+  width: 9rem;
+  top: calc(50% - 0.8rem);
+  border-radius: 0 0 1.2rem 1.2rem;
+  color: #ffffff;
+  text-align: center;
+  line-height: 1.6rem;
+  vertical-align: middle;
 }
 
 .position-blue .panel .display {
   transform: rotate(-90deg);
   left: -3.7rem;
+  background-color: #4b93e2;
 }
 
 .position-red .panel .display {
   transform: rotate(90deg);
   right: -3.7rem;
+  background-color: #cf0017;
 }
