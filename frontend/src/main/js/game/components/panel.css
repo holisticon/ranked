@@ -7,12 +7,20 @@
     height: 1.6rem;
     width: 9rem;
     top: calc(50% - 0.8rem);
-    right: -3.7rem;
     background-color: #535353;
     border-radius: 0 0 1.2rem 1.2rem;
     color: #ffffff;
     text-align: center;
     line-height: 1.6rem;
     vertical-align: middle;
-    transform: rotate(90deg);
+}
+
+.position-blue .panel .display {
+  transform: rotate(-90deg);
+  left: -3.7rem;
+}
+
+.position-red .panel .display {
+  transform: rotate(90deg);
+  right: -3.7rem;
 }
