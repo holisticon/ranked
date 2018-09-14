@@ -5,7 +5,6 @@ import { connect, Dispatch } from 'react-redux';
 import { match } from 'react-router';
 import { push } from 'react-router-redux';
 
-import { PlayerIcon } from '../../components/player-icon';
 import { Config } from '../../config';
 import { PlayerService } from '../../services/player-service';
 import { Player, TeamColor } from '../../types/types';
@@ -120,18 +119,14 @@ export class ManikinSelectionComponent extends React.Component<ManikinSelectionP
         });
     }
 
-    private renderPlayer() {
-        if (!this.state.player) {
-            return null;
-        }
-
-        return (
-            <div className="player">
-                <PlayerIcon img={ this.state.player.imageUrl } click={ () => { return; } } />
-                <span className="player-name">{ this.state.player.displayName }</span>
-            </div>
-        );
-    }
+   private renderOwnGoalButton() {
+      return (
+          <div className="own-goal-button ranked-button ranked-button-gray"
+               onClick={ () => this.props.select(this.state.team, '', '', this.state.goalTime) }>
+            <span>Eigentor</span>
+          </div>
+    );
+  }
 
     public render() {
         if (!this.state.team || !this.state.position) {
@@ -148,7 +143,7 @@ export class ManikinSelectionComponent extends React.Component<ManikinSelectionP
                 <div className="manikins">
                     { this.renderManikins() }
                 </div>
-                { this.renderPlayer() }
+                { this.renderOwnGoalButton() }
                 <div className={`timer ${ this.state.team }`}>
                     <div className="timer-bar" style={ { width: this.state.timerPercent + '%' } } />
                 </div>

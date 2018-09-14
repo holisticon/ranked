@@ -35,28 +35,3 @@
   margin: 1.5rem 0 0 0;
   float: right;
 }
-
-.dialog-button {
-  border-radius: 0.3rem;
-  color: #ffffff;
-  font-size: 1rem;
-  padding: 0.5rem 1rem 0.5rem 1rem;
-  display: inline-block;
-  margin-left: 0.5rem;
-}
-  
-.button-ok {
-  background: #43A843;
-}
-
-.button-error {
-  background: #B12F2F;
-}
-
-.button-warn {
-  background: #B18F2F;
-}
-
-.button-gray {
-  background: #707070;
-}

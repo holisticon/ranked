@@ -21,7 +21,7 @@ export class Dialog extends React.Component<DialogProps> {
   getButtons() {
     return this.props.buttons.map((btn, index) => {
       return (
-        <div className={ 'dialog-button button-' + btn.type } key={ index } onClick={ btn.click }>
+        <div className={ 'ranked-button ranked-button-' + btn.type } key={ index } onClick={ btn.click }>
           { btn.text }
         </div>
       );

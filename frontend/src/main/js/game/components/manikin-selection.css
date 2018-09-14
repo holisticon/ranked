@@ -24,7 +24,7 @@
     transform: translateY(-50%);
     margin: 0 3rem;
     width: 3rem;
-    background: linear-gradient(to right, 
+    background: linear-gradient(to right,
         rgba(0,0,0,0) 39%,
         rgba(160,160,160,1) 40%,
         rgba(203,203,203,1) 45%,
@@ -65,21 +65,12 @@
 }
 
 /**** Player icon and name *****/
-.manikin-selection .player {
+.manikin-selection .own-goal-button {
     position: absolute;
+    float: left;
     left: 50%;
-    bottom: 2rem;
+    bottom: 1.3rem;
     transform: translateX(-50%);
-}
-
-.manikin-selection .player .player-icon {
-    height: 4rem;
-}
-
-.manikin-selection .player .player-name {
-    display: inline-block;
-    margin-top: 0.2rem;
-    opacity: 0.4;
 }
 
 /**** Timer *****/

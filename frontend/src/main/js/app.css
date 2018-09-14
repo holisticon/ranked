@@ -25,11 +25,36 @@ a {
 
 @media (orientation: landscape) {
   .ranked {
-    height: calc(100vh - 20px); 
+    height: calc(100vh - 20px);
   }
 }
 
 .hidden {
   visibility: hidden !important;
   display: none !important;
+}
+
+.ranked-button {
+  border-radius: 0.3rem;
+  color: #ffffff;
+  font-size: 1rem;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  display: inline-block;
+  margin-left: 0.5rem;
+}
+
+.ranked-button-ok {
+  background: #43A843;
+}
+
+.ranked-button-error {
+  background: #B12F2F;
+}
+
+.ranked-button-warn {
+  background: #B18F2F;
+}
+
+.ranked-button-gray {
+  background: #707070;
 }
