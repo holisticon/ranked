@@ -72,7 +72,6 @@ function sendResults(sets: Sets, team1: Team, team2: Team) {
     let now = new Date();
     startTime = new Date(now.getTime() - (TimerService.getTimeInSec() * 1000));
   }
-  TimerService.reset();
 
   axios.post('command/match', {
     teamRed: {

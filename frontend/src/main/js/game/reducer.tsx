@@ -179,7 +179,8 @@ export function ranked(state: RankedStore, rankedAction: Actions.RankedAction): 
       });
 
     case Actions.START_NEW_MATCH:
-      return defaultState();
+      TimerService.reset();
+      return { ...defaultState(), devicePosition: state.devicePosition };
 
     case Actions.UPDATE_AVAILABLE_PLAYERS:
       action = rankedAction as Actions.UpdateAvailablePlayers;
