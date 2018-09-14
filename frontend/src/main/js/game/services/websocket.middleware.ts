@@ -35,7 +35,7 @@ export namespace WebSocketMiddleware {
     }
 
     export function init<S>(store: Store<S>): void {
-        client = WebSocketService.new('middleware', '10.5.13.124:8086/ranked');
+        client = WebSocketService.new('middleware', 'docker.holisticon.local:11082/ranked');
 
         client.open().subscribe(
             () => { return; },

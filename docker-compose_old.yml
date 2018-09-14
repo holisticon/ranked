@@ -1,0 +1,41 @@
+version: '3'
+
+services:
+  backend:
+    image: holisticon/ranked-application:0.0.1-SNAPSHOT
+    ports:
+      - 11081:8081
+    depends_on:
+      - 'mysql'
+    container_name: ranked_backend
+
+  frontend:
+    image: holisticon/ranked-frontend:0.0.1-SNAPSHOT
+    ports:
+      - 11080:8080
+    depends_on:
+      - 'backend'
+    container_name: ranked_frontend
+
+  mysql:
+    image: mysql:5.7.17
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_USER=ranked
+      - MYSQL_PASSWORD=ranked
+      - MYSQL_DATABASE=ranked
+    ports:
+      - "3306:3306"
+    volumes:
+      - "/var/lib/docker/volumes/ranked-mysql-data/_data:/var/lib/mysql"
+    container_name: ranked_mysql
+
+
+  # see https://github.com/dadarek/docker-wait-for-dependencies
+  start_dependencies:
+    image: dadarek/wait-for-dependencies
+    depends_on:
+      - mysql
+      - backend
+      - frontend
+    command: mysql:3306 backend:8081 frontend:8080
