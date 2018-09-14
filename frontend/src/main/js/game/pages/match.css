@@ -73,6 +73,26 @@
   transform: translateY(-50%);
 }
 
+.match.position-red .goal-counter {
+  font-size: 7rem;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.match.position-blue .goal-counter {
+  font-size: 7rem;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  transform: rotate(180deg) translateY(50%);
+}
+
 .match .team-blue .goal-counter {
   color: #4b93e2;
 }
@@ -234,7 +254,15 @@
   transform: translateY(-50%);
 }
 
-.setcounter > div > span {
+.position-blue .setcounter > div > span {
+  transform: rotate(-90deg);
+  display: inline-block;
+  font-size: 3rem;
+
+  opacity: 0.1;
+}
+
+.position-red .setcounter > div > span {
   transform: rotate(90deg);
   display: inline-block;
   font-size: 3rem;

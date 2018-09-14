@@ -134,7 +134,7 @@ function Match({ devicePosition, setNumber, winner, sets, team1, team2, startNew
   }
 
   return (
-    <div className="match">
+    <div className={'match position-' + devicePosition}>
       {
         winner &&
         <Dialog
