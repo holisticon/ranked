@@ -1,5 +1,5 @@
 import { Config } from '../config';
-import { Composition, Team, TeamColor, TeamKey } from '../types/types';
+import { Composition, Player, Team, TeamColor, TeamKey } from '../types/types';
 import * as Actions from './actions';
 import { TimerService } from './services/timer.service';
 import { createEmptyPlayer, createEmptyTeam, defaultState, RankedStore } from './store.state';
@@ -155,13 +155,14 @@ export function ranked(state: RankedStore, rankedAction: Actions.RankedAction): 
 
       return copyAndSet(state, copyState => {
         copyState.selectFor = null;
+        const selectedPlayer = new Player(setPlayerAction.selected);
 
         // remove selected player from everywhere if it was already selected
-        copyState.team1 = removePlayerFromTeam(setPlayerAction.selected.id, copyState.team1);
-        copyState.team2 = removePlayerFromTeam(setPlayerAction.selected.id, copyState.team2);
+        copyState.team1 = removePlayerFromTeam(selectedPlayer.id, copyState.team1);
+        copyState.team2 = removePlayerFromTeam(selectedPlayer.id, copyState.team2);
 
         // add selected player
-        copyState[setPlayerAction.team][setPlayerAction.player] = setPlayerAction.selected;
+        copyState[setPlayerAction.team][setPlayerAction.player] = new Player(selectedPlayer);
       });
 
     case Actions.SET_TEAM:

@@ -1,4 +1,4 @@
-import { Player, PlayerKey, Team, TeamColor, TeamKey } from '../types/types';
+import { Player, PlayerData, PlayerKey, Team, TeamColor, TeamKey } from '../types/types';
 import { RankedStore } from './store.state';
 
 export const INC_GOALS = 'INC_GOALS';
@@ -42,7 +42,7 @@ export interface SetPlayer {
   type: string;
   team: TeamKey;
   player: PlayerKey;
-  selected: Player;
+  selected: PlayerData;
 }
 
 export interface SetTeam {
