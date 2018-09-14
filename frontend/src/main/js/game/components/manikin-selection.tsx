@@ -123,7 +123,7 @@ export class ManikinSelectionComponent extends React.Component<ManikinSelectionP
       return (
           <div className="own-goal-button ranked-button ranked-button-gray"
                onClick={ () => this.props.select(this.state.team, '', '', this.state.goalTime) }>
-            <span>Eigentor</span>
+            <span>Durch Eigentor</span>
           </div>
     );
   }

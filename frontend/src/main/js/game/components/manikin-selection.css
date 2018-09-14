@@ -67,10 +67,10 @@
 /**** Player icon and name *****/
 .manikin-selection .own-goal-button {
     position: absolute;
-    float: left;
     left: 50%;
     bottom: 1.3rem;
     transform: translateX(-50%);
+    white-space: nowrap;
 }
 
 /**** Timer *****/
