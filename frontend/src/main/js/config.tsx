@@ -1,16 +1,13 @@
-import axios from 'axios';
-
 export namespace Config {
-  interface BackendConfig {
+  /* interface BackendConfig {
     scoreToWinSet: number;
     setsToWinMatch: number;
-  }
+  } */
 
   export let pointsPerMatch: number = 2;
   export let pointsPerSet: number = 6;
   export const teamMode: boolean = false;
   export const showTeamName: boolean = true;
-  // const BACKEND_URL = 'http://localhost:8080';
 
   export const timedMatchMode = false;
   export const timePerSet = 5;
@@ -18,6 +15,8 @@ export namespace Config {
   export const timeForManikinSelection = 5;
 
   export function initConfig(): Promise<void> {
+    return Promise.resolve();
+    /* not needed while using the interims backend
     return axios.get('/view/configuration')
       .then(res => res.data)
       .then((config: BackendConfig) => {
@@ -25,5 +24,6 @@ export namespace Config {
           pointsPerMatch = config.setsToWinMatch;
           return;
         });
+    */
   }
 }
