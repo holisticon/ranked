@@ -6,7 +6,6 @@ import { match } from 'react-router';
 import { push } from 'react-router-redux';
 
 import { Config } from '../../config';
-import { PlayerService } from '../../services/player-service';
 import { Player, TeamColor } from '../../types/types';
 import * as Actions from '../actions';
 import { TimerService } from '../services/timer.service';
@@ -14,6 +13,7 @@ import { PartialStoreState } from '../store.state';
 
 export interface ManikinSelectionProps {
     match?: match<any>;
+    players: Array<Player>;
     select: (team: TeamColor, player: string, manikin: string, time: number) => void;
 }
 
@@ -34,20 +34,21 @@ export class ManikinSelectionComponent extends React.Component<ManikinSelectionP
 
         let team = null;
         let position = null;
+        let player: Player | undefined;
         if (props.match && props.match.params) {
             team = props.match.params.team;
             position = props.match.params.position;
 
             let playerId = props.match.params.player;
             if (playerId) {
-                PlayerService.getPlayer(playerId).then(player => this.setState({ player }));
+                player = props.players.find(p => p.id === playerId);
             }
         }
 
         const teamPrefix = team === 'red' ? 'r' : 'b';
         const manikins = position === 'defense' ?
             this.createDefenseRows(teamPrefix) : this.createAttackRows(teamPrefix);
-        this.state = { manikins, team, position, goalTime: TimerService.getTimeInSec(), timerPercent: 100 };
+        this.state = { manikins, team, player, position, goalTime: TimerService.getTimeInSec(), timerPercent: 100 };
 
         this.startTimer();
     }
@@ -153,7 +154,9 @@ export class ManikinSelectionComponent extends React.Component<ManikinSelectionP
 }
 
 export function mapStateToProps(store: PartialStoreState) {
-    return {};
+    return {
+        players: store.ranked.availablePlayers
+    };
 }
 
 export function mapDispatchToProps(dispatch: Dispatch<Actions.RankedAction>) {
