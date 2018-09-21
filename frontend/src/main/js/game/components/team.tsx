@@ -173,7 +173,7 @@ export function mapStateToProps({ranked: store}: PartialStoreState, { color, dev
     composition,
     classes: 'team-' + color,
     showSwitchPlayerButtons: !isCurrentSetStarted && isFirstOrLastSet,
-    matchHasStarted: TimerService.getTimeInSec() > 0
+    matchHasStarted: store.sets.length > 1 || isCurrentSetStarted
   };
 }
 
