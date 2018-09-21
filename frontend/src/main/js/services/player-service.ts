@@ -1,9 +1,10 @@
 import axios from 'axios';
 
+import { Config } from '../config';
 import { Player, PlayerData, Team, TeamData } from '../types/types';
 
 export namespace PlayerService {
-  const backend = 'http://docker.holisticon.local:11082';
+  const backend = 'http://' + Config.backendUrl;
 
   export function getAllPlayers(): Promise<Array<Player>> {
     return axios.get(backend + '/view/player')

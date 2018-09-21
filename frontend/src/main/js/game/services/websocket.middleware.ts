@@ -1,6 +1,7 @@
 import { Store } from 'react-redux';
 import { Middleware } from 'redux';
 
+import { Config } from '../../config';
 import * as Actions from '../actions';
 import { WebSocketService } from './websocket.service';
 
@@ -35,7 +36,7 @@ export namespace WebSocketMiddleware {
     }
 
     export function init<S>(store: Store<S>): void {
-        client = WebSocketService.new('middleware', 'docker.holisticon.local:11082/ranked');
+        client = WebSocketService.new('middleware', Config.backendUrl + '/ranked');
 
         client.open().subscribe(
             () => { return; },

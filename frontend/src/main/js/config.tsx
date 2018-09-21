@@ -14,6 +14,8 @@ export namespace Config {
 
   export const timeForManikinSelection = 5;
 
+  export const backendUrl = 'docker.holisticon.local:11082';
+
   export function initConfig(): Promise<void> {
     return Promise.resolve();
     /* not needed while using the interims backend
