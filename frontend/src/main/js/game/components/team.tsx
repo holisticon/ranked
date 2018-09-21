@@ -22,6 +22,7 @@ interface InternalTeamProps {
   team: Team;
   composition: Composition;
   showSwitchPlayerButtons: boolean;
+  matchHasStarted: boolean;
   classes: string;
   goalScored: (playerId?: string) => void;
   decGoals: () => void;
@@ -128,6 +129,9 @@ function renderWonSetDots(wonSets: number) {
 }
 
 function RenderTeam(props: InternalTeamProps) {
+  if (props.matchHasStarted) {
+    props.selectPlayer = () => {};
+  }
 
   const displayPlayer: Player = props.isDefense ? props.team[props.composition.defense] : props.team[props.composition.attack];
   const displayPlayerId = props.devicePosition ? displayPlayer.id : undefined;
@@ -168,7 +172,8 @@ export function mapStateToProps({ranked: store}: PartialStoreState, { color, dev
     team: store[composition.team],
     composition,
     classes: 'team-' + color,
-    showSwitchPlayerButtons: !isCurrentSetStarted && isFirstOrLastSet
+    showSwitchPlayerButtons: !isCurrentSetStarted && isFirstOrLastSet,
+    matchHasStarted: TimerService.getTimeInSec() > 0
   };
 }
 
