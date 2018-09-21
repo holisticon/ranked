@@ -154,7 +154,9 @@ export function ranked(state: RankedStore, rankedAction: Actions.RankedAction): 
       const setPlayerAction = rankedAction as Actions.SetPlayer;
 
       return copyAndSet(state, copyState => {
-        copyState.selectFor = null;
+        if (state.selectFor && setPlayerAction.team === state.selectFor.team && setPlayerAction.player === state.selectFor.player) {
+          copyState.selectFor = null;
+        }
         const selectedPlayer = new Player(setPlayerAction.selected);
 
         // remove selected player from everywhere if it was already selected
