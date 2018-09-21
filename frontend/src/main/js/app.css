@@ -34,6 +34,10 @@ a {
   display: none !important;
 }
 
+.disabled-link {
+  pointer-events: none;
+}
+
 .ranked-button {
   border-radius: 0.3rem;
   color: #ffffff;

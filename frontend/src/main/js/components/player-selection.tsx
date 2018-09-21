@@ -1,8 +1,10 @@
+import './player-selection.css';
+
 import * as React from 'react';
+import { Link } from 'react-router-dom';
+
 import { Player } from '../types/types';
 import { PlayerIcon } from './player-icon';
-import { Link } from 'react-router-dom';
-import './player-selection.css';
 
 const alphabet = 'abcdefghijklmnopqrstuvwxyz';
 
@@ -40,7 +42,7 @@ export class PlayerSelectionComponent extends React.Component<PlayerSelectionPro
       const urlPrefix = this.props.urlPrefix || '';
 
       return (
-        <Link key={index} to={urlPrefix + '/select/' + letter}>
+        <Link key={index} className={ available ? '' : 'disabled-link' } to={urlPrefix + '/select/' + letter}>
           <div className={available ? 'letter' : 'letter gray'}>
             <div className="letter-content">
               <div className="letter-absolute">{letter.toUpperCase()}</div>
