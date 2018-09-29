@@ -21,7 +21,7 @@
     "react-responsive-carousel": "^3.1.33",
     "react-router-dom": "^4.2.2",
     "react-router-redux": "^5.0.0-alpha.9",
-    "react-scripts-ts": "2.10.0",
+    "react-scripts-ts": "4.0.1",
     "react-touch": "^0.4.3",
     "react-vis": "^1.10.0",
     "redux": "^3.7.2",
