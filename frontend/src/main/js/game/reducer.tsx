@@ -207,12 +207,12 @@ export function ranked(state: RankedStore, rankedAction: Actions.RankedAction): 
     case Actions.RESUME_MATCH:
       TimerService.setTime((rankedAction as Actions.StartTimer).currentTimerTime);
       TimerService.start();
-      break;
+      return  { ...state, timer: { running: true, lastTime: (rankedAction as Actions.StartTimer).currentTimerTime } };
 
     case Actions.PAUSE_MATCH:
       TimerService.setTime((rankedAction as Actions.PauseTimer).currentTimerTime);
       TimerService.pause();
-      break;
+      return  { ...state, timer: { running: false, lastTime: (rankedAction as Actions.StartTimer).currentTimerTime } };
 
     case Actions.SET_DEVICE_POSITION:
       action = rankedAction as Actions.SetDevicePosition;

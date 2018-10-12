@@ -1,3 +1,5 @@
+import './timer.css';
+
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 

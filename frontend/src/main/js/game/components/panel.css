@@ -1,12 +1,54 @@
 .panel {
     z-index: 10;
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(220, 220, 220, 0.4);
+    transition: width 0s 0s, background-color 0.5s 0s;
+}
+
+.panel.closed {
+  width: auto;
+  background-color: transparent;
+}
+
+.position-blue .panel {
+  left: 0;
+}
+
+.panel > * {
+  float: right;
+}
+
+.position-blue .panel > * {
+  float: left;
+}
+
+.panel .features {
+  height: 100%;
+  width: 80vw;
+  transition: 0.5s;
+  background-color: #535353;
+}
+
+.panel.closed .features {
+  width: 0;
 }
 
 .panel .edge {
-  position: absolute;
-  top: 0;
   height: 100%;
   width: 0.2rem;
+  background-color: #535353;
+}
+
+.position-blue .panel .features {
+  background-color: #4b93e2;
+}
+
+.position-red .panel .features {
+  background-color: #cf0017;
 }
 
 .position-blue .panel .edge {
@@ -19,31 +61,36 @@
  }
 
 .panel .display {
-  position: absolute;
-  height: 1.6rem;
-  width: 9rem;
-  top: calc(50% - 0.8rem);
-  border-radius: 0 0 1.2rem 1.2rem;
+  height: 9rem;
+  width: 1.6rem;
+  position: relative;
+  top: calc(50% - 4.5rem);
   color: #ffffff;
-  text-align: center;
-  line-height: 1.6rem;
-  vertical-align: middle;
+  background-color: #535353;
+  border-radius: 1.2rem 0 0 1.2rem;
+}
+
+.panel .display .display-container {
+  transform: translate(-50%, -50%);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
+
+.panel .display .display-container > * {
+  transform: rotate(90deg);
 }
 
 .position-blue .panel .display {
-  transform: rotate(-90deg);
-  left: -3.7rem;
   background-color: #4b93e2;
+  border-radius: 0 1.2rem 1.2rem 0;
 }
 
 .position-red .panel .display {
-  transform: rotate(90deg);
-  right: -3.7rem;
   background-color: #cf0017;
+  border-radius: 1.2rem 0 0 1.2rem;
 }
 
-.position-null .panel .display {
-  transform: rotate(90deg);
-  right: -3.7rem;
-  background-color: #535353;
+.position-blue .panel .display .display-container > * {
+  transform: rotate(-90deg);
 }
