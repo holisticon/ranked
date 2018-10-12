@@ -5,25 +5,28 @@
 }
 
 .manikins {
-    height: 100%;
+    height: calc(100% - 9rem);
     float: left;
     position: relative;
     left: 50%;
-    top: 0;
+    top: 4rem;
     transform: translateX(-50%);
+    background-color: #F4FFF8;
+    width: 100%;
+    border: 1px solid lightgray;
 }
 
 .manikins .column {
     display: table;
     table-layout: fixed;
-    height: 86%;
-    padding-bottom: 4rem;
+    height: 110%;
+    padding: 2rem 0;
     float: left;
     position: relative;
-    top: 43%;
+    top: 50%;
     transform: translateY(-50%);
-    margin: 0 3rem;
-    width: 3rem;
+    margin: 0 17.5%;
+    width: 15%;
     background: linear-gradient(to right,
         rgba(0,0,0,0) 39%,
         rgba(160,160,160,1) 40%,
@@ -64,32 +67,19 @@
     border-color: #cf0017;
 }
 
-/**** Player icon and name *****/
 .manikin-selection .own-goal-button {
     position: absolute;
     left: 50%;
-    bottom: 1.3rem;
+    bottom: 0.8rem;
     transform: translateX(-50%);
     white-space: nowrap;
 }
 
-/**** Timer *****/
-.manikin-selection .timer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: 0.8rem;
-    margin: 0.1rem 0;
-}
-
-.manikin-selection .timer .timer-bar {
-    height: 100%;
-}
-
-.manikin-selection .timer.red .timer-bar {
-    background-color: #cf0017;
-}
-
-.manikin-selection .timer.blue .timer-bar {
-    background-color: #4b93e2;
+.manikin-selection .cancel-button {
+  position: absolute;
+  right: 1.2rem;
+  top: 1rem;
+  white-space: nowrap;
+  color: #707070;
+  font-size: 1.5rem;
 }

@@ -5,7 +5,6 @@ import { connect, Dispatch } from 'react-redux';
 import { match } from 'react-router';
 import { push } from 'react-router-redux';
 
-import { Config } from '../../config';
 import { Player, TeamColor } from '../../types/types';
 import * as Actions from '../actions';
 import { TimerService } from '../services/timer.service';
@@ -15,6 +14,7 @@ export interface ManikinSelectionProps {
     match?: match<any>;
     players: Array<Player>;
     select: (team: TeamColor, player: string, manikin: string, time: number) => void;
+    cancel: () => void;
 }
 
 interface ManikinSelectionState {
@@ -23,7 +23,6 @@ interface ManikinSelectionState {
     player?: Player;
     position: string;
     goalTime: number;
-    timerPercent: number;
 }
 
 export class ManikinSelectionComponent extends React.Component<ManikinSelectionProps, ManikinSelectionState> {
@@ -48,23 +47,7 @@ export class ManikinSelectionComponent extends React.Component<ManikinSelectionP
         const teamPrefix = team === 'red' ? 'r' : 'b';
         const manikins = position === 'defense' ?
             this.createDefenseRows(teamPrefix) : this.createAttackRows(teamPrefix);
-        this.state = { manikins, team, player, position, goalTime: TimerService.getTimeInSec(), timerPercent: 100 };
-
-        this.startTimer();
-    }
-
-    private startTimer(): void {
-        const decrease = 0.1;
-        this.timer = setInterval(
-            () => {
-                let timerPercent = this.state.timerPercent - decrease;
-                if (timerPercent <= 0) {
-                    timerPercent = 0;
-                }
-                this.setState({ timerPercent });
-            },
-            Config.timeForManikinSelection * 10 * decrease
-        );
+        this.state = { manikins, team, player, position, goalTime: TimerService.getTimeInSec() };
     }
 
     private createManikinsData(prefix: string, rows: Array<number>): Array<Array<string>> {
@@ -129,25 +112,31 @@ export class ManikinSelectionComponent extends React.Component<ManikinSelectionP
     );
   }
 
+  private renderCancelButton() {
+    return (
+      <div className="cancel-button"
+           onClick={ () => this.props.cancel() }>
+        <span>X</span>
+      </div>
+    );
+  }
+
     public render() {
         if (!this.state.team || !this.state.position) {
             return null;
         }
 
-        if (this.state.timerPercent === 0) {
-            // let the render update completely before redirect
-            setTimeout(() => this.selectManikin(''));
-        }
-
         return (
             <div className={ 'manikin-selection' + ( this.state.team === 'red' ? ' rotate-180' : '' ) }>
+
                 <div className="manikins">
                     { this.renderManikins() }
                 </div>
-                { this.renderOwnGoalButton() }
-                <div className={`timer ${ this.state.team }`}>
-                    <div className="timer-bar" style={ { width: this.state.timerPercent + '%' } } />
-                </div>
+
+              { this.renderCancelButton() }
+
+              { this.renderOwnGoalButton() }
+
             </div>
         );
     }
@@ -163,6 +152,9 @@ export function mapDispatchToProps(dispatch: Dispatch<Actions.RankedAction>) {
     return {
         select: (team: TeamColor, player: string, manikin: string, time: number) => {
             dispatch(Actions.incGoals(team, player, manikin, time));
+            dispatch(push('/'));
+        },
+        cancel: () => {
             dispatch(push('/'));
         }
     } as ManikinSelectionProps;
