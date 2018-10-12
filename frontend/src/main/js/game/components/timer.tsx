@@ -37,7 +37,7 @@ export class TimerComponent extends React.Component<TimerProps, TimerState> {
     super(props);
 
     const id = setInterval(() => this.tick(), this.interval);
-    
+
     this.state = {
       time: TimerService.getTimeInSec(),
       countdownTime: (this.props.startTime || 0) - TimerService.getCountdownTimeInSec(),
@@ -65,9 +65,9 @@ export class TimerComponent extends React.Component<TimerProps, TimerState> {
 
   private tick() {
     const nextStatus = TimerService.getStatus();
-    
+
     if (nextStatus === 'STOPPED') {
-      if (this.state.status !== 'STOPPED' ) {
+      if (this.state.status !== 'STOPPED') {
         this.setState({
           time: -1,
           countdownTime: this.props.startTime || 0,
@@ -116,13 +116,11 @@ export class TimerComponent extends React.Component<TimerProps, TimerState> {
 
     const countdownReset = this.state.status === 'PAUSED' && this.state.countdownTime === this.props.startTime;
     const stopped = this.state.status === 'STOPPED' ||
-                    this.props.countdown && (this.state.countdownExpired || countdownReset);
+      this.props.countdown && (this.state.countdownExpired || countdownReset);
 
     return (
-      <div className="timer">
-        <span onClick={(e) => this.togglePause()}>
-          { stopped ? this.getStoppedText() : this.formatTime() }
-        </span>
+      <div className="timer" onClick={ (e) => this.togglePause() }>
+        <span>{ stopped ? this.getStoppedText() : this.formatTime() }</span>
       </div>
     );
   }
@@ -131,7 +129,7 @@ export class TimerComponent extends React.Component<TimerProps, TimerState> {
 export function mapStateToProps({ ranked: { sets } }: PartialStoreState) {
   const currentSet = sets[sets.length - 1];
   const props: TimerPropValues = { draw: currentSet.blue.goals.length === currentSet.red.goals.length };
-  
+
   if (Config.timedMatchMode) {
     props.countdown = true;
     props.startTime = Config.timePerSet;
@@ -145,7 +143,7 @@ export function mapDispatchToProps(dispatch: Dispatch<Actions.RankedAction>) {
     start: (currentTime: number) => dispatch(Actions.startTimer(currentTime)),
     pause: (currentTime: number) => dispatch(Actions.pauseTimer(currentTime))
   } as TimerPropActions;
-  
+
   if (Config.timedMatchMode) {
     actions.expired = () => dispatch(Actions.countdownExpired());
   }

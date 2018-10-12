@@ -4,14 +4,7 @@
     top: 0;
     right: 0;
     height: 100%;
-    width: 100%;
-    background-color: rgba(220, 220, 220, 0.4);
-    transition: width 0s 0s, background-color 0.5s 0s;
-}
-
-.panel.closed {
-  width: auto;
-  background-color: transparent;
+    width: auto;
 }
 
 .position-blue .panel {
@@ -26,9 +19,30 @@
   float: left;
 }
 
+.panel .background {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: -1;
+  height: 100%;
+  width: 100vw;
+  background-color: rgba(220, 220, 220, 0.6);
+  transition: width 0s 0s, background-color 1s 0s;
+}
+
+.position-blue .panel .background {
+  left: 0;
+}
+
+.panel.closed .background {
+  width: 0;
+  background-color: transparent;
+  transition: width 0s 1s, background-color 1s 0s;
+}
+
 .panel .features {
   height: 100%;
-  width: 80vw;
+  width: calc(98vw - 0.2rem - 1.6rem);
   transition: 0.5s;
   background-color: #535353;
 }
@@ -61,13 +75,41 @@
  }
 
 .panel .display {
-  height: 9rem;
+  height: 6rem;
   width: 1.6rem;
   position: relative;
-  top: calc(50% - 4.5rem);
+  top: calc(50% - 3rem);
   color: #ffffff;
   background-color: #535353;
-  border-radius: 1.2rem 0 0 1.2rem;
+  border-color: #535353;
+}
+
+.panel .display::before {
+  content: "";
+  position: absolute;
+  top: -1.6rem;
+  height: 0;
+  width: 0;
+  border-style: solid;
+  border-width: 0 0 1.6rem 1.6rem;
+  border-top-color: transparent;
+  border-left-color: transparent;
+  border-right-color: transparent;
+  border-bottom-color: inherit;
+}
+
+.panel .display::after {
+  content: "";
+  position: absolute;
+  bottom: -1.6rem;
+  height: 0;
+  width: 0;
+  border-style: solid;
+  border-width: 0 1.6rem 1.6rem 0;
+  border-top-color: transparent;
+  border-left-color: transparent;
+  border-right-color: inherit;
+  border-bottom-color: transparent;
 }
 
 .panel .display .display-container {
@@ -83,12 +125,28 @@
 
 .position-blue .panel .display {
   background-color: #4b93e2;
-  border-radius: 0 1.2rem 1.2rem 0;
+  border-color: #4b93e2;
+}
+
+.position-blue .panel .display::before {
+  border-width: 1.6rem 0 0 1.6rem;
+  border-top-color: transparent;
+  border-left-color: inherit;
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+}
+
+.position-blue .panel .display::after {
+  border-width: 0 0 1.6rem 1.6rem;
+  border-top-color: transparent;
+  border-left-color: inherit;
+  border-right-color: transparent;
+  border-bottom-color: transparent;
 }
 
 .position-red .panel .display {
   background-color: #cf0017;
-  border-radius: 1.2rem 0 0 1.2rem;
+  border-color: #cf0017;
 }
 
 .position-blue .panel .display .display-container > * {

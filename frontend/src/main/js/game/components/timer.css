@@ -1,4 +1,5 @@
 .timer {
     white-space: nowrap;
     user-select: none;
+    padding: 0.3rem 3rem;
 }

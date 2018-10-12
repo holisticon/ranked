@@ -9,12 +9,14 @@ import { PartialStoreState } from '../store.state';
 import TimerComponent from './timer';
 
 export interface PanelProps {
-  matchStarted: boolean;
+  panelClosed: boolean;
+  collapse: () => void;
 }
 
-export function Panel({ matchStarted }: PanelProps) {
+export function Panel({ panelClosed, collapse }: PanelProps) {
   return (
-    <div className={ 'panel' + (matchStarted ? ' closed' : '') }>
+    <div className={ 'panel' + (panelClosed ? ' closed' : '') }>
+      <div className="background" onClick={ () => collapse() } />
       <div className="features" />
       <div className="edge" />
       <div className="display">
@@ -26,14 +28,18 @@ export function Panel({ matchStarted }: PanelProps) {
   );
 }
 
-export function mapStateToProps({ ranked: { } }: PartialStoreState): PanelProps {
+export function mapStateToProps({ ranked: { } }: PartialStoreState) {
   return {
-    matchStarted: TimerService.getStatus() === 'STARTED'
+    panelClosed: TimerService.getStatus() === 'STARTED' || TimerService.getTimeInSec() === 0
   };
 }
 
 export function mapDispatchToProps(dispatch: Dispatch<Actions.RankedAction>) {
-  return {};
+  return {
+    collapse: () => {
+      dispatch(Actions.startTimer(TimerService.getTimeInSec()));
+    }
+  };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Panel);
