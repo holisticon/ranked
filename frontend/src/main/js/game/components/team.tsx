@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { push } from 'react-router-redux';
-import { Swipeable } from 'react-touch';
 
 import { PlayerIcon } from '../../components/player-icon';
 import { Config } from '../../config';
@@ -10,6 +9,7 @@ import { Composition, Player, PlayerKey, Set, Team, TeamColor, TeamKey } from '.
 import * as Actions from '../actions';
 import { TimerService } from '../services/timer.service';
 import { PartialStoreState } from '../store.state';
+import GoalCounter from './goal-counter';
 
 export interface TeamProps {
   devicePosition: TeamColor | null;
@@ -20,6 +20,7 @@ interface InternalTeamProps {
   devicePosition: TeamColor | null;
   isDefense: boolean;
   team: Team;
+  teamColor: TeamColor;
   composition: Composition;
   showSwitchPlayerButtons: boolean;
   matchHasStarted: boolean;
@@ -130,7 +131,7 @@ function renderWonSetDots(wonSets: number) {
 
 function RenderTeam(props: InternalTeamProps) {
   if (props.matchHasStarted) {
-    props.selectPlayer = () => {};
+    props.selectPlayer = () => { return; };
   }
 
   const displayPlayer: Player = props.isDefense ? props.team[props.composition.defense] : props.team[props.composition.attack];
@@ -141,13 +142,7 @@ function RenderTeam(props: InternalTeamProps) {
 
       { renderWonSetDots(props.team.wonSets) }
 
-      <div className="goal-counter-container">
-        <Swipeable onSwipeRight={ () => props.goalScored(displayPlayerId) } onSwipeLeft={ () => props.decGoals() }>
-          <div className="goal-counter">
-            <span className="current-goals">{ props.composition.goals.length }</span>
-          </div>
-        </Swipeable>
-      </div>
+      <GoalCounter color={ props.teamColor } />
 
       { Config.teamMode
         ? renderTeamIcon(props)
@@ -170,6 +165,7 @@ export function mapStateToProps({ranked: store}: PartialStoreState, { color, dev
     devicePosition,
     isDefense: color === devicePosition,
     team: store[composition.team],
+    teamColor: color,
     composition,
     classes: 'team-' + color,
     showSwitchPlayerButtons: !isCurrentSetStarted && isFirstOrLastSet,

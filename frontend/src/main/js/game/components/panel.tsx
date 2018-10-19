@@ -6,6 +6,7 @@ import { connect, Dispatch } from 'react-redux';
 import * as Actions from '../actions';
 import { TimerService } from '../services/timer.service';
 import { PartialStoreState } from '../store.state';
+import GoalCounter from './goal-counter';
 import TimerComponent from './timer';
 
 export interface PanelProps {
@@ -17,7 +18,16 @@ export function Panel({ panelClosed, collapse }: PanelProps) {
   return (
     <div className={ 'panel' + (panelClosed ? ' closed' : '') }>
       <div className="background" onClick={ () => collapse() } />
-      <div className="features" />
+      <div className="features-container">
+        <div className="features">
+          <div className="side-red">
+            <GoalCounter color="red" />
+          </div>
+          <div className="side-blue">
+            <GoalCounter color="blue" />
+          </div>
+        </div>
+      </div>
       <div className="edge" />
       <div className="display">
         <div className="display-container">
