@@ -60,10 +60,20 @@
   background-color: #535353;
 }
 
-.panel .edge {
-  height: 100%;
-  width: 0.2rem;
-  background-color: #535353;
+.features .side-red, .features .side-blue {
+  height: 50%;
+  width: 100%;
+  position: relative;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.features .side-red {
+  transform: rotate(180deg);
+}
+
+.features .goal-counter, .features .goal-counter {
+  color: white;
 }
 
 .position-blue .panel .features {
@@ -74,6 +84,12 @@
 .position-red .panel .features {
   background-color: #cf0017;
   right: 0;
+}
+
+.panel .edge {
+  height: 100%;
+  width: 0.2rem;
+  background-color: #535353;
 }
 
 .position-blue .panel .edge {
@@ -161,20 +177,4 @@
 
 .position-blue .panel .display .display-container > * {
   transform: rotate(-90deg);
-}
-
-.features .side-red, .features .side-blue {
-  height: 50%;
-  width: 100%;
-  position: relative;
-  box-sizing: border-box;
-  overflow: hidden;
-}
-
-.features .side-red {
-  transform: rotate(180deg);
-}
-
-.features .goal-counter, .features .goal-counter {
-  color: white;
 }
