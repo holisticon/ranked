@@ -25,9 +25,16 @@
 
 .current-goals {
   display: inline-block;
+  vertical-align: middle;
   transform: rotate(90deg);
 }
 
 .flip .current-goals {
   transform: rotate(-90deg);
+}
+
+.arrow {
+  color: white;
+  font-size: 7rem;
+  vertical-align: middle;
 }

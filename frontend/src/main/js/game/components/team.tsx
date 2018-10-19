@@ -26,7 +26,6 @@ interface InternalTeamProps {
   matchHasStarted: boolean;
   classes: string;
   goalScored: (playerId?: string) => void;
-  decGoals: () => void;
   selectPlayer: (team: TeamKey, player: PlayerKey) => void;
   selectTeam: (team: TeamKey) => void;
   switchPlayerPositions: () => void;
@@ -185,7 +184,6 @@ export function mapDispatchToProps(dispatch: Dispatch<Actions.RankedAction>, { c
         dispatch(push(`/selectManikin/${ color }/${ isDefense ? 'defense' : 'attack'}${ playerId ? ('/' + playerId) : '' }`));
       }
     },
-    decGoals: () => dispatch(Actions.decGoals(color)),
     selectPlayer: (team: TeamKey, player: PlayerKey) => {
       dispatch(Actions.selectEntity(team, player));
       dispatch(push('/select'));

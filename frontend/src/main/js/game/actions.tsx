@@ -2,7 +2,7 @@ import { Player, PlayerData, PlayerKey, Team, TeamColor, TeamKey } from '../type
 import { RankedStore } from './store.state';
 
 export const INC_GOALS = 'INC_GOALS';
-export const DEC_GOALS = 'DEC_GOALS';
+export const CHANGE_GOALS = 'CHANGE_GOALS';
 export const SELECT_ENTITY = 'SELECT_ENTITY';
 export const SET_PLAYER = 'SET_PLAYER';
 export const SET_TEAM = 'SET_TEAM';
@@ -17,7 +17,7 @@ export const PAUSE_MATCH = 'PAUSE_MATCH';
 export const SET_DEVICE_POSITION = 'SET_DEVICE_POSITION';
 
 export type RankedAction =
-  IncGoals | DecGoals | SelectEntity | SetPlayer | SetTeam | SwitchPlayerPositions | StartNewMatch |
+  IncGoals | ChangeGoals | SelectEntity | SetPlayer | SetTeam | SwitchPlayerPositions | StartNewMatch |
   CountdownExpired | StartTimer | PauseTimer | SetDevicePosition;
 
 export interface IncGoals {
@@ -28,9 +28,10 @@ export interface IncGoals {
   time: number;
 }
 
-export interface DecGoals {
+export interface ChangeGoals {
   type: string;
   team: TeamColor;
+  diff: number;
 }
 
 export interface SelectEntity {
@@ -105,10 +106,11 @@ export function incGoals(team: TeamColor, player: string, manikin: string, time:
   };
 }
 
-export function decGoals(team: TeamColor): DecGoals {
+export function changeGoals(team: TeamColor, diff: number): ChangeGoals {
   return {
-    type: DEC_GOALS,
-    team
+    type: CHANGE_GOALS,
+    team,
+    diff
   };
 }
 

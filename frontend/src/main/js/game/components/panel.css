@@ -58,6 +58,7 @@
   height: 100%;
   width: 100vw;
   background-color: #535353;
+  right: 0;
 }
 
 .features .side-red, .features .side-blue {
@@ -72,18 +73,18 @@
   transform: rotate(180deg);
 }
 
-.features .goal-counter, .features .goal-counter {
+.features .goal-counter {
   color: white;
 }
 
 .position-blue .panel .features {
   background-color: #4b93e2;
   left: 0;
+  right: initial;
 }
 
 .position-red .panel .features {
   background-color: #cf0017;
-  right: 0;
 }
 
 .panel .edge {

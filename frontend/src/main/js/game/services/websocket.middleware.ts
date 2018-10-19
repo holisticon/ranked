@@ -12,7 +12,7 @@ type Event = Actions.RankedAction & {
 export namespace WebSocketMiddleware {
     const actionsForSync = [
         Actions.INC_GOALS,
-        Actions.DEC_GOALS,
+        Actions.CHANGE_GOALS,
         Actions.SET_PLAYER, 
         Actions.SWITCH_PLAYER_POSITION, 
         Actions.START_NEW_MATCH, 

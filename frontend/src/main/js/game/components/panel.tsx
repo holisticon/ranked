@@ -21,10 +21,10 @@ export function Panel({ panelClosed, collapse }: PanelProps) {
       <div className="features-container">
         <div className="features">
           <div className="side-red">
-            <GoalCounter color="red" />
+            <GoalCounter color="red" changeable={ true } />
           </div>
           <div className="side-blue">
-            <GoalCounter color="blue" />
+            <GoalCounter color="blue" changeable={ true } />
           </div>
         </div>
       </div>

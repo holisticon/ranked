@@ -133,11 +133,11 @@ export function ranked(state: RankedStore, rankedAction: Actions.RankedAction): 
 
       return newState;
 
-    case Actions.DEC_GOALS:
-      action = rankedAction as Actions.DecGoals;
-      // only decrease score if above zero
-      if (state.sets[state.sets.length - 1][action.team].goals.length > 0) {
-        return changeGoals(state, action.team, -1);
+    case Actions.CHANGE_GOALS:
+      action = rankedAction as Actions.ChangeGoals;
+      // goals score cannot negative
+      if (state.sets[state.sets.length - 1][action.team].goals.length + action.diff >= 0) {
+        return changeGoals(state, action.team, action.diff);
       }
       break;
 
