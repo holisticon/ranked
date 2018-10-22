@@ -61,12 +61,23 @@
   right: 0;
 }
 
+.position-blue .panel .features {
+  background-color: #4b93e2;
+  left: 0;
+  right: initial;
+}
+
+.position-red .panel .features {
+  background-color: #cf0017;
+}
+
 .features .side-red, .features .side-blue {
   height: 50%;
   width: 100%;
   position: relative;
   box-sizing: border-box;
   overflow: hidden;
+  border-top: 0.2rem solid transparent;
 }
 
 .features .side-red {
@@ -77,14 +88,76 @@
   color: white;
 }
 
-.position-blue .panel .features {
-  background-color: #4b93e2;
+.features .devider {
+  position: relative;
+  height: 0.4rem;
+  width: 100%;
+  margin: -0.2rem 0;
+  background: linear-gradient(to left, white 0%,white 20%,rgba(255,255,255,0) 80%);
+  z-index: 3;
+}
+
+.position-blue .features .devider {
+  transform: rotate(180deg);
+}
+
+.features .buttons {
+  position: absolute;
+  top: 0;
+  margin: 0.5rem 0.2rem;
+  color: white;
+}
+
+.features .buttons .material-icons {
+  font-size: 2rem;
+}
+
+.features .buttons .namedButton {
+  text-align: center;
+  min-width: 3.4rem;
+}
+
+.features .buttons .namedButton .text {
+  font-size: 0.7rem;
+  font-weight: 200;
+  margin-top: -0.3rem;
+  letter-spacing: 0.05rem;
+}
+
+.features .side-blue .buttons {
+  right: 0;
+  left: initial;
+}
+
+.features .side-blue .buttons > * {
+  transform: rotate(90deg);
+}
+
+.features .side-red .buttons {
   left: 0;
   right: initial;
 }
 
-.position-red .panel .features {
-  background-color: #cf0017;
+.features .side-red .buttons > * {
+  transform: rotate(-90deg);
+}
+
+.position-blue .features .side-blue .buttons {
+  left: 0;
+  right: initial;
+}
+
+.position-blue .features .side-blue .buttons > * {
+  transform: rotate(-90deg);
+}
+
+.position-blue .features .side-red .buttons {
+  right: 0;
+  left: initial;
+}
+
+.position-blue .features .side-red .buttons > * {
+  transform: rotate(90deg);
 }
 
 .panel .edge {

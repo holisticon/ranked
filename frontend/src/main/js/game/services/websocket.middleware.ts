@@ -17,7 +17,8 @@ export namespace WebSocketMiddleware {
         Actions.SWITCH_PLAYER_POSITION, 
         Actions.START_NEW_MATCH, 
         Actions.RESUME_MATCH, 
-        Actions.PAUSE_MATCH
+        Actions.PAUSE_MATCH,
+        Actions.LOAD_STATE
     ];
 
     const senderId = '' + Math.ceil(Math.random() * 1000);

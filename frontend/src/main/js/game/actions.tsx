@@ -15,6 +15,7 @@ export const LOAD_STATE = 'LOAD_STATE';
 export const RESUME_MATCH = 'RESUME_MATCH';
 export const PAUSE_MATCH = 'PAUSE_MATCH';
 export const SET_DEVICE_POSITION = 'SET_DEVICE_POSITION';
+export const RESET = 'RESET';
 
 export type RankedAction =
   IncGoals | ChangeGoals | SelectEntity | SetPlayer | SetTeam | SwitchPlayerPositions | StartNewMatch |
@@ -94,6 +95,10 @@ export interface PauseTimer {
 export interface SetDevicePosition {
   type: string;
   position: TeamColor | null;
+}
+
+export interface Reset {
+  type: string;
 }
 
 export function incGoals(team: TeamColor, player: string, manikin: string, time: number): IncGoals {
@@ -197,5 +202,11 @@ export function setDevicePosition(position: TeamColor | null): SetDevicePosition
   return {
     type: SET_DEVICE_POSITION,
     position
+  };
+}
+
+export function reset(): Reset {
+  return {
+    type: RESET
   };
 }

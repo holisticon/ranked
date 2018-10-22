@@ -110,8 +110,16 @@ function startNewSet(state: RankedStore): RankedStore {
 export function ranked(state: RankedStore, rankedAction: Actions.RankedAction): RankedStore {
   let action;
   switch (rankedAction.type) {
+    case Actions.RESET:
+      TimerService.reset();
+      return defaultState();
+
     case Actions.LOAD_STATE:
-      return (rankedAction as Actions.LoadState).state;
+      const syncState = (rankedAction as Actions.LoadState).state;
+      TimerService.pause();  
+      TimerService.setTime(syncState.timer.lastTime);
+      // TODO: do not assume the device position on sync, but what about inital loading from local storage?
+      return { ...syncState, devicePosition: state.devicePosition };
 
     case Actions.INC_GOALS:
       action = rankedAction as Actions.IncGoals;
