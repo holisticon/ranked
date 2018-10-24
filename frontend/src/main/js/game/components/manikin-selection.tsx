@@ -50,22 +50,22 @@ export class ManikinSelectionComponent extends React.Component<ManikinSelectionP
         this.state = { manikins, team, player, position, goalTime: TimerService.getTimeInSec() };
     }
 
-    private createManikinsData(prefix: string, rows: Array<number>): Array<Array<string>> {
+    private createManikinsData(prefix: string, rows: Array<number>, isAttack: boolean): Array<Array<string>> {
         return rows.map((rowCount, rowIndex) => {
             const manikinRow = [];
             for (let i = 1; i <= rowCount; i++) {
-                manikinRow.push(`${ prefix }${ rowIndex + 1 }${ i }`);
+                manikinRow.push(`${ prefix }${ rowIndex + (isAttack ? 3 : 1) }${ i }`);
             }
             return manikinRow;
         });
     }
 
     private createDefenseRows(prefix: string) {
-        return this.createManikinsData(prefix, [ 1, 2 ]);
+        return this.createManikinsData(prefix, [ 1, 2 ], false);
     }
 
     private createAttackRows(prefix: string) {
-        return this.createManikinsData(prefix, [ 5, 3 ]);
+        return this.createManikinsData(prefix, [ 5, 3 ], true);
     }
 
     private selectManikin(manikin: string): void {
