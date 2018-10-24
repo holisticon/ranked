@@ -44,8 +44,14 @@ export class WebSocketService {
         });
     }
 
+    public isOpen(): boolean {
+        return this.initializeSubject.getValue();
+    }
+
     public close(): void {
-        this.eventSubscriptions.forEach(subscription => subscription.unsubscribe());
+        if (this.client.connected) {
+            this.eventSubscriptions.forEach(subscription => subscription.unsubscribe());
+        }
 
         this.initializeSubject.complete();
         this.init();
@@ -53,7 +59,7 @@ export class WebSocketService {
 
     public send<T>(path: string, body: string | T): void {
         this.initializeSubject.subscribe(initialized => {
-            if (initialized) {
+            if (initialized && this.client.connected) {
                 if (typeof body !== 'string') {
                     body = JSON.stringify(body);
                 }
@@ -65,7 +71,7 @@ export class WebSocketService {
     public listenTo<T>(path: string): Observable<T> {
         return new Observable<T>(observer => {
             this.initializeSubject.subscribe(initialized => {
-                if (initialized) {
+                if (initialized && this.client.connected) {
                     this.eventSubscriptions.push(this.client.subscribe(path, message => {
                         observer.next(JSON.parse(message.body));
                     }));

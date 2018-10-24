@@ -22,32 +22,56 @@ export namespace WebSocketMiddleware {
     ];
 
     const senderId = '' + Math.ceil(Math.random() * 1000);
-    let client: WebSocketService;
+    let webSocket: WebSocketService;
+    let initStore: Store<any>;
+
+    function createWebSocket(): void {
+        webSocket = WebSocketService.new('middleware', Config.backendUrl + '/ranked');
+
+        webSocket.open().subscribe(
+            () => { return; },
+            _ => {
+                alert('Cannot connect to backend!');
+            }
+        );
+        webSocket.listenTo<Event>('/topic/event').subscribe(event => {
+            // ignore own events
+            if (event.sender !== senderId) {
+                initStore.dispatch(event);
+            }
+        });
+    }
 
     export function create(): Middleware {
         return store => next => action => {
+            if (action.type === Actions.RESET) {
+                reset();
+            }
+
             if (!(action as Event).sender && actionsForSync.indexOf(action.type) >= 0) {
                 const event = { sender: senderId };
                 Object.assign(event, action);
-                client.send('/event', event);
+                webSocket.send('/event', event);
             }
 
             return next(action);
         };
     }
 
-    export function init<S>(store: Store<S>): void {
-        client = WebSocketService.new('middleware', Config.backendUrl + '/ranked');
+    export function init(store: Store<any>): void {
+        initStore = store;
+        createWebSocket();
+    }
 
-        client.open().subscribe(
-            () => { return; },
-            _ => alert('Cannot connect to backend!')
-        );
-        client.listenTo<Event>('/topic/event').subscribe(event => {
-            // ignore own events
-            if (event.sender !== senderId) {
-                store.dispatch(event);
-            }
-        });
+    export function reset(): void {
+        if (!initStore) {
+            throw new Error('You have to call WebSocketMiddleware.init before calling WebSocketMiddleware.reset!');
+        }
+
+        if (webSocket && webSocket.isOpen()) {
+            webSocket.close();
+        }
+
+        createWebSocket();
     }
 }
