@@ -106,7 +106,7 @@ export class ManikinSelectionComponent extends React.Component<ManikinSelectionP
    private renderOwnGoalButton() {
       return (
           <div className="own-goal-button ranked-button ranked-button-gray"
-               onClick={ () => this.props.select(this.state.team, '', '', this.state.goalTime) }>
+               onClick={ () => this.props.select(this.state.team, 'OWN_GOAL', '', this.state.goalTime) }>
             <span>Durch Eigentor</span>
           </div>
     );
