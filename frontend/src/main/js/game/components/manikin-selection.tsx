@@ -5,14 +5,13 @@ import { connect, Dispatch } from 'react-redux';
 import { match } from 'react-router';
 import { push } from 'react-router-redux';
 
-import { Player, TeamColor } from '../../types/types';
+import { TeamColor } from '../../types/types';
 import * as Actions from '../actions';
 import { TimerService } from '../services/timer.service';
 import { PartialStoreState } from '../store.state';
 
 export interface ManikinSelectionProps {
     match?: match<any>;
-    players: Array<Player>;
     select: (team: TeamColor, player: string, manikin: string, time: number) => void;
     cancel: () => void;
 }
@@ -20,7 +19,7 @@ export interface ManikinSelectionProps {
 interface ManikinSelectionState {
     manikins: Array<Array<string>>;
     team: TeamColor;
-    player?: Player;
+    playerId?: string;
     position: string;
     goalTime: number;
 }
@@ -33,21 +32,18 @@ export class ManikinSelectionComponent extends React.Component<ManikinSelectionP
 
         let team = null;
         let position = null;
-        let player: Player | undefined;
+        let playerId: string | undefined;
         if (props.match && props.match.params) {
             team = props.match.params.team;
             position = props.match.params.position;
 
-            let playerId = props.match.params.player;
-            if (playerId) {
-                player = props.players.find(p => p.id === playerId);
-            }
+            playerId = props.match.params.player;
         }
 
         const teamPrefix = team === 'red' ? 'r' : 'b';
         const manikins = position === 'defense' ?
             this.createDefenseRows(teamPrefix) : this.createAttackRows(teamPrefix);
-        this.state = { manikins, team, player, position, goalTime: TimerService.getTimeInSec() };
+        this.state = { manikins, team, playerId, position, goalTime: TimerService.getTimeInSec() };
     }
 
     private createManikinsData(prefix: string, rows: Array<number>, isAttack: boolean): Array<Array<string>> {
@@ -61,11 +57,11 @@ export class ManikinSelectionComponent extends React.Component<ManikinSelectionP
     }
 
     private createDefenseRows(prefix: string) {
-        return this.createManikinsData(prefix, [ 1, 2 ], false);
+        return this.createManikinsData(prefix, [1, 2], false);
     }
 
     private createAttackRows(prefix: string) {
-        return this.createManikinsData(prefix, [ 5, 3 ], true);
+        return this.createManikinsData(prefix, [5, 3], true);
     }
 
     private selectManikin(manikin: string): void {
@@ -74,7 +70,7 @@ export class ManikinSelectionComponent extends React.Component<ManikinSelectionP
             clearInterval(this.timer);
         }
 
-        this.props.select(this.state.team, this.state.player ? this.state.player.id : '', manikin, this.state.goalTime);
+        this.props.select(this.state.team, this.state.playerId || '', manikin, this.state.goalTime);
     }
 
     private renderManikinRow(row: Array<string>) {
@@ -103,23 +99,24 @@ export class ManikinSelectionComponent extends React.Component<ManikinSelectionP
         });
     }
 
-   private renderOwnGoalButton() {
-      return (
-          <div className="own-goal-button ranked-button ranked-button-gray"
-               onClick={ () => this.props.select(this.state.team, 'OWN_GOAL', '', this.state.goalTime) }>
-            <span>Durch Eigentor</span>
-          </div>
-    );
-  }
+    private renderOwnGoalButton() {
+        return (
+            <div
+                className="own-goal-button ranked-button ranked-button-gray"
+                onClick={ () => this.props.select(this.state.team, 'OWN_GOAL', '', this.state.goalTime) }
+            >
+                <span>Durch Eigentor</span>
+            </div>
+        );
+    }
 
-  private renderCancelButton() {
-    return (
-      <div className="cancel-button"
-           onClick={ () => this.props.cancel() }>
-        <span>X</span>
-      </div>
-    );
-  }
+    private renderCancelButton() {
+        return (
+            <div className="cancel-button" onClick={ () => this.props.cancel() }>
+                <span>X</span>
+            </div>
+        );
+    }
 
     public render() {
         if (!this.state.team || !this.state.position) {
@@ -127,15 +124,15 @@ export class ManikinSelectionComponent extends React.Component<ManikinSelectionP
         }
 
         return (
-            <div className={ 'manikin-selection' + ( this.state.team === 'red' ? ' rotate-180' : '' ) }>
+            <div className={ 'manikin-selection' + (this.state.team === 'red' ? ' rotate-180' : '') }>
 
                 <div className="manikins">
                     { this.renderManikins() }
                 </div>
 
-              { this.renderCancelButton() }
+                { this.renderCancelButton() }
 
-              { this.renderOwnGoalButton() }
+                { this.renderOwnGoalButton() }
 
             </div>
         );
@@ -143,9 +140,7 @@ export class ManikinSelectionComponent extends React.Component<ManikinSelectionP
 }
 
 export function mapStateToProps(store: PartialStoreState) {
-    return {
-        players: store.ranked.availablePlayers
-    };
+    return {};
 }
 
 export function mapDispatchToProps(dispatch: Dispatch<Actions.RankedAction>) {
