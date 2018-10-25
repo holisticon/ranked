@@ -1,6 +1,9 @@
+export type TimerStatus = 'STOPPED' | 'STARTED' | 'PAUSED' | 'INTERRUPTED';
+
 export namespace TimerService {
   let intervalId: any;
-  let status: 'STOPPED' | 'STARTED' | 'PAUSED' = 'STOPPED';
+  let status: TimerStatus = 'STOPPED';
+  let interruptedStatus: TimerStatus;
   let timeInSec: number = 0;
   let countdownTimeInSec: number = 0;
 
@@ -40,11 +43,26 @@ export namespace TimerService {
     status = 'STOPPED';
   }
 
+  export function interrupt(): void {
+    interruptedStatus = status;
+    status = 'INTERRUPTED';
+    clear();
+  }
+
+  export function moveOn(): void {
+    if (status === 'INTERRUPTED') {
+      status = interruptedStatus;
+      if (interruptedStatus === 'STARTED') {
+        start();
+      }
+    }
+  }
+
   export function resetCountdown(countdownTime?: number): void {
     countdownTimeInSec = countdownTime || 0;
   }
 
-  export function getStatus(): 'STOPPED' | 'STARTED' | 'PAUSED' {
+  export function getStatus(): TimerStatus {
     return status;
   }
 

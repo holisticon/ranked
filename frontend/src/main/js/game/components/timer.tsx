@@ -5,7 +5,7 @@ import { connect, Dispatch } from 'react-redux';
 
 import { Config } from '../../config';
 import * as Actions from '../actions';
-import { TimerService } from '../services/timer.service';
+import { TimerService, TimerStatus } from '../services/timer.service';
 import { PartialStoreState } from '../store.state';
 
 export type TimerProps = TimerPropValues & TimerPropActions;
@@ -26,7 +26,7 @@ interface TimerState {
   time: number;
   countdownTime: number;
   intervalId: any;
-  status: 'STOPPED' | 'STARTED' | 'PAUSED';
+  status: TimerStatus;
   countdownExpired: boolean;
 }
 
@@ -117,10 +117,14 @@ export class TimerComponent extends React.Component<TimerProps, TimerState> {
     const countdownReset = this.state.status === 'PAUSED' && this.state.countdownTime === this.props.startTime;
     const stopped = this.state.status === 'STOPPED' ||
       this.props.countdown && (this.state.countdownExpired || countdownReset);
+    const interrupted = this.state.status === 'INTERRUPTED';
 
     return (
       <div className="timer" onClick={ (e) => this.togglePause() }>
-        <span>{ stopped ? this.getStoppedText() : this.formatTime() }</span>
+        { interrupted ?
+          <span className="material-icons">cloud_off</span> :
+          <span>{ stopped ? this.getStoppedText() : this.formatTime() }</span>
+        }
       </div>
     );
   }

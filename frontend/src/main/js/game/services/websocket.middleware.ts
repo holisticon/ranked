@@ -31,7 +31,9 @@ export namespace WebSocketMiddleware {
         webSocket.open().subscribe(
             () => { return; },
             _ => {
-                alert('Cannot connect to backend!');
+                // tslint:disable-next-line:no-console
+                console.log('Cannot connect to backend!');
+                initStore.dispatch(Actions.interrupt(false));
             }
         );
         webSocket.listenTo<Event>('/topic/event').subscribe(event => {

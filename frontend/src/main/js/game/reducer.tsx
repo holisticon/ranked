@@ -114,6 +114,14 @@ export function ranked(state: RankedStore, rankedAction: Actions.RankedAction): 
       TimerService.reset();
       return defaultState();
 
+    case Actions.INTERRUPTION:
+      if ((rankedAction as Actions.Interruption).moveOn) {
+        TimerService.moveOn();
+      } else {
+        TimerService.interrupt();
+      }
+      return { ...state };
+
     case Actions.LOAD_STATE:
       const syncState = (rankedAction as Actions.LoadState).state;
       TimerService.pause();  

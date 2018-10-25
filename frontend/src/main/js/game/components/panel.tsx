@@ -17,31 +17,39 @@ export interface PanelProps {
   sync: (storeState: RankedStore) => void;
 }
 
-export function Panel({ storeState, panelClosed, collapse, reset, sync }: PanelProps) {
+function renderAdminPanel({ storeState, reset, sync }: PanelProps) {
   return (
-    <div className={ 'panel' + (panelClosed ? ' closed' : '') }>
-      <div className="background" onClick={ () => collapse() } />
+    <div>
+      <div className="side-red">
+        <GoalCounter color="red" changeable={ true } />
+        <div className="buttons">
+          <div className="namedButton" onClick={ () => reset() }>
+            <div className="material-icons">power_settings_new</div>
+            <div className="text">Reset</div>
+          </div>
+        </div>
+      </div>
+      <div className="devider" />
+      <div className="side-blue">
+        <GoalCounter color="blue" changeable={ true } />
+        <div className="buttons">
+          <div className="namedButton" onClick={ () => sync(storeState) }>
+            <div className="material-icons">sync</div>
+            <div className="text">Sync</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function Panel(props: PanelProps) {
+  return (
+    <div className={ 'panel' + (props.panelClosed ? ' closed' : '') }>
+      <div className="background" onClick={ () => props.collapse() } />
       <div className="features-container">
         <div className="features">
-          <div className="side-red">
-            <GoalCounter color="red" changeable={ true } />
-            <div className="buttons">
-              <div className="namedButton" onClick={ () => reset() }>
-                <div className="material-icons">power_settings_new</div>
-                <div className="text">Reset</div>
-              </div>
-            </div>
-          </div>
-          <div className="devider" />
-          <div className="side-blue">
-            <GoalCounter color="blue" changeable={ true } />
-            <div className="buttons">
-              <div className="namedButton" onClick={ () => sync(storeState) }>
-                <div className="material-icons">sync</div>
-                <div className="text">Sync</div>
-              </div>
-            </div>
-          </div>
+          { renderAdminPanel(props) }
         </div>
       </div>
       <div className="edge" />
@@ -57,7 +65,7 @@ export function Panel({ storeState, panelClosed, collapse, reset, sync }: PanelP
 export function mapStateToProps({ ranked }: PartialStoreState) {
   return {
     storeState: ranked,
-    panelClosed: TimerService.getStatus() === 'STARTED' || TimerService.getTimeInSec() === 0
+    panelClosed: TimerService.getStatus() !== 'INTERRUPTED' && (TimerService.getStatus() === 'STARTED' || TimerService.getTimeInSec() === 0)
   };
 }
 
