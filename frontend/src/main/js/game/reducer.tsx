@@ -112,7 +112,8 @@ export function ranked(state: RankedStore, rankedAction: Actions.RankedAction): 
   switch (rankedAction.type) {
     case Actions.RESET:
       TimerService.reset();
-      return defaultState();
+      // do not assume the device position on reset
+      return { ...defaultState(), devicePosition: state.devicePosition };
 
     case Actions.INTERRUPTION:
       if ((rankedAction as Actions.Interruption).moveOn) {
