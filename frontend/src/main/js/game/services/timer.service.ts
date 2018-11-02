@@ -44,9 +44,11 @@ export namespace TimerService {
   }
 
   export function interrupt(): void {
-    interruptedStatus = status;
-    status = 'INTERRUPTED';
-    clear();
+    if (status !== 'INTERRUPTED') {
+      interruptedStatus = status;
+      status = 'INTERRUPTED';
+      clear();
+    }
   }
 
   export function moveOn(): void {

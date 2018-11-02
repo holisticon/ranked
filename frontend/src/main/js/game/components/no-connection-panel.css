@@ -1,0 +1,41 @@
+.no-connection-panel {
+    width: 100vh;
+    height: 100vw;
+    position: relative;
+    transform: rotate(90deg);
+    transform-origin: top left;
+    left: 100vw;
+    color: white;
+    font-weight: 200;
+    box-sizing: border-box;
+  }
+
+  .position-blue .no-connection-panel {
+      transform: rotate(-90deg);
+      left: 0;
+      top: 100vh;
+  }
+  
+  .no-connection-panel > div {
+    width: 100%;
+    text-align: center;
+    position: absolute;
+    left: 0;
+  }
+  
+  .no-connection-panel .heading {
+    font-size: 1.6rem;
+    top: 2rem;
+  }
+  
+  .no-connection-panel .description {
+    top: 5rem;
+  }
+  
+  .no-connection-panel .text-button {
+    font-weight: 400;
+    text-transform: uppercase;
+    bottom: 4rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }

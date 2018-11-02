@@ -2,24 +2,31 @@ import './panel.css';
 
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
+import { Observable } from 'rxjs';
 
 import * as Actions from '../actions';
 import { TimerService } from '../services/timer.service';
+import { WebSocketMiddleware } from '../services/websocket.middleware';
 import { PartialStoreState, RankedStore } from '../store.state';
 import GoalCounter from './goal-counter';
+import { NoConnectionPanel } from './no-connection-panel';
 import TimerComponent from './timer';
+
+declare type PanelMode = 'ADMIN' | 'NO_CONNECTION';
 
 export interface PanelProps {
   storeState: RankedStore;
+  mode: PanelMode;
   panelClosed: boolean;
   collapse: () => void;
   reset: () => void;
   sync: (storeState: RankedStore) => void;
+  reconnect: () => Observable<boolean>;
 }
 
-function renderAdminPanel({ storeState, reset, sync }: PanelProps) {
+function renderAdminPanel({ storeState, reset, sync }: PanelProps): any {
   return (
-    <div>
+    <div className="admin-panel">
       <div className="side-red">
         <GoalCounter color="red" changeable={ true } />
         <div className="buttons">
@@ -43,13 +50,30 @@ function renderAdminPanel({ storeState, reset, sync }: PanelProps) {
   );
 }
 
+function renderNoConnectionPanel({ reconnect }: PanelProps): any {
+  return (
+    <NoConnectionPanel reconnect={ () => reconnect() } />
+  );
+}
+
+function renderFeaturesContent(props: PanelProps): any {
+  switch (props.mode) {
+    case 'NO_CONNECTION':
+      return renderNoConnectionPanel(props);
+    case 'ADMIN':
+      return renderAdminPanel(props);
+    default:
+      return null;
+  }
+}
+
 export function Panel(props: PanelProps) {
   return (
     <div className={ 'panel' + (props.panelClosed ? ' closed' : '') }>
       <div className="background" onClick={ () => props.collapse() } />
       <div className="features-container">
         <div className="features">
-          { renderAdminPanel(props) }
+          { renderFeaturesContent(props) }
         </div>
       </div>
       <div className="edge" />
@@ -63,8 +87,14 @@ export function Panel(props: PanelProps) {
 }
 
 export function mapStateToProps({ ranked }: PartialStoreState) {
+  let mode: PanelMode = 'ADMIN';
+  if (TimerService.getStatus() === 'INTERRUPTED') {
+    mode = 'NO_CONNECTION';
+  }
+
   return {
     storeState: ranked,
+    mode,
     panelClosed: TimerService.getStatus() !== 'INTERRUPTED' && (TimerService.getStatus() === 'STARTED' || TimerService.getTimeInSec() === 0)
   };
 }
@@ -75,7 +105,15 @@ export function mapDispatchToProps(dispatch: Dispatch<Actions.RankedAction>) {
       dispatch(Actions.startTimer(TimerService.getTimeInSec()));
     },
     reset: () => dispatch(Actions.reset()),
-    sync: (storeState: RankedStore) => dispatch(Actions.loadState(storeState))
+    sync: (storeState: RankedStore) => dispatch(Actions.loadState(storeState)),
+    reconnect: () => {
+      return WebSocketMiddleware.reset()
+        .map(() => {
+          dispatch(Actions.interrupt(true));
+          return true;
+        })
+        .catch(_ => Observable.of(false));
+    }
   };
 }
 
