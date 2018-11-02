@@ -9,7 +9,7 @@
   --box-width: calc((80vw - (var(--box-margin) * (var(--box-count) * 2))) / var(--box-count));
 }
 
-.box {
+.profile .box {
   width: var(--box-width);
   margin: 0 var(--box-margin);
   display: inline-block;
@@ -17,33 +17,33 @@
   vertical-align: top;
 }
 
-.group {
+.profile .group {
   margin-bottom: 2.2rem;
   width: 100%;
   display: inline-block;
   box-sizing: border-box;
 }
 
-.heading {
+.profile .heading {
   font-size: 1.6rem;
   font-weight: 200;
   margin: 0 0 0.6rem var(--box-margin);
 }
 
-.metric {
+.profile .metric {
   text-align: center;
   display: inline-block;
 }
 
-.metric .value {
+.profile .metric .value {
   font-size: 1.4rem;
 }
 
-.metric .label {
+.profile .metric .label {
   font-size: 0.8rem;
 }
 
-.chart {
+.profile .chart {
   width: 100%;
   padding: 0 4rem 0 2rem;
   display: inline-block;
