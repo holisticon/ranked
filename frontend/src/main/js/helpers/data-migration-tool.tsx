@@ -18,12 +18,12 @@ type PlayedSet = {
 
 type Match = {
   teamRed: {
-    player1: string,
-    player2: string
+    player1: { value: string },
+    player2: { value: string }
   },
   teamBlue: {
-    player1: string,
-    player2: string
+    player1: { value: string },
+    player2: { value: string }
   },
   matchSets: Array<PlayedSet>,
   startTime: Date
@@ -32,15 +32,20 @@ type Match = {
 export class DataMigrationTool extends React.Component<any, DataMigrationToolState> {
   constructor(props: any) {
     super(props);
-    this.state = { logs: [] };
+    this.state = {logs: []};
   }
 
   private newMatch(): Match {
-    return { teamRed: { player1: '', player2: '' }, teamBlue: { player1: '', player2: '' }, matchSets: [], startTime: new Date() };
+    return {
+      teamRed: {player1: {value: ''}, player2: {value: ''}},
+      teamBlue: {player1: {value: ''}, player2: {value: ''}},
+      matchSets: [],
+      startTime: new Date()
+    };
   }
 
   private newSet(): PlayedSet {
-    return { type: 'timestamp', goals: [], offenseBlue: { value: '' }, offenseRed: { value: '' } };
+    return {type: 'timestamp', goals: [], offenseBlue: {value: ''}, offenseRed: {value: ''}};
   }
 
   private otherPlayer(player: PlayerKey): PlayerKey {
@@ -55,7 +60,6 @@ export class DataMigrationTool extends React.Component<any, DataMigrationToolSta
     let match: Match = this.newMatch();
     let team;
 
-    let teamsChanged = false;
     let offenseRedKey: PlayerKey = 'player1';
     let offenseBlueKey: PlayerKey = 'player1';
 
@@ -69,12 +73,11 @@ export class DataMigrationTool extends React.Component<any, DataMigrationToolSta
             }
             // reset current match
             match = this.newMatch();
-            teamsChanged = false;
             offenseRedKey = 'player1';
             offenseBlueKey = 'player1';
           } else {
             team = (event.team === 'team1') ? match.teamRed : match.teamBlue;
-            team[event.player] = event.selected.userName.value;
+            team[event.player] = {value: event.selected.userName.value};
           }
           break;
         case 'SWITCH_PLAYER_POSITION':
@@ -90,10 +93,10 @@ export class DataMigrationTool extends React.Component<any, DataMigrationToolSta
             match.startTime = new Date(new Date(event.eventTimestamp).getTime() - event.time);
           }
           if (!set.offenseRed.value) {
-            set.offenseRed.value = teamsChanged ? match.teamBlue[offenseBlueKey] : match.teamRed[offenseRedKey];
-            set.offenseBlue.value = teamsChanged ? match.teamRed[offenseRedKey] : match.teamBlue[offenseBlueKey];
+            set.offenseRed = match.teamRed[offenseRedKey];
+            set.offenseBlue = match.teamBlue[offenseBlueKey];
           }
-          set.goals.push({ first: event.team.toUpperCase(), second: new Date(event.eventTimestamp) });
+          set.goals.push({first: event.team.toUpperCase(), second: new Date(event.eventTimestamp)});
 
           if (event.team === 'red') {
             goalsRed++;
@@ -110,9 +113,6 @@ export class DataMigrationTool extends React.Component<any, DataMigrationToolSta
             goalsRed = 0;
             goalsBlue = 0;
 
-            // change teams
-            teamsChanged = !teamsChanged;
-
             // change offense players
             offenseRedKey = this.otherPlayer(offenseRedKey);
             offenseBlueKey = this.otherPlayer(offenseBlueKey);
@@ -123,7 +123,6 @@ export class DataMigrationTool extends React.Component<any, DataMigrationToolSta
             matches.push(match);
           }
           match = this.newMatch();
-          teamsChanged = false;
           offenseRedKey = 'player1';
           offenseBlueKey = 'player1';
           break;
@@ -145,9 +144,9 @@ export class DataMigrationTool extends React.Component<any, DataMigrationToolSta
           clearInterval(interval);
           return;
         }
-        axios.post('http://10.5.13.124:8081/command/match', matches[i]).then(
-          () => this.setState({ logs: [...this.state.logs, `Match #${i} erfolgreich migriert`] }),
-          () => this.setState({ logs: [...this.state.logs, `Migration von Match #${i} fehlgeschlagen`] })
+        axios.post('command/match', matches[i]).then(
+          () => this.setState({logs: [...this.state.logs, `Match #${i} erfolgreich migriert`]}),
+          () => this.setState({logs: [...this.state.logs, `Migration von Match #${i} fehlgeschlagen`]})
         );
         i++;
       },
@@ -156,14 +155,15 @@ export class DataMigrationTool extends React.Component<any, DataMigrationToolSta
   }
 
   public render() {
+    const matches = this.extractMatches();
     return (
       <div>
-        { this.state.logs.map((log, i) => {
+        {this.state.logs.map((log, i) => {
           return (
-            <div key={i}>{ log }</div>
+            <div key={i}>{log}</div>
           );
-        }) }
-        <input type="button" value="Mach!" onClick={ () => this.send(this.extractMatches()) } />
+        })}
+        <input type="button" value="Mach!" onClick={() => this.send(this.extractMatches())}/>
       </div>
     );
   }
