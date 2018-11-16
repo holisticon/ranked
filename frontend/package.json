@@ -28,7 +28,7 @@
     "rxjs": "^5.5.10",
     "socket.io": "^2.1.1",
     "tslint": "^5.8.0",
-    "webpack": "^3.10.0",
+    "webpack": "^4.0.0",
     "websocket": "^1.0.26"
   },
   "scripts": {
