@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  frontend:
+    image: holisticon/ranked-frontend:0.0.1-SNAPSHOT
+    ports:
+      - 11080:8080
+    container_name: ranked_frontend
+
+  # see https://github.com/dadarek/docker-wait-for-dependencies
+  start_dependencies:
+    image: dadarek/wait-for-dependencies
+    depends_on:
+      - frontend
+    command: frontend:8080
