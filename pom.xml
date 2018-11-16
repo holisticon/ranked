@@ -153,7 +153,8 @@
         <configuration>
           <includes>
             <include>**/*Spec.*</include>
-          </includes>
+        </includes>
+        <useSystemClassLoader>false</useSystemClassLoader>
         </configuration>
       </plugin>
       <plugin>
