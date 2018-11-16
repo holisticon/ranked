@@ -20,6 +20,7 @@ import TeamSelection from './game/pages/team-selection';
 import { ranked } from './game/reducer';
 import { AutosaveService } from './game/services/autosave.service';
 import { WebSocketMiddleware } from './game/services/websocket.middleware';
+import { DataMigrationTool } from './helpers/data-migration-tool';
 import registerServiceWorker from './registerServiceWorker';
 import { ScoreBoard } from './statistics/pages/player-score-board';
 import { Profile } from './statistics/pages/profile';
@@ -88,6 +89,7 @@ class Ranked extends React.Component<{}, { initialized: boolean }> {
             <Route path="/teamBoard" component={ TeamScoreBoard } />
             <Route path="/profile/player/:playerName" component={ Profile } />
             <Route path="/profile" component={ ProfileSelection } />
+            <Route path="/migration" component={ DataMigrationTool } />
           </Switch>
         </ConnectedRouter>
       </div>
