@@ -11,14 +11,13 @@ spring:
   jpa:
     generate-ddl: false
     hibernate.ddl-auto: update
-    properties:version
+    properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL5Dialect
     show-sql: false
   flyway:
     enabled: true
     locations: "classpath:db/migrations/{vendor}"
-
 
 ranked:
   scoreToWinSet: 6

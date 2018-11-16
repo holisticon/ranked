@@ -205,15 +205,19 @@
   </build>
 
   <profiles>
+
     <profile>
       <id>frontend</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
+       <activation>
+         <property>
+           <name>!skipFrontend</name>
+         </property>
+       </activation>
       <modules>
         <module>frontend</module>
       </modules>
     </profile>
+
     <profile>
       <id>docker</id>
       <build>
