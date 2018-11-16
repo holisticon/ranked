@@ -1,15 +1,17 @@
+import './score-board.css';
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
+
+import * as qs from 'query-string';
 import * as React from 'react';
 import { Carousel } from 'react-responsive-carousel';
-import 'react-responsive-carousel/lib/styles/carousel.min.css';
+
 import { Player } from '../../types/types';
+import { HeadingComponent, HeadingConfig } from '../components/heading';
 import { RankingChart } from '../components/ranking-chart';
-import { ChartData2D, ChartData3D } from '../types';
 import { EloAdapter } from '../services/elo-adapter';
 import { GoalsAdapter } from '../services/goals-adapter';
-import './score-board.css';
 import { Heading } from '../services/heading.service';
-import { HeadingComponent, HeadingConfig } from '../components/heading';
-import * as qs from 'query-string';
+import { ChartData2D, ChartData3D } from '../types';
 import { ProfileSelection } from './profile-selection';
 
 type ScoreBoardState = {
@@ -34,7 +36,10 @@ export class ScoreBoard extends React.Component<any, ScoreBoardState> {
     this.state = { ...this.state };
 
     if (this.props.location && this.props.location.search) {
-      this.isInteractive = 'true' === qs.parse(this.props.location.search).interactive.toLowerCase();
+      const interactiveParam = qs.parse(this.props.location.search).interactive;
+      if (interactiveParam && typeof interactiveParam === 'string') {
+        this.isInteractive = 'true' === interactiveParam.toLowerCase();
+      }
     }
 
     // init data

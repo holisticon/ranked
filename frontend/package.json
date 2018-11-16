@@ -33,7 +33,7 @@
   },
   "scripts": {
     "on": "webpack-dev-server",
-    "check": "tsc && tslint -p tslint.json",
+    "check": "tsc && tslint -p tsconfig.json",
     "start": "react-scripts-ts start",
     "build": "react-scripts-ts build",
     "test": "react-scripts-ts test --env=jsdom",
@@ -47,11 +47,12 @@
     "@types/react": "^16.0.34",
     "@types/react-dom": "^16.0.3",
     "@types/react-touch": "^1.8.1",
-    "awesome-typescript-loader": "^3.4.1",
+    "awesome-typescript-loader": "^5.2.1",
     "css-loader": "^0.28.9",
     "react-hot-loader": "^3.1.3",
     "source-map-loader": "^0.2.3",
     "typescript": "^2.6.2",
-    "webpack-dev-server": "^2.11.1"
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.1.10"
   }
 }

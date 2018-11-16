@@ -8,8 +8,8 @@ module.exports = {
         "./src/main/js/app.tsx",
     ],
     output: {
-        path: path.join(__dirname, 'src/main/resources/static'),
         filename: "bundle.js",
+        path: path.join(__dirname, "src/main/resources/static")
     },
 
     // Enable sourcemaps for debugging webpack's output.
@@ -17,7 +17,7 @@ module.exports = {
 
     resolve: {
         // Add '.ts' and '.tsx' as resolvable extensions.
-        extensions: [".webpack.js", ".web.js", ".ts", ".tsx", ".js", ".json"]
+        extensions: [".ts", ".tsx", ".js", ".json"]
     },
 
     plugins: [
@@ -29,25 +29,14 @@ module.exports = {
     ],
 
     module: {
-        loaders: [
-            // All files with a '.ts' or '.tsx' extension will be handled by 'ts-loader'.
-            {
-                test: /\.tsx?$/,
-                loaders: [
-                    "react-hot-loader/webpack",
-                    "awesome-typescript-loader"
-                ],
-                exclude: path.resolve(__dirname, 'node_modules'),
-                include: path.resolve(__dirname, "src"),
-            },
-            // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
-            {
-                enforce: "pre",
-                test: /\.js$/,
-                loader: "source-map-loader"
-            },
+        rules: [
+            // All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader'.
+            { test: /\.tsx?$/, loaders: ["react-hot-loader/webpack", "awesome-typescript-loader"] },
 
-            { test: /\.css$/, use: [ 'style-loader', 'css-loader' ] }
+            // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
+            { enforce: "pre", test: /\.js$/, loader: "source-map-loader" },
+
+            { test: /\.css$/, use: ["style-loader", "css-loader"] }
         ]
     },
 
@@ -70,5 +59,5 @@ module.exports = {
     externals: {
         "react": "React",
         "react-dom": "ReactDOM"
-    },
+    }
 };
