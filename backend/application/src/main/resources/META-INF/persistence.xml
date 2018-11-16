@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence              http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+  <persistence-unit name="accounts">
+    <!-- TODO Eliminate this using provider-specific programmatic
+        registration APIs. This will confuse most users. -->
+    <!-- TODO Double-check that this is a complete list -->
+    <class>org.axonframework.eventsourcing.eventstore.AbstractEventEntry</class>
+    <class>org.axonframework.eventsourcing.eventstore.AbstractDomainEventEntry</class>
+    <class>org.axonframework.eventsourcing.eventstore.AbstractSequencedDomainEventEntry</class>
+    <class>org.axonframework.eventsourcing.eventstore.jpa.DomainEventEntry</class>
+    <class>org.axonframework.eventsourcing.eventstore.AbstractSnapshotEventEntry</class>
+    <class>org.axonframework.eventsourcing.eventstore.jpa.SnapshotEventEntry</class>
+    <class>org.axonframework.eventhandling.saga.repository.jpa.AssociationValueEntry</class>
+    <class>org.axonframework.eventhandling.saga.repository.jpa.AbstractSagaEntry</class>
+    <class>org.axonframework.eventhandling.saga.repository.jpa.SagaEntry</class>
+  </persistence-unit>
+</persistence>
