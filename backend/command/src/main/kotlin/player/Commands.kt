@@ -24,7 +24,6 @@ data class CreatePlayer(
      */
     userName = UserName(displayName
         .replace(" ", "")
-        .toLowerCase()
         .replace("ü", "ue")
         .replace("ä", "ae")
         .replace("ö", "oe")
