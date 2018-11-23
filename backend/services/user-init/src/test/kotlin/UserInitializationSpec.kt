@@ -7,14 +7,14 @@ class UserInitializationSpec {
 
   @Test
   fun `read players from json file`() {
-    assertThat(readUsersFromJson("/players.json")).hasSize(56)
+    assertThat(readUsersFromJson("/players.json")).isNotEmpty()
   }
 
   @Test
   fun `load single user`() {
     val users = UserInitializationConfiguration().users()
-    val user = users("jangalinski")
-    assertThat(user.id).isEqualTo("jangalinski")
+    val user = users("JanGalinski")
+    assertThat(user.id).isEqualTo("JanGalinski")
     assertThat(user.name).isEqualTo("Jan Galinski")
     assertThat(user.imageUrl).endsWith("/JanGalinski.png")
   }
