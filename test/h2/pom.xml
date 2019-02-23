@@ -12,7 +12,7 @@
   <artifactId>ranked-h2</artifactId>
 
   <properties>
-    <h2.version>1.4.192</h2.version>
+    <h2.version>1.4.198</h2.version>
   </properties>
 
   <dependencies>
