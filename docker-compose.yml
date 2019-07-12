@@ -25,7 +25,7 @@ services:
       - MYSQL_PASSWORD=ranked
       - MYSQL_DATABASE=ranked
     ports:
-      - "3306:3306"
+      - 11033:3306
     volumes:
       - "/var/lib/docker/volumes/ranked-mysql-data/_data:/var/lib/mysql"
     container_name: ranked_mysql

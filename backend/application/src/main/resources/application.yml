@@ -5,7 +5,7 @@ spring:
   application:
     name: ranked
   datasource:
-      url: jdbc:mysql://mysql:3306/ranked?useSSL=false
+      url: jdbc:mysql://mysql:11033/ranked?useSSL=false
       username: ranked
       password: ranked
   jpa:
