@@ -44,7 +44,7 @@ services:
       - mysql
       - backend
       - frontend
-    command: mysql:3306 backend:8081 frontend:8080
+    command: mysql:11033 backend:8081 frontend:8080
 
 networks:
   network1:
