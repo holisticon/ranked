@@ -25,7 +25,7 @@ class CreatePlayerSpec {
 
   @Test
   fun `a player can be created and found via rest`() {
-    val expected = Player(userName = UserName("goenssothegraet"), displayName = "Gönßo the Grät", imageUrl = "/gonzo.jpg", eloRanking = 1000)
+    val expected = Player(userName = UserName("GoenssotheGraet"), displayName = "Gönßo the Grät", imageUrl = "/gonzo.jpg", eloRanking = 1000)
 
     val response = rest.postForEntity(
       "/command/player",

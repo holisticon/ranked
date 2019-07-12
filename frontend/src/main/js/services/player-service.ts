@@ -1,18 +1,15 @@
 import axios from 'axios';
 
-import { Config } from '../config';
 import { Player, PlayerData, Team, TeamData } from '../types/types';
 
 export namespace PlayerService {
-  const backend = 'http://' + Config.backendUrl;
-
   export function getAllPlayers(): Promise<Array<Player>> {
-    return axios.get(backend + '/view/player')
+    return axios.get('/view/player')
       .then(res => (res.data as Array<PlayerData>).map(data => new Player(data)));
   }
 
   export function getPlayer(playerId: string): Promise<Player> {
-    return axios.get(backend + '/view/player/' + playerId)
+    return axios.get('/view/player/' + playerId)
       .then(res => new Player(res.data));
   }
 
