@@ -8,4 +8,4 @@ docker-compose stop
 docker-compose rm -f
 
 ## Start new containers
-docker-compose run --rm frontend
+docker-compose run --rm start_dependencies
