@@ -4,6 +4,14 @@
 
 Application for tracking table-soccer results.
 
+
+## !! This repository is archived
+
+Please note that we started the development of a new Ranked which is not based on this code, so the development of this is frozen and the repository is archived.
+
+
+
+
 ## Running
 
 ### Local
